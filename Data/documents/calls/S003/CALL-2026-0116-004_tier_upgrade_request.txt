@@ -1,0 +1,184 @@
+NEXORA COMMERCE PVT. LTD. - CALL TRANSCRIPT
+This is a synthetic record created for a prototype dataset. It is not a real
+conversation and does not describe real people or companies.
+
+================================================================================
+CALL RECORD
+================================================================================
+Call ID          : CALL-2026-0116-004
+Date             : 16 January 2026
+Start time       : 14:30 IST
+Duration         : 29 minutes
+Seller           : S003 - GreenCart Organics
+Topic            : Request for Gold tier and weekly settlement terms
+Related scenario : SC-009
+Related ticket   : TKT-2026-0115-054
+
+Participants
+  Ananya Rao           Co-founder and Operations, GreenCart Organics
+  Aditya Verma         Account Manager, Nexora (Business)
+  Neha Gupta           System Engineer, Nexora (Operations)
+
+Classification   : INTERNAL
+================================================================================
+
+[14:30] ADITYA VERMA: Ananya, thank you for the call. I've read the request
+you submitted yesterday and I've had a chance to think about it. I want to
+give you a straight answer rather than an encouraging one, so I'll do that
+up front and then we'll work through the detail.
+
+[14:30] ANANYA RAO: I'd prefer straight. Go ahead.
+
+[14:31] ADITYA VERMA: The tier upgrade I can support. The weekly settlement
+change I can't approve as it stands, but I think there's a path to it and I
+want to walk you through exactly what it is.
+
+[14:31] ANANYA RAO: Then let's start with why not, because that's the part
+that affects my cash.
+
+[14:32] ADITYA VERMA: Neha, do you want to take the policy?
+
+[14:32] NEHA GUPTA: Sure. Weekly settlement isn't automatic at Gold. It has
+four conditions attached, and they're about readiness rather than tier.
+Six consecutive cycles without a settlement dispute - you've done four. An
+automated reconciliation on your side - you don't have one. A verified
+failover for your fulfilment-critical integrations - you have one configured
+but it's never been tested. And a dispute rate below the category
+threshold - you meet that comfortably.
+
+[14:33] ANANYA RAO: So two of four, and one partially.
+
+[14:33] NEHA GUPTA: Correct.
+
+[14:33] ANANYA RAO: Why does my reconciliation matter to your risk? That's
+my process, not yours.
+
+[14:34] NEHA GUPTA: Because weekly settlement means we pay you before a
+dispute could realistically surface. If something's wrong, whoever spots it
+first is the control. Right now, on a fortnightly cycle, there's enough time
+for both sides to reconcile before money moves. On weekly there isn't. We're
+not asking you to protect us - we're asking you to protect yourself, because
+the exposure lands on you first.
+
+[14:35] ANANYA RAO: That's a much better explanation than what I got from the
+portal. The portal just lists weekly settlement as a Gold feature.
+
+[14:35] NEHA GUPTA: That's a genuine documentation problem and I'll flag it.
+You shouldn't have had to submit a request to find out there were
+conditions.
+
+[14:36] ADITYA VERMA: So here's what I can do, and it's a real offer, not a
+consolation. The tier upgrade goes through now. Commission banding changes
+from February. The visibility and merchandising treatment changes now. The
+settlement frequency moves when the reconciliation milestone is validated.
+And I'll put milestones and dates on it so it's not open-ended.
+
+[14:36] ANANYA RAO: What's my incentive to accept the split?
+
+[14:37] ADITYA VERMA: Three things. First, you get the commercial benefit
+now rather than in six months. Second, the milestone that unlocks weekly
+settlement is a thing you want to build anyway - if you had automated
+reconciliation on the second of September this year you'd have caught the
+duplicate refunds the same evening rather than the next afternoon.
+
+[14:37] ANANYA RAO: That's fair.
+
+[14:38] ADITYA VERMA: Third, and this is the honest one, if I approve weekly
+settlement now and something goes wrong, I've put you in a worse position
+than you're in today. I'd have given you cash faster and less protection.
+I don't want to do that to a seller I expect to keep.
+
+[14:38] ANANYA RAO: I'll accept that reasoning. What are the milestones?
+
+[14:39] ADITYA VERMA: Four. Six consecutive clean cycles - that's already
+nearly met, April. Automated reconciliation on your side - that's the
+blocker. Verified failover with a live test - we'll do that test with you.
+And dispute rate below threshold for two quarters.
+
+[14:40] ANANYA RAO: And there's a deposit?
+
+[14:40] ADITYA VERMA: Yes. INR 3,00,000, held until the milestones are met,
+then returned.
+
+[14:41] ANANYA RAO: That's a lot for a business our size.
+
+[14:41] ADITYA VERMA: It is, and I'll explain the sizing. It's not calculated
+from your turnover. It's calculated from the largest single-cycle dispute
+we've seen on a comparable account. It's the amount that would cover the
+worst realistic problem during the period when you don't have your own
+reconciliation in place. When you have it, the deposit comes back.
+
+[14:42] ANANYA RAO: So it's a substitute for the reconciliation I haven't
+built.
+
+[14:42] ADITYA VERMA: Exactly. That's the cleanest way to think about it.
+
+[14:43] ANANYA RAO: [pause] I don't love the deposit. But I understand it.
+Can I ask a different question?
+
+[14:43] ADITYA VERMA: Of course.
+
+[14:43] ANANYA RAO: What happens if I meet everything and you still don't
+approve? What's my protection?
+
+[14:44] ADITYA VERMA: Fair question. The milestone is the trigger - when
+Operations validates it, weekly settlement activates. It's not a
+recommendation I get to reconsider. And there's an expiry date on the
+exception: if the milestone isn't met by the thirty-first of January next
+year the arrangement lapses, which cuts both ways. It means you can't be
+left in limbo and neither can we.
+
+[14:45] ANANYA RAO: That's the answer I wanted. Alright. I'll accept the
+conditional upgrade.
+
+[14:45] ADITYA VERMA: Then I'll have it documented and signed this week. One
+thing I want to confirm - you understand the settlement frequency does not
+change until the milestone is validated?
+
+[14:46] ANANYA RAO: I understand. And my team will start the reconciliation
+work in February.
+
+[14:46] NEHA GUPTA: I'll have operations give you the exact data format we
+can provide so you're building against something real. That's usually where
+these projects stall.
+
+[14:47] ANANYA RAO: That's helpful, thank you.
+
+[14:47] ADITYA VERMA: Anything else on the tier change itself?
+
+[14:48] ANANYA RAO: One thing. The portal listing. If other sellers are
+seeing weekly settlement listed as a Gold benefit with no conditions, you're
+going to keep having this conversation.
+
+[14:48] ADITYA VERMA: I know. I'm raising it as a documentation defect, not
+just noting it.
+
+[14:49] ANANYA RAO: Then I'm done. Thank you for being direct, both of you.
+
+[14:49] NEHA GUPTA: Thank you Ananya. I'll send the reconciliation data
+format next week.
+
+[14:50] ANANYA RAO: I'll look for it. Goodbye.
+
+================================================================================
+DECISIONS
+================================================================================
+1. Gold tier upgrade approved immediately, effective February 2026.
+2. Weekly settlement deferred until the automated reconciliation milestone
+   is validated by Operations.
+3. Four milestones agreed with named validators.
+4. INR 3,00,000 security deposit held until milestones are met, sized against
+   the largest observed single-cycle dispute rather than seller turnover.
+5. Exception expires 31 January 2027 if the milestone is not met.
+6. Seller portal documentation defect raised.
+
+FOLLOW-UP ACTIONS
+================================================================================
+Owner           Action                                          Target
+Aditya Verma    Document and sign decision DR-2026-003          2026-01-20
+Neha Gupta      Provide reconciliation data format to seller    2026-01-23
+Aditya Verma    Raise seller portal documentation defect        2026-01-30
+Ananya Rao      Begin reconciliation build work                 2026-02-16
+
+RECORDING ENDS 14:50 IST
+================================================================================

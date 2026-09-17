@@ -1,0 +1,576 @@
+NEXORA COMMERCE PVT. LTD. - SCENARIO CONTEXT
+PHASE 1 SYNTHETIC ENTERPRISE DATASET
+==============================================================================
+
+This file is the canonical reference for the twelve interconnected
+business scenarios in this dataset. It states the facts that are
+shared across the documents belonging to each scenario.
+
+Documents describing the same scenario appear in several folders and
+in several formats, written by different departments for different
+audiences. Their wording differs. Their facts do not. Where a
+question spans several documents, the answers should agree.
+
+All content is synthetic. No person, company or event described here
+is real.
+
+==============================================================================
+SCENARIO INDEX
+==============================================================================
+
+SCENARIO  SELLER DATE        INCIDENT  TITLE
+------------------------------------------------------------------------------
+SC-001    S001  2026-03-12  INC-2026-0312 Seller S001 Settlement Shortfall
+SC-002    S002  2026-05-19  INC-2026-0519 Seller S002 Inventory Synchronisation Drift
+SC-003    S002  2026-07-16  INC-2026-0716 Seller S002 Order API Timeout Under Peak Load
+SC-004    S001  2026-02-24  -         Seller S001 Tax Invoice Mismatch
+SC-005    S003  2026-06-18  INC-2026-0618 Seller S003 Shipping Label Provider Failover
+SC-006    S004  2026-08-05  INC-2026-0805 Seller S004 Size Chart Defect and Return Spike
+SC-007    S003  2026-09-03  INC-2026-0903 Seller S003 Duplicate Refund Processing
+SC-008    S002  2026-04-21  INC-2026-0421 Seller S002 Credential Exposure (Security)
+SC-009    S003  2026-01-15  -         Seller S003 Conditional Tier Upgrade and Payment Terms
+SC-010    S001  2026-08-12  INC-2026-0812 Seller S001 Checkout Deployment Regression
+SC-011    S002  2026-06-02  -         Seller S002 Order Event Loss (Consumer Lag)
+SC-012    S004  2026-09-08  -         Seller S004 Account Suspension Review
+
+==============================================================================
+SC-001 - Seller S001 Settlement Shortfall
+==============================================================================
+
+Seller           : S001
+Primary date     : 2026-03-12
+Window           : 5 March 2026 to 9 March 2026
+System           : Settlement & Payout Service (settlement_ledger)
+Owning dept      : Operations
+Classification   : CONFIDENTIAL
+People involved  : Rahul Sharma (Support), Vikram Singh (Engineering), Neha Gupta (Operations), Aditya Verma (Business)
+Incident report  : INC-2026-0312
+Support ticket   : TKT-2026-0312-114
+Call transcript  : CALL-2026-0313-018
+Relevant policy  : Payment Settlement Policy (POL-FIN-002)
+Relevant runbook : Payment Recovery Runbook (OPS-RB-004)
+
+ROOT CAUSE / BASIS
+------------------------------------------------------------------------------
+The settlement ledger deduplication key was changed during the v1.8 to v1.9 schema migration and omitted the order identifier for reversal entries. When the batch was reprocessed after a transient job failure, each reversal was deducted twice, reducing the payout.
+
+IMPACT
+------------------------------------------------------------------------------
+S001 settlement short by INR 4,82,000; 1,914 reversal entries double-deducted; payout delayed by two days.
+
+RESOLUTION
+------------------------------------------------------------------------------
+Hotfix restored order_id plus entry_type to the deduplication key, the affected batch was reprocessed, and the shortfall of INR 4,82,000 was credited on 14 March 2026.
+
+CONSISTENCY ANCHORS
+------------------------------------------------------------------------------
+The following facts are identical in every document that
+describes this scenario:
+
+  - Seller identifier: S001
+  - Primary date: 2026-03-12
+  - Affected system: Settlement & Payout Service (settlement_ledger)
+  - Incident identifier: INC-2026-0312
+  - Root cause: as stated above
+  - Resolution: as stated above
+
+
+==============================================================================
+SC-002 - Seller S002 Inventory Synchronisation Drift
+==============================================================================
+
+Seller           : S002
+Primary date     : 2026-05-19
+Window           : 17 May 2026 to 20 May 2026
+System           : Inventory Sync Service (nightly SFTP batch)
+Owning dept      : Operations
+Classification   : CONFIDENTIAL
+People involved  : Rahul Sharma (Support), Vikram Singh (Engineering), Neha Gupta (Operations)
+Incident report  : INC-2026-0519
+Support ticket   : TKT-2026-0519-207
+Call transcript  : CALL-2026-0520-041
+Relevant runbook : Service Recovery Procedure (OPS-RB-002)
+
+ROOT CAUSE / BASIS
+------------------------------------------------------------------------------
+The batch scheduler applied a fixed UTC offset while the Marketplace stock window is computed in IST. After the catalogue restructure, a stale SKU mapping table also remained in the pipeline. The combined drift left stock levels up to 26 hours old for part of the feed.
+
+IMPACT
+------------------------------------------------------------------------------
+18,400 SKUs published with stale stock; 412 oversell orders; S002 disabled the affected listings.
+
+RESOLUTION
+------------------------------------------------------------------------------
+Scheduler pinned to Asia/Kolkata, SKU mapping rebuilt against the current catalogue, a full resynchronisation was executed and oversold orders were refunded with priority handling.
+
+CONSISTENCY ANCHORS
+------------------------------------------------------------------------------
+The following facts are identical in every document that
+describes this scenario:
+
+  - Seller identifier: S002
+  - Primary date: 2026-05-19
+  - Affected system: Inventory Sync Service (nightly SFTP batch)
+  - Incident identifier: INC-2026-0519
+  - Root cause: as stated above
+  - Resolution: as stated above
+
+
+==============================================================================
+SC-003 - Seller S002 Order API Timeout Under Peak Load
+==============================================================================
+
+Seller           : S002
+Primary date     : 2026-07-16
+Window           : 16 July 2026
+System           : Order API (Order Service and API gateway)
+Owning dept      : Engineering
+Classification   : CONFIDENTIAL
+People involved  : Rahul Sharma (Support), Vikram Singh (Engineering)
+Incident report  : INC-2026-0716
+Support ticket   : TKT-2026-0716-268
+Call transcript  : CALL-2026-0717-052
+Relevant policy  : Seller Escalation Policy (POL-BIZ-004)
+Relevant runbook : Incident Escalation Procedure (OPS-RB-003)
+
+ROOT CAUSE / BASIS
+------------------------------------------------------------------------------
+An unbounded client retry policy generated a retry storm during the partner flash sale. Combined with a missing circuit breaker on the inventory lookup, the order service connection pool was exhausted.
+
+IMPACT
+------------------------------------------------------------------------------
+p99 order latency reached 12.4 seconds, 3,900 order placements failed with HTTP 503, flash-sale revenue deferred for roughly 40 minutes.
+
+RESOLUTION
+------------------------------------------------------------------------------
+Circuit breaker added to the inventory lookup, the connection pool was resized, client request timeouts and Retry-After headers were enforced, and queued orders were replayed.
+
+CONSISTENCY ANCHORS
+------------------------------------------------------------------------------
+The following facts are identical in every document that
+describes this scenario:
+
+  - Seller identifier: S002
+  - Primary date: 2026-07-16
+  - Affected system: Order API (Order Service and API gateway)
+  - Incident identifier: INC-2026-0716
+  - Root cause: as stated above
+  - Resolution: as stated above
+
+
+==============================================================================
+SC-004 - Seller S001 Tax Invoice Mismatch
+==============================================================================
+
+Seller           : S001
+Primary date     : 2026-02-24
+Window           : 1 February 2026 to 23 February 2026
+System           : Invoicing Service and tax rate mapping
+Owning dept      : Business
+Classification   : CONFIDENTIAL
+People involved  : Aditya Verma (Business), Rahul Sharma (Support)
+Support ticket   : TKT-2026-0224-091
+Call transcript  : CALL-2026-0225-013
+Relevant policy  : Payment Settlement Policy (POL-FIN-002)
+Relevant runbook : Payment Recovery Runbook (OPS-RB-004)
+
+ROOT CAUSE / BASIS
+------------------------------------------------------------------------------
+Following an HSN revision, newly listed decorative lighting SKUs were not mapped to the 12 percent slab and defaulted to the 18 percent rate in the tax rate table.
+
+IMPACT
+------------------------------------------------------------------------------
+1,240 invoices issued at 18 percent instead of 12 percent for S001; reconciliation mismatch of INR 2,17,600 and a month-end settlement query from the seller.
+
+RESOLUTION
+------------------------------------------------------------------------------
+Tax category mapping corrected, 1,240 credit notes re-issued, and a mapping validation check was added to the listing workflow.
+
+CONSISTENCY ANCHORS
+------------------------------------------------------------------------------
+The following facts are identical in every document that
+describes this scenario:
+
+  - Seller identifier: S001
+  - Primary date: 2026-02-24
+  - Affected system: Invoicing Service and tax rate mapping
+  - Root cause: as stated above
+  - Resolution: as stated above
+
+
+==============================================================================
+SC-005 - Seller S003 Shipping Label Provider Failover
+==============================================================================
+
+Seller           : S003
+Primary date     : 2026-06-18
+Window           : 18 June 2026
+System           : Shipment Label Service and courier provider integration
+Owning dept      : Operations
+Classification   : CONFIDENTIAL
+People involved  : Rahul Sharma (Support), Neha Gupta (Operations), Vikram Singh (Engineering)
+Incident report  : INC-2026-0618
+Support ticket   : TKT-2026-0618-233
+Call transcript  : CALL-2026-0619-047
+Relevant policy  : Seller Escalation Policy (POL-BIZ-004)
+Relevant runbook : Service Recovery Procedure (OPS-RB-002)
+
+ROOT CAUSE / BASIS
+------------------------------------------------------------------------------
+The primary courier provider (SwiftLane) suffered an API degradation. Automatic failover to the backup provider (RapidPost) did not activate because the stored RapidPost credentials had expired and the failover path did not validate credentials in advance.
+
+IMPACT
+------------------------------------------------------------------------------
+2,100 orders stuck in label-pending state; delivery SLA breach for 640 perishable orders; S003 raised a priority escalation.
+
+RESOLUTION
+------------------------------------------------------------------------------
+RapidPost credentials were rotated, failover was executed manually, labels were backfilled, and an automated credential-expiry monitor plus a failover pre-flight check were introduced.
+
+CONSISTENCY ANCHORS
+------------------------------------------------------------------------------
+The following facts are identical in every document that
+describes this scenario:
+
+  - Seller identifier: S003
+  - Primary date: 2026-06-18
+  - Affected system: Shipment Label Service and courier provider integration
+  - Incident identifier: INC-2026-0618
+  - Root cause: as stated above
+  - Resolution: as stated above
+
+
+==============================================================================
+SC-006 - Seller S004 Size Chart Defect and Return Spike
+==============================================================================
+
+Seller           : S004
+Primary date     : 2026-08-05
+Window           : mid-July 2026 to end-August 2026
+System           : Catalog Service and dropship product feed importer
+Owning dept      : Engineering
+Classification   : CONFIDENTIAL
+People involved  : Rahul Sharma (Support), Vikram Singh (Engineering), Neha Gupta (Operations)
+Incident report  : INC-2026-0805
+Support ticket   : TKT-2026-0805-301
+Call transcript  : CALL-2026-0806-063
+Relevant policy  : Seller Escalation Policy (POL-BIZ-004)
+Relevant runbook : Service Recovery Procedure (OPS-RB-002)
+
+ROOT CAUSE / BASIS
+------------------------------------------------------------------------------
+A schema update to the feed importer applied the UK-to-EU size conversion twice for footwear SKUs, publishing size charts that were two sizes smaller than the physical product.
+
+IMPACT
+------------------------------------------------------------------------------
+Return rate for S004 rose from 9 percent to 27 percent in three weeks; 2,860 returns with size-too-small as the dominant reason; reverse logistics cost increase.
+
+RESOLUTION
+------------------------------------------------------------------------------
+Conversion logic corrected, size charts re-published, a feed validation rule added to reject double conversion, and affected customers offered exchanges; return rate returned to 10 percent by late September.
+
+CONSISTENCY ANCHORS
+------------------------------------------------------------------------------
+The following facts are identical in every document that
+describes this scenario:
+
+  - Seller identifier: S004
+  - Primary date: 2026-08-05
+  - Affected system: Catalog Service and dropship product feed importer
+  - Incident identifier: INC-2026-0805
+  - Root cause: as stated above
+  - Resolution: as stated above
+
+
+==============================================================================
+SC-007 - Seller S003 Duplicate Refund Processing
+==============================================================================
+
+Seller           : S003
+Primary date     : 2026-09-03
+Window           : 2 September 2026 to 4 September 2026
+System           : Refund Webhook Consumer (payments)
+Owning dept      : Engineering
+Classification   : CONFIDENTIAL
+People involved  : Rahul Sharma (Support), Vikram Singh (Engineering), Neha Gupta (Operations)
+Incident report  : INC-2026-0903
+Support ticket   : TKT-2026-0903-336
+Call transcript  : CALL-2026-0904-071
+Relevant policy  : Payment Settlement Policy (POL-FIN-002)
+Relevant runbook : Payment Recovery Runbook (OPS-RB-004)
+
+ROOT CAUSE / BASIS
+------------------------------------------------------------------------------
+The refund webhook consumer processed at-least-once deliveries without an idempotency key check. A broker redelivery after a consumer restart caused the same refund event to be applied twice.
+
+IMPACT
+------------------------------------------------------------------------------
+640 orders refunded twice for S003; excess refund of INR 1,18,000; seller trust risk and manual reconciliation.
+
+RESOLUTION
+------------------------------------------------------------------------------
+An idempotency store keyed on refund event ID was added, duplicate refunds were reversed, the consumer replay was guarded, and a refund duplication alert was configured.
+
+CONSISTENCY ANCHORS
+------------------------------------------------------------------------------
+The following facts are identical in every document that
+describes this scenario:
+
+  - Seller identifier: S003
+  - Primary date: 2026-09-03
+  - Affected system: Refund Webhook Consumer (payments)
+  - Incident identifier: INC-2026-0903
+  - Root cause: as stated above
+  - Resolution: as stated above
+
+
+==============================================================================
+SC-008 - Seller S002 Credential Exposure (Security)
+==============================================================================
+
+Seller           : S002
+Primary date     : 2026-04-21
+Window           : 21 April 2026 to 24 April 2026
+System           : SFTP gateway and Seller API credential store
+Owning dept      : IT
+Classification   : RESTRICTED
+People involved  : Admin (IT), Vikram Singh (Engineering), Rahul Sharma (Support)
+Incident report  : INC-2026-0421
+Support ticket   : TKT-2026-0421-162
+Call transcript  : CALL-2026-0422-029
+Relevant policy  : Security Incident Response Policy (POL-SEC-001)
+Relevant runbook : Incident Escalation Procedure (OPS-RB-003)
+
+ROOT CAUSE / BASIS
+------------------------------------------------------------------------------
+A staging SFTP credential for S002 was embedded in a troubleshooting script that was shared externally. Credential rotation was manual and had not been performed, and no secret scanning ran in the CI pipeline.
+
+IMPACT
+------------------------------------------------------------------------------
+Elevated failed authentication attempts observed against the SFTP gateway; no confirmed unauthorised data access, but the credential had to be treated as compromised.
+
+RESOLUTION
+------------------------------------------------------------------------------
+Credentials rotated immediately, IP allowlisting enabled for the S002 SFTP endpoint, secret scanning added to CI, and automated 90-day credential rotation introduced.
+
+CONSISTENCY ANCHORS
+------------------------------------------------------------------------------
+The following facts are identical in every document that
+describes this scenario:
+
+  - Seller identifier: S002
+  - Primary date: 2026-04-21
+  - Affected system: SFTP gateway and Seller API credential store
+  - Incident identifier: INC-2026-0421
+  - Root cause: as stated above
+  - Resolution: as stated above
+
+
+==============================================================================
+SC-009 - Seller S003 Conditional Tier Upgrade and Payment Terms
+==============================================================================
+
+Seller           : S003
+Primary date     : 2026-01-15
+Window           : January 2026
+System           : Seller Onboarding and Account Management
+Owning dept      : Business
+Classification   : INTERNAL
+People involved  : Aditya Verma (Business), Neha Gupta (Operations)
+Support ticket   : TKT-2026-0115-054
+Call transcript  : CALL-2026-0116-004
+Relevant policy  : Seller Onboarding Policy (POL-BIZ-003)
+Relevant runbook : Seller Onboarding Runbook (OPS-RB-001)
+
+ROOT CAUSE / BASIS
+------------------------------------------------------------------------------
+Not an incident: S003 requested a Silver to Gold tier upgrade together with weekly settlement terms before its integration readiness milestones were met. The request required a documented policy exception.
+
+IMPACT
+------------------------------------------------------------------------------
+Commercial decision required; the standard onboarding policy did not permit the requested settlement terms at the seller's current readiness level.
+
+RESOLUTION
+------------------------------------------------------------------------------
+A conditional upgrade with phased milestones and a security deposit was approved on 20 January 2026, with settlement frequency moving to weekly after milestone two is validated.
+
+CONSISTENCY ANCHORS
+------------------------------------------------------------------------------
+The following facts are identical in every document that
+describes this scenario:
+
+  - Seller identifier: S003
+  - Primary date: 2026-01-15
+  - Affected system: Seller Onboarding and Account Management
+  - Root cause: as stated above
+  - Resolution: as stated above
+
+
+==============================================================================
+SC-010 - Seller S001 Checkout Deployment Regression
+==============================================================================
+
+Seller           : S001
+Primary date     : 2026-08-12
+Window           : 12 August 2026
+System           : Checkout Service (release 4.12.0)
+Owning dept      : Engineering
+Classification   : CONFIDENTIAL
+People involved  : Rahul Sharma (Support), Vikram Singh (Engineering)
+Incident report  : INC-2026-0812
+Support ticket   : TKT-2026-0812-308
+Relevant policy  : Seller Escalation Policy (POL-BIZ-004)
+Relevant runbook : Deployment Rollback Procedure (OPS-RB-005)
+
+ROOT CAUSE / BASIS
+------------------------------------------------------------------------------
+Release 4.12.0 changed the cart token cache key format but continued to sign tokens with the previous key namespace. Mixed versions during the rolling deploy caused token validation failures.
+
+IMPACT
+------------------------------------------------------------------------------
+Roughly 7 percent of cart-to-payment transitions failed with an invalid cart token error; 1,470 checkouts affected across sellers, concentrated in S001 traffic.
+
+RESOLUTION
+------------------------------------------------------------------------------
+Release rolled back to 4.11.7 within 34 minutes, the key namespace bug was fixed, and 4.12.1 was re-released with a version compatibility guard.
+
+CONSISTENCY ANCHORS
+------------------------------------------------------------------------------
+The following facts are identical in every document that
+describes this scenario:
+
+  - Seller identifier: S001
+  - Primary date: 2026-08-12
+  - Affected system: Checkout Service (release 4.12.0)
+  - Incident identifier: INC-2026-0812
+  - Root cause: as stated above
+  - Resolution: as stated above
+
+
+==============================================================================
+SC-011 - Seller S002 Order Event Loss (Consumer Lag)
+==============================================================================
+
+Seller           : S002
+Primary date     : 2026-06-02
+Window           : 2 June 2026
+System           : Event Bus (Kafka) and Order Event Consumer
+Owning dept      : Engineering
+Classification   : CONFIDENTIAL
+People involved  : Rahul Sharma (Support), Vikram Singh (Engineering), Neha Gupta (Operations)
+Support ticket   : TKT-2026-0602-217
+Relevant policy  : Payment Settlement Policy (POL-FIN-002)
+Relevant runbook : Service Recovery Procedure (OPS-RB-002)
+
+ROOT CAUSE / BASIS
+------------------------------------------------------------------------------
+After a partition expansion, the order event consumer group entered a rebalance loop because the maximum poll interval was smaller than the time required to process a batch. Events were repeatedly reprocessed and never committed.
+
+IMPACT
+------------------------------------------------------------------------------
+6,700 order events unprocessed; the downstream settlement feed was stale for nine hours; duplicate reconciliation warnings were generated for S002.
+
+RESOLUTION
+------------------------------------------------------------------------------
+Poll interval and batch size were tuned, the consumer group was stabilised, offsets were replayed from the last committed position, and lag alerting was added.
+
+CONSISTENCY ANCHORS
+------------------------------------------------------------------------------
+The following facts are identical in every document that
+describes this scenario:
+
+  - Seller identifier: S002
+  - Primary date: 2026-06-02
+  - Affected system: Event Bus (Kafka) and Order Event Consumer
+  - Root cause: as stated above
+  - Resolution: as stated above
+
+
+==============================================================================
+SC-012 - Seller S004 Account Suspension Review
+==============================================================================
+
+Seller           : S004
+Primary date     : 2026-09-08
+Window           : 8 September 2026 to 10 September 2026
+System           : Account Management and risk rules engine
+Owning dept      : Operations
+Classification   : CONFIDENTIAL
+People involved  : Neha Gupta (Operations), Admin (IT), Aditya Verma (Business)
+Support ticket   : TKT-2026-0908-341
+Call transcript  : CALL-2026-0909-074
+Relevant policy  : Account Suspension Policy (POL-OPS-006)
+Relevant runbook : Incident Escalation Procedure (OPS-RB-003)
+
+ROOT CAUSE / BASIS
+------------------------------------------------------------------------------
+The automated suspension rule triggered on a return rate above 25 percent and a settlement chargeback threshold. The elevated return rate was largely attributable to the size chart defect recorded in SC-006, not to seller conduct.
+
+IMPACT
+------------------------------------------------------------------------------
+S004 listings suspended on 8 September 2026; estimated lost sales of INR 6,40,000 per day; seller escalated through the account manager.
+
+RESOLUTION
+------------------------------------------------------------------------------
+Suspension lifted on 10 September 2026 after review, the size chart fix from SC-006 was confirmed, a corrective action plan was agreed, and the risk rule was recalibrated to consider known platform defects.
+
+CONSISTENCY ANCHORS
+------------------------------------------------------------------------------
+The following facts are identical in every document that
+describes this scenario:
+
+  - Seller identifier: S004
+  - Primary date: 2026-09-08
+  - Affected system: Account Management and risk rules engine
+  - Root cause: as stated above
+  - Resolution: as stated above
+
+
+==============================================================================
+CROSS-SCENARIO RELATIONSHIPS
+==============================================================================
+
+Some scenarios are causally linked. These links are deliberate and
+are consistent across all related documents.
+
+SC-006 -> SC-012
+  The size chart defect in SC-006 inflated the S004 return rate.
+  That elevated rate, still present in the trailing 30-day average,
+  triggered the automated account suspension recorded in SC-012.
+  An Engineering defect produced an Operations risk determination
+  with commercial consequences.
+
+SC-001 -> project PRJ-S001-SRH
+  The settlement shortfall in SC-001 was detected by the seller
+  rather than by any platform control. That finding opened the
+  settlement reconciliation hardening project, whose status report
+  is a separate document in the projects folder.
+
+SC-002 -> SC-008
+  Both concern the S002 batch integration. SC-002 is a data
+  correctness incident in the stock pipeline. SC-008 is a security
+  incident concerning the SFTP credentials that deliver the same
+  files. They are independent but share the same integration surface.
+
+SC-003 -> SC-011
+  Both are S002 throughput incidents. SC-011 is order event consumer
+  lag; SC-003 is order API connection pool exhaustion. Both are
+  addressed by the same programme, PRJ-S002-TR, and both share the
+  finding that the platform lacked a mechanism to degrade
+  gracefully under load.
+
+SC-005 -> SC-009
+  The June 2026 label failover failure in SC-005 was the event that
+  caused milestone M3 in the SC-009 conditional tier upgrade to be
+  validated with a live test, rather than closed on configuration
+  evidence as it had been in October 2025.
+
+SC-004 and SC-001 (both S001)
+  Two separate financial-correctness incidents on the same account
+  within one month. Both were detected by the seller's own
+  reconciliation, which is the finding recorded in the S001 account
+  overview and in the settlement reconciliation project.
+
+==============================================================================
+END OF SCENARIO CONTEXT
+==============================================================================

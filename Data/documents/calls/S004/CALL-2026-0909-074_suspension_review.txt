@@ -1,0 +1,251 @@
+NEXORA COMMERCE PVT. LTD. - CALL TRANSCRIPT
+This is a synthetic record created for a prototype dataset. It is not a real
+conversation and does not describe real people or companies.
+
+================================================================================
+CALL RECORD
+================================================================================
+Call ID          : CALL-2026-0909-074
+Date             : 9 September 2026
+Start time       : 11:00 IST
+Duration         : 38 minutes
+Seller           : S004 - StrideOne Footwear
+Topic            : Account suspension of 8 September - review discussion
+Related scenario : SC-012
+Related ticket   : TKT-2026-0908-341
+
+Participants
+  Karan Mehta          Marketplace Lead, StrideOne Footwear
+  Neha Gupta           System Engineer, Nexora (Operations)
+  Aditya Verma         Account Manager, Nexora (Business)
+  Rahul Sharma         Support Engineer, Nexora (Support)
+
+Classification   : CONFIDENTIAL
+================================================================================
+
+[11:00] NEHA GUPTA: Karan, thank you for joining. I want to be clear at the
+outset: this call is not to justify the suspension. It is to review it, and
+I've already formed a preliminary view. I'd rather hear you first before I
+state it.
+
+[11:00] KARAN MEHTA: Then I'll be brief, because my position is simple. You
+suspended us at two in the morning. We found out from an automated message
+that didn't say why. We've lost a day and a half of sales, roughly
+INR 6,40,000 a day. And the reason is a defect you already fixed three weeks
+ago.
+
+[11:01] NEHA GUPTA: That's accurate.
+
+[11:01] KARAN MEHTA: Then why am I on a review call?
+
+[11:02] NEHA GUPTA: Because I need to establish on the record whether there
+is any conduct issue on your side, and because the outcome has to be
+documented properly if it's going to protect you from this happening again.
+
+[11:02] KARAN MEHTA: Fine. There is no conduct issue. You know there isn't.
+You fixed the size charts yourselves.
+
+[11:03] NEHA GUPTA: And I need to verify that rather than assume it. Rahul,
+what did the review find?
+
+[11:03] RAHUL SHARMA: The rule evaluated a trailing thirty-day return rate of
+twenty-six point four percent against a threshold of twenty-five, and a
+settlement chargeback ratio of one point nine percent against a threshold of
+one point five. Two conditions breached, so the account was suspended
+automatically without human review. That's the rule working as designed.
+
+[11:04] KARAN MEHTA: Working as designed. That's a grim phrase.
+
+[11:04] RAHUL SHARMA: It is, and I don't mean it as a defence.
+
+[11:05] RAHUL SHARMA: But the important part is the trend. Your weekly return
+rate was twenty-seven percent in the week ending the ninth of August, then
+twenty-six, twenty-one, sixteen, and thirteen percent for the week ending the
+sixth of September. It had fallen for four consecutive weeks. The
+thirty-day average was still above the threshold because it included the peak.
+
+[11:06] ADITYA VERMA: So the rule suspended an account for a problem that was
+already fixed, using history.
+
+[11:06] NEHA GUPTA: Yes.
+
+[11:07] KARAN MEHTA: And who decided the rule should work that way?
+
+[11:07] NEHA GUPTA: I own it. It predates me in its current form but I own
+the policy now, so the answer is me.
+
+[11:08] KARAN MEHTA: Thank you. That's a better answer than the last three
+people would have given.
+
+[11:08] NEHA GUPTA: Then let me give you my view, which I'd already formed.
+The suspension was incorrect in outcome. There is no evidence of a conduct
+issue on your account. Order defect rate excluding the size-related returns
+is four point one percent, well within the Gold threshold. The elevated
+return rate is attributable to the size chart defect that your team reported
+and we fixed. The suspension should not have been applied and it should not
+have been automatic.
+
+[11:09] KARAN MEHTA: [pause] Then I'd like to know what you're going to do.
+
+[11:09] NEHA GUPTA: Four things. First, the suspension is lifted. I'll
+instruct that as soon as this call ends. Second, the event is recorded as
+platform-caused in your account risk history and excluded from future risk
+assessment. Third, the commercial consequences are waived - the returns
+reserve adjustment of INR 3,10,000 is reversed and reverse logistics for the
+affected period is absorbed.
+
+[11:10] KARAN MEHTA: And fourth?
+
+[11:10] NEHA GUPTA: The rule gets fixed. Return volume attributable to a
+recorded platform defect will be excluded from the metric. The evaluator will
+use a trend component so a resolved condition can't trigger. And until those
+changes are live, your account cannot be suspended by the rule - it requires
+my manual review.
+
+[11:11] KARAN MEHTA: When is that live?
+
+[11:11] NEHA GUPTA: Middle of October. Until then, the manual gate applies.
+
+[11:12] KARAN MEHTA: And the two days of lost sales?
+
+[11:12] ADITYA VERMA: Karan, can I take that one, since it's commercial?
+
+[11:12] KARAN MEHTA: Please.
+
+[11:13] ADITYA VERMA: Our policy default for a platform-caused suspension is
+reinstatement, waiver of consequential charges and a credible fix, rather
+than compensation for lost sales. I'm telling you that so you know the
+default. If you want to put a claim in, I'll take it and argue it properly,
+and I'd be arguing it with you rather than against you.
+
+[11:13] KARAN MEHTA: If I put in a claim, how long does that take?
+
+[11:14] ADITYA VERMA: Honestly? Weeks, and it would need a finance decision
+upstream of me. I don't think that's the best use of either of our time,
+but it's your call and I'll do it if you want it.
+
+[11:14] KARAN MEHTA: [pause] I'll think about it. I'd rather have the fix
+than the money, but the fix has to actually happen. If it doesn't, I'll be
+putting in a claim with a different tone.
+
+[11:15] ADITYA VERMA: That's completely reasonable and I'd expect nothing
+less.
+
+[11:15] NEHA GUPTA: Karan, there's one more thing I want to raise, because
+it's the part I'm least comfortable about.
+
+[11:16] KARAN MEHTA: Go on.
+
+[11:16] NEHA GUPTA: We knew. We had an open record saying your return rate
+was inflated by our defect. Rahul had raised the exact risk with your team on
+the sixth of August. And the rule still suspended you, because the rule
+couldn't see the record. That's not a rule calibration issue, that's an
+information flow failure, and it's the more serious of the two.
+
+[11:17] KARAN MEHTA: You told me this might happen. Rahul did, on that call.
+I have it in my notes.
+
+[11:17] RAHUL SHARMA: I did, and I gave the wrong assurance. I said I'd do
+what I could. What I should have done is escalate the rule itself, not just
+watch it.
+
+[11:18] KARAN MEHTA: Then I'll accept that, because you were honest about it
+at the time and you're being honest about it now. That's worth something.
+
+[11:18] NEHA GUPTA: It shouldn't be worth much when the outcome was two days
+of lost sales.
+
+[11:19] KARAN MEHTA: No. But it's worth a phone call rather than a legal
+letter.
+
+[11:19] NEHA GUPTA: Let me confirm the corrective action plan so you have it
+in writing.
+
+[11:20] NEHA GUPTA: Confirm corrected size charts across the full catalogue,
+already done. Structural feed validation active, already done. Reverse the
+reserve adjustment in the fifteenth of September cycle. Exclude known
+platform defects from the risk evaluation, middle of October. Shorten the
+trailing window and add a trend component, middle of October. Manual review
+gate for your account until then, active immediately.
+
+[11:21] KARAN MEHTA: And the notice itself?
+
+[11:21] NEHA GUPTA: I know. The notification you got was inadequate. It said
+you were suspended and nothing else. The policy now requires the notice to
+state the condition, the threshold, the window, the observed value, a named
+contact and the review timeframe. That's a policy change, not a promise.
+
+[11:22] KARAN MEHTA: When does that take effect?
+
+[11:22] NEHA GUPTA: It's already in the revised policy. It applies to any
+future suspension.
+
+[11:23] KARAN MEHTA: Good. That's the thing that would have saved my
+morning.
+
+[11:23] NEHA GUPTA: Agreed, and it's the cheapest of all the fixes. That's
+usually the case in retrospect.
+
+[11:24] ADITYA VERMA: Karan, before we finish - is there anything about the
+reinstatement process you want changed?
+
+[11:24] KARAN MEHTA: Yes. I want a named human. An automated notice with no
+contact is worse than no notice, because at least with no notice I'd have
+called someone.
+
+[11:25] NEHA GUPTA: There's always a named contact in the notice now. For
+your account it would be me, and Rahul during business hours.
+
+[11:25] KARAN MEHTA: Then that's my main issue addressed.
+
+[11:26] RAHUL SHARMA: I'll confirm the listings are live as soon as the
+instruction goes through and I'll call you rather than email.
+
+[11:26] KARAN MEHTA: Please do.
+
+[11:27] NEHA GUPTA: Thank you for keeping this focused, Karan. It would have
+been reasonable to be far less measured.
+
+[11:27] KARAN MEHTA: I've been on the other end of a supplier who stonewalled
+me. It costs more. Let's just fix it.
+
+[11:28] ADITYA VERMA: I'll follow up with you on Friday to confirm the
+reserve reversal has landed.
+
+[11:28] KARAN MEHTA: I'll look for it.
+
+[11:29] NEHA GUPTA: Lifting the suspension now. You should see listings
+within the hour.
+
+[11:29] KARAN MEHTA: Thank you. Goodbye.
+
+================================================================================
+DECISIONS
+================================================================================
+1. Suspension lifted. No seller conduct issue found.
+2. Event recorded as platform-caused and excluded from future risk
+   assessment for the account.
+3. Commercial consequences waived: reserve adjustment of INR 3,10,000
+   reversed, reverse logistics absorbed.
+4. Risk rule to exclude volume attributable to recorded platform defects and
+   to incorporate a trend component.
+5. Manual review gate applies to this account until the rule is corrected.
+6. Suspension notice content requirements added to the policy: condition,
+   threshold, window, observed value, named contact, review timeframe.
+7. Seller reserved the right to raise a commercial claim if the fix does not
+   materialise.
+
+FOLLOW-UP ACTIONS
+================================================================================
+Owner           Action                                          Target
+Neha Gupta      Lift suspension                                 2026-09-09
+Neha Gupta      Reverse reserve adjustment                      2026-09-15
+Neha Gupta      Exclude known platform defects from risk rule    2026-10-16
+Neha Gupta      Add trend component to return-rate evaluation     2026-10-16
+Neha Gupta      Manual review gate active                       2026-09-09
+Rahul Sharma    Confirm listings live and call seller            2026-09-09
+Aditya Verma    Confirm reserve reversal with seller             2026-09-11
+Neha Gupta      Add defect-to-account linkage as required field  2026-09-30
+
+RECORDING ENDS 11:29 IST
+================================================================================
