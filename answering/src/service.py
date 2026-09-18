@@ -149,6 +149,20 @@ def _sources_block(sources: list) -> str:
     return f"\n\nSources:\n{lines}"
 
 
+def _strip_model_sources(text: str) -> str:
+    marker = "\nSources:\n"
+    index = text.find(marker)
+    while index != -1:
+        after = text[index + len(marker):]
+        if not after.strip() or after.lstrip().startswith("- "):
+            text = text[:index].rstrip()
+            break
+        index = text.find(marker, index + 1)
+    if text.rstrip().endswith("Sources:"):
+        text = text.rstrip()[:-len("Sources:")].rstrip()
+    return text
+
+
 @dataclass
 class _Prepared:
     """Everything the LLM step needs, after authorization is fully settled."""
@@ -257,6 +271,7 @@ def _prepare(user_id, query, conversation_history, seller_filter, top_k,
 
 def _finalize(prepared: _Prepared, answer_text: str,
               model: str | None) -> AnswerResponse:
+    answer_text = _strip_model_sources(answer_text)
     response = AnswerResponse(
         request_id=prepared.request_id,
         user_id=prepared.user.user_id,
@@ -341,18 +356,23 @@ def answer_query_stream(user_id, query, conversation_history=None,
     }
 
     pieces: list[str] = []
+    suppressed = False
     try:
         for delta in llm.stream(prepared.messages):
             pieces.append(delta)
-            yield {"type": "delta", "text": delta}
+            joined = "".join(pieces)
+            if "Sources:" in joined and _strip_model_sources(joined) != joined:
+                suppressed = True
+            if not suppressed:
+                yield {"type": "delta", "text": delta}
     except llm.LLMError as exc:
         logger.error("request=%s groq streaming failure: %s", request_id, exc)
         yield {"type": "error", "error": "AnswerUnavailableError",
                "message": AnswerUnavailableError.client_message}
         return
 
-    # The deterministic citation block is streamed too, so the text the client
-    # accumulated equals the final answer exactly.
+    pieces = [_strip_model_sources("".join(pieces))]
+
     block = _sources_block(prepared.sources)
     if block:
         yield {"type": "delta", "text": block}

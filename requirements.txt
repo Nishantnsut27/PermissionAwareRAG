@@ -9,3 +9,5 @@ qdrant-client==1.19.1
 requests==2.34.2
 python-dotenv==1.2.3
 numpy==2.5.3
+
+streamlit==1.64.0

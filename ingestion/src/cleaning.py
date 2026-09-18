@@ -19,13 +19,58 @@ from . import config
 from .models import CleanedDocument
 
 _CONTROL = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f]")
-_SPACES = re.compile(r"[ \t\u00a0]+")
+# All Unicode spaces that PDF extractors and Word exports emit, including the
+# narrow NBSP (U+202F) that previously survived cleaning and surfaced in the
+# chatbot as mojibake ("Sameerâ¯Khanna").
+_SPACES = re.compile(
+    r"[ \t\u00a0\u1680\u2000-\u200a\u202f\u205f\u3000]+")
 _BLANK_RUN = re.compile(r"\n{3,}")
 _LIST_MARKER = re.compile(r"^(?:[-*\u2022]|\d+[.)])\s")
 
+# Typographic punctuation -> ASCII so indexed text (and hence the LLM prompt
+# and answer) never carries glyphs that mis-render as boxes/mojibake.
+_PUNCT_MAP = {
+    "\u2010": "-", "\u2011": "-", "\u2012": "-", "\u2013": "-",
+    "\u2014": "-", "\u2015": "-", "\u2212": "-",
+    "\u2018": "'", "\u2019": "'", "\u201a": "'",
+    "\u201c": '"', "\u201d": '"', "\u201e": '"',
+    "\u00ab": '"', "\u00bb": '"',
+    "\u2026": "...",
+    "\u00ad": "",
+}
+_PUNCT_TABLE = {ord(k): v for k, v in _PUNCT_MAP.items()}
+_ZERO_WIDTH = re.compile(r"[\u200b\u200c\u200d\u2060\ufeff]")
+
+
+def _repair_mojibake(text: str) -> str:
+    """Repair UTF-8 bytes misread as cp1252/latin-1 (e.g. 'â€“' -> '-').
+    Conservative: only applies when the round-trip removes the markers."""
+    if "â" not in text and "Ã" not in text:
+        return text
+    for encoding in ("cp1252", "latin-1"):
+        try:
+            raw = text.encode(encoding)
+        except (UnicodeEncodeError, ValueError):
+            continue
+        try:
+            fixed = raw.decode("utf-8")
+        except (UnicodeDecodeError, ValueError):
+            continue
+        if fixed != text and "â" not in fixed and "Ã" not in fixed.replace("Ã", ""):
+            # Re-check: repair must reduce non-ASCII noise.
+            if sum(ord(c) > 127 for c in fixed) < sum(ord(c) > 127 for c in text):
+                return fixed
+            # Even if counts tie, a clean '-'/'"' repair is preferable.
+            if "â" not in fixed:
+                return fixed
+    return text
+
 
 def _normalize_line(line: str) -> str:
-    line = unicodedata.normalize("NFC", line)
+    line = unicodedata.normalize("NFKC", line)
+    line = _repair_mojibake(line)
+    line = line.translate(_PUNCT_TABLE)
+    line = _ZERO_WIDTH.sub("", line)
     line = _SPACES.sub(" ", line)
     return line.strip()
 
@@ -33,6 +78,7 @@ def _normalize_line(line: str) -> str:
 def clean_page_text(text: str) -> list[str]:
     text = text.replace("\r\n", "\n").replace("\r", "\n")
     text = _CONTROL.sub(" ", text)
+    text = _repair_mojibake(text)
     return [_normalize_line(line) for line in text.split("\n")]
 
 

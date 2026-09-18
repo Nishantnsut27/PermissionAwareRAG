@@ -20,10 +20,13 @@ class Source:
     relevance: float | None = None
 
     def citation(self) -> str:
+        # ASCII-only separator: the model output and the Streamlit UI must
+        # never contain an em/en dash (they mis-render as boxes/mojibake on
+        # some Windows fonts and latin-1 hops). See text_norm.py.
         page = ""
         if self.pages:
-            page = (f" — Page {self.pages[0]}" if len(self.pages) == 1
-                    else f" — Pages {', '.join(str(p) for p in self.pages)}")
+            page = (f" - Page {self.pages[0]}" if len(self.pages) == 1
+                    else f" - Pages {', '.join(str(p) for p in self.pages)}")
         return f"{self.label}{page}"
 
     def to_dict(self) -> dict:

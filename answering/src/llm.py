@@ -98,6 +98,9 @@ def stream(messages: list[dict]):
                     raise LLMError(
                         f"Groq API error {response.status_code}: "
                         f"{response.text[:300]}")
+                # requests falls back to ISO-8859-1 for text/* without an
+                # explicit charset, which mangles non-ASCII answer text.
+                response.encoding = "utf-8"
                 for raw in response.iter_lines(decode_unicode=True):
                     if not raw or not raw.startswith("data:"):
                         continue
