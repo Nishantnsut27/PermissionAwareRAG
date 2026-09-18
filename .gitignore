@@ -14,6 +14,8 @@ Thumbs.db
 .env
 Data/Readme.md
 ingestion/Readme.md
+indexing/Readme.md
 ingestion/reports/
+indexing/reports/
 
 
