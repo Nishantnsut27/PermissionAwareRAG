@@ -44,8 +44,9 @@ JINA_RERANK_MODEL = os.getenv(
 RERANK_TIMEOUT_S = _int("RERANK_TIMEOUT_S", 30)
 RERANK_ENABLED = os.getenv("RERANK_ENABLED", "true").strip().lower() != "false"
 
-API_HOST = os.getenv("API_HOST", "127.0.0.1")
-API_PORT = _int("API_PORT", 8000)
+# Render exposes the HTTP port through PORT. Keep API_PORT as a local fallback.
+API_HOST = os.getenv("API_HOST", "0.0.0.0")
+API_PORT = _int("PORT", _int("API_PORT", 8000))
 
 
 @dataclass(frozen=True)
