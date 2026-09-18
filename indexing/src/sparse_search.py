@@ -1,7 +1,7 @@
 """Local BM25 sparse vectors stored in Qdrant's sparse index.
 
-Enterprise text is full of exact identifiers (INC-008, ST-1042, S001) that
-dense embeddings can miss, so each chunk also gets a BM25-weighted sparse
+Enterprise text is full of exact identifiers (INC-2026-0618, OPS-RB-004, S001)
+that dense embeddings can miss, so each chunk also gets a BM25-weighted sparse
 vector under the collection's sparse slot. The vocabulary/IDF statistics are
 built from the Phase 2 corpus and persisted so queries encode identically.
 """

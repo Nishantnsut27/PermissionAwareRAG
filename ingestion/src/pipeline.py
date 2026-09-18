@@ -198,7 +198,7 @@ def run_ingestion(
             logger.info("Processed [%d/%d]: %s -> %d chunks",
                         position, len(files), source.rel_path,
                         len(document_chunks))
-        except Exception as exc:  # noqa: BLE001 - one bad file must not stop the run
+        except Exception as exc:  # one bad file must not stop the run
             logger.exception("Error processing %s", source.rel_path)
             failed.append({
                 "source_file": source.rel_path,

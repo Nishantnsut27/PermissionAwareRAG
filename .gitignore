@@ -15,7 +15,11 @@ Thumbs.db
 Data/Readme.md
 ingestion/Readme.md
 indexing/Readme.md
+access_control/Readme.md
 ingestion/reports/
 indexing/reports/
+access_control/reports/
+prompt.md
+prompt5.md
 
 

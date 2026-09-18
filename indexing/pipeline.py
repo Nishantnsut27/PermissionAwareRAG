@@ -8,9 +8,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from src import config  # noqa: E402
-from src.indexing import run_indexing  # noqa: E402
-from src.retrieval import retrieve  # noqa: E402
+from src import config
+from src.indexing import IndexingError, run_indexing
+from src.retrieval import retrieve
 
 
 def run_sanity(top_k: int = 5) -> list[dict]:
@@ -43,6 +43,7 @@ def run_sanity(top_k: int = 5) -> list[dict]:
         except Exception as exc:
             outcomes.append({"label": label, "query": query,
                              "status": f"error: {exc}", "results": []})
+    config.REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     with open(config.SANITY_REPORT_FILE, "w", encoding="utf-8") as fh:
         json.dump(outcomes, fh, indent=2)
     return outcomes
@@ -66,7 +67,11 @@ def main() -> int:
     args = parser.parse_args()
 
     if not args.skip_index:
-        stats = run_indexing()
+        try:
+            stats = run_indexing()
+        except IndexingError as exc:
+            print(f"Indexing failed: {exc}", file=sys.stderr)
+            return 1
         print("Indexing complete")
         for key in ("chunks_received", "chunks_embedded", "embedding_failures",
                     "qdrant_points_indexed", "qdrant_points_failed",

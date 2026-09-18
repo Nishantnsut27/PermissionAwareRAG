@@ -16,6 +16,10 @@ from .qdrant_store import (
 from .sparse_search import SparseEncoder
 
 
+class IndexingError(RuntimeError):
+    pass
+
+
 def load_chunks() -> list[Chunk]:
     chunks: list[Chunk] = []
     seen: set[str] = set()
@@ -53,7 +57,7 @@ def run_indexing() -> dict:
     failed_chunk_ids = [chunks[i].chunk_id for i in failed_indexes]
     embedded = [v for v in vectors if v is not None]
     if not embedded:
-        raise RuntimeError("All embedding requests failed; aborting indexing")
+        raise IndexingError("All embedding requests failed; aborting indexing")
     dim = len(embedded[0])
 
     encoder = SparseEncoder().fit(texts)
@@ -70,7 +74,7 @@ def run_indexing() -> dict:
         sparse = encoder.encode(chunk.text)
         items.append((chunk, vector,
                       {"indices": sparse.indices, "values": sparse.values}))
-    indexed, failed_points = upsert_points(client, items)
+    indexed, failed_points, upsert_errors = upsert_points(client, items)
 
     stats = {
         "chunks_received": received,
@@ -79,6 +83,7 @@ def run_indexing() -> dict:
         "failed_chunk_ids": failed_chunk_ids,
         "qdrant_points_indexed": indexed,
         "qdrant_points_failed": failed_points,
+        "qdrant_errors": upsert_errors,
         "collection_name": collection,
         "embedding_model": config.JINA_EMBEDDING_MODEL,
         "vector_dimensionality": dim,
@@ -91,9 +96,19 @@ def run_indexing() -> dict:
                           "dense_top_k": config.DEFAULT_RETRIEVAL.dense_top_k,
                           "sparse_top_k": config.DEFAULT_RETRIEVAL.sparse_top_k,
                           "final_top_k": config.DEFAULT_RETRIEVAL.final_top_k},
+        "complete": not failed_indexes and not failed_points and indexed == received,
         "elapsed_s": round(time.time() - started, 1),
     }
     config.REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     with open(config.INDEXING_REPORT_FILE, "w", encoding="utf-8") as fh:
         json.dump(stats, fh, indent=2)
+
+    if not stats["complete"]:
+        raise IndexingError(
+            f"Incomplete index: {received} chunks received, "
+            f"{len(failed_indexes)} embedding failures, "
+            f"{failed_points} upsert failures, {indexed} points indexed. "
+            f"Report: {config.INDEXING_REPORT_FILE}. "
+            + ("; ".join(upsert_errors[:3]) if upsert_errors else "")
+        )
     return stats

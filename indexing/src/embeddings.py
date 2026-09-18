@@ -14,6 +14,9 @@ class EmbeddingError(RuntimeError):
 
 
 def _headers() -> dict[str, str]:
+    if not config.JINA_API_KEY:
+        raise EmbeddingError(
+            "JINA_API_KEY is not set; refusing to call the embedding API.")
     return {
         "Authorization": f"Bearer {config.JINA_API_KEY}",
         "Content-Type": "application/json",
@@ -71,7 +74,15 @@ def embed_texts(
     timeout_s: int | None = None,
     max_retries: int | None = None,
 ) -> tuple[list[list[float] | None], list[int]]:
-    """Embed texts in batches. Returns (vectors aligned with input, failed_indexes)."""
+    """Embed texts in batches. Returns (vectors aligned with input, failed_indexes).
+
+    A batch that never succeeds leaves `None` in place rather than shifting the
+    alignment, so the caller can map failures back to specific chunks. The
+    dimension is validated across every batch, not only within one, so a model
+    change mid-run cannot produce a mixed-width index.
+    """
+    if not texts:
+        raise EmbeddingError("embed_texts called with no input")
     cfg = config.DEFAULT_RETRIEVAL
     batch_size = batch_size or cfg.embed_batch_size
     timeout_s = timeout_s or cfg.embed_timeout_s
@@ -92,10 +103,13 @@ def embed_texts(
                 break
             except (EmbeddingError, requests.RequestException) as exc:
                 last_error = exc
-                time.sleep(2 ** attempt)
+                if attempt < max_retries:
+                    time.sleep(2 ** attempt)
         if last_error is not None:
             failed.extend(range(start, start + len(batch)))
     ok = [v for v in vectors if v is not None]
+    if ok:
+        validate_embeddings(ok)
     assert len(ok) + len(failed) == len(texts)
     return vectors, failed
 

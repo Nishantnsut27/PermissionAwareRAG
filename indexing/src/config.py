@@ -72,7 +72,7 @@ PAYLOAD_KEYWORD_FIELDS = (
 SANITY_QUERIES = (
     ("seller information", "What is the account overview for seller S001 Aurelia Home Decor?"),
     ("support issue", "GST rate applied incorrectly on decorative lighting invoices support ticket"),
-    ("engineering incident", "engineering incident database failover INC-008"),
+    ("engineering incident", "engineering incident INC-2026-0618 shipping label failover"),
     ("policy question", "What does policy POL-FIN-002 say about settlement adjustments?"),
     ("operations procedure", "operations runbook procedure OPS-RB-004 deployment rollback steps"),
     ("call transcript", "call transcript discussion about credit notes for incorrect tax invoices"),

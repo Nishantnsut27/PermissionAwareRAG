@@ -15,6 +15,15 @@ METADATA_KEYS = (
     "scenario_id", "source_file", "page_numbers",
 )
 
+_encoder: SparseEncoder | None = None
+
+
+def _sparse_encoder() -> SparseEncoder:
+    global _encoder
+    if _encoder is None:
+        _encoder = SparseEncoder.load()
+    return _encoder
+
 
 def _to_result(point, method: str) -> RetrievalResult:
     payload = point.payload or {}
@@ -49,8 +58,7 @@ def dense_search(query: str, top_k: int,
 def sparse_search(query: str, top_k: int,
                   filters: dict | None = None) -> list[RetrievalResult]:
     client = connect()
-    encoder = SparseEncoder.load()
-    sparse = encoder.encode(query)
+    sparse = _sparse_encoder().encode(query)
     points = client.query_points(
         collection_name=config.QDRANT_COLLECTION_NAME,
         query=SparseVector(indices=sparse.indices, values=sparse.values),
