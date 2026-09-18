@@ -57,6 +57,10 @@ class IdentityError(ValueError):
     pass
 
 
+class ScopeDeniedError(PermissionError):
+    """Raised when a requested narrowing has no overlap with the authorized scope."""
+
+
 def clearance_sufficient(user_clearance: str | None,
                          classification: str | None) -> bool:
     return (CLEARANCE_RANK.get(user_clearance, -1)

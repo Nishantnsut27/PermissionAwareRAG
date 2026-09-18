@@ -5,7 +5,7 @@ from dataclasses import dataclass
 
 from . import policy
 from .audit import log_decisions
-from .policy import IdentityError
+from .policy import IdentityError, ScopeDeniedError
 from .users import User
 
 
@@ -60,7 +60,28 @@ class PermissionEngine:
                 return Decision(False, "org_restricted_department_mismatch")
         return Decision(True, "organization_wide_policy_ok")
 
-    def get_authorized_scope(self, user: User) -> dict:
+    def effective_seller_scope(self, user: User,
+                               requested_sellers=None) -> list[str] | None:
+        """Authorized sellers, optionally narrowed by a caller request.
+
+        The request can only ever intersect, never extend: an unauthorized
+        seller in `requested_sellers` is dropped, and a request that overlaps
+        nothing returns None so the caller can refuse.
+        """
+        if user.has_organization_wide_scope():
+            authorized = set(policy.SELLER_IDS)
+        else:
+            authorized = {s for s in user.seller_scope if s in policy.SELLER_IDS}
+        if requested_sellers is None:
+            return sorted(authorized)
+        requested = {str(s).strip().upper()
+                     for s in requested_sellers if str(s).strip()}
+        if not requested:
+            return sorted(authorized)
+        effective = authorized & requested
+        return sorted(effective) if effective else None
+
+    def get_authorized_scope(self, user: User, requested_sellers=None) -> dict:
         """Qdrant pre-filter derived from the identity. Never widens on error.
 
         Covers the three attributes that are expressible as single-field
@@ -82,10 +103,14 @@ class PermissionEngine:
                 "any": sorted(policy.ROLE_DOCUMENT_TYPES[user.role])
             },
         }
-        if not user.has_organization_wide_scope():
-            scope["seller_id"] = {
-                "any": [*user.seller_scope, policy.ORGANIZATION_WIDE]
-            }
+        sellers = self.effective_seller_scope(user, requested_sellers)
+        if sellers is None:
+            raise ScopeDeniedError(
+                "the requested sellers are outside the authorized scope")
+        narrowed = requested_sellers is not None and sorted(
+            {str(s).strip().upper() for s in requested_sellers if str(s).strip()})
+        if narrowed or not user.has_organization_wide_scope():
+            scope["seller_id"] = {"any": [*sellers, policy.ORGANIZATION_WIDE]}
         return scope
 
     def authorize_chunks(self, user: User, chunks: list,

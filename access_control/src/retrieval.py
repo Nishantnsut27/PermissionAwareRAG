@@ -63,15 +63,17 @@ def _resolve(user: User | str) -> User:
 
 
 def authorized_retrieve(user: User | str, query: str, top_k: int = 5,
-                        request_id: str | None = None) -> AccessResponse:
+                        request_id: str | None = None,
+                        requested_sellers=None) -> AccessResponse:
     identity = _resolve(user)
     if not isinstance(query, str) or not query.strip():
         raise ValueError("query must be a non-empty string")
     top_k = max(1, min(int(top_k), MAX_TOP_K))
     request_id = request_id or uuid.uuid4().hex[:12]
 
-    # Raises for a malformed identity rather than issuing an unfiltered query.
-    scope = _engine.get_authorized_scope(identity)
+    # Raises for a malformed identity or a request outside the authorized
+    # scope, rather than issuing a widened query.
+    scope = _engine.get_authorized_scope(identity, requested_sellers)
     candidates = phase3_retrieve(
         query,
         top_k=min(max(top_k * CANDIDATE_MULTIPLIER, 10), MAX_CANDIDATES),
