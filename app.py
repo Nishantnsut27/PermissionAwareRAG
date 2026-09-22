@@ -135,7 +135,7 @@ BASE_CSS = """
   [data-testid="stSidebarCollapsedControl"]{
     visibility: visible !important;
   }
-  .block-container{ padding-top: 2.2rem; max-width: 52rem; }
+  [data-testid="stSidebarCollapsedControl"] button{\n    color: var(--primary) !important;\n  }\n  [data-testid="stSidebarCollapsedControl"] button svg{\n    color: var(--primary) !important;\n    stroke: var(--primary) !important;\n  }\n  .block-container{ padding-top: 2.2rem; max-width: 52rem; }
   .stApp, .stMarkdown, p, li, label, h1, h2, h3{ color: var(--fg); }
   code{
     background: var(--secondary) !important; color: var(--fg) !important;
