@@ -1,0 +1,85 @@
+==============================================================
+PHASE 2 INGESTION SUMMARY
+==============================================================
+
+DOCUMENTS DISCOVERED
+  PDF files discovered      : 52
+  TXT files discovered      : 11
+  Total documents           : 63
+
+PROCESSING
+  Successfully processed    : 63
+  Failed                    : 0
+  Validation errors         : 0
+  Validation warnings       : 11
+
+CHUNKS
+  Total chunks              : 209
+  Average chunk tokens      : 542.9
+  Minimum chunk tokens      : 75
+  Maximum chunk tokens      : 798
+
+CHUNKS BY DOCUMENT TYPE
+  Account Overview            : 12
+  Call Transcript             : 37
+  Decision Record             : 8
+  Implementation Plan         : 3
+  Incident Report             : 35
+  Operational Checklist       : 3
+  Operational Procedure       : 11
+  Organization Reference      : 5
+  Policy                      : 26
+  Project Document            : 10
+  Project Status Report       : 8
+  Requirements Document       : 3
+  Runbook                     : 7
+  Scenario Context            : 8
+  Security Incident Report    : 6
+  Support Ticket              : 24
+  Technical Notes             : 3
+
+CHUNKS BY CATEGORY
+  projects                    : 35
+  support                     : 24
+  calls                       : 37
+  engineering                 : 41
+  operations                  : 21
+  policies                    : 26
+
+CHUNKS BY SELLER
+  Organization-wide           : 60
+  S001                        : 35
+  S002                        : 48
+  S003                        : 37
+  S004                        : 29
+
+CHUNKS BY CLASSIFICATION
+  CONFIDENTIAL                : 131
+  INTERNAL                    : 47
+  RESTRICTED                  : 31
+
+CHUNKING CONFIGURATION
+  Splitter                  : RecursiveCharacterTextSplitter
+  Tokenizer                 : cl100k_base
+  Target chunk size         : 800 tokens
+  Overlap                   : 120 tokens
+
+INTEGRITY CHECKS
+  chunks_generated                  : PASS
+  expected_documents_match          : PASS
+  all_chunks_have_text              : PASS
+  chunk_ids_unique                  : PASS
+  all_chunks_have_document_id       : PASS
+  all_chunks_have_source            : PASS
+  all_chunks_have_classification    : PASS
+  seller_metadata_preserved         : PASS
+  department_metadata_preserved     : PASS
+  scenario_metadata_preserved       : PASS
+  pdf_page_provenance_present       : PASS
+  no_duplicate_chunks               : PASS
+  chunk_sizes_within_target         : PASS
+  overlap_configured                : PASS
+  source_files_unchanged            : PASS
+
+Duration                    : 15.19 s
+==============================================================

@@ -1,0 +1,31 @@
+{
+  "chunks_received": 209,
+  "chunks_embedded": 209,
+  "embedding_failures": 0,
+  "failed_chunk_ids": [],
+  "qdrant_points_indexed": 209,
+  "qdrant_points_failed": 0,
+  "qdrant_errors": [],
+  "collection_name": "enterprise_knowledge",
+  "embedding_model": "jina-embeddings-v4",
+  "vector_dimensionality": 2048,
+  "dense_config": {
+    "vector_name": "dense",
+    "distance": "Cosine"
+  },
+  "sparse_config": {
+    "vector_name": "text",
+    "method": "BM25",
+    "k1": 1.2,
+    "b": 0.75
+  },
+  "hybrid_config": {
+    "fusion": "RRF",
+    "rrf_k": 60,
+    "dense_top_k": 20,
+    "sparse_top_k": 20,
+    "final_top_k": 10
+  },
+  "complete": true,
+  "elapsed_s": 43.1
+}

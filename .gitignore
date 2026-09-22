@@ -31,9 +31,7 @@ Thumbs.db
 .vscode/
 
 # Pipeline artifacts
-ingestion/reports/
-indexing/reports/
-access_control/reports/
+
 evaluation/tests/
 
 guide.md
