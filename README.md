@@ -20,17 +20,22 @@ A conventional RAG pipeline usually looks like:
 User Query
     |
     v
-Vector / Keyword Search
+Query Embedding / Keyword Search
     |
     v
-Top-K Context
+Retrieve Top-K Documents
     |
     v
-LLM
+Build Context
+    |
+    v
+LLM Generation
     |
     v
 Answer
 ```
+
+The difference is where access control is enforced: a conventional RAG flow retrieves context first, while PermissionAwareRAG derives an authorized retrieval scope before context reaches the answering model.
 
 This works for relevance, but relevance is not the same thing as authorization.
 
@@ -447,7 +452,15 @@ In another terminal:
 streamlit run app.py
 ```
 
-For Windows, the repository also provides `run.bat`, which starts the API, waits for its health endpoint, and then launches Streamlit.
+### Windows quick start
+
+For a one-command local run on Windows, use the included `run.bat`:
+
+```bat
+run.bat
+```
+
+It creates no environment or credentials for you; `.venv` must already exist and `.env` must be configured. The script starts the answering API, waits for `/health` to become ready, and then launches the Streamlit UI.
 
 ---
 
@@ -513,52 +526,3 @@ Invalid identities and invalid authorization scopes are rejected instead of bein
 The application constructs the final source list from the chunks that were actually authorized and included in context.
 
 ---
-
-## Current Limitations
-
-The current repository is a working prototype rather than a complete enterprise identity platform.
-
-- The UI identity selector is a demo mechanism, not real user authentication.
-- Authentication and identity federation are not implemented as a production identity provider integration.
-- The latest evaluation still contains failed cases.
-- The latest saved evaluation reports a non-zero answer leakage rate.
-- Evaluation runs are intentionally executed separately from the web request path.
-- Authorization policy is currently represented by the repository's policy and user definitions.
-
-These limitations are intentionally documented rather than hidden behind the RAG interface.
-
----
-
-## Repository Images
-
-The `images/` directory contains the approved documentation visuals used by this README:
-
-- `Permission_aware_rag_workflow.png`
-- `permission_matrix.png`
-- `permission_aware_rag_ui.png`
-
----
-
-## Project Goal
-
-PermissionAwareRAG explores how enterprise RAG can be designed so that access control is part of the retrieval architecture rather than an afterthought.
-
-The central design goal is:
-
-```text
-User
-  |
-  v
-Identity + Policy
-  |
-  v
-Authorized Retrieval
-  |
-  v
-Grounded Generation
-  |
-  v
-Cited Answer
-```
-
-The result is a RAG system where the answer is constrained by both **what is relevant** and **what the requesting identity is authorized to access**.
