@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import os
+from urllib.parse import urlencode
 
 import requests
 
@@ -107,3 +108,27 @@ def ask_stream(user_id: str, query: str, conversation=None, seller_filter=None,
                 yield json.loads(raw[5:].strip())
             except ValueError:
                 continue
+
+
+def _get(path: str, base_url: str, timeout: int) -> dict:
+    try:
+        response = requests.get(_url(base_url, path), timeout=timeout)
+    except requests.RequestException as exc:
+        raise ApiError(f"Cannot reach the assistant service at {base_url}."
+                       ) from exc
+    if response.status_code != 200:
+        raise ApiError(_message_from(response), response.status_code)
+    return response.json()
+
+
+def evaluation_summary(base_url: str = DEFAULT_BASE_URL,
+                       timeout: int = 15, report: str | None = None) -> dict:
+    """Read the dataset and saved run summary without launching a run."""
+    query = "?" + urlencode({"report": report}) if report else ""
+    return _get("/evaluation" + query, base_url, timeout)
+
+
+def evaluation_matrix(base_url: str = DEFAULT_BASE_URL,
+                      timeout: int = 30, report: str | None = None) -> dict:
+    query = "?" + urlencode({"report": report}) if report else ""
+    return _get("/evaluation/matrix" + query, base_url, timeout)

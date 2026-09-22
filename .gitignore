@@ -9,6 +9,10 @@ tests/
 test_*.py
 *_test.py
 conftest.py
+# Keep the offline regression suite under version control.
+!evaluation/tests/
+!evaluation/tests/**
+evaluation/tests/**/__pycache__/
 .pytest_cache/
 .coverage
 htmlcov/
@@ -30,6 +34,11 @@ Thumbs.db
 ingestion/reports/
 indexing/reports/
 access_control/reports/
+evaluation/tests/
+
+guide.md
+sofar.md
+
 
 # Logs
 *.log

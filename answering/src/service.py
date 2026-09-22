@@ -70,6 +70,13 @@ class AnswerResponse:
     effective_sellers: list[str] = field(default_factory=list)
     latency_ms: int = 0
     model: str | None = None
+    # Phase 7 introspection. Deliberately absent from to_dict(): the HTTP
+    # payload and the chat UI are unchanged, and full passage text is not put
+    # on the wire for an answer that already carries its citations. In-process
+    # callers (the evaluation runner) read these to measure groundedness and
+    # to check authorization at the retrieval level, not only in the answer.
+    context: str = ""
+    candidate_document_ids: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict:
         return {
@@ -125,7 +132,8 @@ def _clean_query(query, cfg: config.AnsweringConfig) -> str:
 
 
 def _refusal(request_id: str, user: User, query: str, started: float,
-             sellers: list[str], **stats) -> AnswerResponse:
+             sellers: list[str], candidate_document_ids=None,
+             **stats) -> AnswerResponse:
     return AnswerResponse(
         request_id=request_id,
         user_id=user.user_id,
@@ -134,6 +142,7 @@ def _refusal(request_id: str, user: User, query: str, started: float,
         answered=False,
         effective_sellers=sellers,
         latency_ms=int((time.time() - started) * 1000),
+        candidate_document_ids=list(candidate_document_ids or []),
         **stats,
     )
 
@@ -175,6 +184,8 @@ class _Prepared:
     stats: dict
     reranked: bool
     started: float
+    context: str = ""
+    candidate_document_ids: list[str] = field(default_factory=list)
 
 
 def _prepare(user_id, query, conversation_history, seller_filter, top_k,
@@ -226,6 +237,15 @@ def _prepare(user_id, query, conversation_history, seller_filter, top_k,
     stats = {"candidates": len(authorized_chunks) + access.withheld_count,
              "authorized": len(authorized_chunks),
              "withheld": access.withheld_count}
+    # Ranked document ids of every chunk that survived authorization, before
+    # reranking and the context budget. Phase 7 uses this to tell an
+    # unauthorized *retrieval* apart from an unauthorized *answer*.
+    candidate_ids: list[str] = []
+    for chunk in authorized_chunks:
+        document_id = chunk.document_id or (chunk.metadata or {}).get(
+            "document_id")
+        if document_id and document_id not in candidate_ids:
+            candidate_ids.append(document_id)
 
     if not authorized_chunks:
         logger.info("request=%s user=%s status=no_authorized_context",
@@ -252,11 +272,13 @@ def _prepare(user_id, query, conversation_history, seller_filter, top_k,
         logger.info("request=%s user=%s status=below_threshold", request_id,
                     user.user_id)
         return None, _refusal(request_id, user, question, started, sellers,
+                              candidate_document_ids=candidate_ids,
                               reranked=outcome.applied, **stats)
 
     context_block, sources = context.build(verified, cfg)
     if not context_block.strip():
         return None, _refusal(request_id, user, question, started, sellers,
+                              candidate_document_ids=candidate_ids,
                               reranked=outcome.applied, **stats)
 
     messages = prompts.build_messages(
@@ -266,7 +288,8 @@ def _prepare(user_id, query, conversation_history, seller_filter, top_k,
         question,
     )
     return _Prepared(request_id, user, question, messages, sources, sellers,
-                     stats, outcome.applied, started), None
+                     stats, outcome.applied, started, context_block,
+                     candidate_ids), None
 
 
 def _finalize(prepared: _Prepared, answer_text: str,
@@ -284,6 +307,8 @@ def _finalize(prepared: _Prepared, answer_text: str,
         effective_sellers=prepared.sellers,
         latency_ms=int((time.time() - prepared.started) * 1000),
         model=model,
+        context=prepared.context,
+        candidate_document_ids=prepared.candidate_document_ids,
         **prepared.stats,
     )
     logger.info(

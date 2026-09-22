@@ -9,18 +9,31 @@ as a narrowing request and is intersected with the authorized scope.
 
 `POST /query`        buffered JSON answer
 `POST /query/stream` Server-Sent Events: meta -> delta* -> done
+`GET  /evaluation`        stored evaluation summary
+`GET  /evaluation/matrix` stored evaluation matrix and per-case results
+
+The evaluation endpoints are read-only. A run is a paced, quota-heavy batch
+job executed from the command line (`python -m evaluation.runner`); serving it
+from an HTTP request would let a page load burn the API budget.
 """
 from __future__ import annotations
 
 import json
 import logging
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from urllib.parse import parse_qs, urlsplit
 
 from . import config, service
 
 logger = logging.getLogger(__name__)
 
 MAX_BODY_BYTES = 64 * 1024
+
+
+def _evaluation():
+    """Import Phase 7 lazily so Phase 5 does not depend on it at startup."""
+    from evaluation import dataset, reports
+    return dataset, reports
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -67,12 +80,67 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self) -> None:
-        if self.path.rstrip("/") == "/health":
+        parsed = urlsplit(self.path)
+        route = parsed.path.rstrip("/")
+        report = parse_qs(parsed.query).get("report", [None])[0]
+        if route == "/health":
             self._send(200, {"status": "ok"})
-        elif self.path.rstrip("/") == "/users":
+        elif route == "/users":
             self._send(200, {"users": service.list_users()})
+        elif route == "/evaluation":
+            self._evaluation_summary(report)
+        elif route == "/evaluation/matrix":
+            self._evaluation_matrix(report)
         else:
             self._send(404, {"error": "not_found"})
+
+    def _evaluation_summary(self, report: str | None = None) -> None:
+        try:
+            dataset, reports = _evaluation()
+            document = reports.load(report)
+            payload = {
+                "dataset": dataset.load().summary(),
+                "has_results": document is not None,
+                "reports_enabled": config.EVALUATION_REPORTS_ENABLED,
+                "report_id": report or "results.json",
+                "available_reports": reports.list_reports(),
+            }
+            if document:
+                payload.update(reports.summary(document))
+        except ValueError as exc:
+            self._send(404, {"error": "report_not_found", "message": str(exc)})
+            return
+        except Exception:
+            logger.exception("evaluation summary failed")
+            self._send(500, {"error": "internal_error",
+                             "message": "Evaluation data is unavailable."})
+            return
+        self._send(200, payload)
+
+    def _evaluation_matrix(self, report: str | None = None) -> None:
+        if not config.EVALUATION_REPORTS_ENABLED:
+            self._send(403, {"error": "reports_disabled", "message":
+                            "Detailed reports are disabled. See guide.md for local operator access."})
+            return
+        try:
+            _, reports = _evaluation()
+            document = reports.load(report)
+        except ValueError as exc:
+            self._send(404, {"error": "report_not_found", "message": str(exc)})
+            return
+        except Exception:
+            logger.exception("evaluation matrix failed")
+            self._send(500, {"error": "internal_error",
+                             "message": "Evaluation data is unavailable."})
+            return
+        if document is None:
+            self._send(404, {"error": "no_results",
+                             "message": "No evaluation has been run yet."})
+            return
+        self._send(200, {**reports.summary(document),
+                         "report_id": report or "results.json",
+                         "matrix": document.get("matrix", []),
+                         "results": document.get("results", [])})
 
     def _read_json_body(self) -> dict | None:
         try:
@@ -115,6 +183,11 @@ class Handler(BaseHTTPRequestHandler):
             self._handle_query()
         elif route == "/query/stream":
             self._handle_query_stream()
+        elif route == "/evaluation/run":
+            # The UI and API never start quota-consuming evaluation jobs.
+            self.close_connection = True
+            self._send(405, {"error": "method_not_allowed", "message":
+                            "Run evaluations explicitly from the CLI; see guide.md."})
         else:
             self._send(404, {"error": "not_found"})
 

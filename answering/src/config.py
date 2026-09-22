@@ -7,6 +7,8 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+from . import groq_keys
+
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 load_dotenv(PROJECT_ROOT / ".env")
 
@@ -25,7 +27,12 @@ def _float(name: str, default: float) -> float:
         return default
 
 
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+GROQ_KEY_COOLDOWN_S = _float("GROQ_KEY_COOLDOWN_S", 60.0)
+# The pool is built here, after load_dotenv, so it always sees the repository
+# .env. Key material lives only inside the pool: it is never a module constant.
+groq_keys.set_pool(groq_keys.GroqKeyPool(cooldown_s=GROQ_KEY_COOLDOWN_S))
+GROQ_KEY_COUNT = groq_keys.pool().size
+
 GROQ_API_URL = os.getenv(
     "GROQ_API_URL", "https://api.groq.com/openai/v1/chat/completions")
 GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
@@ -44,9 +51,13 @@ JINA_RERANK_MODEL = os.getenv(
 RERANK_TIMEOUT_S = _int("RERANK_TIMEOUT_S", 30)
 RERANK_ENABLED = os.getenv("RERANK_ENABLED", "true").strip().lower() != "false"
 
-# Render exposes the HTTP port through PORT. Keep API_PORT as a local fallback.
-API_HOST = os.getenv("API_HOST", "0.0.0.0")
-API_PORT = _int("PORT", _int("API_PORT", 8000))
+API_HOST = os.getenv("API_HOST", "127.0.0.1")
+API_PORT = _int("API_PORT", 8000)
+
+# Full evaluation answers span all demo identities. Expose them only in an
+# explicitly enabled, trusted local operator session until real auth exists.
+EVALUATION_REPORTS_ENABLED = os.getenv(
+    "EVALUATION_REPORTS_ENABLED", "false").strip().lower() == "true"
 
 
 @dataclass(frozen=True)
@@ -68,12 +79,13 @@ REFUSAL_ANSWER = (
     "I couldn't find sufficient authorized information to answer this request."
 )
 
-REQUIRED_ENV_VARS = ("GROQ_API_KEY", "JINA_API_KEY", "QDRANT_URL",
-                     "QDRANT_API_KEY")
+REQUIRED_ENV_VARS = ("JINA_API_KEY", "QDRANT_URL", "QDRANT_API_KEY")
 
 
 def validate_env() -> None:
     missing = [name for name in REQUIRED_ENV_VARS if not os.getenv(name)]
+    if not groq_keys.pool().size:
+        missing.append("GROQ_API_KEY_1")
     if missing:
         raise RuntimeError(
             "Missing required environment variables: " + ", ".join(missing)
