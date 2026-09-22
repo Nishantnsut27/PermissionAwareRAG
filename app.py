@@ -132,10 +132,29 @@ BASE_CSS = """
     background: transparent !important;
     visibility: visible;
   }
+  /* Sidebar open/close control: force a high-contrast black arrow.
+     Streamlit has used both collapsedControl and stSidebarCollapsedControl
+     test ids across releases, so cover both variants. */
+  [data-testid="collapsedControl"],
   [data-testid="stSidebarCollapsedControl"]{
     visibility: visible !important;
   }
-  [data-testid="stSidebarCollapsedControl"] button{\n    color: var(--primary) !important;\n  }\n  [data-testid="stSidebarCollapsedControl"] button svg{\n    color: var(--primary) !important;\n    stroke: var(--primary) !important;\n  }\n  .block-container{ padding-top: 2.2rem; max-width: 52rem; }
+  [data-testid="collapsedControl"] button,
+  [data-testid="stSidebarCollapsedControl"] button,
+  [data-testid="collapsedControl"] button *,
+  [data-testid="stSidebarCollapsedControl"] button *{
+    color:#000 !important;
+    fill:#000 !important;
+    stroke:#000 !important;
+  }
+  [data-testid="collapsedControl"] button svg,
+  [data-testid="stSidebarCollapsedControl"] button svg{
+    color:#000 !important;
+    fill:none !important;
+    stroke:#000 !important;
+    stroke-width:2.5 !important;
+  }
+  .block-container{ padding-top: 2.2rem; max-width: 52rem; }
   .stApp, .stMarkdown, p, li, label, h1, h2, h3{ color: var(--fg); }
   code{
     background: var(--secondary) !important; color: var(--fg) !important;
