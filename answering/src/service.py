@@ -10,7 +10,7 @@ import logging
 import sys
 import time
 import uuid
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
@@ -21,7 +21,8 @@ from access_control.src.retrieval import authorized_retrieve
 from access_control.src.users import USERS, User, get_user
 from indexing.src.embeddings import EmbeddingError
 
-from . import config, context, conversation, llm, prompts, reranker
+from . import (config, context, conversation, llm, prompts, reranker,
+               selection)
 
 logger = logging.getLogger(__name__)
 
@@ -67,6 +68,9 @@ class AnswerResponse:
     selected: int = 0
     withheld: int = 0
     reranked: bool = False
+    # Counts and score bounds only, never passage text: safe to return and the
+    # fastest way to tell "nothing relevant existed" from "the selector cut it".
+    selection: dict = field(default_factory=dict)
     effective_sellers: list[str] = field(default_factory=list)
     latency_ms: int = 0
     model: str | None = None
@@ -93,6 +97,7 @@ class AnswerResponse:
                 "selected": self.selected,
                 "withheld": self.withheld,
                 "reranked": self.reranked,
+                "selection": self.selection,
                 "latency_ms": self.latency_ms,
                 "model": self.model,
             },
@@ -253,9 +258,15 @@ def _prepare(user_id, query, conversation_history, seller_filter, top_k,
         return None, _refusal(request_id, user, question, started, sellers,
                               **stats)
 
-    outcome = reranker.rerank(question, authorized_chunks,
+    outcome = reranker.rerank(search_text, authorized_chunks,
                               threshold=cfg.rerank_threshold)
-    selected = [(chunk, score) for chunk, score in outcome.items][:top_k]
+    # Breadth and depth are decided together, on documents rather than on a
+    # flat chunk list. `top_k` bounds documents, matching what `sources`
+    # reports and what Phase 7 measures.
+    selected, selection_stats = selection.select(
+        outcome.items, replace(cfg, max_documents=min(top_k, cfg.max_documents)),
+        outcome)
+    stats["selection"] = selection_stats.to_dict()
 
     # Final gate. Reranking reorders authorized material and must never be able
     # to reintroduce anything unauthorized.

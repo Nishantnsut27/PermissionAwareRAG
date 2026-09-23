@@ -39,6 +39,14 @@ class RetrievalMetrics:
     recall_at_k: float | None = None
     precision_at_k: float | None = None
     mrr: float | None = None
+    # Precision@K here divides by the number of documents actually shown, and K
+    # is not fixed. When the context holds more documents than the case has
+    # expected sources, perfect retrieval still cannot score 1.0. These two
+    # separate "we showed irrelevant documents" from "we showed more documents
+    # than the question needed"; without them a breadth choice reads as a
+    # retrieval defect. They are diagnostics and never replace precision_at_k.
+    precision_ceiling: float | None = None
+    precision_efficiency: float | None = None
     expected: list[str] = field(default_factory=list)
     retrieved: list[str] = field(default_factory=list)
     relevant_retrieved: list[str] = field(default_factory=list)
@@ -47,7 +55,8 @@ class RetrievalMetrics:
 
     def to_dict(self) -> dict:
         data = asdict(self)
-        for key in ("recall_at_k", "precision_at_k", "mrr"):
+        for key in ("recall_at_k", "precision_at_k", "mrr",
+                    "precision_ceiling", "precision_efficiency"):
             data[key] = _round(data[key])
         return data
 
@@ -113,6 +122,18 @@ def precision_at_k(expected: list[str], retrieved: list[str]) -> float | None:
     return hits / len(retrieved)
 
 
+def precision_ceiling(expected: list[str], retrieved: list[str]) -> float | None:
+    """Highest Precision@K a perfect retriever could score on this case.
+
+    A case with one expected source shown in a two-document context is capped
+    at 0.5 no matter how good retrieval is, because K is the number of
+    documents shown rather than a fixed constant.
+    """
+    if not expected or not retrieved:
+        return None
+    return min(len(set(expected)), len(retrieved)) / len(retrieved)
+
+
 def mean_reciprocal_rank(expected: list[str],
                          retrieved: list[str]) -> float | None:
     """Reciprocal rank of the first relevant document in the ranked list."""
@@ -135,11 +156,17 @@ def score_retrieval(expected: list[str], retrieved: list[str],
         return RetrievalMetrics(k=len(retrieved), expected=expected,
                                 retrieved=retrieved, applicable=False)
     found = [d for d in retrieved if d in set(expected)]
+    precision = precision_at_k(expected, retrieved)
+    ceiling = precision_ceiling(expected, retrieved)
+    efficiency = (None if precision is None or not ceiling
+                  else precision / ceiling)
     return RetrievalMetrics(
         k=len(retrieved),
         recall_at_k=recall_at_k(expected, retrieved),
-        precision_at_k=precision_at_k(expected, retrieved),
+        precision_at_k=precision,
         mrr=mean_reciprocal_rank(expected, retrieved),
+        precision_ceiling=ceiling,
+        precision_efficiency=efficiency,
         expected=expected,
         retrieved=retrieved,
         relevant_retrieved=found,
@@ -229,6 +256,9 @@ def aggregate(results: list[dict]) -> dict:
         return sum(1 for r in scored
                    if r.get(group) and r[group].get(key) is not None)
 
+    def mean_of(values: list) -> float | None:
+        return round(sum(values) / len(values), 4) if values else None
+
     retrieval_security_rows = [r for r in scored if r.get("security")]
     security_rows = [r for r in retrieval_security_rows
                      if r["security"].get("passed") is not None]
@@ -262,6 +292,19 @@ def aggregate(results: list[dict]) -> dict:
             "recall_at_k": mean(("retrieval", "recall_at_k")),
             "precision_at_k": mean(("retrieval", "precision_at_k")),
             "mrr": mean(("retrieval", "mrr")),
+            # Diagnostics, not headline scores. `precision_ceiling` is the best
+            # Precision@K attainable given how many documents were shown, and
+            # `precision_efficiency` is the share of that which was achieved.
+            # A low precision with a high efficiency means the context was
+            # wider than the question needed, not that retrieval was wrong.
+            "precision_ceiling": mean(("retrieval", "precision_ceiling")),
+            "precision_efficiency": mean(("retrieval", "precision_efficiency")),
+            "mean_documents_shown": mean_of(
+                [len(r["retrieval"]["retrieved"]) for r in scored
+                 if r.get("retrieval") and r["retrieval"].get("applicable")]),
+            "mean_documents_expected": mean_of(
+                [len(r["retrieval"]["expected"]) for r in scored
+                 if r.get("retrieval") and r["retrieval"].get("applicable")]),
             "scored_cases": counted(("retrieval", "recall_at_k")),
         },
         "generation": {

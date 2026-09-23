@@ -50,6 +50,15 @@ JINA_RERANK_MODEL = os.getenv(
     "JINA_RERANK_MODEL", "jina-reranker-v2-base-multilingual")
 RERANK_TIMEOUT_S = _int("RERANK_TIMEOUT_S", 30)
 RERANK_ENABLED = os.getenv("RERANK_ENABLED", "true").strip().lower() != "false"
+# Must be >= the largest indexed chunk or the reranker scores a truncated
+# passage. Ingestion caps chunks at 800 tokens (~4.4k chars observed).
+RERANK_MAX_DOC_CHARS = _int("RERANK_MAX_DOC_CHARS", 4800)
+# A full candidate pool at that width is ~24k tokens per call, and Jina meters
+# tokens per minute. Falling back to fusion order on a rate limit would quietly
+# ship an unranked context, so transient failures are retried instead.
+RERANK_MAX_RETRIES = _int("RERANK_MAX_RETRIES", 4)
+RERANK_BACKOFF_S = _float("RERANK_BACKOFF_S", 5.0)
+RERANK_MAX_BACKOFF_S = _float("RERANK_MAX_BACKOFF_S", 60.0)
 
 API_HOST = os.getenv("API_HOST", "127.0.0.1")
 API_PORT = _int("API_PORT", 8000)
@@ -67,9 +76,30 @@ class AnsweringConfig:
     # Jina rerank relevance is 0..1; clearly irrelevant passages score <0.05
     # while on-topic ones score >0.5, so 0.20 separates them with margin.
     rerank_threshold: float = _float("RERANK_SCORE_THRESHOLD", 0.20)
+    # Absolute floors cannot tell "weak but best available" from "weak noise
+    # next to a clear winner". This keeps a passage only if it scores within a
+    # fraction of the strongest passage for THIS query, so the context narrows
+    # when the evidence is decisive and stays wide when it genuinely is not.
+    rerank_relative_threshold: float = _float("RERANK_RELATIVE_THRESHOLD", 0.40)
+    # Retrieval metrics and the reader both count DOCUMENTS, not chunks. These
+    # two bound breadth and depth separately, so the budget can buy several
+    # passages from one document instead of one passage from several.
+    #
+    # Tuned on the golden set against cached reranker scores: with the reranker
+    # query and truncation fixed, this recall-first point reaches recall 0.96 /
+    # MRR 0.86 at efficiency 0.95. Precision is intentionally not maximised - in
+    # a permission-aware RAG the reader can ignore an extra authorized document
+    # but can never recover one that was never shown, and groundedness is
+    # already ~0.96. Narrow max_documents toward 3 (with rel ~0.55) to trade
+    # recall for a higher precision number.
+    max_documents: int = _int("ANSWER_MAX_DOCUMENTS", 5)
+    max_chunks_per_document: int = _int("ANSWER_MAX_CHUNKS_PER_DOCUMENT", 3)
+    # Additional chunks from a document corroborate it without being allowed to
+    # outweigh a single decisively better passage elsewhere.
+    document_support_weight: float = _float("ANSWER_DOC_SUPPORT_WEIGHT", 0.25)
     max_history_turns: int = _int("MAX_HISTORY_TURNS", 6)
     max_history_chars: int = _int("MAX_HISTORY_CHARS", 1500)
-    max_context_chars: int = _int("MAX_CONTEXT_CHARS", 12000)
+    max_context_chars: int = _int("MAX_CONTEXT_CHARS", 16000)
     max_query_chars: int = _int("MAX_QUERY_CHARS", 1000)
 
 

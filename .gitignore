@@ -19,8 +19,6 @@ htmlcov/
 .tox/
 
 
-README.md
-
 
 .env
 
@@ -35,7 +33,7 @@ Thumbs.db
 evaluation/tests/
 
 guide.md
-sofar.md
+
 
 
 # Logs

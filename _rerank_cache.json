@@ -1,0 +1,3149 @@
+{
+ "E001": {
+  "expected": [
+   "TKT-2026-0312-114",
+   "PRJ-S001-003"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "S001-ACC-001",
+    "chunk_index": 3,
+    "score": 0.83867973
+   },
+   {
+    "document_id": "TKT-2026-0312-114",
+    "chunk_index": 1,
+    "score": 0.78662282
+   },
+   {
+    "document_id": "S001-ACC-001",
+    "chunk_index": 1,
+    "score": 0.69513112
+   },
+   {
+    "document_id": "PRJ-S001-001",
+    "chunk_index": 1,
+    "score": 0.66714764
+   },
+   {
+    "document_id": "CALL-2026-0313-018",
+    "chunk_index": 1,
+    "score": 0.66541058
+   },
+   {
+    "document_id": "PRJ-S001-003",
+    "chunk_index": 1,
+    "score": 0.36658973
+   },
+   {
+    "document_id": "CALL-2026-0313-018",
+    "chunk_index": 3,
+    "score": 0.35846534
+   },
+   {
+    "document_id": "PRJ-S001-004",
+    "chunk_index": 1,
+    "score": 0.34246159
+   },
+   {
+    "document_id": "CALL-2026-0225-013",
+    "chunk_index": 1,
+    "score": 0.32852942
+   },
+   {
+    "document_id": "S001-ACC-001",
+    "chunk_index": 2,
+    "score": 0.32852942
+   },
+   {
+    "document_id": "TKT-2026-0224-091",
+    "chunk_index": 2,
+    "score": 0.32509187
+   },
+   {
+    "document_id": "TKT-2026-0224-091",
+    "chunk_index": 1,
+    "score": 0.27512974
+   },
+   {
+    "document_id": "PRJ-S001-001",
+    "chunk_index": 2,
+    "score": 0.23370637
+   },
+   {
+    "document_id": "TKT-2026-0812-308",
+    "chunk_index": 2,
+    "score": 0.22815649
+   },
+   {
+    "document_id": "TKT-2026-0812-308",
+    "chunk_index": 1,
+    "score": 0.20817892
+   }
+  ]
+ },
+ "E002": {
+  "expected": [
+   "INC-2026-0519",
+   "TKT-2026-0519-207"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 1,
+    "score": 0.83114308
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 1,
+    "score": 0.71859437
+   },
+   {
+    "document_id": "TKT-2026-0519-207",
+    "chunk_index": 1,
+    "score": 0.67661995
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 2,
+    "score": 0.62429351
+   },
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 2,
+    "score": 0.60905921
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 3,
+    "score": 0.59077919
+   },
+   {
+    "document_id": "TKT-2026-0519-207",
+    "chunk_index": 2,
+    "score": 0.56601852
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 3,
+    "score": 0.5336405
+   },
+   {
+    "document_id": "CALL-2026-0520-041",
+    "chunk_index": 1,
+    "score": 0.53084457
+   },
+   {
+    "document_id": "CALL-2026-0717-052",
+    "chunk_index": 1,
+    "score": 0.43254271
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 4,
+    "score": 0.407805
+   },
+   {
+    "document_id": "CALL-2026-0520-041",
+    "chunk_index": 5,
+    "score": 0.36026394
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 2,
+    "score": 0.35667071
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 5,
+    "score": 0.3115316
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 1,
+    "score": 0.30239108
+   },
+   {
+    "document_id": "TKT-2026-0716-268",
+    "chunk_index": 1,
+    "score": 0.25091279
+   },
+   {
+    "document_id": "TKT-2026-0602-217",
+    "chunk_index": 1,
+    "score": 0.23091978
+   }
+  ]
+ },
+ "E003": {
+  "expected": [
+   "INC-2026-0812",
+   "TKT-2026-0812-308"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "INC-2026-0812",
+    "chunk_index": 1,
+    "score": 0.84389514
+   },
+   {
+    "document_id": "INC-2026-0812",
+    "chunk_index": 3,
+    "score": 0.70334578
+   },
+   {
+    "document_id": "TKT-2026-0812-308",
+    "chunk_index": 2,
+    "score": 0.67060828
+   },
+   {
+    "document_id": "INC-2026-0812",
+    "chunk_index": 2,
+    "score": 0.60766321
+   },
+   {
+    "document_id": "INC-2026-0812",
+    "chunk_index": 4,
+    "score": 0.59925067
+   },
+   {
+    "document_id": "TKT-2026-0812-308",
+    "chunk_index": 1,
+    "score": 0.24944726
+   }
+  ]
+ },
+ "E004": {
+  "expected": [
+   "OPS-RB-004"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "OPS-RB-004",
+    "chunk_index": 1,
+    "score": 0.75922543
+   },
+   {
+    "document_id": "OPS-RB-004",
+    "chunk_index": 3,
+    "score": 0.65401137
+   },
+   {
+    "document_id": "POL-FIN-002",
+    "chunk_index": 2,
+    "score": 0.60439891
+   },
+   {
+    "document_id": "POL-FIN-002",
+    "chunk_index": 4,
+    "score": 0.42155182
+   },
+   {
+    "document_id": "OPS-RB-004",
+    "chunk_index": 2,
+    "score": 0.35846534
+   },
+   {
+    "document_id": "POL-FIN-002",
+    "chunk_index": 1,
+    "score": 0.29017562
+   },
+   {
+    "document_id": "PRJ-S004-003",
+    "chunk_index": 2,
+    "score": 0.24220563
+   },
+   {
+    "document_id": "POL-FIN-002",
+    "chunk_index": 3,
+    "score": 0.23370637
+   },
+   {
+    "document_id": "OPS-RB-002",
+    "chunk_index": 3,
+    "score": 0.21469143
+   },
+   {
+    "document_id": "OPS-RB-002",
+    "chunk_index": 2,
+    "score": 0.21076629
+   }
+  ]
+ },
+ "E005": {
+  "expected": [
+   "PRJ-S001-004",
+   "TKT-2026-0224-091"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "PRJ-S001-004",
+    "chunk_index": 1,
+    "score": 0.81757444
+   },
+   {
+    "document_id": "S001-ACC-001",
+    "chunk_index": 3,
+    "score": 0.74167407
+   },
+   {
+    "document_id": "PRJ-S001-004",
+    "chunk_index": 2,
+    "score": 0.62108135
+   },
+   {
+    "document_id": "CALL-2026-0225-013",
+    "chunk_index": 1,
+    "score": 0.58604914
+   },
+   {
+    "document_id": "TKT-2026-0224-091",
+    "chunk_index": 1,
+    "score": 0.51061857
+   },
+   {
+    "document_id": "S001-ACC-001",
+    "chunk_index": 2,
+    "score": 0.50558448
+   },
+   {
+    "document_id": "CALL-2026-0225-013",
+    "chunk_index": 3,
+    "score": 0.44794324
+   },
+   {
+    "document_id": "CALL-2026-0313-018",
+    "chunk_index": 1,
+    "score": 0.40262696
+   },
+   {
+    "document_id": "TKT-2026-0224-091",
+    "chunk_index": 2,
+    "score": 0.39513415
+   },
+   {
+    "document_id": "CALL-2026-0225-013",
+    "chunk_index": 2,
+    "score": 0.36931509
+   },
+   {
+    "document_id": "POL-FIN-002",
+    "chunk_index": 3,
+    "score": 0.30074561
+   },
+   {
+    "document_id": "PRJ-S001-001",
+    "chunk_index": 1,
+    "score": 0.26435837
+   },
+   {
+    "document_id": "PRJ-S001-003",
+    "chunk_index": 1,
+    "score": 0.26284182
+   },
+   {
+    "document_id": "S001-ACC-001",
+    "chunk_index": 1,
+    "score": 0.24220563
+   }
+  ]
+ },
+ "E006": {
+  "expected": [
+   "INC-2026-0716",
+   "TKT-2026-0716-268"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 1,
+    "score": 0.82782817
+   },
+   {
+    "document_id": "TKT-2026-0716-268",
+    "chunk_index": 1,
+    "score": 0.81405276
+   },
+   {
+    "document_id": "CALL-2026-0717-052",
+    "chunk_index": 1,
+    "score": 0.61970145
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 4,
+    "score": 0.5983122
+   },
+   {
+    "document_id": "TKT-2026-0716-268",
+    "chunk_index": 2,
+    "score": 0.59266663
+   },
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 1,
+    "score": 0.53752697
+   },
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 2,
+    "score": 0.47511825
+   },
+   {
+    "document_id": "TKT-2026-0602-217",
+    "chunk_index": 1,
+    "score": 0.44673607
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 1,
+    "score": 0.43206343
+   },
+   {
+    "document_id": "CALL-2026-0717-052",
+    "chunk_index": 4,
+    "score": 0.36387292
+   },
+   {
+    "document_id": "TKT-2026-0519-207",
+    "chunk_index": 1,
+    "score": 0.32680833
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 2,
+    "score": 0.3165805
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 5,
+    "score": 0.30569732
+   },
+   {
+    "document_id": "CALL-2026-0717-052",
+    "chunk_index": 2,
+    "score": 0.22815649
+   },
+   {
+    "document_id": "TKT-2026-0812-308",
+    "chunk_index": 2,
+    "score": 0.21733753
+   }
+  ]
+ },
+ "E007": {
+  "expected": [
+   "INC-2026-0519",
+   "PRJ-S002-003"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 1,
+    "score": 0.73105854
+   },
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 2,
+    "score": 0.72642559
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 3,
+    "score": 0.65753841
+   },
+   {
+    "document_id": "TKT-2026-0519-207",
+    "chunk_index": 2,
+    "score": 0.60579908
+   },
+   {
+    "document_id": "TKT-2026-0602-217",
+    "chunk_index": 2,
+    "score": 0.5452857
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 1,
+    "score": 0.54116637
+   },
+   {
+    "document_id": "PRJ-S002-001",
+    "chunk_index": 3,
+    "score": 0.52074009
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 5,
+    "score": 0.49594125
+   },
+   {
+    "document_id": "TKT-2026-0519-207",
+    "chunk_index": 1,
+    "score": 0.46465865
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 2,
+    "score": 0.4632014
+   },
+   {
+    "document_id": "TKT-2026-0602-217",
+    "chunk_index": 1,
+    "score": 0.34864512
+   },
+   {
+    "document_id": "PRJ-S002-002",
+    "chunk_index": 3,
+    "score": 0.2925953
+   },
+   {
+    "document_id": "PRJ-S002-001",
+    "chunk_index": 1,
+    "score": 0.26435837
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 1,
+    "score": 0.23370637
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 5,
+    "score": 0.21866935
+   }
+  ]
+ },
+ "E008": {
+  "expected": [
+   "PRJ-S004-003",
+   "PRJ-S004-002"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "PRJ-S004-003",
+    "chunk_index": 1,
+    "score": 0.87831426
+   },
+   {
+    "document_id": "PRJ-S004-002",
+    "chunk_index": 1,
+    "score": 0.80069196
+   },
+   {
+    "document_id": "PRJ-S004-003",
+    "chunk_index": 2,
+    "score": 0.74761593
+   },
+   {
+    "document_id": "INC-2026-0805",
+    "chunk_index": 2,
+    "score": 0.73411953
+   },
+   {
+    "document_id": "PRJ-S004-002",
+    "chunk_index": 2,
+    "score": 0.60579908
+   },
+   {
+    "document_id": "PRJ-S004-003",
+    "chunk_index": 3,
+    "score": 0.53874058
+   },
+   {
+    "document_id": "PRJ-S004-002",
+    "chunk_index": 3,
+    "score": 0.45980373
+   },
+   {
+    "document_id": "INC-2026-0805",
+    "chunk_index": 5,
+    "score": 0.36116472
+   },
+   {
+    "document_id": "POL-OPS-006",
+    "chunk_index": 2,
+    "score": 0.34422299
+   }
+  ]
+ },
+ "E009": {
+  "expected": [
+   "PRJ-S003-003",
+   "S003-ACC-001"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "PRJ-S003-003",
+    "chunk_index": 1,
+    "score": 0.77046478
+   },
+   {
+    "document_id": "PRJ-S003-003",
+    "chunk_index": 2,
+    "score": 0.66888028
+   },
+   {
+    "document_id": "S003-ACC-001",
+    "chunk_index": 1,
+    "score": 0.66714764
+   },
+   {
+    "document_id": "S003-ACC-001",
+    "chunk_index": 2,
+    "score": 0.61555016
+   },
+   {
+    "document_id": "S003-ACC-001",
+    "chunk_index": 3,
+    "score": 0.61045349
+   },
+   {
+    "document_id": "TKT-2026-0115-054",
+    "chunk_index": 2,
+    "score": 0.59878153
+   },
+   {
+    "document_id": "CALL-2026-0116-004",
+    "chunk_index": 1,
+    "score": 0.58130306
+   },
+   {
+    "document_id": "TKT-2026-0115-054",
+    "chunk_index": 1,
+    "score": 0.5679366
+   },
+   {
+    "document_id": "PRJ-S003-001",
+    "chunk_index": 2,
+    "score": 0.53047979
+   },
+   {
+    "document_id": "PRJ-S003-001",
+    "chunk_index": 1,
+    "score": 0.4344613
+   },
+   {
+    "document_id": "ORG-001",
+    "chunk_index": 5,
+    "score": 0.35936412
+   },
+   {
+    "document_id": "PRJ-S003-003",
+    "chunk_index": 3,
+    "score": 0.29502675
+   },
+   {
+    "document_id": "CALL-2026-0619-047",
+    "chunk_index": 1,
+    "score": 0.26588047
+   },
+   {
+    "document_id": "TKT-2026-0618-233",
+    "chunk_index": 1,
+    "score": 0.25386101
+   },
+   {
+    "document_id": "CALL-2026-0116-004",
+    "chunk_index": 3,
+    "score": 0.22815649
+   }
+  ]
+ },
+ "E010": {
+  "expected": [
+   "INC-2026-0421",
+   "TKT-2026-0421-162"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "scenario_overview",
+    "chunk_index": 5,
+    "score": 0.61878043
+   },
+   {
+    "document_id": "INC-2026-0421",
+    "chunk_index": 4,
+    "score": 0.58510113
+   },
+   {
+    "document_id": "S002-ACC-001",
+    "chunk_index": 3,
+    "score": 0.58272851
+   },
+   {
+    "document_id": "scenario_overview",
+    "chunk_index": 7,
+    "score": 0.56313771
+   },
+   {
+    "document_id": "INC-2026-0421",
+    "chunk_index": 1,
+    "score": 0.54867351
+   },
+   {
+    "document_id": "INC-2026-0421",
+    "chunk_index": 2,
+    "score": 0.49993324
+   },
+   {
+    "document_id": "scenario_overview",
+    "chunk_index": 6,
+    "score": 0.47950366
+   },
+   {
+    "document_id": "TKT-2026-0421-162",
+    "chunk_index": 1,
+    "score": 0.47268349
+   },
+   {
+    "document_id": "CALL-2026-0422-029",
+    "chunk_index": 1,
+    "score": 0.43806389
+   },
+   {
+    "document_id": "POL-SEC-001",
+    "chunk_index": 1,
+    "score": 0.4330222
+   },
+   {
+    "document_id": "INC-2026-0421",
+    "chunk_index": 3,
+    "score": 0.40969306
+   },
+   {
+    "document_id": "TKT-2026-0421-162",
+    "chunk_index": 2,
+    "score": 0.35042137
+   },
+   {
+    "document_id": "INC-2026-0421",
+    "chunk_index": 5,
+    "score": 0.32338011
+   },
+   {
+    "document_id": "POL-SEC-001",
+    "chunk_index": 2,
+    "score": 0.25091279
+   },
+   {
+    "document_id": "INC-2026-0421",
+    "chunk_index": 6,
+    "score": 0.24944726
+   },
+   {
+    "document_id": "POL-SEC-001",
+    "chunk_index": 3,
+    "score": 0.23792988
+   },
+   {
+    "document_id": "OPS-RB-003",
+    "chunk_index": 3,
+    "score": 0.21866935
+   }
+  ]
+ },
+ "E011": {
+  "expected": [
+   "TKT-2026-0602-217"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "TKT-2026-0602-217",
+    "chunk_index": 1,
+    "score": 0.81757444
+   },
+   {
+    "document_id": "TKT-2026-0602-217",
+    "chunk_index": 2,
+    "score": 0.78398848
+   },
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 2,
+    "score": 0.50045967
+   },
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 1,
+    "score": 0.29340446
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 4,
+    "score": 0.2893717
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 5,
+    "score": 0.23792988
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 3,
+    "score": 0.22405544
+   },
+   {
+    "document_id": "CALL-2026-0520-041",
+    "chunk_index": 1,
+    "score": 0.22135067
+   }
+  ]
+ },
+ "E012": {
+  "expected": [
+   "INC-2026-0903",
+   "TKT-2026-0903-336"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "TKT-2026-0903-336",
+    "chunk_index": 1,
+    "score": 0.86246759
+   },
+   {
+    "document_id": "INC-2026-0903",
+    "chunk_index": 1,
+    "score": 0.84492153
+   },
+   {
+    "document_id": "S003-ACC-001",
+    "chunk_index": 2,
+    "score": 0.79182106
+   },
+   {
+    "document_id": "S003-ACC-001",
+    "chunk_index": 3,
+    "score": 0.77729988
+   },
+   {
+    "document_id": "CALL-2026-0904-071",
+    "chunk_index": 1,
+    "score": 0.68341953
+   },
+   {
+    "document_id": "TKT-2026-0903-336",
+    "chunk_index": 2,
+    "score": 0.68087858
+   },
+   {
+    "document_id": "INC-2026-0903",
+    "chunk_index": 2,
+    "score": 0.63973606
+   },
+   {
+    "document_id": "INC-2026-0903",
+    "chunk_index": 4,
+    "score": 0.61601228
+   },
+   {
+    "document_id": "PRJ-S003-002",
+    "chunk_index": 2,
+    "score": 0.56265712
+   },
+   {
+    "document_id": "INC-2026-0903",
+    "chunk_index": 5,
+    "score": 0.48401427
+   },
+   {
+    "document_id": "scenario_overview",
+    "chunk_index": 4,
+    "score": 0.41111082
+   },
+   {
+    "document_id": "CALL-2026-0619-047",
+    "chunk_index": 1,
+    "score": 0.35846534
+   },
+   {
+    "document_id": "INC-2026-0903",
+    "chunk_index": 3,
+    "score": 0.32167304
+   },
+   {
+    "document_id": "PRJ-S003-002",
+    "chunk_index": 1,
+    "score": 0.30486888
+   },
+   {
+    "document_id": "INC-2026-0618",
+    "chunk_index": 1,
+    "score": 0.29178745
+   },
+   {
+    "document_id": "S003-ACC-001",
+    "chunk_index": 1,
+    "score": 0.26284182
+   },
+   {
+    "document_id": "CALL-2026-0116-004",
+    "chunk_index": 1,
+    "score": 0.21469143
+   }
+  ]
+ },
+ "E013": {
+  "expected": [
+   "INC-2026-0312",
+   "TKT-2026-0312-114",
+   "PRJ-S001-003"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "TKT-2026-0312-114",
+    "chunk_index": 1,
+    "score": 0.69513112
+   },
+   {
+    "document_id": "PRJ-S001-003",
+    "chunk_index": 1,
+    "score": 0.684264
+   },
+   {
+    "document_id": "INC-2026-0312",
+    "chunk_index": 1,
+    "score": 0.46891221
+   },
+   {
+    "document_id": "PRJ-S001-001",
+    "chunk_index": 1,
+    "score": 0.43542135
+   },
+   {
+    "document_id": "TKT-2026-0602-217",
+    "chunk_index": 1,
+    "score": 0.40074939
+   },
+   {
+    "document_id": "INC-2026-0812",
+    "chunk_index": 1,
+    "score": 0.38630033
+   },
+   {
+    "document_id": "INC-2026-0312",
+    "chunk_index": 5,
+    "score": 0.32939172
+   },
+   {
+    "document_id": "TKT-2026-0312-114",
+    "chunk_index": 2,
+    "score": 0.30652705
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 1,
+    "score": 0.2991052
+   },
+   {
+    "document_id": "ORG-001",
+    "chunk_index": 2,
+    "score": 0.26588047
+   },
+   {
+    "document_id": "PRJ-S001-001",
+    "chunk_index": 2,
+    "score": 0.24364243
+   },
+   {
+    "document_id": "PRJ-S001-003",
+    "chunk_index": 3,
+    "score": 0.22678363
+   },
+   {
+    "document_id": "TKT-2026-0519-207",
+    "chunk_index": 1,
+    "score": 0.22270013
+   },
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 1,
+    "score": 0.21337718
+   },
+   {
+    "document_id": "PRJ-S001-003",
+    "chunk_index": 2,
+    "score": 0.21076629
+   },
+   {
+    "document_id": "PRJ-S001-002",
+    "chunk_index": 1,
+    "score": 0.2043419
+   },
+   {
+    "document_id": "TKT-2026-0224-091",
+    "chunk_index": 1,
+    "score": 0.20307463
+   }
+  ]
+ },
+ "E014": {
+  "expected": [
+   "INC-2026-0716",
+   "POL-BIZ-004"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "TKT-2026-0716-268",
+    "chunk_index": 1,
+    "score": 0.72797543
+   },
+   {
+    "document_id": "TKT-2026-0716-268",
+    "chunk_index": 2,
+    "score": 0.60952419
+   },
+   {
+    "document_id": "CALL-2026-0717-052",
+    "chunk_index": 1,
+    "score": 0.54649615
+   },
+   {
+    "document_id": "TKT-2026-0519-207",
+    "chunk_index": 1,
+    "score": 0.5252471
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 1,
+    "score": 0.50982541
+   },
+   {
+    "document_id": "POL-BIZ-004",
+    "chunk_index": 1,
+    "score": 0.49377471
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 1,
+    "score": 0.36749724
+   },
+   {
+    "document_id": "CALL-2026-0520-041",
+    "chunk_index": 1,
+    "score": 0.35936412
+   },
+   {
+    "document_id": "TKT-2026-0312-114",
+    "chunk_index": 2,
+    "score": 0.28537196
+   },
+   {
+    "document_id": "CALL-2026-0717-052",
+    "chunk_index": 4,
+    "score": 0.23934932
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 2,
+    "score": 0.22000711
+   },
+   {
+    "document_id": "POL-BIZ-004",
+    "chunk_index": 2,
+    "score": 0.21337718
+   },
+   {
+    "document_id": "TKT-2026-0519-207",
+    "chunk_index": 2,
+    "score": 0.20307463
+   }
+  ]
+ },
+ "E015": {
+  "expected": [
+   "POL-OPS-006",
+   "PRJ-S004-003"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "PRJ-S004-003",
+    "chunk_index": 1,
+    "score": 0.82446188
+   },
+   {
+    "document_id": "PRJ-S004-002",
+    "chunk_index": 1,
+    "score": 0.65224141
+   },
+   {
+    "document_id": "INC-2026-0805",
+    "chunk_index": 2,
+    "score": 0.60299706
+   },
+   {
+    "document_id": "PRJ-S004-003",
+    "chunk_index": 3,
+    "score": 0.58272851
+   },
+   {
+    "document_id": "PRJ-S004-003",
+    "chunk_index": 2,
+    "score": 0.51397341
+   },
+   {
+    "document_id": "INC-2026-0805",
+    "chunk_index": 5,
+    "score": 0.39326853
+   },
+   {
+    "document_id": "POL-OPS-006",
+    "chunk_index": 1,
+    "score": 0.36477757
+   },
+   {
+    "document_id": "POL-OPS-006",
+    "chunk_index": 2,
+    "score": 0.33895186
+   },
+   {
+    "document_id": "OPS-RB-003",
+    "chunk_index": 4,
+    "score": 0.32852942
+   },
+   {
+    "document_id": "PRJ-S004-002",
+    "chunk_index": 3,
+    "score": 0.256832
+   },
+   {
+    "document_id": "POL-OPS-006",
+    "chunk_index": 3,
+    "score": 0.24508502
+   }
+  ]
+ },
+ "E016": {
+  "expected": [
+   "PRJ-S003-003",
+   "POL-BIZ-003"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "TKT-2026-0115-054",
+    "chunk_index": 2,
+    "score": 0.83973396
+   },
+   {
+    "document_id": "PRJ-S003-003",
+    "chunk_index": 1,
+    "score": 0.82332838
+   },
+   {
+    "document_id": "PRJ-S003-003",
+    "chunk_index": 2,
+    "score": 0.68257374
+   },
+   {
+    "document_id": "S003-ACC-001",
+    "chunk_index": 3,
+    "score": 0.62108135
+   },
+   {
+    "document_id": "TKT-2026-0115-054",
+    "chunk_index": 1,
+    "score": 0.60998893
+   },
+   {
+    "document_id": "S003-ACC-001",
+    "chunk_index": 2,
+    "score": 0.5983122
+   },
+   {
+    "document_id": "PRJ-S003-001",
+    "chunk_index": 2,
+    "score": 0.54286331
+   },
+   {
+    "document_id": "S003-ACC-001",
+    "chunk_index": 1,
+    "score": 0.52049631
+   },
+   {
+    "document_id": "PRJ-S003-003",
+    "chunk_index": 3,
+    "score": 0.4902966
+   },
+   {
+    "document_id": "PRJ-S003-001",
+    "chunk_index": 1,
+    "score": 0.47560534
+   },
+   {
+    "document_id": "ORG-001",
+    "chunk_index": 5,
+    "score": 0.45423004
+   },
+   {
+    "document_id": "POL-BIZ-003",
+    "chunk_index": 3,
+    "score": 0.44625336
+   },
+   {
+    "document_id": "CALL-2026-0116-004",
+    "chunk_index": 1,
+    "score": 0.42107561
+   },
+   {
+    "document_id": "TKT-2026-0618-233",
+    "chunk_index": 2,
+    "score": 0.40403706
+   },
+   {
+    "document_id": "POL-BIZ-003",
+    "chunk_index": 2,
+    "score": 0.26894143
+   },
+   {
+    "document_id": "POL-BIZ-003",
+    "chunk_index": 1,
+    "score": 0.25832596
+   },
+   {
+    "document_id": "CALL-2026-0116-004",
+    "chunk_index": 3,
+    "score": 0.21076629
+   },
+   {
+    "document_id": "TKT-2026-0618-233",
+    "chunk_index": 1,
+    "score": 0.2043419
+   }
+  ]
+ },
+ "E017": {
+  "expected": [
+   "INC-2026-0519",
+   "PRJ-S002-003"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 1,
+    "score": 0.81523252
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 1,
+    "score": 0.63793355
+   },
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 2,
+    "score": 0.46028891
+   },
+   {
+    "document_id": "TKT-2026-0519-207",
+    "chunk_index": 2,
+    "score": 0.43782353
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 5,
+    "score": 0.34510529
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 3,
+    "score": 0.307358
+   },
+   {
+    "document_id": "PRJ-S001-001",
+    "chunk_index": 1,
+    "score": 0.27435136
+   },
+   {
+    "document_id": "PRJ-S001-003",
+    "chunk_index": 1,
+    "score": 0.26133093
+   },
+   {
+    "document_id": "TKT-2026-0716-268",
+    "chunk_index": 1,
+    "score": 0.25832596
+   },
+   {
+    "document_id": "PRJ-S001-003",
+    "chunk_index": 2,
+    "score": 0.25238404
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 2,
+    "score": 0.24798745
+   },
+   {
+    "document_id": "INC-2026-0812",
+    "chunk_index": 1,
+    "score": 0.24364243
+   },
+   {
+    "document_id": "TKT-2026-0224-091",
+    "chunk_index": 2,
+    "score": 0.22270013
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 4,
+    "score": 0.21866935
+   },
+   {
+    "document_id": "TKT-2026-0519-207",
+    "chunk_index": 1,
+    "score": 0.20307463
+   }
+  ]
+ },
+ "E018": {
+  "expected": [
+   "POL-FIN-002",
+   "OPS-RB-004"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "OPS-RB-004",
+    "chunk_index": 1,
+    "score": 0.608594
+   },
+   {
+    "document_id": "OPS-RB-004",
+    "chunk_index": 3,
+    "score": 0.42250463
+   },
+   {
+    "document_id": "POL-FIN-002",
+    "chunk_index": 2,
+    "score": 0.33895186
+   },
+   {
+    "document_id": "POL-FIN-002",
+    "chunk_index": 1,
+    "score": 0.2814056
+   },
+   {
+    "document_id": "OPS-RB-004",
+    "chunk_index": 2,
+    "score": 0.2043419
+   }
+  ]
+ },
+ "E019": {
+  "expected": [
+   "INC-2026-0805",
+   "PRJ-S004-003",
+   "TKT-2026-0805-301"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "PRJ-S004-002",
+    "chunk_index": 1,
+    "score": 0.85391271
+   },
+   {
+    "document_id": "PRJ-S004-003",
+    "chunk_index": 3,
+    "score": 0.78530854
+   },
+   {
+    "document_id": "PRJ-S004-003",
+    "chunk_index": 1,
+    "score": 0.72487032
+   },
+   {
+    "document_id": "INC-2026-0805",
+    "chunk_index": 2,
+    "score": 0.71143085
+   },
+   {
+    "document_id": "scenario_overview",
+    "chunk_index": 7,
+    "score": 0.67490816
+   },
+   {
+    "document_id": "scenario_overview",
+    "chunk_index": 4,
+    "score": 0.60393178
+   },
+   {
+    "document_id": "TKT-2026-0805-301",
+    "chunk_index": 2,
+    "score": 0.59549254
+   },
+   {
+    "document_id": "PRJ-S004-003",
+    "chunk_index": 2,
+    "score": 0.56145531
+   },
+   {
+    "document_id": "scenario_overview",
+    "chunk_index": 1,
+    "score": 0.54455924
+   },
+   {
+    "document_id": "CALL-2026-0909-074",
+    "chunk_index": 1,
+    "score": 0.52378577
+   },
+   {
+    "document_id": "S004-ACC-001",
+    "chunk_index": 3,
+    "score": 0.52293313
+   },
+   {
+    "document_id": "S004-ACC-001",
+    "chunk_index": 2,
+    "score": 0.4923712
+   },
+   {
+    "document_id": "INC-2026-0805",
+    "chunk_index": 1,
+    "score": 0.49054065
+   },
+   {
+    "document_id": "S004-ACC-001",
+    "chunk_index": 1,
+    "score": 0.47950366
+   },
+   {
+    "document_id": "CALL-2026-0909-074",
+    "chunk_index": 2,
+    "score": 0.39001107
+   },
+   {
+    "document_id": "TKT-2026-0908-341",
+    "chunk_index": 2,
+    "score": 0.34246159
+   },
+   {
+    "document_id": "CALL-2026-0806-063",
+    "chunk_index": 4,
+    "score": 0.30985841
+   },
+   {
+    "document_id": "PRJ-S004-002",
+    "chunk_index": 3,
+    "score": 0.27904198
+   },
+   {
+    "document_id": "INC-2026-0805",
+    "chunk_index": 4,
+    "score": 0.23792988
+   }
+  ]
+ },
+ "E020": {
+  "expected": [
+   "TKT-2026-0812-308",
+   "INC-2026-0812"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "INC-2026-0812",
+    "chunk_index": 1,
+    "score": 0.67490816
+   },
+   {
+    "document_id": "INC-2026-0312",
+    "chunk_index": 1,
+    "score": 0.54480141
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 1,
+    "score": 0.49188298
+   },
+   {
+    "document_id": "TKT-2026-0812-308",
+    "chunk_index": 1,
+    "score": 0.48602659
+   },
+   {
+    "document_id": "ORG-001",
+    "chunk_index": 2,
+    "score": 0.45423004
+   },
+   {
+    "document_id": "CALL-2026-0313-018",
+    "chunk_index": 1,
+    "score": 0.42488921
+   },
+   {
+    "document_id": "ORG-001",
+    "chunk_index": 3,
+    "score": 0.40544873
+   },
+   {
+    "document_id": "PRJ-S001-003",
+    "chunk_index": 2,
+    "score": 0.38121954
+   },
+   {
+    "document_id": "TKT-2026-0312-114",
+    "chunk_index": 1,
+    "score": 0.33720353
+   },
+   {
+    "document_id": "PRJ-S001-003",
+    "chunk_index": 1,
+    "score": 0.30074561
+   },
+   {
+    "document_id": "INC-2026-0812",
+    "chunk_index": 2,
+    "score": 0.21866935
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 5,
+    "score": 0.21866935
+   },
+   {
+    "document_id": "TKT-2026-0812-308",
+    "chunk_index": 2,
+    "score": 0.20055769
+   }
+  ]
+ },
+ "E021": {
+  "expected": [
+   "INC-2026-0312",
+   "INC-2026-0519"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 1,
+    "score": 0.70659554
+   },
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 1,
+    "score": 0.64957863
+   },
+   {
+    "document_id": "PRJ-S001-003",
+    "chunk_index": 1,
+    "score": 0.47974741
+   },
+   {
+    "document_id": "ORG-001",
+    "chunk_index": 3,
+    "score": 0.44408253
+   },
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 2,
+    "score": 0.4395068
+   },
+   {
+    "document_id": "TKT-2026-0312-114",
+    "chunk_index": 1,
+    "score": 0.42584395
+   },
+   {
+    "document_id": "CALL-2026-0313-018",
+    "chunk_index": 1,
+    "score": 0.39326853
+   },
+   {
+    "document_id": "TKT-2026-0519-207",
+    "chunk_index": 1,
+    "score": 0.37022537
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 5,
+    "score": 0.33895186
+   },
+   {
+    "document_id": "INC-2026-0312",
+    "chunk_index": 1,
+    "score": 0.30985841
+   },
+   {
+    "document_id": "CALL-2026-0520-041",
+    "chunk_index": 1,
+    "score": 0.30569732
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 3,
+    "score": 0.27048022
+   },
+   {
+    "document_id": "INC-2026-0312",
+    "chunk_index": 2,
+    "score": 0.26588047
+   },
+   {
+    "document_id": "ORG-001",
+    "chunk_index": 2,
+    "score": 0.21206883
+   }
+  ]
+ },
+ "E022": {
+  "expected": [
+   "S001-ACC-001",
+   "S003-ACC-001"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "S001-ACC-001",
+    "chunk_index": 1,
+    "score": 0.60112536
+   },
+   {
+    "document_id": "ORG-001",
+    "chunk_index": 5,
+    "score": 0.60065693
+   },
+   {
+    "document_id": "S003-ACC-001",
+    "chunk_index": 1,
+    "score": 0.51555896
+   },
+   {
+    "document_id": "S001-ACC-001",
+    "chunk_index": 2,
+    "score": 0.43686226
+   },
+   {
+    "document_id": "ORG-001",
+    "chunk_index": 2,
+    "score": 0.42441198
+   },
+   {
+    "document_id": "PRJ-S001-001",
+    "chunk_index": 1,
+    "score": 0.2829881
+   },
+   {
+    "document_id": "PRJ-S003-001",
+    "chunk_index": 1,
+    "score": 0.25832596
+   },
+   {
+    "document_id": "S003-ACC-001",
+    "chunk_index": 2,
+    "score": 0.23231015
+   },
+   {
+    "document_id": "S003-ACC-001",
+    "chunk_index": 3,
+    "score": 0.23231015
+   },
+   {
+    "document_id": "PRJ-S003-003",
+    "chunk_index": 1,
+    "score": 0.22541659
+   },
+   {
+    "document_id": "TKT-2026-0812-308",
+    "chunk_index": 1,
+    "score": 0.20946968
+   }
+  ]
+ },
+ "E023": {
+  "expected": [
+   "INC-2026-0805",
+   "INC-2026-0519"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "INC-2026-0805",
+    "chunk_index": 3,
+    "score": 0.47219667
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 3,
+    "score": 0.42584395
+   },
+   {
+    "document_id": "INC-2026-0805",
+    "chunk_index": 2,
+    "score": 0.35846534
+   },
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 1,
+    "score": 0.33895186
+   },
+   {
+    "document_id": "OPS-RB-003",
+    "chunk_index": 1,
+    "score": 0.3165805
+   },
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 2,
+    "score": 0.30486888
+   },
+   {
+    "document_id": "INC-2026-0805",
+    "chunk_index": 4,
+    "score": 0.30321571
+   },
+   {
+    "document_id": "INC-2026-0805",
+    "chunk_index": 5,
+    "score": 0.29583988
+   },
+   {
+    "document_id": "PRJ-S004-002",
+    "chunk_index": 1,
+    "score": 0.2925953
+   },
+   {
+    "document_id": "OPS-RB-004",
+    "chunk_index": 2,
+    "score": 0.27202454
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 1,
+    "score": 0.27125171
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 5,
+    "score": 0.26971012
+   },
+   {
+    "document_id": "PRJ-S004-003",
+    "chunk_index": 1,
+    "score": 0.26740819
+   },
+   {
+    "document_id": "OPS-RB-003",
+    "chunk_index": 2,
+    "score": 0.25982562
+   },
+   {
+    "document_id": "POL-BIZ-004",
+    "chunk_index": 1,
+    "score": 0.25238404
+   },
+   {
+    "document_id": "INC-2026-0805",
+    "chunk_index": 1,
+    "score": 0.21866935
+   }
+  ]
+ },
+ "E024": {
+  "expected": [
+   "INC-2026-0812",
+   "INC-2026-0716"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "TKT-2026-0716-268",
+    "chunk_index": 1,
+    "score": 0.58510113
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 1,
+    "score": 0.52731651
+   },
+   {
+    "document_id": "PRJ-S002-002",
+    "chunk_index": 1,
+    "score": 0.47889438
+   },
+   {
+    "document_id": "TKT-2026-0812-308",
+    "chunk_index": 1,
+    "score": 0.45447215
+   },
+   {
+    "document_id": "INC-2026-0812",
+    "chunk_index": 1,
+    "score": 0.44649473
+   },
+   {
+    "document_id": "TKT-2026-0716-268",
+    "chunk_index": 2,
+    "score": 0.41016549
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 4,
+    "score": 0.38306415
+   },
+   {
+    "document_id": "TKT-2026-0602-217",
+    "chunk_index": 2,
+    "score": 0.35131106
+   },
+   {
+    "document_id": "ORG-001",
+    "chunk_index": 3,
+    "score": 0.32167304
+   },
+   {
+    "document_id": "INC-2026-0812",
+    "chunk_index": 2,
+    "score": 0.24077459
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 3,
+    "score": 0.21206883
+   },
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 2,
+    "score": 0.20055769
+   }
+  ]
+ },
+ "E025": {
+  "expected": [
+   "INC-2026-0519",
+   "INC-2026-0805",
+   "INC-2026-0312"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "scenario_overview",
+    "chunk_index": 2,
+    "score": 0.58794308
+   },
+   {
+    "document_id": "scenario_overview",
+    "chunk_index": 7,
+    "score": 0.55060738
+   },
+   {
+    "document_id": "INC-2026-0805",
+    "chunk_index": 2,
+    "score": 0.52512532
+   },
+   {
+    "document_id": "scenario_overview",
+    "chunk_index": 6,
+    "score": 0.51964319
+   },
+   {
+    "document_id": "scenario_overview",
+    "chunk_index": 4,
+    "score": 0.46611643
+   },
+   {
+    "document_id": "scenario_overview",
+    "chunk_index": 8,
+    "score": 0.4263216
+   },
+   {
+    "document_id": "scenario_overview",
+    "chunk_index": 3,
+    "score": 0.38168037
+   },
+   {
+    "document_id": "scenario_overview",
+    "chunk_index": 5,
+    "score": 0.38075897
+   },
+   {
+    "document_id": "PRJ-S002-002",
+    "chunk_index": 1,
+    "score": 0.3738758
+   },
+   {
+    "document_id": "PRJ-S002-001",
+    "chunk_index": 3,
+    "score": 0.36296919
+   },
+   {
+    "document_id": "CALL-2026-0904-071",
+    "chunk_index": 3,
+    "score": 0.34775856
+   },
+   {
+    "document_id": "INC-2026-0812",
+    "chunk_index": 5,
+    "score": 0.32680833
+   },
+   {
+    "document_id": "TKT-2026-0903-336",
+    "chunk_index": 2,
+    "score": 0.32252598
+   },
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 1,
+    "score": 0.32082129
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 1,
+    "score": 0.30486888
+   },
+   {
+    "document_id": "OPS-RB-003",
+    "chunk_index": 1,
+    "score": 0.29098088
+   },
+   {
+    "document_id": "OPS-RB-004",
+    "chunk_index": 2,
+    "score": 0.28061637
+   },
+   {
+    "document_id": "INC-2026-0805",
+    "chunk_index": 1,
+    "score": 0.23651622
+   },
+   {
+    "document_id": "INC-2026-0903",
+    "chunk_index": 4,
+    "score": 0.20946968
+   }
+  ]
+ },
+ "E026": {
+  "expected": [
+   "TKT-2026-0312-114",
+   "TKT-2026-0903-336"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "CALL-2026-0904-071",
+    "chunk_index": 3,
+    "score": 0.58841616
+   },
+   {
+    "document_id": "TKT-2026-0903-336",
+    "chunk_index": 2,
+    "score": 0.58746988
+   },
+   {
+    "document_id": "S001-ACC-001",
+    "chunk_index": 3,
+    "score": 0.58177841
+   },
+   {
+    "document_id": "TKT-2026-0903-336",
+    "chunk_index": 1,
+    "score": 0.57940042
+   },
+   {
+    "document_id": "S003-ACC-001",
+    "chunk_index": 2,
+    "score": 0.57128835
+   },
+   {
+    "document_id": "TKT-2026-0312-114",
+    "chunk_index": 2,
+    "score": 0.56457865
+   },
+   {
+    "document_id": "CALL-2026-0313-018",
+    "chunk_index": 1,
+    "score": 0.5542292
+   },
+   {
+    "document_id": "CALL-2026-0904-071",
+    "chunk_index": 1,
+    "score": 0.54722214
+   },
+   {
+    "document_id": "S001-ACC-001",
+    "chunk_index": 1,
+    "score": 0.44263649
+   },
+   {
+    "document_id": "CALL-2026-0225-013",
+    "chunk_index": 3,
+    "score": 0.43782353
+   },
+   {
+    "document_id": "S001-ACC-001",
+    "chunk_index": 2,
+    "score": 0.37570643
+   },
+   {
+    "document_id": "PRJ-S001-004",
+    "chunk_index": 1,
+    "score": 0.36116472
+   },
+   {
+    "document_id": "TKT-2026-0312-114",
+    "chunk_index": 1,
+    "score": 0.33111975
+   },
+   {
+    "document_id": "CALL-2026-0116-004",
+    "chunk_index": 1,
+    "score": 0.28219619
+   },
+   {
+    "document_id": "PRJ-S003-003",
+    "chunk_index": 2,
+    "score": 0.28061637
+   },
+   {
+    "document_id": "ORG-001",
+    "chunk_index": 4,
+    "score": 0.24653332
+   },
+   {
+    "document_id": "CALL-2026-0116-004",
+    "chunk_index": 2,
+    "score": 0.22678363
+   },
+   {
+    "document_id": "POL-FIN-002",
+    "chunk_index": 1,
+    "score": 0.21337718
+   }
+  ]
+ },
+ "E027": {
+  "expected": [
+   "PRJ-S001-003"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "S001-ACC-001",
+    "chunk_index": 3,
+    "score": 0.85391271
+   },
+   {
+    "document_id": "TKT-2026-0312-114",
+    "chunk_index": 1,
+    "score": 0.82218909
+   },
+   {
+    "document_id": "CALL-2026-0313-018",
+    "chunk_index": 1,
+    "score": 0.69843233
+   },
+   {
+    "document_id": "S001-ACC-001",
+    "chunk_index": 1,
+    "score": 0.64957863
+   },
+   {
+    "document_id": "PRJ-S001-001",
+    "chunk_index": 1,
+    "score": 0.60299706
+   },
+   {
+    "document_id": "TKT-2026-0312-114",
+    "chunk_index": 2,
+    "score": 0.57128835
+   },
+   {
+    "document_id": "PRJ-S001-003",
+    "chunk_index": 1,
+    "score": 0.47317034
+   },
+   {
+    "document_id": "CALL-2026-0313-018",
+    "chunk_index": 3,
+    "score": 0.39094079
+   },
+   {
+    "document_id": "CALL-2026-0225-013",
+    "chunk_index": 1,
+    "score": 0.35756752
+   },
+   {
+    "document_id": "PRJ-S001-004",
+    "chunk_index": 1,
+    "score": 0.33198547
+   },
+   {
+    "document_id": "TKT-2026-0224-091",
+    "chunk_index": 2,
+    "score": 0.31489262
+   },
+   {
+    "document_id": "S001-ACC-001",
+    "chunk_index": 2,
+    "score": 0.26740819
+   },
+   {
+    "document_id": "TKT-2026-0224-091",
+    "chunk_index": 1,
+    "score": 0.26133093
+   },
+   {
+    "document_id": "PRJ-S001-001",
+    "chunk_index": 2,
+    "score": 0.20561504
+   }
+  ]
+ },
+ "E028": {
+  "expected": [
+   "INC-2026-0519"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 1,
+    "score": 0.89181101
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 1,
+    "score": 0.83655459
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 2,
+    "score": 0.73411953
+   },
+   {
+    "document_id": "TKT-2026-0519-207",
+    "chunk_index": 2,
+    "score": 0.69097626
+   },
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 2,
+    "score": 0.68763
+   },
+   {
+    "document_id": "TKT-2026-0519-207",
+    "chunk_index": 1,
+    "score": 0.67661995
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 3,
+    "score": 0.56217653
+   },
+   {
+    "document_id": "CALL-2026-0520-041",
+    "chunk_index": 1,
+    "score": 0.55109054
+   },
+   {
+    "document_id": "CALL-2026-0520-041",
+    "chunk_index": 5,
+    "score": 0.54431701
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 4,
+    "score": 0.49736023
+   },
+   {
+    "document_id": "CALL-2026-0717-052",
+    "chunk_index": 1,
+    "score": 0.47633609
+   },
+   {
+    "document_id": "TKT-2026-0602-217",
+    "chunk_index": 2,
+    "score": 0.39653543
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 1,
+    "score": 0.38121954
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 5,
+    "score": 0.36296919
+   },
+   {
+    "document_id": "TKT-2026-0716-268",
+    "chunk_index": 1,
+    "score": 0.34775856
+   },
+   {
+    "document_id": "TKT-2026-0602-217",
+    "chunk_index": 1,
+    "score": 0.24944726
+   }
+  ]
+ },
+ "E029": {
+  "expected": [
+   "INC-2026-0812"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "TKT-2026-0812-308",
+    "chunk_index": 2,
+    "score": 0.42727721
+   },
+   {
+    "document_id": "INC-2026-0812",
+    "chunk_index": 4,
+    "score": 0.25238404
+   },
+   {
+    "document_id": "INC-2026-0812",
+    "chunk_index": 2,
+    "score": 0.20689406
+   }
+  ]
+ },
+ "E030": {
+  "expected": [
+   "PRJ-S004-003"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "PRJ-S004-003",
+    "chunk_index": 1,
+    "score": 0.89029425
+   },
+   {
+    "document_id": "PRJ-S004-002",
+    "chunk_index": 1,
+    "score": 0.7634837
+   },
+   {
+    "document_id": "INC-2026-0805",
+    "chunk_index": 2,
+    "score": 0.74017441
+   },
+   {
+    "document_id": "PRJ-S004-003",
+    "chunk_index": 2,
+    "score": 0.70578504
+   },
+   {
+    "document_id": "PRJ-S004-002",
+    "chunk_index": 3,
+    "score": 0.67147058
+   },
+   {
+    "document_id": "PRJ-S004-003",
+    "chunk_index": 3,
+    "score": 0.64601368
+   },
+   {
+    "document_id": "PRJ-S004-002",
+    "chunk_index": 2,
+    "score": 0.64511991
+   },
+   {
+    "document_id": "INC-2026-0805",
+    "chunk_index": 5,
+    "score": 0.39466748
+   },
+   {
+    "document_id": "POL-OPS-006",
+    "chunk_index": 2,
+    "score": 0.36026394
+   },
+   {
+    "document_id": "POL-OPS-006",
+    "chunk_index": 4,
+    "score": 0.24077459
+   }
+  ]
+ },
+ "E031": {
+  "expected": [
+   "PRJ-S003-003"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "PRJ-S003-003",
+    "chunk_index": 1,
+    "score": 0.79310596
+   },
+   {
+    "document_id": "PRJ-S003-003",
+    "chunk_index": 2,
+    "score": 0.74465632
+   },
+   {
+    "document_id": "S003-ACC-001",
+    "chunk_index": 3,
+    "score": 0.7356416
+   },
+   {
+    "document_id": "TKT-2026-0115-054",
+    "chunk_index": 2,
+    "score": 0.73028988
+   },
+   {
+    "document_id": "S003-ACC-001",
+    "chunk_index": 1,
+    "score": 0.72720122
+   },
+   {
+    "document_id": "TKT-2026-0115-054",
+    "chunk_index": 1,
+    "score": 0.70171309
+   },
+   {
+    "document_id": "S003-ACC-001",
+    "chunk_index": 2,
+    "score": 0.67405045
+   },
+   {
+    "document_id": "CALL-2026-0116-004",
+    "chunk_index": 1,
+    "score": 0.66192287
+   },
+   {
+    "document_id": "PRJ-S003-001",
+    "chunk_index": 2,
+    "score": 0.63068497
+   },
+   {
+    "document_id": "PRJ-S003-003",
+    "chunk_index": 3,
+    "score": 0.51476622
+   },
+   {
+    "document_id": "CALL-2026-0116-004",
+    "chunk_index": 3,
+    "score": 0.47377896
+   },
+   {
+    "document_id": "POL-BIZ-003",
+    "chunk_index": 2,
+    "score": 0.46587342
+   },
+   {
+    "document_id": "PRJ-S003-001",
+    "chunk_index": 1,
+    "score": 0.34953272
+   },
+   {
+    "document_id": "CALL-2026-0904-071",
+    "chunk_index": 1,
+    "score": 0.33111975
+   },
+   {
+    "document_id": "CALL-2026-0619-047",
+    "chunk_index": 1,
+    "score": 0.24944726
+   },
+   {
+    "document_id": "POL-FIN-002",
+    "chunk_index": 2,
+    "score": 0.23370637
+   },
+   {
+    "document_id": "CALL-2026-0116-004",
+    "chunk_index": 2,
+    "score": 0.21733753
+   }
+  ]
+ },
+ "E032": {
+  "expected": [
+   "INC-2026-0903"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "TKT-2026-0903-336",
+    "chunk_index": 1,
+    "score": 0.87321484
+   },
+   {
+    "document_id": "INC-2026-0903",
+    "chunk_index": 1,
+    "score": 0.80563217
+   },
+   {
+    "document_id": "S003-ACC-001",
+    "chunk_index": 3,
+    "score": 0.78266251
+   },
+   {
+    "document_id": "S003-ACC-001",
+    "chunk_index": 2,
+    "score": 0.75346667
+   },
+   {
+    "document_id": "INC-2026-0903",
+    "chunk_index": 2,
+    "score": 0.69180971
+   },
+   {
+    "document_id": "CALL-2026-0904-071",
+    "chunk_index": 1,
+    "score": 0.67661995
+   },
+   {
+    "document_id": "INC-2026-0903",
+    "chunk_index": 4,
+    "score": 0.65489471
+   },
+   {
+    "document_id": "TKT-2026-0903-336",
+    "chunk_index": 2,
+    "score": 0.64422512
+   },
+   {
+    "document_id": "INC-2026-0903",
+    "chunk_index": 5,
+    "score": 0.61323661
+   },
+   {
+    "document_id": "PRJ-S003-002",
+    "chunk_index": 2,
+    "score": 0.5542292
+   },
+   {
+    "document_id": "scenario_overview",
+    "chunk_index": 4,
+    "score": 0.37570643
+   },
+   {
+    "document_id": "CALL-2026-0619-047",
+    "chunk_index": 1,
+    "score": 0.35577488
+   },
+   {
+    "document_id": "S003-ACC-001",
+    "chunk_index": 1,
+    "score": 0.28616926
+   },
+   {
+    "document_id": "CALL-2026-0116-004",
+    "chunk_index": 1,
+    "score": 0.26740819
+   },
+   {
+    "document_id": "PRJ-S003-003",
+    "chunk_index": 2,
+    "score": 0.20689406
+   },
+   {
+    "document_id": "INC-2026-0312",
+    "chunk_index": 1,
+    "score": 0.20055769
+   }
+  ]
+ },
+ "E043": {
+  "expected": [
+   "TKT-2026-0312-114",
+   "PRJ-S001-003"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "S001-ACC-001",
+    "chunk_index": 3,
+    "score": 0.4605315
+   },
+   {
+    "document_id": "TKT-2026-0312-114",
+    "chunk_index": 1,
+    "score": 0.44577083
+   },
+   {
+    "document_id": "PRJ-S001-002",
+    "chunk_index": 2,
+    "score": 0.4263216
+   },
+   {
+    "document_id": "CALL-2026-0313-018",
+    "chunk_index": 1,
+    "score": 0.40497804
+   },
+   {
+    "document_id": "S001-ACC-001",
+    "chunk_index": 1,
+    "score": 0.37570643
+   },
+   {
+    "document_id": "PRJ-S001-001",
+    "chunk_index": 1,
+    "score": 0.34510529
+   },
+   {
+    "document_id": "ORG-001",
+    "chunk_index": 5,
+    "score": 0.33198547
+   },
+   {
+    "document_id": "PRJ-S001-002",
+    "chunk_index": 3,
+    "score": 0.2991052
+   },
+   {
+    "document_id": "S001-ACC-001",
+    "chunk_index": 2,
+    "score": 0.27125171
+   },
+   {
+    "document_id": "PRJ-S001-002",
+    "chunk_index": 1,
+    "score": 0.26284182
+   },
+   {
+    "document_id": "ORG-001",
+    "chunk_index": 2,
+    "score": 0.25534365
+   }
+  ]
+ },
+ "E044": {
+  "expected": [
+   "INC-2026-0519",
+   "INC-2026-0716"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 2,
+    "score": 0.48706344
+   },
+   {
+    "document_id": "CALL-2026-0717-052",
+    "chunk_index": 1,
+    "score": 0.46587342
+   },
+   {
+    "document_id": "CALL-2026-0520-041",
+    "chunk_index": 1,
+    "score": 0.44552952
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 1,
+    "score": 0.41537303
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 1,
+    "score": 0.4063907
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 5,
+    "score": 0.40028042
+   },
+   {
+    "document_id": "ORG-001",
+    "chunk_index": 5,
+    "score": 0.38075897
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 3,
+    "score": 0.37113661
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 5,
+    "score": 0.3684057
+   },
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 1,
+    "score": 0.34598863
+   },
+   {
+    "document_id": "TKT-2026-0716-268",
+    "chunk_index": 1,
+    "score": 0.33807713
+   },
+   {
+    "document_id": "TKT-2026-0602-217",
+    "chunk_index": 1,
+    "score": 0.256832
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 2,
+    "score": 0.25238404
+   },
+   {
+    "document_id": "ORG-001",
+    "chunk_index": 3,
+    "score": 0.25238404
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 2,
+    "score": 0.22953522
+   },
+   {
+    "document_id": "TKT-2026-0519-207",
+    "chunk_index": 1,
+    "score": 0.20307463
+   }
+  ]
+ },
+ "E045": {
+  "expected": [
+   "INC-2026-0519",
+   "INC-2026-0716"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 2,
+    "score": 0.44552952
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 1,
+    "score": 0.3720488
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 1,
+    "score": 0.33720353
+   },
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 2,
+    "score": 0.3328523
+   },
+   {
+    "document_id": "TKT-2026-0716-268",
+    "chunk_index": 1,
+    "score": 0.31237
+   },
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 1,
+    "score": 0.27590945
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 5,
+    "score": 0.27357441
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 5,
+    "score": 0.24220563
+   },
+   {
+    "document_id": "POL-SEC-001",
+    "chunk_index": 3,
+    "score": 0.23934932
+   },
+   {
+    "document_id": "ORG-001",
+    "chunk_index": 2,
+    "score": 0.23510839
+   },
+   {
+    "document_id": "ORG-001",
+    "chunk_index": 5,
+    "score": 0.21866935
+   },
+   {
+    "document_id": "TKT-2026-0519-207",
+    "chunk_index": 1,
+    "score": 0.20946968
+   },
+   {
+    "document_id": "TKT-2026-0602-217",
+    "chunk_index": 1,
+    "score": 0.20561504
+   }
+  ]
+ },
+ "E046": {
+  "expected": [
+   "INC-2026-0805"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "PRJ-S004-002",
+    "chunk_index": 1,
+    "score": 0.52317673
+   },
+   {
+    "document_id": "INC-2026-0805",
+    "chunk_index": 1,
+    "score": 0.45301983
+   },
+   {
+    "document_id": "PRJ-S004-003",
+    "chunk_index": 1,
+    "score": 0.45084289
+   },
+   {
+    "document_id": "PRJ-S004-003",
+    "chunk_index": 2,
+    "score": 0.4395068
+   },
+   {
+    "document_id": "INC-2026-0805",
+    "chunk_index": 4,
+    "score": 0.34598863
+   },
+   {
+    "document_id": "INC-2026-0805",
+    "chunk_index": 2,
+    "score": 0.32252598
+   },
+   {
+    "document_id": "PRJ-S004-003",
+    "chunk_index": 3,
+    "score": 0.25534365
+   },
+   {
+    "document_id": "PRJ-S004-002",
+    "chunk_index": 2,
+    "score": 0.20307463
+   }
+  ]
+ },
+ "E047": {
+  "expected": [
+   "POL-BIZ-004"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "POL-BIZ-004",
+    "chunk_index": 1,
+    "score": 0.66192287
+   },
+   {
+    "document_id": "POL-SEC-001",
+    "chunk_index": 3,
+    "score": 0.41822165
+   },
+   {
+    "document_id": "ORG-001",
+    "chunk_index": 2,
+    "score": 0.41679665
+   },
+   {
+    "document_id": "POL-SEC-001",
+    "chunk_index": 1,
+    "score": 0.3928026
+   },
+   {
+    "document_id": "POL-FIN-002",
+    "chunk_index": 4,
+    "score": 0.3738758
+   },
+   {
+    "document_id": "POL-BIZ-004",
+    "chunk_index": 2,
+    "score": 0.35042137
+   },
+   {
+    "document_id": "POL-BIZ-004",
+    "chunk_index": 3,
+    "score": 0.32082129
+   },
+   {
+    "document_id": "POL-BIZ-003",
+    "chunk_index": 3,
+    "score": 0.20946968
+   },
+   {
+    "document_id": "POL-SEC-001",
+    "chunk_index": 2,
+    "score": 0.20561504
+   }
+  ]
+ },
+ "E048": {
+  "expected": [
+   "TKT-2026-0224-091",
+   "TKT-2026-0312-114",
+   "TKT-2026-0812-308"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "TKT-2026-0812-308",
+    "chunk_index": 1,
+    "score": 0.62016165
+   },
+   {
+    "document_id": "TKT-2026-0224-091",
+    "chunk_index": 1,
+    "score": 0.54286331
+   },
+   {
+    "document_id": "TKT-2026-0312-114",
+    "chunk_index": 1,
+    "score": 0.53509843
+   },
+   {
+    "document_id": "ORG-001",
+    "chunk_index": 2,
+    "score": 0.48993051
+   },
+   {
+    "document_id": "CALL-2026-0313-018",
+    "chunk_index": 1,
+    "score": 0.47390074
+   },
+   {
+    "document_id": "CALL-2026-0225-013",
+    "chunk_index": 1,
+    "score": 0.44818476
+   },
+   {
+    "document_id": "INC-2026-0312",
+    "chunk_index": 2,
+    "score": 0.36296919
+   },
+   {
+    "document_id": "ORG-001",
+    "chunk_index": 5,
+    "score": 0.35846534
+   },
+   {
+    "document_id": "TKT-2026-0812-308",
+    "chunk_index": 2,
+    "score": 0.35220176
+   },
+   {
+    "document_id": "INC-2026-0812",
+    "chunk_index": 2,
+    "score": 0.31997073
+   },
+   {
+    "document_id": "TKT-2026-0224-091",
+    "chunk_index": 2,
+    "score": 0.3115316
+   },
+   {
+    "document_id": "TKT-2026-0312-114",
+    "chunk_index": 2,
+    "score": 0.3015677
+   },
+   {
+    "document_id": "INC-2026-0812",
+    "chunk_index": 1,
+    "score": 0.20689406
+   },
+   {
+    "document_id": "INC-2026-0312",
+    "chunk_index": 1,
+    "score": 0.20055769
+   }
+  ]
+ },
+ "E049": {
+  "expected": [
+   "POL-IT-002"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "POL-IT-002",
+    "chunk_index": 1,
+    "score": 0.35488009
+   },
+   {
+    "document_id": "POL-SEC-002",
+    "chunk_index": 2,
+    "score": 0.26588047
+   },
+   {
+    "document_id": "ORG-001",
+    "chunk_index": 4,
+    "score": 0.25982562
+   },
+   {
+    "document_id": "ORG-001",
+    "chunk_index": 2,
+    "score": 0.24653332
+   }
+  ]
+ },
+ "E050": {
+  "expected": [
+   "POL-SEC-002"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "POL-SEC-002",
+    "chunk_index": 1,
+    "score": 0.66454029
+   },
+   {
+    "document_id": "POL-SEC-002",
+    "chunk_index": 2,
+    "score": 0.55495292
+   },
+   {
+    "document_id": "POL-SEC-002",
+    "chunk_index": 3,
+    "score": 0.42155182
+   },
+   {
+    "document_id": "POL-IT-002",
+    "chunk_index": 2,
+    "score": 0.29178745
+   },
+   {
+    "document_id": "POL-IT-002",
+    "chunk_index": 1,
+    "score": 0.21866935
+   }
+  ]
+ },
+ "E051": {
+  "expected": [
+   "POL-BIZ-003"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "POL-BIZ-003",
+    "chunk_index": 1,
+    "score": 0.70007521
+   },
+   {
+    "document_id": "TKT-2026-0115-054",
+    "chunk_index": 2,
+    "score": 0.45568299
+   },
+   {
+    "document_id": "PRJ-S001-001",
+    "chunk_index": 2,
+    "score": 0.42250463
+   },
+   {
+    "document_id": "POL-FIN-002",
+    "chunk_index": 2,
+    "score": 0.41300356
+   },
+   {
+    "document_id": "POL-BIZ-003",
+    "chunk_index": 3,
+    "score": 0.40827677
+   },
+   {
+    "document_id": "POL-FIN-002",
+    "chunk_index": 4,
+    "score": 0.40121853
+   },
+   {
+    "document_id": "PRJ-S003-003",
+    "chunk_index": 1,
+    "score": 0.3720488
+   },
+   {
+    "document_id": "PRJ-S003-001",
+    "chunk_index": 1,
+    "score": 0.35398629
+   },
+   {
+    "document_id": "PRJ-S001-001",
+    "chunk_index": 1,
+    "score": 0.30652705
+   },
+   {
+    "document_id": "PRJ-S003-003",
+    "chunk_index": 3,
+    "score": 0.27669051
+   },
+   {
+    "document_id": "POL-BIZ-004",
+    "chunk_index": 2,
+    "score": 0.25091279
+   },
+   {
+    "document_id": "PRJ-S003-003",
+    "chunk_index": 2,
+    "score": 0.22815649
+   }
+  ]
+ },
+ "E052": {
+  "expected": [
+   "POL-SEC-001"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "POL-SEC-001",
+    "chunk_index": 1,
+    "score": 0.59971958
+   },
+   {
+    "document_id": "POL-SEC-001",
+    "chunk_index": 3,
+    "score": 0.39653543
+   }
+  ]
+ },
+ "E053": {
+  "expected": [
+   "INC-2026-0519"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 1,
+    "score": 0.39047584
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 2,
+    "score": 0.3407045
+   },
+   {
+    "document_id": "TKT-2026-0519-207",
+    "chunk_index": 2,
+    "score": 0.33458945
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 4,
+    "score": 0.33111975
+   },
+   {
+    "document_id": "PRJ-S002-003",
+    "chunk_index": 2,
+    "score": 0.26971012
+   },
+   {
+    "document_id": "CALL-2026-0520-041",
+    "chunk_index": 1,
+    "score": 0.21733753
+   },
+   {
+    "document_id": "INC-2026-0312",
+    "chunk_index": 2,
+    "score": 0.20181322
+   }
+  ]
+ },
+ "E054": {
+  "expected": [
+   "OPS-RB-002"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 3,
+    "score": 0.3328523
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 4,
+    "score": 0.33025515
+   },
+   {
+    "document_id": "INC-2026-0519",
+    "chunk_index": 2,
+    "score": 0.25534365
+   },
+   {
+    "document_id": "OPS-RB-006",
+    "chunk_index": 2,
+    "score": 0.22270013
+   },
+   {
+    "document_id": "OPS-RB-002",
+    "chunk_index": 2,
+    "score": 0.21469143
+   }
+  ]
+ },
+ "E055": {
+  "expected": [
+   "INC-2026-0716"
+  ],
+  "applied": true,
+  "items": [
+   {
+    "document_id": "TKT-2026-0716-268",
+    "chunk_index": 1,
+    "score": 0.33372033
+   },
+   {
+    "document_id": "PRJ-S002-002",
+    "chunk_index": 2,
+    "score": 0.307358
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 3,
+    "score": 0.29828691
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 4,
+    "score": 0.277473
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 1,
+    "score": 0.26588047
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 5,
+    "score": 0.26284182
+   },
+   {
+    "document_id": "TKT-2026-0716-268",
+    "chunk_index": 2,
+    "score": 0.24798745
+   },
+   {
+    "document_id": "INC-2026-0716",
+    "chunk_index": 2,
+    "score": 0.23231015
+   },
+   {
+    "document_id": "INC-2026-0312",
+    "chunk_index": 2,
+    "score": 0.23231015
+   },
+   {
+    "document_id": "TKT-2026-0812-308",
+    "chunk_index": 2,
+    "score": 0.21601155
+   }
+  ]
+ }
+}

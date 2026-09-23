@@ -112,6 +112,12 @@ def _matrix_row(result: dict) -> dict:
            ("eval_id", "user", "category", "expected_behavior", "actual_behavior", "status")},
         "recall_at_k": retrieval.get("recall_at_k"),
         "precision_at_k": retrieval.get("precision_at_k"), "mrr": retrieval.get("mrr"),
+        # Carried so a reviewer can tell a wide context apart from a wrong one
+        # without opening the raw result rows.
+        "precision_ceiling": retrieval.get("precision_ceiling"),
+        "precision_efficiency": retrieval.get("precision_efficiency"),
+        "documents_shown": len(retrieval.get("retrieved") or []) or None,
+        "documents_expected": len(retrieval.get("expected") or []) or None,
         "groundedness": generation.get("groundedness"),
         "relevancy": generation.get("answer_relevancy"),
         "correctness": generation.get("answer_correctness"),

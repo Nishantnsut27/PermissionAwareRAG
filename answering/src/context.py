@@ -48,6 +48,25 @@ def _label(document_id: str, document_type: str | None) -> str:
     return f"{document_type} {document_id}" if document_type else document_id
 
 
+def _header(document_id: str, entry: dict) -> str:
+    lines = [f"Document: {_label(document_id, entry['document_type'])}"]
+    if entry["seller_id"]:
+        lines.append(f"Seller: {entry['seller_id']}")
+    if entry["department"]:
+        lines.append(f"Department: {entry['department']}")
+    return "\n".join(lines)
+
+
+def _reading_key(pair: tuple) -> tuple:
+    """Render a document's passages in the order the document reads."""
+    chunk, _ = pair
+    metadata = getattr(chunk, "metadata", None) or {}
+    index = metadata.get("chunk_index")
+    if not isinstance(index, int):
+        index = 0
+    return (index, str(getattr(chunk, "chunk_id", "")))
+
+
 def build(scored_chunks: list[tuple[object, float | None]],
           cfg: config.AnsweringConfig | None = None) -> tuple[str, list[Source]]:
     """Group authorized chunks by document into a bounded context block.
@@ -55,6 +74,18 @@ def build(scored_chunks: list[tuple[object, float | None]],
     Returns (context_text, sources). Only chunks that actually fit inside the
     character budget are cited, so the source list never overstates what the
     model was shown.
+
+    Document order and passage order are taken as given. `selection.select`
+    already ranked documents by aggregate relevance and restored each
+    document's passages to reading order; re-sorting here by best-chunk score
+    would discard that and split a document's prose into score-ordered
+    fragments.
+
+    The budget is spent breadth-first: every selected document gets its
+    strongest passage before any document gets a second one. Packing
+    depth-first instead let the leading documents consume the whole budget and
+    silently dropped the tail, which discarded the breadth `select` had just
+    decided on and cost recall on multi-document questions.
     """
     cfg = cfg or config.DEFAULT_ANSWERING
     grouped: dict[str, dict] = {}
@@ -65,67 +96,71 @@ def build(scored_chunks: list[tuple[object, float | None]],
             "document_type": metadata.get("document_type"),
             "seller_id": metadata.get("seller_id"),
             "department": metadata.get("department"),
-            "pages": [],
             "chunks": [],
             "best": score,
         })
-        for page in metadata.get("page_numbers") or []:
-            if isinstance(page, int) and page not in entry["pages"]:
-                entry["pages"].append(page)
         entry["chunks"].append((chunk, score))
         if score is not None and (entry["best"] is None or score > entry["best"]):
             entry["best"] = score
 
-    order = sorted(
-        grouped.items(),
-        key=lambda kv: (kv[1]["best"] is None, -(kv[1]["best"] or 0.0)),
-    )
+    order = list(grouped.items())
+    headers = {document_id: _header(document_id, entry)
+               for document_id, entry in order}
 
-    blocks: list[str] = []
-    sources: list[Source] = []
+    # Strongest passage first *within* a document decides what is offered in
+    # each round; reading order is restored at render time.
+    pending = {
+        document_id: sorted(entry["chunks"],
+                            key=lambda pair: (pair[1] is None, -(pair[1] or 0.0)))
+        for document_id, entry in order
+    }
+    allocated: dict[str, list] = {document_id: [] for document_id, _ in order}
     used = 0
-    for document_id, entry in order:
-        label = _label(document_id, entry["document_type"])
-        header = [f"Document: {label}"]
-        if entry["seller_id"]:
-            header.append(f"Seller: {entry['seller_id']}")
-        if entry["department"]:
-            header.append(f"Department: {entry['department']}")
-        if entry["pages"]:
-            header.append("Page: " + ", ".join(str(p) for p in sorted(entry["pages"])))
-
-        included_chunks: list[str] = []
-        included_ids: list[str] = []
-        header_text = "\n".join(header)
-        block_len = len(header_text)
-        for chunk, _ in entry["chunks"]:
+    rounds = max((len(v) for v in pending.values()), default=0)
+    for depth in range(rounds):
+        for document_id, _ in order:
+            queue = pending[document_id]
+            if depth >= len(queue):
+                continue
+            chunk, score = queue[depth]
             text = (chunk.text or "").strip()
             if not text:
                 continue
             cost = len(text) + 2
-            over = (used + block_len + cost + len(SEPARATOR)
-                    > cfg.max_context_chars)
-            if over and (blocks or included_chunks):
-                break
-            included_chunks.append(text)
-            included_ids.append(chunk.chunk_id)
-            block_len += cost
-        if not included_chunks:
-            continue
+            if not allocated[document_id]:
+                # First passage also pays for this document's header block.
+                cost += len(headers[document_id]) + 2 + len(SEPARATOR)
+            if used + cost > cfg.max_context_chars and (used or allocated[document_id]):
+                continue
+            allocated[document_id].append((chunk, score))
+            used += cost
 
-        blocks.append(header_text + "\n\n" + "\n\n".join(included_chunks))
+    blocks: list[str] = []
+    sources: list[Source] = []
+    for document_id, entry in order:
+        chosen = allocated[document_id]
+        if not chosen:
+            continue
+        pages: list[int] = []
+        for chunk, _ in chosen:
+            for page in (chunk.metadata or {}).get("page_numbers") or []:
+                if isinstance(page, int) and page not in pages:
+                    pages.append(page)
+        chosen = sorted(chosen, key=_reading_key)
+        header_text = headers[document_id]
+        if pages:
+            header_text += "\nPage: " + ", ".join(str(p) for p in sorted(pages))
+        blocks.append(header_text + "\n\n"
+                      + "\n\n".join((c.text or "").strip() for c, _ in chosen))
         sources.append(Source(
             document_id=document_id,
             document_type=entry["document_type"],
-            label=label,
+            label=_label(document_id, entry["document_type"]),
             seller_id=entry["seller_id"],
             department=entry["department"],
-            pages=sorted(entry["pages"]),
-            chunk_ids=included_ids,
+            pages=sorted(pages),
+            chunk_ids=[c.chunk_id for c, _ in chosen],
             relevance=entry["best"],
         ))
-        used += block_len + len(SEPARATOR)
-        if used >= cfg.max_context_chars:
-            break
 
     return SEPARATOR.join(blocks), sources

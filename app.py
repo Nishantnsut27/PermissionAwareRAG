@@ -832,9 +832,24 @@ def _eval_summary(base_url: str, report: str | None = None) -> dict | None:
         return None
 
 
+def _latest_report_id(payload: dict | None) -> str | None:
+    """The most recent saved run. `available_reports` is sorted newest-first."""
+    reports = (payload or {}).get("available_reports") or []
+    return reports[0].get("report_id") if reports else None
+
+
 def _evaluation_sidebar(base_url: str) -> None:
     st.markdown('<div class="sec">Evaluation</div>', unsafe_allow_html=True)
-    payload = _eval_summary(base_url)
+    # Follow the run the operator pinned on the evaluation screen; otherwise show
+    # the most recent run. The API defaults an unspecified report to the static
+    # results.json snapshot, which is why the sidebar previously showed stale
+    # numbers while the main panel was on a newer run.
+    selected = st.session_state.get("evaluation_report")
+    payload = _eval_summary(base_url, selected)
+    if payload is not None and not selected:
+        latest = _latest_report_id(payload)
+        if latest and latest != payload.get("report_id"):
+            payload = _eval_summary(base_url, latest) or payload
     if payload is None:
         st.markdown('<div class="evempty">Evaluation data is unavailable '
                     'while the service is unreachable.</div>',
@@ -873,6 +888,9 @@ def _evaluation_sidebar(base_url: str) -> None:
             + _metric_rows([
                 ("Recall@K", _pct(retrieval.get("recall_at_k"))),
                 ("Precision@K", _pct(retrieval.get("precision_at_k"))),
+                ("Precision ceiling", _pct(retrieval.get("precision_ceiling"))),
+                ("Precision efficiency",
+                 _pct(retrieval.get("precision_efficiency"))),
                 ("MRR", _num(retrieval.get("mrr"))),
             ])
             + '<div class="evhead">Generation</div>'
@@ -889,6 +907,16 @@ def _evaluation_sidebar(base_url: str) -> None:
                  _pct(security.get("prompt_injection_blocked"))),
             ]), unsafe_allow_html=True)
         st.caption(f"Last evaluation: {payload.get('generated_at') or 'n/a'}")
+        if retrieval.get("precision_ceiling") is not None:
+            # Precision@K divides by the documents actually shown, and K is not
+            # fixed. Stating the ceiling keeps a wide context from reading as a
+            # retrieval defect.
+            st.caption(
+                f"Precision@K divides by documents shown "
+                f"({_num(retrieval.get('mean_documents_shown'))} avg) against "
+                f"{_num(retrieval.get('mean_documents_expected'))} expected, so "
+                f"{_pct(retrieval.get('precision_ceiling'))} is the attainable "
+                f"maximum; efficiency is the share of it achieved.")
         if dataset_total:
             st.caption(f"Coverage: {total} results recorded from {selected} selected "
                        f"of {dataset_total} golden cases.")
@@ -916,6 +944,10 @@ def _matrix_frame(matrix: list[dict]) -> pd.DataFrame:
         "actual_behavior": "Actual",
         "recall_at_k": "Recall@K",
         "precision_at_k": "Precision@K",
+        "precision_ceiling": "Max P@K",
+        "precision_efficiency": "P efficiency",
+        "documents_shown": "Docs shown",
+        "documents_expected": "Docs expected",
         "mrr": "MRR",
         "groundedness": "Groundedness",
         "relevancy": "Relevancy",
@@ -1010,6 +1042,38 @@ def _render_case_detail(results: list[dict], eval_id: str) -> None:
                  + ", ".join(security["unauthorized_documents"]))
     if security.get("leaked_evidence"):
         st.error("Leak evidence: " + " | ".join(security["leaked_evidence"]))
+
+    # A miss that was present in the candidate pool was retrieved correctly and
+    # then discarded by ranking or the context budget. That is a selection
+    # defect, and it is fixed very differently from a retrieval defect.
+    missed = (case.get("retrieval") or {}).get("missed") or []
+    recoverable = [d for d in missed if d in (case.get("candidate_sources") or [])]
+    if missed:
+        if recoverable:
+            st.warning(
+                "Retrieved but not selected: " + ", ".join(recoverable)
+                + ". These documents reached the authorized candidate pool and "
+                  "were dropped by ranking or the context budget, not missed by "
+                  "search.")
+        unreachable = [d for d in missed if d not in recoverable]
+        if unreachable:
+            st.error(
+                "Never retrieved: " + ", ".join(unreachable)
+                + ". Search did not surface these at all.")
+
+    stats = case.get("stats") or {}
+    selection = stats.get("selection") or {}
+    if selection:
+        st.caption(
+            f"Selection: {selection.get('considered_chunks', 0)} passages over "
+            f"{selection.get('considered_documents', 0)} documents considered; "
+            f"kept {selection.get('selected_chunks', 0)} over "
+            f"{selection.get('selected_documents', 0)}. Dropped "
+            f"{selection.get('dropped_by_relative_cut', 0)} below the relative "
+            f"cut, {selection.get('dropped_by_document_cap', 0)} to the document "
+            f"cap, {selection.get('dropped_by_depth_cap', 0)} to the per-document "
+            f"depth cap. Top score {selection.get('best_score')}, weakest kept "
+            f"{selection.get('weakest_selected_score')}.")
 
     generation = case.get("generation") or {}
     if generation.get("judge_notes"):
@@ -1118,7 +1182,8 @@ def _evaluation_screen(user: dict, base_url: str) -> None:
         f'<div class="kpi"><div class="l">Recall@K</div>'
         f'<div class="v">{_pct(retrieval.get("recall_at_k"))}</div>'
         f'<div class="s">precision '
-        f'{_pct(retrieval.get("precision_at_k"))} &middot; MRR '
+        f'{_pct(retrieval.get("precision_at_k"))} of '
+        f'{_pct(retrieval.get("precision_ceiling"))} attainable &middot; MRR '
         f'{_num(retrieval.get("mrr"))}</div></div>', unsafe_allow_html=True)
     cards[2].markdown(
         f'<div class="kpi"><div class="l">Groundedness</div>'
@@ -1151,6 +1216,17 @@ def _evaluation_screen(user: dict, base_url: str) -> None:
         f"generation {generation.get('scored_cases', 0)}; "
         f"security {security.get('scored_cases', 0)}. "
         "Metrics use only measured cases; N/A means unmeasured or not applicable.")
+    if retrieval.get("precision_ceiling") is not None:
+        st.caption(
+            f"Precision@K divides by the number of documents placed in the "
+            f"context, which is not a fixed K: "
+            f"{_num(retrieval.get('mean_documents_shown'))} documents shown on "
+            f"average against {_num(retrieval.get('mean_documents_expected'))} "
+            f"expected. Perfect retrieval therefore tops out at "
+            f"{_pct(retrieval.get('precision_ceiling'))}, of which "
+            f"{_pct(retrieval.get('precision_efficiency'))} was achieved. A low "
+            "precision with a high efficiency means the context was wider than "
+            "the question required, not that the wrong documents were retrieved.")
     if not payload.get("reports_enabled"):
         st.info("Case answers span multiple identities. Detailed reports are disabled "
                 "by default; see guide.md for trusted local operator access.")
@@ -1191,12 +1267,26 @@ def _evaluation_screen(user: dict, base_url: str) -> None:
         column_config={
             "Recall@K": st.column_config.ProgressColumn(format="%.2f", min_value=0, max_value=1),
             "Precision@K": st.column_config.ProgressColumn(format="%.2f", min_value=0, max_value=1),
+            "Max P@K": st.column_config.NumberColumn(
+                format="%.2f",
+                help="Highest Precision@K attainable on this case, because K is "
+                     "the number of documents shown rather than a fixed value."),
+            "P efficiency": st.column_config.ProgressColumn(
+                format="%.2f", min_value=0, max_value=1,
+                help="Precision@K divided by its ceiling. 1.00 means every "
+                     "document that could have been relevant was."),
+            "Docs shown": st.column_config.NumberColumn(format="%d"),
+            "Docs expected": st.column_config.NumberColumn(format="%d"),
             "MRR": st.column_config.NumberColumn(format="%.2f"),
             "Groundedness": st.column_config.ProgressColumn(format="%.2f", min_value=0, max_value=1),
             "Relevancy": st.column_config.NumberColumn(format="%.2f"),
             "Correctness": st.column_config.NumberColumn(format="%.2f"),
         },
     )
+    st.caption(
+        "A case with low Precision@K but high P efficiency retrieved correctly "
+        "into a context wider than the question needed. A case with low "
+        "efficiency retrieved the wrong documents.")
 
     by_category = summary.get("by_category") or {}
     if by_category:
