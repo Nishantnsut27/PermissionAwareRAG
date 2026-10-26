@@ -1,0 +1,233 @@
+NEXORA COMMERCE PVT. LTD. - CALL TRANSCRIPT
+This is a synthetic record created for a prototype dataset. It is not a real
+conversation and does not describe real people or companies.
+
+================================================================================
+CALL RECORD
+================================================================================
+Call ID          : CALL-2026-0806-063
+Date             : 6 August 2026
+Start time       : 15:00 IST
+Duration         : 31 minutes
+Seller           : S004 - StrideOne Footwear
+Topic            : Return rate spike and size chart investigation
+Related scenario : SC-006
+Related ticket   : TKT-2026-0805-301
+
+Participants
+  Karan Mehta          Marketplace Lead, StrideOne Footwear
+  Priya Shetty         Catalogue Manager, StrideOne Footwear
+  Vikram Singh         Software Engineer, Nexora (Engineering)
+  Rahul Sharma         Support Engineer, Nexora (Support)
+
+Classification   : CONFIDENTIAL
+================================================================================
+
+[15:00] RAHUL SHARMA: Karan, Priya, thanks for joining. Support sampled your
+SKUs yesterday after your ticket and we have engineering here because the
+result points at our importer rather than your data. Vikram will explain.
+
+[15:00] KARAN MEHTA: Good. Priya owns the catalogue, so she'll want the
+detail. I want to know how much of this is ours.
+
+[15:01] VIKRAM SINGH: None of it is yours. That's the short answer. I'll show
+you why. Rahul, can you put the sampling up?
+
+[15:01] RAHUL SHARMA: We took twenty SKUs across four brands. Six from brand
+A, five from brand B, five from brand C and four from brand D. For brands A,
+B and C the published EU size is about two sizes smaller than it should be
+for the UK size on the supplier record. For brand D, which supplies in EU
+sizes already, the published size is correct.
+
+[15:02] PRIYA SHETTY: That's exactly what we'd expect if a conversion is
+being applied to something already converted.
+
+[15:02] VIKRAM SINGH: Yes. That's our working conclusion. We think the
+UK-to-EU conversion is being applied twice.
+
+[15:03] KARAN MEHTA: Why only the UK brands?
+
+[15:03] VIKRAM SINGH: Because converting EU to EU is a no-op. You only see
+the error when the input needs converting.
+
+[15:04] PRIYA SHETTY: Can you show me a specific one?
+
+[15:04] RAHUL SHARMA: SKU ST-10442. Supplier record says UK 8. A UK 8 is
+about an EU 42. We're publishing EU 40.
+
+[15:05] PRIYA SHETTY: So a customer ordering what they think is a 40 gets a
+shoe that's actually a 42, and they're swimming in it. Or the other way -
+they order based on our chart and get something too small.
+
+[15:05] VIKRAM SINGH: Based on the return reasons, too small. Which matches:
+we publish a chart that says a 40 is the right fit for a certain foot length,
+and the shoe that turns up is a 42. For a lot of customers it's too small
+relative to the chart.
+
+[15:06] PRIYA SHETTY: That's a lot of returns.
+
+[15:06] KARAN MEHTA: 27 percent return rate, Priya. Against a baseline of
+nine.
+
+[15:07] VIKRAM SINGH: The good news is the cause is specific and I can fix
+the conversion. The harder question is how long it's been running and how
+many customers are affected.
+
+[15:07] KARAN MEHTA: When did it start?
+
+[15:08] VIKRAM SINGH: We deployed a schema change to the feed importer on
+the fourteenth of July. The return rate started rising the following week.
+So I'd say thirty-six days by the time we fix it.
+
+[15:08] KARAN MEHTA: Thirty-six days.
+
+[15:08] VIKRAM SINGH: Yes. And I want to say clearly that we should have
+caught it. We have no validation comparing published sizes against your
+source, and we have no alert on return reason codes. Your team caught it.
+
+[15:09] KARAN MEHTA: I appreciate you saying that. What happens to the
+thirty-six days of returns?
+
+[15:09] RAHUL SHARMA: Customers who returned for size reasons get offered a
+free exchange at the correct size. We're absorbing the reverse logistics.
+
+[15:10] KARAN MEHTA: In full?
+
+[15:10] RAHUL SHARMA: In full. It's our defect.
+
+[15:10] PRIYA SHETTY: And the customers who didn't return but got the wrong
+size?
+
+[15:11] VIKRAM SINGH: That's the harder group. We can identify orders in the
+affected window, but we don't know who actually received a wrongly-sized
+item versus who happened to order correctly. We can identify the SKUs and
+the window.
+
+[15:11] PRIYA SHETTY: I'd suggest we proactively contact everyone who
+ordered an affected SKU in the window and offer an exchange or a
+replacement. Even if a minority are fine.
+
+[15:12] KARAN MEHTA: I agree. Let's not wait for them to complain.
+
+[15:12] RAHUL SHARMA: I'll take that to operations. It's a bigger population
+than the returns alone but it's the right thing and it protects your rating.
+
+[15:13] VIKRAM SINGH: I'll give you the SKU and window list today so you can
+work out the population size.
+
+[15:13] PRIYA SHETTY: Can I ask how the double conversion happened? I want to
+make sure it isn't something in how we send the file.
+
+[15:14] VIKRAM SINGH: It isn't. To be blunt, our change introduced it. We
+added a step that converts the size when we stage your file, but we didn't
+remove the step that converts it again when we publish. So it converts twice.
+
+[15:15] PRIYA SHETTY: And your testing didn't catch it because...
+
+[15:15] VIKRAM SINGH: Because our test file used EU sizes. Which is the one
+case where double conversion does nothing. That's a bad test and I've
+already changed the fixtures to cover UK, EU and US.
+
+[15:16] PRIYA SHETTY: That's a genuinely useful answer. Thank you.
+
+[15:16] KARAN MEHTA: What's the timeline?
+
+[15:17] VIKRAM SINGH: Conversion fix in the next few days. Full catalogue
+republish after that, which is the part that takes time because it's
+eighteen thousand SKUs. And a new validation rule that compares the
+distribution of published sizes against your source, which would have
+rejected the import on day one.
+
+[15:17] PRIYA SHETTY: Distribution. So you're not checking individual
+records.
+
+[15:18] VIKRAM SINGH: No, and we can't. A UK 8 published as EU 40 doesn't
+look wrong on its own. It only looks wrong against the population. My
+onboarding note from last year said exactly this and I didn't build the
+control. That's on me.
+
+[15:19] KARAN MEHTA: At least you're not pretending a size can be validated
+by looking at it.
+
+[15:19] VIKRAM SINGH: It can't.
+
+[15:20] RAHUL SHARMA: Karan, can I raise something operational before we
+finish?
+
+[15:20] KARAN MEHTA: Go on.
+
+[15:20] RAHUL SHARMA: Your return rate is 27 percent. There's an automated
+risk rule that suspends accounts above 25 percent. I don't want to alarm you
+unnecessarily, but I want you to know it exists and that I'm watching it.
+
+[15:21] KARAN MEHTA: Suspends the whole account?
+
+[15:21] RAHUL SHARMA: Yes, if two conditions are breached together.
+
+[15:22] KARAN MEHTA: And the return rate is caused by you.
+
+[15:22] RAHUL SHARMA: It is. And I'll make sure the link is recorded. But I'd
+rather you heard it from me now than got a notification at two in the
+morning.
+
+[15:23] KARAN MEHTA: I appreciate the warning. That would be an absurd
+outcome.
+
+[15:23] RAHUL SHARMA: I agree, and I'll do what I can to prevent it.
+
+[15:24] VIKRAM SINGH: I'll also make sure the fix and the republish dates
+are documented so there's a clear record that the metric is ours.
+
+[15:24] KARAN MEHTA: Then let's get it fixed. Priya, work with Rahul on the
+customer contact population.
+
+[15:25] PRIYA SHETTY: I'll have the count by tomorrow.
+
+[15:25] RAHUL SHARMA: I'll send you the affected SKU list within the hour.
+
+[15:26] KARAN MEHTA: One last thing, and it's not a complaint. This has cost
+us a lot in returns and in customer trust. I'm not going to escalate it
+commercially because the fix and the exchange offer are the right response.
+But I want the exchange offer to be generous. Free exchange, no questions.
+
+[15:26] RAHUL SHARMA: That's what's being proposed. No time limit on the
+affected orders.
+
+[15:27] KARAN MEHTA: Then we're good. Priya will send the population count.
+
+[15:27] VIKRAM SINGH: I'll confirm the fix deployment date tomorrow.
+
+[15:28] KARAN MEHTA: Thank you both for not making me argue for this.
+
+[15:28] RAHUL SHARMA: It's our defect. Thank you for the evidence - the
+reason-code breakdown made this diagnosable in a day.
+
+[15:29] KARAN MEHTA: Goodbye.
+
+================================================================================
+DECISIONS
+================================================================================
+1. Cause accepted as platform-side: size conversion applied twice.
+2. Free exchange at the correct size offered to all affected returns, with
+   reverse logistics absorbed by the platform.
+3. Proactive contact proposed for all customers who ordered affected SKUs in
+   the defect window, not only those who returned.
+4. Structural feed validation to compare published size distribution against
+   source.
+5. Test fixtures to cover UK, EU and US size conventions.
+6. Risk that the return rate may trigger an automated suspension raised
+   proactively with the seller.
+
+FOLLOW-UP ACTIONS
+================================================================================
+Owner           Action                                          Target
+Vikram Singh    Correct duplicate conversion                    2026-08-12
+Vikram Singh    Republish catalogue with corrected size charts  2026-08-19
+Vikram Singh    Structural size distribution validation         2026-08-19
+Vikram Singh    Extend test fixtures to all size conventions    2026-08-14
+Rahul Sharma    Affected SKU and window list to seller          2026-08-06
+Priya Shetty    Customer contact population count               2026-08-07
+Rahul Sharma    Record defect-to-account link for risk rules    2026-08-07
+
+RECORDING ENDS 15:29 IST
+================================================================================

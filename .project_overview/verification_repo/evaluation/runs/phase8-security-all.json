@@ -1,0 +1,607 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-25T03:16:57+00:00",
+  "cases": 45,
+  "chunks_rechecked": 351,
+  "documents_rechecked": 188,
+  "permission_engine_violations": 0,
+  "forbidden_sources_selected": 0,
+  "unauthorized_retrieval_rate": 0.0,
+  "violations": [],
+  "forbidden_details": [],
+  "rows": [
+    {
+      "eval_id": "E001",
+      "category": "authorized_factual",
+      "user_id": "U-001",
+      "selected_documents": [
+        "S001-ACC-001",
+        "TKT-2026-0312-114",
+        "CALL-2026-0313-018",
+        "PRJ-S001-001",
+        "PRJ-S001-003"
+      ],
+      "selected_chunks": 7,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E002",
+      "category": "authorized_factual",
+      "user_id": "U-002",
+      "selected_documents": [
+        "INC-2026-0519",
+        "PRJ-S002-003",
+        "INC-2026-0716",
+        "TKT-2026-0519-207",
+        "CALL-2026-0520-041"
+      ],
+      "selected_chunks": 12,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E003",
+      "category": "authorized_factual",
+      "user_id": "U-003",
+      "selected_documents": [
+        "INC-2026-0812",
+        "TKT-2026-0812-308"
+      ],
+      "selected_chunks": 4,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E004",
+      "category": "authorized_factual",
+      "user_id": "U-004",
+      "selected_documents": [
+        "OPS-RB-004",
+        "POL-FIN-002"
+      ],
+      "selected_chunks": 5,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E005",
+      "category": "authorized_factual",
+      "user_id": "U-001",
+      "selected_documents": [
+        "PRJ-S001-004",
+        "S001-ACC-001",
+        "CALL-2026-0225-013",
+        "TKT-2026-0224-091",
+        "CALL-2026-0313-018"
+      ],
+      "selected_chunks": 10,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E006",
+      "category": "authorized_factual",
+      "user_id": "U-002",
+      "selected_documents": [
+        "INC-2026-0716",
+        "TKT-2026-0716-268",
+        "PRJ-S002-003",
+        "CALL-2026-0717-052",
+        "PRJ-S001-003"
+      ],
+      "selected_chunks": 9,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E007",
+      "category": "authorized_factual",
+      "user_id": "U-003",
+      "selected_documents": [
+        "INC-2026-0519",
+        "PRJ-S002-003",
+        "TKT-2026-0519-207",
+        "TKT-2026-0602-217",
+        "PRJ-S002-001"
+      ],
+      "selected_chunks": 10,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E008",
+      "category": "authorized_factual",
+      "user_id": "U-004",
+      "selected_documents": [
+        "PRJ-S004-003",
+        "PRJ-S004-002",
+        "INC-2026-0805"
+      ],
+      "selected_chunks": 8,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E009",
+      "category": "authorized_factual",
+      "user_id": "U-001",
+      "selected_documents": [
+        "PRJ-S003-003",
+        "S003-ACC-001",
+        "TKT-2026-0115-054",
+        "PRJ-S003-001",
+        "CALL-2026-0116-004"
+      ],
+      "selected_chunks": 11,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E010",
+      "category": "authorized_factual",
+      "user_id": "U-005",
+      "selected_documents": [
+        "INC-2026-0421",
+        "scenario_overview",
+        "TKT-2026-0421-162",
+        "POL-SEC-001",
+        "PRJ-S003-002"
+      ],
+      "selected_chunks": 10,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E011",
+      "category": "authorized_factual",
+      "user_id": "U-002",
+      "selected_documents": [
+        "TKT-2026-0602-217",
+        "PRJ-S002-003"
+      ],
+      "selected_chunks": 3,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E012",
+      "category": "authorized_factual",
+      "user_id": "U-005",
+      "selected_documents": [
+        "INC-2026-0903",
+        "S003-ACC-001",
+        "TKT-2026-0903-336",
+        "CALL-2026-0904-071",
+        "PRJ-S003-002"
+      ],
+      "selected_chunks": 9,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E013",
+      "category": "multi_document",
+      "user_id": "U-003",
+      "selected_documents": [
+        "PRJ-S001-003",
+        "TKT-2026-0312-114",
+        "INC-2026-0312",
+        "PRJ-S001-001",
+        "INC-2026-0812"
+      ],
+      "selected_chunks": 7,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E014",
+      "category": "multi_document",
+      "user_id": "U-002",
+      "selected_documents": [
+        "TKT-2026-0716-268",
+        "POL-BIZ-004",
+        "CALL-2026-0717-052",
+        "TKT-2026-0519-207",
+        "INC-2026-0716"
+      ],
+      "selected_chunks": 6,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E015",
+      "category": "multi_document",
+      "user_id": "U-004",
+      "selected_documents": [
+        "PRJ-S004-003",
+        "PRJ-S004-002",
+        "INC-2026-0805",
+        "POL-OPS-006"
+      ],
+      "selected_chunks": 7,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E016",
+      "category": "multi_document",
+      "user_id": "U-001",
+      "selected_documents": [
+        "PRJ-S003-003",
+        "TKT-2026-0115-054",
+        "S003-ACC-001",
+        "POL-BIZ-003",
+        "PRJ-S003-001"
+      ],
+      "selected_chunks": 11,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E017",
+      "category": "multi_document",
+      "user_id": "U-003",
+      "selected_documents": [
+        "INC-2026-0519",
+        "PRJ-S002-003",
+        "TKT-2026-0519-207"
+      ],
+      "selected_chunks": 6,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E018",
+      "category": "multi_document",
+      "user_id": "U-004",
+      "selected_documents": [
+        "OPS-RB-004",
+        "POL-FIN-002"
+      ],
+      "selected_chunks": 4,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E019",
+      "category": "multi_document",
+      "user_id": "U-005",
+      "selected_documents": [
+        "PRJ-S004-003",
+        "INC-2026-0805",
+        "scenario_overview",
+        "PRJ-S004-002",
+        "S004-ACC-001"
+      ],
+      "selected_chunks": 12,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E020",
+      "category": "multi_document",
+      "user_id": "U-002",
+      "selected_documents": [
+        "INC-2026-0812",
+        "INC-2026-0519",
+        "INC-2026-0312",
+        "TKT-2026-0812-308",
+        "TKT-2026-0716-268"
+      ],
+      "selected_chunks": 5,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E021",
+      "category": "cross_seller",
+      "user_id": "U-002",
+      "selected_documents": [
+        "INC-2026-0519",
+        "PRJ-S002-003",
+        "ORG-001",
+        "PRJ-S001-003",
+        "INC-2026-0312"
+      ],
+      "selected_chunks": 9,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E022",
+      "category": "cross_seller",
+      "user_id": "U-001",
+      "selected_documents": [
+        "S001-ACC-001",
+        "S003-ACC-001",
+        "ORG-001",
+        "PRJ-S001-001"
+      ],
+      "selected_chunks": 8,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E023",
+      "category": "cross_seller",
+      "user_id": "U-004",
+      "selected_documents": [
+        "INC-2026-0805",
+        "INC-2026-0519",
+        "PRJ-S002-003",
+        "OPS-RB-003",
+        "PRJ-S004-002"
+      ],
+      "selected_chunks": 11,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E024",
+      "category": "cross_seller",
+      "user_id": "U-003",
+      "selected_documents": [
+        "INC-2026-0716",
+        "TKT-2026-0716-268",
+        "INC-2026-0812",
+        "PRJ-S002-002",
+        "TKT-2026-0812-308"
+      ],
+      "selected_chunks": 9,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E025",
+      "category": "cross_seller",
+      "user_id": "U-005",
+      "selected_documents": [
+        "scenario_overview",
+        "INC-2026-0805",
+        "PRJ-S002-002",
+        "INC-2026-0519",
+        "CALL-2026-0904-071"
+      ],
+      "selected_chunks": 8,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E026",
+      "category": "cross_seller",
+      "user_id": "U-001",
+      "selected_documents": [
+        "S001-ACC-001",
+        "TKT-2026-0903-336",
+        "CALL-2026-0904-071",
+        "TKT-2026-0312-114",
+        "S003-ACC-001"
+      ],
+      "selected_chunks": 10,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E027",
+      "category": "follow_up",
+      "user_id": "U-001",
+      "selected_documents": [
+        "S001-ACC-001",
+        "TKT-2026-0312-114",
+        "CALL-2026-0313-018",
+        "PRJ-S001-001",
+        "PRJ-S001-003"
+      ],
+      "selected_chunks": 8,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E028",
+      "category": "follow_up",
+      "user_id": "U-002",
+      "selected_documents": [
+        "INC-2026-0519",
+        "PRJ-S002-003",
+        "TKT-2026-0519-207",
+        "CALL-2026-0520-041",
+        "INC-2026-0716"
+      ],
+      "selected_chunks": 10,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E029",
+      "category": "follow_up",
+      "user_id": "U-003",
+      "selected_documents": [
+        "INC-2026-0812",
+        "TKT-2026-0812-308"
+      ],
+      "selected_chunks": 4,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E030",
+      "category": "follow_up",
+      "user_id": "U-004",
+      "selected_documents": [
+        "PRJ-S004-003",
+        "PRJ-S004-002",
+        "INC-2026-0805"
+      ],
+      "selected_chunks": 8,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E031",
+      "category": "follow_up",
+      "user_id": "U-001",
+      "selected_documents": [
+        "PRJ-S003-003",
+        "S003-ACC-001",
+        "TKT-2026-0115-054",
+        "CALL-2026-0116-004",
+        "PRJ-S003-001"
+      ],
+      "selected_chunks": 12,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E032",
+      "category": "follow_up",
+      "user_id": "U-005",
+      "selected_documents": [
+        "INC-2026-0903",
+        "S003-ACC-001",
+        "TKT-2026-0903-336",
+        "CALL-2026-0904-071",
+        "PRJ-S003-002"
+      ],
+      "selected_chunks": 9,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E043",
+      "category": "mixed_access",
+      "user_id": "U-001",
+      "selected_documents": [
+        "S001-ACC-001",
+        "PRJ-S001-002",
+        "TKT-2026-0312-114",
+        "CALL-2026-0313-018",
+        "ORG-001"
+      ],
+      "selected_chunks": 10,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E044",
+      "category": "mixed_access",
+      "user_id": "U-002",
+      "selected_documents": [
+        "INC-2026-0519",
+        "INC-2026-0716",
+        "PRJ-S002-003",
+        "CALL-2026-0717-052",
+        "ORG-001"
+      ],
+      "selected_chunks": 11,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E045",
+      "category": "mixed_access",
+      "user_id": "U-003",
+      "selected_documents": [
+        "INC-2026-0716",
+        "INC-2026-0519",
+        "PRJ-S002-003",
+        "TKT-2026-0716-268",
+        "POL-SEC-001"
+      ],
+      "selected_chunks": 9,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E046",
+      "category": "mixed_access",
+      "user_id": "U-004",
+      "selected_documents": [
+        "INC-2026-0805",
+        "PRJ-S004-003",
+        "PRJ-S004-002"
+      ],
+      "selected_chunks": 7,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E047",
+      "category": "mixed_access",
+      "user_id": "U-001",
+      "selected_documents": [
+        "POL-BIZ-004",
+        "POL-SEC-001",
+        "POL-FIN-002",
+        "ORG-001"
+      ],
+      "selected_chunks": 6,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E048",
+      "category": "mixed_access",
+      "user_id": "U-002",
+      "selected_documents": [
+        "TKT-2026-0812-308",
+        "TKT-2026-0224-091",
+        "TKT-2026-0312-114",
+        "ORG-001",
+        "CALL-2026-0313-018"
+      ],
+      "selected_chunks": 9,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E049",
+      "category": "policy_governance",
+      "user_id": "U-004",
+      "selected_documents": [
+        "POL-IT-002",
+        "POL-SEC-002",
+        "ORG-001"
+      ],
+      "selected_chunks": 4,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E050",
+      "category": "policy_governance",
+      "user_id": "U-003",
+      "selected_documents": [
+        "POL-SEC-002",
+        "POL-IT-002"
+      ],
+      "selected_chunks": 4,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E051",
+      "category": "policy_governance",
+      "user_id": "U-001",
+      "selected_documents": [
+        "POL-BIZ-003",
+        "POL-FIN-002",
+        "PRJ-S001-001",
+        "PRJ-S003-003",
+        "TKT-2026-0115-054"
+      ],
+      "selected_chunks": 8,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E052",
+      "category": "policy_governance",
+      "user_id": "U-002",
+      "selected_documents": [
+        "POL-SEC-001"
+      ],
+      "selected_chunks": 2,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E053",
+      "category": "ambiguous",
+      "user_id": "U-002",
+      "selected_documents": [
+        "INC-2026-0519",
+        "PRJ-S002-003",
+        "TKT-2026-0519-207",
+        "CALL-2026-0520-041"
+      ],
+      "selected_chunks": 6,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E054",
+      "category": "ambiguous",
+      "user_id": "U-004",
+      "selected_documents": [
+        "INC-2026-0716",
+        "OPS-RB-006",
+        "OPS-RB-002",
+        "INC-2026-0519"
+      ],
+      "selected_chunks": 5,
+      "forbidden_intersection": []
+    },
+    {
+      "eval_id": "E055",
+      "category": "ambiguous",
+      "user_id": "U-003",
+      "selected_documents": [
+        "INC-2026-0716",
+        "TKT-2026-0716-268",
+        "PRJ-S002-002",
+        "INC-2026-0312",
+        "TKT-2026-0812-308"
+      ],
+      "selected_chunks": 8,
+      "forbidden_intersection": []
+    }
+  ]
+}

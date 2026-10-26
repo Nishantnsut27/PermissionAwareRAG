@@ -1,0 +1,10 @@
+ .env.example                       |    27 +
+ .gitignore                         |     2 -
+ access_control/reports/audit.jsonl | 14611 +++++++++++++++++++++++++++++++++++
+ access_control/src/retrieval.py    |    17 +-
+ answering/src/config.py            |   105 +
+ answering/src/reranker.py          |    54 +-
+ answering/src/selection.py         |    56 +-
+ answering/src/service.py           |   150 +-
+ sofar.md                           |   553 +-
+ 9 files changed, 15549 insertions(+), 26 deletions(-)

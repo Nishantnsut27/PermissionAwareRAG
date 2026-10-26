@@ -63,10 +63,115 @@ RERANK_MAX_BACKOFF_S = _float("RERANK_MAX_BACKOFF_S", 60.0)
 API_HOST = os.getenv("API_HOST", "127.0.0.1")
 API_PORT = _int("API_PORT", 8000)
 
+OPENJEV_API_KEY = os.getenv("OPENJEV_API_KEY", "").strip()
+OPENJEV_BASE_URL = os.getenv(
+    "OPENJEV_BASE_URL", "https://api.openjev.sh/v1/systemone")
+OPENJEV_MODEL = os.getenv("OPENJEV_MODEL", "openjev")
+# Query understanding sits before retrieval on the request path, so the budget
+# is small and a failure falls back rather than retrying for long.
+OPENJEV_TIMEOUT_S = _int("OPENJEV_TIMEOUT_S", 8)
+OPENJEV_MAX_RETRIES = _int("OPENJEV_MAX_RETRIES", 1)
+OPENJEV_BACKOFF_S = _float("OPENJEV_BACKOFF_S", 1.0)
+OPENJEV_MAX_BACKOFF_S = _float("OPENJEV_MAX_BACKOFF_S", 6.0)
+OPENJEV_ENABLED = (OPENJEV_API_KEY
+                   and os.getenv("OPENJEV_ENABLED", "true").strip().lower()
+                   != "false")
+
+QUERY_AWARE_ENABLED = os.getenv("QUERY_AWARE_ENABLED", "true").strip().lower() \
+    != "false"
+QUERY_AWARE_IDENTIFIER_CANDIDATES = _int("QUERY_AWARE_IDENTIFIER_CANDIDATES", 10)
+QUERY_AWARE_IDENTIFIER_BOOST = _float("QUERY_AWARE_IDENTIFIER_BOOST", 1.0)
+QUERY_AWARE_ENTITY_BOOST = _float("QUERY_AWARE_ENTITY_BOOST", 0.2)
+QUERY_AWARE_SELLER_BOOST = _float("QUERY_AWARE_SELLER_BOOST", 0.15)
+QUERY_AWARE_EVIDENCE_TYPE_BOOST = _float("QUERY_AWARE_EVIDENCE_TYPE_BOOST", 0.1)
+
+# Phase 7 query-aware reranking. The plan signal is a bounded ADDITIVE term on
+# top of Jina relevance, never a replacement: with the default weight the total
+# adjustment is capped at 0.06 while Jina separates on-topic (>0.5) from
+# off-topic (<0.05) passages, so a metadata match can break a tie but cannot
+# overturn a relevance judgment. Set RERANK_PLAN_AWARE=false for exact
+# pre-Phase-7 ordering.
+RERANK_PLAN_AWARE = (
+    os.getenv("RERANK_PLAN_AWARE", "true").strip().lower() != "false")
+RERANK_PLAN_WEIGHT = _float("RERANK_PLAN_WEIGHT", 0.06)
+# Relative importance inside that bound, set by the Phase 7 ablation over the
+# 45 scored golden cases (evaluation/runs/phase7-eval.json). Only the
+# evidence-type signal earned its place: it improved 9 cases and regressed 0
+# (recall 0.9556->0.9741, precision 0.4156->0.4285, MRR 0.8674->0.9081). That
+# is the signal that directly attacks the two largest Phase 6 false-positive
+# categories - "wrong document type" (33%) and "generic organization document"
+# (28%) - which is why it generalises rather than fitting this benchmark.
+#
+# The others are implemented and configurable but ship at zero because they
+# measured worse: intent cost recall on E001 (1.0->0.5), aspect and event cost
+# precision, seller was inert, and combining them diluted the evidence gain
+# back to baseline precision. Raise one only with a re-run of the ablation.
+RERANK_PLAN_ASPECT_WEIGHT = _float("RERANK_PLAN_ASPECT_WEIGHT", 0.0)
+RERANK_PLAN_EVENT_WEIGHT = _float("RERANK_PLAN_EVENT_WEIGHT", 0.0)
+RERANK_PLAN_INTENT_WEIGHT = _float("RERANK_PLAN_INTENT_WEIGHT", 0.0)
+RERANK_PLAN_EVIDENCE_WEIGHT = _float("RERANK_PLAN_EVIDENCE_WEIGHT", 1.0)
+RERANK_PLAN_SELLER_WEIGHT = _float("RERANK_PLAN_SELLER_WEIGHT", 0.0)
+# Appending "needs: ...; prefer: ..." to the reranker query measured WORSE than
+# leaving the query alone (recall 0.9556->0.9333, two cases regressed, E054 to
+# zero): the hint competes with the user's own wording for Jina's attention.
+# Off by default; the code path is kept for future experiments.
+RERANK_PLAN_QUERY_HINTS = (
+    os.getenv("RERANK_PLAN_QUERY_HINTS", "false").strip().lower() == "true")
+
+QUERY_AWARE_PROMOTION = (
+    os.getenv("QUERY_AWARE_PROMOTION", "true").strip().lower() != "false")
+QUERY_AWARE_PROMOTE_CRITERIA = tuple(
+    part.strip() for part in
+    os.getenv("QUERY_AWARE_PROMOTE_CRITERIA", "aspect,date").split(",")
+    if part.strip())
+QUERY_AWARE_MAX_PROMOTED = _int("QUERY_AWARE_MAX_PROMOTED", 4)
+
 # Full evaluation answers span all demo identities. Expose them only in an
 # explicitly enabled, trusted local operator session until real auth exists.
 EVALUATION_REPORTS_ENABLED = os.getenv(
     "EVALUATION_REPORTS_ENABLED", "false").strip().lower() == "true"
+
+
+# Phase 8 evidence-aware selection. The selector replaces "top K by score" with
+# bounded greedy marginal utility: a document is worth a slot for its relevance
+# PLUS what it adds that nothing already selected covers, MINUS how much it
+# repeats. Relevance is normalised to 0..1 per query, so these weights read as
+# "how much of the best document's relevance one new piece of coverage is
+# worth" - all well under 1.0, because coverage must never overturn a decisive
+# relevance judgment (spec section 18).
+EVIDENCE_SELECTION_ENABLED = (
+    os.getenv("EVIDENCE_SELECTION_ENABLED", "true").strip().lower() != "false")
+EVIDENCE_ASPECT_WEIGHT = _float("EVIDENCE_ASPECT_WEIGHT", 0.30)
+EVIDENCE_TYPE_WEIGHT = _float("EVIDENCE_TYPE_WEIGHT", 0.15)
+EVIDENCE_ENTITY_WEIGHT = _float("EVIDENCE_ENTITY_WEIGHT", 0.20)
+EVIDENCE_REDUNDANCY_PENALTY = _float("EVIDENCE_REDUNDANCY_PENALTY", 0.25)
+# The stopping rule, and the actual precision lever: the value a candidate must
+# still be worth, given everything already selected, to earn a slot. 0.0 keeps
+# every document the capacity allows; raising it trades breadth for precision.
+# Tuned on the Phase 8 dev split only - see docs/phase8-evidence-aware-selection.md.
+EVIDENCE_MIN_MARGINAL_UTILITY = _float("EVIDENCE_MIN_MARGINAL_UTILITY", 0.0)
+
+
+# Phase 9 evidence-aware context packing. The context budget is unchanged
+# (max_context_chars); Phase 9 only changes HOW that fixed budget is spent.
+# Measured motivation (docs/phase9-context-packing.md): the budget binds in 28
+# of 45 cases and drops ~24% of Phase 8's selected chunks, and the old
+# depth-round x score fill can drop an aspect-complementary passage (e.g. the
+# remediation half of a two-part answer) while keeping a redundant background
+# one. Phase 9 keeps document breadth first (so recall is untouched) and then
+# fills the remaining budget with aspect-complementary passages before
+# redundant depth, which is the "drop low-value before high-value" rule of
+# spec section 21. Set CONTEXT_PACKING_ENABLED=false for the exact pre-Phase-9
+# breadth-first-by-depth-round builder.
+CONTEXT_PACKING_ENABLED = (
+    os.getenv("CONTEXT_PACKING_ENABLED", "true").strip().lower() != "false")
+# Two selected passages of one document count as redundant only above this
+# Jaccard overlap. Deliberately high: on this corpus the maximum observed
+# same-document passage overlap is well below it (measured 0 pairs >= 0.5), so
+# this is a conservative guard that never fires today and exists only to stay
+# safe if the corpus changes. It never drops a passage that carries a required
+# aspect none of the already-kept passages carry.
+CONTEXT_PACKING_REDUNDANCY_TAU = _float("CONTEXT_PACKING_REDUNDANCY_TAU", 0.85)
 
 
 @dataclass(frozen=True)

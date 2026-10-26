@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-25T12:30:55+00:00",
+  "authorization_matrix": [
+    {
+      "user_id": "U-001",
+      "role": "Account Manager",
+      "clearance": "CONFIDENTIAL",
+      "seller_scope": [
+        "S001",
+        "S003"
+      ],
+      "authorized_documents": 26,
+      "denied_documents": 37,
+      "cross_seller_leaks": 0
+    },
+    {
+      "user_id": "U-002",
+      "role": "Support Engineer",
+      "clearance": "CONFIDENTIAL",
+      "seller_scope": [
+        "S001",
+        "S002"
+      ],
+      "authorized_documents": 23,
+      "denied_documents": 40,
+      "cross_seller_leaks": 0
+    },
+    {
+      "user_id": "U-003",
+      "role": "Software Engineer",
+      "clearance": "CONFIDENTIAL",
+      "seller_scope": [
+        "S001",
+        "S002"
+      ],
+      "authorized_documents": 23,
+      "denied_documents": 40,
+      "cross_seller_leaks": 0
+    },
+    {
+      "user_id": "U-004",
+      "role": "System Engineer",
+      "clearance": "RESTRICTED",
+      "seller_scope": [
+        "S002",
+        "S004"
+      ],
+      "authorized_documents": 20,
+      "denied_documents": 43,
+      "cross_seller_leaks": 0
+    },
+    {
+      "user_id": "U-005",
+      "role": "Platform Administrator",
+      "clearance": "RESTRICTED",
+      "seller_scope": [
+        "S001",
+        "S002",
+        "S003",
+        "S004"
+      ],
+      "authorized_documents": 63,
+      "denied_documents": 0,
+      "cross_seller_leaks": 0
+    }
+  ],
+  "forbidden_reachability": {
+    "forbidden_checked": 61,
+    "forbidden_reachable": 0,
+    "offenders": []
+  },
+  "fail_closed": {
+    "probes": {
+      "none_metadata": false,
+      "non_dict_metadata": false,
+      "empty_metadata": false,
+      "missing_seller": false,
+      "unknown_seller": false,
+      "out_of_scope_seller": false,
+      "over_clearance": false,
+      "unknown_user_raises": true,
+      "wildcard_smuggle_rejected": true
+    },
+    "fail_open_count": 0
+  },
+  "identifier_leak_probe": {
+    "identifier": "INC-2026-0519",
+    "candidates": 4,
+    "allowed": 0,
+    "denied": 4,
+    "leaked_out_of_scope": 0
+  },
+  "threat_matrix": [
+    {
+      "threat": "Unauthorized seller",
+      "expected": "DENY",
+      "status": "PASS"
+    },
+    {
+      "threat": "Unauthorized document (forbidden reachable)",
+      "expected": "0",
+      "status": "PASS"
+    },
+    {
+      "threat": "Unauthorized identifier",
+      "expected": "DENY",
+      "status": "PASS"
+    },
+    {
+      "threat": "Cross-seller isolation",
+      "expected": "0 leaks",
+      "status": "PASS"
+    },
+    {
+      "threat": "Fail-open authorization",
+      "expected": "0",
+      "status": "PASS"
+    },
+    {
+      "threat": "Phase 8 output subset + auth (live)",
+      "expected": "0 violations",
+      "status": "PASS"
+    },
+    {
+      "threat": "Phase 9 output subset + auth (live)",
+      "expected": "0 violations",
+      "status": "PASS"
+    }
+  ],
+  "metrics": {
+    "users": 5,
+    "corpus_documents": 63,
+    "cross_seller_leakage_rate": 0.0,
+    "forbidden_reachable": 0,
+    "fail_open_count": 0,
+    "identifier_leak": 0,
+    "phase8_unauthorized_rate": 0.0,
+    "phase9_unauthorized_rate": 0.0
+  }
+}

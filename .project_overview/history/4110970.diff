@@ -1,0 +1,23 @@
+commit 4110970acb42041ad32c77716bca3f3d57e8706f
+Author:     Nishantnsut27 <143648131+Nishantnsut27@users.noreply.github.com>
+AuthorDate: Tue Sep 22 19:47:46 2026 +0530
+Commit:     Nishantnsut27 <143648131+Nishantnsut27@users.noreply.github.com>
+CommitDate: Tue Sep 22 19:47:46 2026 +0530
+
+    fix: include sparse vocabulary for production retrieval
+
+diff --git a/.gitignore b/.gitignore
+index 3719c64..f187ddf 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -31,9 +31,7 @@ Thumbs.db
+ .vscode/
+ 
+ # Pipeline artifacts
+-ingestion/reports/
+-indexing/reports/
+-access_control/reports/
++
+ evaluation/tests/
+ 
+ guide.md

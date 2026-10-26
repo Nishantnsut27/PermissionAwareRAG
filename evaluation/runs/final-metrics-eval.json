@@ -1,0 +1,1308 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-23T18:58:14+00:00",
+  "summary": {
+    "scored_cases": 45,
+    "baseline": {
+      "recall": 0.9556,
+      "precision": 0.4115,
+      "mrr": 0.9119,
+      "mean_selected_chunks": 7.9778
+    },
+    "plan": {
+      "recall": 0.9556,
+      "precision": 0.4126,
+      "mrr": 0.9119,
+      "mean_selected_chunks": 7.8667
+    },
+    "recall_regressions": [],
+    "recall_improvements": 0
+  },
+  "rows": [
+    {
+      "eval_id": "E001",
+      "category": "authorized_factual",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 7
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 7
+      }
+    },
+    {
+      "eval_id": "E002",
+      "category": "authorized_factual",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 11
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 11
+      }
+    },
+    {
+      "eval_id": "E003",
+      "category": "authorized_factual",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4
+      }
+    },
+    {
+      "eval_id": "E004",
+      "category": "authorized_factual",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 5
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 5
+      }
+    },
+    {
+      "eval_id": "E005",
+      "category": "authorized_factual",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S001-004",
+          "S001-ACC-001",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 10
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S001-004",
+          "S001-ACC-001",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 10
+      }
+    },
+    {
+      "eval_id": "E006",
+      "category": "authorized_factual",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "CALL-2026-0717-052",
+          "PRJ-S002-003",
+          "TKT-2026-0602-217"
+        ],
+        "n_selected": 9
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 8
+      }
+    },
+    {
+      "eval_id": "E007",
+      "category": "authorized_factual",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "TKT-2026-0602-217",
+          "PRJ-S002-001"
+        ],
+        "n_selected": 10
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "TKT-2026-0602-217",
+          "PRJ-S002-001"
+        ],
+        "n_selected": 10
+      }
+    },
+    {
+      "eval_id": "E008",
+      "category": "authorized_factual",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805"
+        ],
+        "n_selected": 8
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805"
+        ],
+        "n_selected": 8
+      }
+    },
+    {
+      "eval_id": "E009",
+      "category": "authorized_factual",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "S003-ACC-001",
+          "TKT-2026-0115-054",
+          "PRJ-S003-001",
+          "CALL-2026-0116-004"
+        ],
+        "n_selected": 10
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "S003-ACC-001",
+          "TKT-2026-0115-054",
+          "PRJ-S003-001",
+          "CALL-2026-0116-004"
+        ],
+        "n_selected": 10
+      }
+    },
+    {
+      "eval_id": "E010",
+      "category": "authorized_factual",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0421",
+          "scenario_overview",
+          "S002-ACC-001",
+          "TKT-2026-0421-162",
+          "POL-SEC-001"
+        ],
+        "n_selected": 11
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0421",
+          "scenario_overview",
+          "TKT-2026-0421-162",
+          "POL-SEC-001",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 10
+      }
+    },
+    {
+      "eval_id": "E011",
+      "category": "authorized_factual",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "TKT-2026-0602-217",
+          "PRJ-S002-003"
+        ],
+        "n_selected": 3
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "TKT-2026-0602-217",
+          "PRJ-S002-003"
+        ],
+        "n_selected": 3
+      }
+    },
+    {
+      "eval_id": "E012",
+      "category": "authorized_factual",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 9
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 9
+      }
+    },
+    {
+      "eval_id": "E013",
+      "category": "multi_document",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S001-003",
+          "TKT-2026-0312-114",
+          "INC-2026-0312",
+          "PRJ-S001-001",
+          "TKT-2026-0602-217"
+        ],
+        "n_selected": 7
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S001-003",
+          "TKT-2026-0312-114",
+          "INC-2026-0312",
+          "PRJ-S001-001",
+          "TKT-2026-0602-217"
+        ],
+        "n_selected": 7
+      }
+    },
+    {
+      "eval_id": "E014",
+      "category": "multi_document",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "TKT-2026-0716-268",
+          "INC-2026-0716",
+          "CALL-2026-0717-052",
+          "TKT-2026-0519-207",
+          "POL-BIZ-004"
+        ],
+        "n_selected": 6
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "TKT-2026-0716-268",
+          "INC-2026-0716",
+          "CALL-2026-0717-052",
+          "TKT-2026-0519-207",
+          "POL-BIZ-004"
+        ],
+        "n_selected": 6
+      }
+    },
+    {
+      "eval_id": "E015",
+      "category": "multi_document",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006"
+        ],
+        "n_selected": 8
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006"
+        ],
+        "n_selected": 8
+      }
+    },
+    {
+      "eval_id": "E016",
+      "category": "multi_document",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "S003-ACC-001",
+          "PRJ-S003-001",
+          "POL-BIZ-003"
+        ],
+        "n_selected": 11
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "S003-ACC-001",
+          "PRJ-S003-001",
+          "POL-BIZ-003"
+        ],
+        "n_selected": 11
+      }
+    },
+    {
+      "eval_id": "E017",
+      "category": "multi_document",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207"
+        ],
+        "n_selected": 5
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207"
+        ],
+        "n_selected": 5
+      }
+    },
+    {
+      "eval_id": "E018",
+      "category": "multi_document",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 4
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 4
+      }
+    },
+    {
+      "eval_id": "E019",
+      "category": "multi_document",
+      "baseline": {
+        "recall": 0.6666666666666666,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "scenario_overview",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "S004-ACC-001"
+        ],
+        "n_selected": 12
+      },
+      "plan": {
+        "recall": 0.6666666666666666,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "scenario_overview",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "S004-ACC-001"
+        ],
+        "n_selected": 12
+      }
+    },
+    {
+      "eval_id": "E020",
+      "category": "multi_document",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "INC-2026-0312",
+          "ORG-001",
+          "INC-2026-0519",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 6
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "INC-2026-0312",
+          "INC-2026-0519",
+          "TKT-2026-0812-308",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 6
+      }
+    },
+    {
+      "eval_id": "E021",
+      "category": "cross_seller",
+      "baseline": {
+        "recall": 0.5,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "ORG-001",
+          "PRJ-S001-003",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 7
+      },
+      "plan": {
+        "recall": 0.5,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "ORG-001",
+          "PRJ-S001-003",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 7
+      }
+    },
+    {
+      "eval_id": "E022",
+      "category": "cross_seller",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "S001-ACC-001",
+          "ORG-001",
+          "S003-ACC-001",
+          "PRJ-S003-001",
+          "PRJ-S001-001"
+        ],
+        "n_selected": 7
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "S001-ACC-001",
+          "ORG-001",
+          "S003-ACC-001",
+          "PRJ-S003-001",
+          "PRJ-S001-001"
+        ],
+        "n_selected": 7
+      }
+    },
+    {
+      "eval_id": "E023",
+      "category": "cross_seller",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0805",
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "OPS-RB-003",
+          "PRJ-S004-002"
+        ],
+        "n_selected": 11
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0805",
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "OPS-RB-003",
+          "PRJ-S004-002"
+        ],
+        "n_selected": 11
+      }
+    },
+    {
+      "eval_id": "E024",
+      "category": "cross_seller",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "INC-2026-0812",
+          "PRJ-S002-002",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 8
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "INC-2026-0812",
+          "PRJ-S002-002",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 8
+      }
+    },
+    {
+      "eval_id": "E025",
+      "category": "cross_seller",
+      "baseline": {
+        "recall": 0.3333333333333333,
+        "precision": 0.2,
+        "mrr": 0.5,
+        "documents": [
+          "scenario_overview",
+          "INC-2026-0805",
+          "PRJ-S002-002",
+          "PRJ-S002-001",
+          "CALL-2026-0904-071"
+        ],
+        "n_selected": 8
+      },
+      "plan": {
+        "recall": 0.3333333333333333,
+        "precision": 0.2,
+        "mrr": 0.5,
+        "documents": [
+          "scenario_overview",
+          "INC-2026-0805",
+          "PRJ-S002-002",
+          "PRJ-S002-001",
+          "CALL-2026-0904-071"
+        ],
+        "n_selected": 7
+      }
+    },
+    {
+      "eval_id": "E026",
+      "category": "cross_seller",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "TKT-2026-0312-114",
+          "S003-ACC-001"
+        ],
+        "n_selected": 10
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "TKT-2026-0312-114",
+          "S003-ACC-001"
+        ],
+        "n_selected": 10
+      }
+    },
+    {
+      "eval_id": "E027",
+      "category": "follow_up",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 0.2,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 8
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 0.2,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 8
+      }
+    },
+    {
+      "eval_id": "E028",
+      "category": "follow_up",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "CALL-2026-0717-052"
+        ],
+        "n_selected": 10
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "CALL-2026-0717-052"
+        ],
+        "n_selected": 10
+      }
+    },
+    {
+      "eval_id": "E029",
+      "category": "follow_up",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4
+      }
+    },
+    {
+      "eval_id": "E030",
+      "category": "follow_up",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006"
+        ],
+        "n_selected": 9
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006"
+        ],
+        "n_selected": 9
+      }
+    },
+    {
+      "eval_id": "E031",
+      "category": "follow_up",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "S003-ACC-001",
+          "TKT-2026-0115-054",
+          "CALL-2026-0116-004",
+          "PRJ-S003-001"
+        ],
+        "n_selected": 12
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "S003-ACC-001",
+          "TKT-2026-0115-054",
+          "CALL-2026-0116-004",
+          "PRJ-S003-001"
+        ],
+        "n_selected": 12
+      }
+    },
+    {
+      "eval_id": "E032",
+      "category": "follow_up",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 9
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 9
+      }
+    },
+    {
+      "eval_id": "E043",
+      "category": "mixed_access",
+      "baseline": {
+        "recall": 0.5,
+        "precision": 0.2,
+        "mrr": 0.3333333333333333,
+        "documents": [
+          "S001-ACC-001",
+          "PRJ-S001-002",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "ORG-001"
+        ],
+        "n_selected": 10
+      },
+      "plan": {
+        "recall": 0.5,
+        "precision": 0.2,
+        "mrr": 0.3333333333333333,
+        "documents": [
+          "S001-ACC-001",
+          "PRJ-S001-002",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "ORG-001"
+        ],
+        "n_selected": 10
+      }
+    },
+    {
+      "eval_id": "E044",
+      "category": "mixed_access",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "INC-2026-0716",
+          "ORG-001",
+          "CALL-2026-0717-052"
+        ],
+        "n_selected": 11
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "INC-2026-0716",
+          "ORG-001",
+          "CALL-2026-0717-052"
+        ],
+        "n_selected": 11
+      }
+    },
+    {
+      "eval_id": "E045",
+      "category": "mixed_access",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "ORG-001",
+          "TKT-2026-0716-268"
+        ],
+        "n_selected": 10
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "ORG-001",
+          "TKT-2026-0716-268"
+        ],
+        "n_selected": 10
+      }
+    },
+    {
+      "eval_id": "E046",
+      "category": "mixed_access",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0805",
+          "PRJ-S004-003",
+          "PRJ-S004-002"
+        ],
+        "n_selected": 7
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0805",
+          "PRJ-S004-003",
+          "PRJ-S004-002"
+        ],
+        "n_selected": 7
+      }
+    },
+    {
+      "eval_id": "E047",
+      "category": "mixed_access",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "POL-BIZ-004",
+          "POL-SEC-001",
+          "ORG-001",
+          "POL-FIN-002"
+        ],
+        "n_selected": 7
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "POL-BIZ-004",
+          "POL-SEC-001",
+          "ORG-001",
+          "POL-FIN-002"
+        ],
+        "n_selected": 6
+      }
+    },
+    {
+      "eval_id": "E048",
+      "category": "mixed_access",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "documents": [
+          "TKT-2026-0812-308",
+          "TKT-2026-0224-091",
+          "TKT-2026-0312-114",
+          "ORG-001",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 9
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "documents": [
+          "TKT-2026-0812-308",
+          "TKT-2026-0224-091",
+          "TKT-2026-0312-114",
+          "ORG-001",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 9
+      }
+    },
+    {
+      "eval_id": "E049",
+      "category": "policy_governance",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "POL-IT-002",
+          "ORG-001",
+          "POL-SEC-002",
+          "POL-SEC-001"
+        ],
+        "n_selected": 7
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "POL-IT-002",
+          "ORG-001",
+          "POL-SEC-002",
+          "POL-SEC-001"
+        ],
+        "n_selected": 7
+      }
+    },
+    {
+      "eval_id": "E050",
+      "category": "policy_governance",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "POL-SEC-002",
+          "POL-IT-002"
+        ],
+        "n_selected": 4
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "POL-SEC-002",
+          "POL-IT-002"
+        ],
+        "n_selected": 4
+      }
+    },
+    {
+      "eval_id": "E051",
+      "category": "policy_governance",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "POL-BIZ-003",
+          "POL-FIN-002",
+          "PRJ-S001-001",
+          "PRJ-S003-003",
+          "TKT-2026-0115-054"
+        ],
+        "n_selected": 8
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "POL-BIZ-003",
+          "POL-FIN-002",
+          "PRJ-S001-001",
+          "PRJ-S003-003",
+          "TKT-2026-0115-054"
+        ],
+        "n_selected": 8
+      }
+    },
+    {
+      "eval_id": "E052",
+      "category": "policy_governance",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "POL-SEC-001"
+        ],
+        "n_selected": 2
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "POL-SEC-001"
+        ],
+        "n_selected": 2
+      }
+    },
+    {
+      "eval_id": "E053",
+      "category": "ambiguous",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "INC-2026-0312"
+        ],
+        "n_selected": 7
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 6
+      }
+    },
+    {
+      "eval_id": "E054",
+      "category": "ambiguous",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 0.5,
+        "documents": [
+          "INC-2026-0716",
+          "OPS-RB-002",
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "OPS-RB-006"
+        ],
+        "n_selected": 9
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 0.5,
+        "documents": [
+          "INC-2026-0716",
+          "OPS-RB-002",
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "OPS-RB-006"
+        ],
+        "n_selected": 9
+      }
+    },
+    {
+      "eval_id": "E055",
+      "category": "ambiguous",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-002",
+          "INC-2026-0519",
+          "INC-2026-0312"
+        ],
+        "n_selected": 9
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-002",
+          "INC-2026-0519",
+          "INC-2026-0312"
+        ],
+        "n_selected": 9
+      }
+    }
+  ]
+}

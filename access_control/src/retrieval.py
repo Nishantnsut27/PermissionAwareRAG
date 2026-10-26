@@ -64,7 +64,18 @@ def _resolve(user: User | str) -> User:
 
 def authorized_retrieve(user: User | str, query: str, top_k: int = 5,
                         request_id: str | None = None,
-                        requested_sellers=None) -> AccessResponse:
+                        requested_sellers=None,
+                        candidate_augmenter=None,
+                        candidate_reorderer=None) -> AccessResponse:
+    """Permission-aware candidate generation.
+
+    `candidate_augmenter` and `candidate_reorderer` are optional callables
+    injected by the orchestrator (Phase 6 query-aware retrieval). They run at
+    exactly two points: augmentation adds candidates BEFORE the authorization
+    re-check, so an augmented candidate is authorized like any other; the
+    reorderer only orders already-authorized candidates. With neither set the
+    behaviour is identical to the pre-Phase-6 pipeline.
+    """
     identity = _resolve(user)
     if not isinstance(query, str) or not query.strip():
         raise ValueError("query must be a non-empty string")
@@ -79,7 +90,11 @@ def authorized_retrieve(user: User | str, query: str, top_k: int = 5,
         top_k=min(max(top_k * CANDIDATE_MULTIPLIER, 10), MAX_CANDIDATES),
         filters=scope,
     )
+    if candidate_augmenter is not None:
+        candidates = candidate_augmenter(candidates)
     allowed, denied = _engine.authorize_chunks(identity, candidates, request_id)
+    if candidate_reorderer is not None:
+        allowed = candidate_reorderer(allowed)
     selected = allowed[:top_k]
 
     for chunk in selected:

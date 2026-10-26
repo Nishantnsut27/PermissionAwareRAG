@@ -1,0 +1,692 @@
+[
+  {
+    "label": "seller information",
+    "query": "What is the account overview for seller S001 Aurelia Home Decor?",
+    "status": "ok",
+    "results": [
+      {
+        "rank": 1,
+        "method": "hybrid",
+        "score": 0.0328,
+        "chunk_id": "S001-ACC-001_chunk_001",
+        "document_id": "S001-ACC-001",
+        "seller_id": "S001",
+        "department": "Business",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Account Overview",
+        "source_file": "sellers/S001/account_overview.pdf",
+        "page_numbers": [
+          1
+        ],
+        "snippet": "S001 Aurelia Home Decor - Account Overview Account Overview | Business Document ID S001-ACC-001 Seller ID S001 Classification CONFIDENTIAL Created Date 2026-09-14 Related Scenario ID SC-001, SC-004, S"
+      },
+      {
+        "rank": 2,
+        "method": "hybrid",
+        "score": 0.032,
+        "chunk_id": "PRJ-S001-001_chunk_001",
+        "document_id": "PRJ-S001-001",
+        "seller_id": "S001",
+        "department": "Operations",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Project Document",
+        "source_file": "documents/projects/S001/seller_onboarding_summary.pdf",
+        "page_numbers": [
+          1
+        ],
+        "snippet": "S001 Aurelia Home Decor - Seller Onboarding Summary Project Document | Operations Document ID PRJ-S001-001 Seller ID S001 Classification CONFIDENTIAL Owner Created Date 2023-03-06 Related Scenario ID "
+      },
+      {
+        "rank": 3,
+        "method": "hybrid",
+        "score": 0.0318,
+        "chunk_id": "PRJ-S001-002_chunk_001",
+        "document_id": "PRJ-S001-002",
+        "seller_id": "S001",
+        "department": "Engineering",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Project Document",
+        "source_file": "documents/projects/S001/integration_project_plan.pdf",
+        "page_numbers": [
+          1
+        ],
+        "snippet": "S001 - Seller API v2 Integration Project Plan Project Document | Engineering Document ID PRJ-S001-002 Seller ID S001 Department Engineering Classification CONFIDENTIAL Owner Vikram Singh Created Date "
+      },
+      {
+        "rank": 4,
+        "method": "hybrid",
+        "score": 0.0299,
+        "chunk_id": "ORG-001_chunk_005",
+        "document_id": "ORG-001",
+        "seller_id": "Organization-wide",
+        "department": "IT",
+        "classification": "INTERNAL",
+        "document_type": "Organization Reference",
+        "source_file": "identity/organization_and_users.pdf",
+        "page_numbers": [
+          5,
+          6
+        ],
+        "snippet": "The dataset contains four seller accounts. They are deliberately different in category, business model, integration style and operational profile. Seller ID Company Category Tier Onboarded S001 Aureli"
+      },
+      {
+        "rank": 5,
+        "method": "hybrid",
+        "score": 0.0289,
+        "chunk_id": "S001-ACC-001_chunk_002",
+        "document_id": "S001-ACC-001",
+        "seller_id": "S001",
+        "department": "Business",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Account Overview",
+        "source_file": "sellers/S001/account_overview.pdf",
+        "page_numbers": [
+          2
+        ],
+        "snippet": "3. Commercial Terms Term Notes Commission band 14.5 percent average Varies 11-18 percent by sub-category Settlement frequency Fortnightly Standard for Gold tier Payout lag T+2 business days after cycl"
+      }
+    ]
+  },
+  {
+    "label": "support issue",
+    "query": "GST rate applied incorrectly on decorative lighting invoices support ticket",
+    "status": "ok",
+    "results": [
+      {
+        "rank": 1,
+        "method": "hybrid",
+        "score": 0.0328,
+        "chunk_id": "TKT-2026-0224-091_chunk_001",
+        "document_id": "TKT-2026-0224-091",
+        "seller_id": "S001",
+        "department": "Support",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Support Ticket",
+        "source_file": "documents/support/S001/TKT-2026-0224-091_tax_invoice_rate_mismatch.pdf",
+        "page_numbers": [
+          1
+        ],
+        "snippet": "TKT-2026-0224-091 - Incorrect GST rate on decorative lighting invoices Support Ticket | Support Document ID TKT-2026-0224-091 Seller ID S001 Department Support Classification CONFIDENTIAL Owner Rahul "
+      },
+      {
+        "rank": 2,
+        "method": "hybrid",
+        "score": 0.0323,
+        "chunk_id": "CALL-2026-0225-013_chunk_001",
+        "document_id": "CALL-2026-0225-013",
+        "seller_id": "S001",
+        "department": "Business",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Call Transcript",
+        "source_file": "documents/calls/S001/CALL-2026-0225-013_tax_invoice_mismatch.txt",
+        "page_numbers": [],
+        "snippet": "NEXORA COMMERCE PVT. LTD. - CALL TRANSCRIPT This is a synthetic record created for a prototype dataset. It is not a real conversation and does not describe real people or companies.  ================="
+      },
+      {
+        "rank": 3,
+        "method": "hybrid",
+        "score": 0.0317,
+        "chunk_id": "PRJ-S001-004_chunk_001",
+        "document_id": "PRJ-S001-004",
+        "seller_id": "S001",
+        "department": "Business",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Decision Record",
+        "source_file": "documents/projects/S001/account_decision_record_tax_mapping.pdf",
+        "page_numbers": [
+          1
+        ],
+        "snippet": "S001 - Account Decision Record: Tax Mapping Correction and Credit Notes Decision Record | Business Document ID PRJ-S001-004 Seller ID S001 Department Business Classification CONFIDENTIAL Created Date "
+      },
+      {
+        "rank": 4,
+        "method": "hybrid",
+        "score": 0.0312,
+        "chunk_id": "TKT-2026-0224-091_chunk_002",
+        "document_id": "TKT-2026-0224-091",
+        "seller_id": "S001",
+        "department": "Support",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Support Ticket",
+        "source_file": "documents/support/S001/TKT-2026-0224-091_tax_invoice_rate_mismatch.pdf",
+        "page_numbers": [
+          2,
+          3
+        ],
+        "snippet": "Soft furnishings 5,612 Decor accessories 2,180 The pattern was clean: only lighting SKUs created after the HSN revision were affected. SKUs that existed at the time of the revision had been remapped c"
+      },
+      {
+        "rank": 5,
+        "method": "hybrid",
+        "score": 0.0296,
+        "chunk_id": "S001-ACC-001_chunk_003",
+        "document_id": "S001-ACC-001",
+        "seller_id": "S001",
+        "department": "Business",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Account Overview",
+        "source_file": "sellers/S001/account_overview.pdf",
+        "page_numbers": [
+          3,
+          4
+        ],
+        "snippet": "2026-03-12 Settlement shortfall of INR 4,82,000 detected SC-001 2026-03-14 Shortfall credited after ledger hotfix SC-001 2026-08-12 Checkout regression affected S001 buyer traffic SC-010 2026-09-01 Se"
+      }
+    ]
+  },
+  {
+    "label": "engineering incident",
+    "query": "engineering incident INC-2026-0618 shipping label failover",
+    "status": "ok",
+    "results": [
+      {
+        "rank": 1,
+        "method": "hybrid",
+        "score": 0.0328,
+        "chunk_id": "INC-2026-0618_chunk_001",
+        "document_id": "INC-2026-0618",
+        "seller_id": "S003",
+        "department": "Engineering",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Incident Report",
+        "source_file": "documents/engineering/S003/INC-2026-0618_label_failover_failure.pdf",
+        "page_numbers": [
+          1
+        ],
+        "snippet": "INC-2026-0618 - Shipping Label Failover Did Not Activate Incident Report | Engineering Document ID INC-2026-0618 Seller ID S003 Department Engineering Classification CONFIDENTIAL Owner Vikram Singh Cr"
+      },
+      {
+        "rank": 2,
+        "method": "hybrid",
+        "score": 0.0313,
+        "chunk_id": "scenario_overview_chunk_003",
+        "document_id": "scenario_overview",
+        "seller_id": "Organization-wide",
+        "department": null,
+        "classification": "RESTRICTED",
+        "document_type": "Scenario Context",
+        "source_file": "scenario-context/scenario_overview.txt",
+        "page_numbers": [],
+        "snippet": "ROOT CAUSE / BASIS ------------------------------------------------------------------------------ An unbounded client retry policy generated a retry storm during the partner flash sale. Combined with "
+      },
+      {
+        "rank": 3,
+        "method": "hybrid",
+        "score": 0.0312,
+        "chunk_id": "TKT-2026-0618-233_chunk_001",
+        "document_id": "TKT-2026-0618-233",
+        "seller_id": "S003",
+        "department": "Support",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Support Ticket",
+        "source_file": "documents/support/S003/TKT-2026-0618-233_shipping_labels_stuck.pdf",
+        "page_numbers": [
+          1
+        ],
+        "snippet": "TKT-2026-0618-233 - Shipping labels not generating, deliveries at risk Support Ticket | Support Document ID TKT-2026-0618-233 Seller ID S003 Department Support Classification CONFIDENTIAL Owner Rahul "
+      },
+      {
+        "rank": 4,
+        "method": "hybrid",
+        "score": 0.0306,
+        "chunk_id": "INC-2026-0618_chunk_002",
+        "document_id": "INC-2026-0618",
+        "seller_id": "S003",
+        "department": "Engineering",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Incident Report",
+        "source_file": "documents/engineering/S003/INC-2026-0618_label_failover_failure.pdf",
+        "page_numbers": [
+          2
+        ],
+        "snippet": "The severity classification deserves explanation. 2,100 undispatched orders would be SEV-2 on most accounts. On this account the goods are perishable and delivery is slot-based: a missed slot is a wri"
+      },
+      {
+        "rank": 5,
+        "method": "hybrid",
+        "score": 0.0299,
+        "chunk_id": "scenario_overview_chunk_004",
+        "document_id": "scenario_overview",
+        "seller_id": "Organization-wide",
+        "department": null,
+        "classification": "RESTRICTED",
+        "document_type": "Scenario Context",
+        "source_file": "scenario-context/scenario_overview.txt",
+        "page_numbers": [],
+        "snippet": "ROOT CAUSE / BASIS ------------------------------------------------------------------------------ The primary courier provider (SwiftLane) suffered an API degradation. Automatic failover to the backup"
+      }
+    ]
+  },
+  {
+    "label": "policy question",
+    "query": "What does policy POL-FIN-002 say about settlement adjustments?",
+    "status": "ok",
+    "results": [
+      {
+        "rank": 1,
+        "method": "hybrid",
+        "score": 0.0328,
+        "chunk_id": "POL-FIN-002_chunk_001",
+        "document_id": "POL-FIN-002",
+        "seller_id": "Organization-wide",
+        "department": "Operations",
+        "classification": "INTERNAL",
+        "document_type": "Policy",
+        "source_file": "documents/policies/organization-wide/POL-FIN-002_payment_settlement_policy.pdf",
+        "page_numbers": [
+          1
+        ],
+        "snippet": "POL-FIN-002 - Payment and Settlement Policy Policy | Operations Document ID POL-FIN-002 Seller ID Organization-wide Department Classification INTERNAL Neha Gupta Created Date 2026-04-01 3.2 Effective "
+      },
+      {
+        "rank": 2,
+        "method": "hybrid",
+        "score": 0.0275,
+        "chunk_id": "PRJ-S001-003_chunk_002",
+        "document_id": "PRJ-S001-003",
+        "seller_id": "S001",
+        "department": "Operations",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Project Status Report",
+        "source_file": "documents/projects/S001/settlement_reconciliation_project_status.pdf",
+        "page_numbers": [
+          2
+        ],
+        "snippet": "WS-3 Reprocessing safety controls 2026-07-31 WS-4 Seller-facing variance statement Behind 2026-10-16 WS-5 Reconciliation runbook update In progress 2026-09-26 3.1 WS-1 Ledger Invariant Checks A set of"
+      },
+      {
+        "rank": 3,
+        "method": "dense",
+        "score": 0.0161,
+        "chunk_id": "POL-FIN-002_chunk_004",
+        "document_id": "POL-FIN-002",
+        "seller_id": "Organization-wide",
+        "department": "Operations",
+        "classification": "INTERNAL",
+        "document_type": "Policy",
+        "source_file": "documents/policies/organization-wide/POL-FIN-002_payment_settlement_policy.pdf",
+        "page_numbers": [
+          4,
+          5
+        ],
+        "snippet": "A seller's reconciliation is a valuable cross-check and is treated as such. It is not a platform control and its absence does not reduce platform accountability. 9. Exceptions E-1. A payout may be rel"
+      },
+      {
+        "rank": 4,
+        "method": "hybrid",
+        "score": 0.0161,
+        "chunk_id": "CALL-2026-0225-013_chunk_001",
+        "document_id": "CALL-2026-0225-013",
+        "seller_id": "S001",
+        "department": "Business",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Call Transcript",
+        "source_file": "documents/calls/S001/CALL-2026-0225-013_tax_invoice_mismatch.txt",
+        "page_numbers": [],
+        "snippet": "NEXORA COMMERCE PVT. LTD. - CALL TRANSCRIPT This is a synthetic record created for a prototype dataset. It is not a real conversation and does not describe real people or companies.  ================="
+      },
+      {
+        "rank": 5,
+        "method": "dense",
+        "score": 0.0159,
+        "chunk_id": "scenario_overview_chunk_008",
+        "document_id": "scenario_overview",
+        "seller_id": "Organization-wide",
+        "department": null,
+        "classification": "RESTRICTED",
+        "document_type": "Scenario Context",
+        "source_file": "scenario-context/scenario_overview.txt",
+        "page_numbers": [],
+        "snippet": "SC-001 -> project PRJ-S001-SRH The settlement shortfall in SC-001 was detected by the seller rather than by any platform control. That finding opened the settlement reconciliation hardening project, w"
+      }
+    ]
+  },
+  {
+    "label": "operations procedure",
+    "query": "operations runbook procedure OPS-RB-004 deployment rollback steps",
+    "status": "ok",
+    "results": [
+      {
+        "rank": 1,
+        "method": "hybrid",
+        "score": 0.0328,
+        "chunk_id": "OPS-RB-005_chunk_001",
+        "document_id": "OPS-RB-005",
+        "seller_id": "Organization-wide",
+        "department": "Operations",
+        "classification": "INTERNAL",
+        "document_type": "Operational Procedure",
+        "source_file": "documents/operations/organization-wide/OPS-RB-005_deployment_rollback_procedure.pdf",
+        "page_numbers": [
+          1,
+          2
+        ],
+        "snippet": "OPS-RB-005 - Deployment Rollback Procedure Operational Procedure | Operations Document ID OPS-RB-005 Seller ID Organization-wide Department Operations Classification INTERNAL Neha Gupta Created Date 2"
+      },
+      {
+        "rank": 2,
+        "method": "hybrid",
+        "score": 0.0323,
+        "chunk_id": "OPS-RB-005_chunk_002",
+        "document_id": "OPS-RB-005",
+        "seller_id": "Organization-wide",
+        "department": "Operations",
+        "classification": "INTERNAL",
+        "document_type": "Operational Procedure",
+        "source_file": "documents/operations/organization-wide/OPS-RB-005_deployment_rollback_procedure.pdf",
+        "page_numbers": [
+          3,
+          4
+        ],
+        "snippet": "Step 5 - Verify Data A rollback restores code. It does not restore data written by the defective version. 1. Determine whether the defective version wrote incorrect data. 2. If it did, hand off to the"
+      },
+      {
+        "rank": 3,
+        "method": "hybrid",
+        "score": 0.0306,
+        "chunk_id": "OPS-RB-002_chunk_001",
+        "document_id": "OPS-RB-002",
+        "seller_id": "Organization-wide",
+        "department": "Operations",
+        "classification": "INTERNAL",
+        "document_type": "Operational Procedure",
+        "source_file": "documents/operations/organization-wide/OPS-RB-002_service_recovery_procedure.pdf",
+        "page_numbers": [
+          1
+        ],
+        "snippet": "OPS-RB-002 - Service Recovery Procedure Operational Procedure | Operations Document ID OPS-RB-002 Seller ID Organization-wide Department Operations Classification INTERNAL Neha Gupta Created Date 2025"
+      },
+      {
+        "rank": 4,
+        "method": "hybrid",
+        "score": 0.0306,
+        "chunk_id": "INC-2026-0812_chunk_002",
+        "document_id": "INC-2026-0812",
+        "seller_id": "S001",
+        "department": "Engineering",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Incident Report",
+        "source_file": "documents/engineering/S001/INC-2026-0812_checkout_token_regression.pdf",
+        "page_numbers": [
+          2
+        ],
+        "snippet": "The impact was platform-wide but was reported by a single seller. Aurelia was running a pre-festive campaign that day, so its traffic was elevated and its customer service team noticed the pattern wit"
+      },
+      {
+        "rank": 5,
+        "method": "hybrid",
+        "score": 0.0301,
+        "chunk_id": "OPS-RB-004_chunk_001",
+        "document_id": "OPS-RB-004",
+        "seller_id": "Organization-wide",
+        "department": "Operations",
+        "classification": "INTERNAL",
+        "document_type": "Runbook",
+        "source_file": "documents/operations/organization-wide/OPS-RB-004_payment_recovery_runbook.pdf",
+        "page_numbers": [
+          1,
+          2
+        ],
+        "snippet": "OPS-RB-004 - Payment and Settlement Recovery Runbook Runbook | Operations Document ID OPS-RB-004 Seller ID Organization-wide Department Operations Classification INTERNAL Owner Neha Gupta Created Date"
+      }
+    ]
+  },
+  {
+    "label": "call transcript",
+    "query": "call transcript discussion about credit notes for incorrect tax invoices",
+    "status": "ok",
+    "results": [
+      {
+        "rank": 1,
+        "method": "hybrid",
+        "score": 0.0328,
+        "chunk_id": "CALL-2026-0225-013_chunk_001",
+        "document_id": "CALL-2026-0225-013",
+        "seller_id": "S001",
+        "department": "Business",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Call Transcript",
+        "source_file": "documents/calls/S001/CALL-2026-0225-013_tax_invoice_mismatch.txt",
+        "page_numbers": [],
+        "snippet": "NEXORA COMMERCE PVT. LTD. - CALL TRANSCRIPT This is a synthetic record created for a prototype dataset. It is not a real conversation and does not describe real people or companies.  ================="
+      },
+      {
+        "rank": 2,
+        "method": "hybrid",
+        "score": 0.0323,
+        "chunk_id": "PRJ-S001-004_chunk_001",
+        "document_id": "PRJ-S001-004",
+        "seller_id": "S001",
+        "department": "Business",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Decision Record",
+        "source_file": "documents/projects/S001/account_decision_record_tax_mapping.pdf",
+        "page_numbers": [
+          1
+        ],
+        "snippet": "S001 - Account Decision Record: Tax Mapping Correction and Credit Notes Decision Record | Business Document ID PRJ-S001-004 Seller ID S001 Department Business Classification CONFIDENTIAL Created Date "
+      },
+      {
+        "rank": 3,
+        "method": "hybrid",
+        "score": 0.031,
+        "chunk_id": "TKT-2026-0224-091_chunk_002",
+        "document_id": "TKT-2026-0224-091",
+        "seller_id": "S001",
+        "department": "Support",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Support Ticket",
+        "source_file": "documents/support/S001/TKT-2026-0224-091_tax_invoice_rate_mismatch.pdf",
+        "page_numbers": [
+          2,
+          3
+        ],
+        "snippet": "Soft furnishings 5,612 Decor accessories 2,180 The pattern was clean: only lighting SKUs created after the HSN revision were affected. SKUs that existed at the time of the revision had been remapped c"
+      },
+      {
+        "rank": 4,
+        "method": "hybrid",
+        "score": 0.0308,
+        "chunk_id": "CALL-2026-0225-013_chunk_003",
+        "document_id": "CALL-2026-0225-013",
+        "seller_id": "S001",
+        "department": "Business",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Call Transcript",
+        "source_file": "documents/calls/S001/CALL-2026-0225-013_tax_invoice_mismatch.txt",
+        "page_numbers": [],
+        "snippet": "[16:13] SURESH IYER: So the next revision will have the same problem.  [16:14] RAHUL SHARMA: Yes, unless the remap includes a completeness check for subsequently created listings. I'd expect that to b"
+      },
+      {
+        "rank": 5,
+        "method": "hybrid",
+        "score": 0.0303,
+        "chunk_id": "TKT-2026-0224-091_chunk_001",
+        "document_id": "TKT-2026-0224-091",
+        "seller_id": "S001",
+        "department": "Support",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Support Ticket",
+        "source_file": "documents/support/S001/TKT-2026-0224-091_tax_invoice_rate_mismatch.pdf",
+        "page_numbers": [
+          1
+        ],
+        "snippet": "TKT-2026-0224-091 - Incorrect GST rate on decorative lighting invoices Support Ticket | Support Document ID TKT-2026-0224-091 Seller ID S001 Department Support Classification CONFIDENTIAL Owner Rahul "
+      }
+    ]
+  },
+  {
+    "label": "cross-document terminology",
+    "query": "settlement adjustment credit note reconciliation",
+    "status": "ok",
+    "results": [
+      {
+        "rank": 1,
+        "method": "hybrid",
+        "score": 0.0328,
+        "chunk_id": "OPS-RB-004_chunk_003",
+        "document_id": "OPS-RB-004",
+        "seller_id": "Organization-wide",
+        "department": "Operations",
+        "classification": "INTERNAL",
+        "document_type": "Runbook",
+        "source_file": "documents/operations/organization-wide/OPS-RB-004_payment_recovery_runbook.pdf",
+        "page_numbers": [
+          4,
+          5
+        ],
+        "snippet": "2. Issue a credit note against each incorrect invoice and re-issue at the correct rate. Do not correct a tax position with a single net adjustment line; the counterparty needs one corrective document "
+      },
+      {
+        "rank": 2,
+        "method": "hybrid",
+        "score": 0.0318,
+        "chunk_id": "CALL-2026-0313-018_chunk_003",
+        "document_id": "CALL-2026-0313-018",
+        "seller_id": "S001",
+        "department": "Business",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Call Transcript",
+        "source_file": "documents/calls/S001/CALL-2026-0313-018_settlement_shortfall.txt",
+        "page_numbers": [],
+        "snippet": "[10:46] ADITYA VERMA: One - shortfall confirmed at INR 4,82,000, cause is ours, credit will be issued. Two - the payout is held so nothing incorrect goes out. Three - Rahul gives you a status by 18:00"
+      },
+      {
+        "rank": 3,
+        "method": "hybrid",
+        "score": 0.031,
+        "chunk_id": "CALL-2026-0225-013_chunk_001",
+        "document_id": "CALL-2026-0225-013",
+        "seller_id": "S001",
+        "department": "Business",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Call Transcript",
+        "source_file": "documents/calls/S001/CALL-2026-0225-013_tax_invoice_mismatch.txt",
+        "page_numbers": [],
+        "snippet": "NEXORA COMMERCE PVT. LTD. - CALL TRANSCRIPT This is a synthetic record created for a prototype dataset. It is not a real conversation and does not describe real people or companies.  ================="
+      },
+      {
+        "rank": 4,
+        "method": "hybrid",
+        "score": 0.0298,
+        "chunk_id": "OPS-RB-004_chunk_001",
+        "document_id": "OPS-RB-004",
+        "seller_id": "Organization-wide",
+        "department": "Operations",
+        "classification": "INTERNAL",
+        "document_type": "Runbook",
+        "source_file": "documents/operations/organization-wide/OPS-RB-004_payment_recovery_runbook.pdf",
+        "page_numbers": [
+          1,
+          2
+        ],
+        "snippet": "OPS-RB-004 - Payment and Settlement Recovery Runbook Runbook | Operations Document ID OPS-RB-004 Seller ID Organization-wide Department Operations Classification INTERNAL Owner Neha Gupta Created Date"
+      },
+      {
+        "rank": 5,
+        "method": "hybrid",
+        "score": 0.0289,
+        "chunk_id": "S001-ACC-001_chunk_003",
+        "document_id": "S001-ACC-001",
+        "seller_id": "S001",
+        "department": "Business",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Account Overview",
+        "source_file": "sellers/S001/account_overview.pdf",
+        "page_numbers": [
+          3,
+          4
+        ],
+        "snippet": "2026-03-12 Settlement shortfall of INR 4,82,000 detected SC-001 2026-03-14 Shortfall credited after ledger hotfix SC-001 2026-08-12 Checkout regression affected S001 buyer traffic SC-010 2026-09-01 Se"
+      }
+    ]
+  },
+  {
+    "label": "exact document identifier",
+    "query": "OPS-RB-004",
+    "status": "ok",
+    "results": [
+      {
+        "rank": 1,
+        "method": "hybrid",
+        "score": 0.0315,
+        "chunk_id": "OPS-RB-004_chunk_001",
+        "document_id": "OPS-RB-004",
+        "seller_id": "Organization-wide",
+        "department": "Operations",
+        "classification": "INTERNAL",
+        "document_type": "Runbook",
+        "source_file": "documents/operations/organization-wide/OPS-RB-004_payment_recovery_runbook.pdf",
+        "page_numbers": [
+          1,
+          2
+        ],
+        "snippet": "OPS-RB-004 - Payment and Settlement Recovery Runbook Runbook | Operations Document ID OPS-RB-004 Seller ID Organization-wide Department Operations Classification INTERNAL Owner Neha Gupta Created Date"
+      },
+      {
+        "rank": 2,
+        "method": "hybrid",
+        "score": 0.0288,
+        "chunk_id": "PRJ-S001-003_chunk_002",
+        "document_id": "PRJ-S001-003",
+        "seller_id": "S001",
+        "department": "Operations",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Project Status Report",
+        "source_file": "documents/projects/S001/settlement_reconciliation_project_status.pdf",
+        "page_numbers": [
+          2
+        ],
+        "snippet": "WS-3 Reprocessing safety controls 2026-07-31 WS-4 Seller-facing variance statement Behind 2026-10-16 WS-5 Reconciliation runbook update In progress 2026-09-26 3.1 WS-1 Ledger Invariant Checks A set of"
+      },
+      {
+        "rank": 3,
+        "method": "dense",
+        "score": 0.0164,
+        "chunk_id": "OPS-RB-002_chunk_001",
+        "document_id": "OPS-RB-002",
+        "seller_id": "Organization-wide",
+        "department": "Operations",
+        "classification": "INTERNAL",
+        "document_type": "Operational Procedure",
+        "source_file": "documents/operations/organization-wide/OPS-RB-002_service_recovery_procedure.pdf",
+        "page_numbers": [
+          1
+        ],
+        "snippet": "OPS-RB-002 - Service Recovery Procedure Operational Procedure | Operations Document ID OPS-RB-002 Seller ID Organization-wide Department Operations Classification INTERNAL Neha Gupta Created Date 2025"
+      },
+      {
+        "rank": 4,
+        "method": "dense",
+        "score": 0.0161,
+        "chunk_id": "OPS-RB-001_chunk_001",
+        "document_id": "OPS-RB-001",
+        "seller_id": "Organization-wide",
+        "department": "Operations",
+        "classification": "INTERNAL",
+        "document_type": "Runbook",
+        "source_file": "documents/operations/organization-wide/OPS-RB-001_seller_onboarding_runbook.pdf",
+        "page_numbers": [
+          1
+        ],
+        "snippet": "OPS-RB-001 - Seller Onboarding Runbook Runbook | Operations Document ID OPS-RB-001 Seller ID Organization-wide Department Classification INTERNAL Neha Gupta Created Date 2025-04-18 Related Scenario ID"
+      },
+      {
+        "rank": 5,
+        "method": "hybrid",
+        "score": 0.0161,
+        "chunk_id": "INC-2026-0903_chunk_004",
+        "document_id": "INC-2026-0903",
+        "seller_id": "S003",
+        "department": "Engineering",
+        "classification": "CONFIDENTIAL",
+        "document_type": "Incident Report",
+        "source_file": "documents/engineering/S003/INC-2026-0903_duplicate_refund_processing.pdf",
+        "page_numbers": [
+          4
+        ],
+        "snippet": "Both of those were written for order events. Nobody revisited the refund consumer against the same requirement. It had also never been restarted under load in a way that produced a meaningful redelive"
+      }
+    ]
+  }
+]

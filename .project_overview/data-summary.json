@@ -1,0 +1,58 @@
+{
+  "data_files": 63,
+  "pdfs": 52,
+  "documents": 63,
+  "chunks": 209,
+  "max_tokens": 798,
+  "categories": {
+    "calls": 10,
+    "engineering": 8,
+    "operations": 6,
+    "policies": 8,
+    "projects": 13,
+    "support": 12,
+    "identity": 1,
+    "scenario-context": 1,
+    "sellers": 4
+  },
+  "classifications": {
+    "CONFIDENTIAL": 42,
+    "RESTRICTED": 7,
+    "INTERNAL": 14
+  },
+  "golden": {
+    "dataset_id": "GOLDEN-P7-NEXORA",
+    "version": "1.0",
+    "total_cases": 60,
+    "categories": {
+      "authorized_factual": 12,
+      "multi_document": 8,
+      "cross_seller": 6,
+      "follow_up": 6,
+      "unauthorized_access": 10,
+      "mixed_access": 6,
+      "policy_governance": 4,
+      "ambiguous": 3,
+      "prompt_injection": 5
+    },
+    "users": {
+      "Aditya Verma": 16,
+      "Rahul Sharma": 15,
+      "Vikram Singh": 12,
+      "Neha Gupta": 12,
+      "Admin": 5
+    },
+    "security_cases": 27,
+    "refusal_cases": 15
+  },
+  "golden_validation": [],
+  "permission_counts": {
+    "U-001": 26,
+    "U-002": 23,
+    "U-003": 23,
+    "U-004": 20,
+    "U-005": 63
+  },
+  "data_metadata_errors": 0,
+  "data_metadata_warnings": 11
+}

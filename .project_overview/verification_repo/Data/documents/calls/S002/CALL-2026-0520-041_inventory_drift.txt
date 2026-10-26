@@ -1,0 +1,257 @@
+NEXORA COMMERCE PVT. LTD. - CALL TRANSCRIPT
+This is a synthetic record created for a prototype dataset. It is not a real
+conversation and does not describe real people or companies.
+
+================================================================================
+CALL RECORD
+================================================================================
+Call ID          : CALL-2026-0520-041
+Date             : 20 May 2026
+Start time       : 10:00 IST
+Duration         : 47 minutes
+Seller           : S002 - BluePeak Electronics
+Topic            : Stale inventory, oversells, and data quality rules
+Related scenario : SC-002
+Related ticket   : TKT-2026-0519-207
+
+Participants
+  Sameer Khanna        Head of Marketplace Integrations, BluePeak Electronics
+  Farah Qureshi        Data Operations Manager, BluePeak Electronics
+  Neha Gupta           System Engineer, Nexora (Operations)
+  Vikram Singh         Software Engineer, Nexora (Engineering)
+  Rahul Sharma         Support Engineer, Nexora (Support)
+
+Classification   : CONFIDENTIAL
+================================================================================
+
+[10:00] NEHA GUPTA: Thanks for joining at short notice. Before we go through
+the remediation, I want to acknowledge the sequence: you reported a problem
+yesterday morning, it was real, and it should not have reached you before we
+saw it. I'm not going to dress that up.
+
+[10:01] SAMEER KHANNA: I appreciate that, but let's not spend too long on it.
+I want to know two things. Why did it happen, and can it happen again. Farah
+has the data side.
+
+[10:01] NEHA GUPTA: Vikram, cause first.
+
+[10:02] VIKRAM SINGH: There were two problems acting together, which is
+unusual and part of why it was hard to see. The first is that the scheduler
+that picks your stock file was using a fixed offset instead of resolving the
+Indian timezone. Your file arrives around eleven at night and the job runs at
+two in the morning. With the wrong offset it selected the window from the
+previous night.
+
+[10:03] FARAH QURESHI: So it was processing yesterday's file.
+
+[10:03] VIKRAM SINGH: Yes. That alone is about twenty-four hours of
+staleness. The second problem is that an old SKU mapping table from the March
+catalogue restructure was still in the pipeline as a fallback. Rows that
+didn't match the new catalogue were silently resolved against the old table,
+which pointed at identifiers that had changed.
+
+[10:04] SAMEER KHANNA: Which is why the pattern was uneven.
+
+[10:04] VIKRAM SINGH: Exactly. The timezone problem made everything stale.
+The mapping problem made some SKUs wrong and dropped others entirely, which
+is why your Chennai centre showed a different picture.
+
+[10:05] FARAH QURESHI: We noticed that and couldn't explain it. That's
+actually reassuring.
+
+[10:05] SAMEER KHANNA: How did neither of these show in your monitoring?
+
+[10:06] VIKRAM SINGH: Because the job reported success both times. It ran.
+It processed a file. It published it. Nothing in the monitoring asked
+whether the data was current.
+
+[10:06] SAMEER KHANNA: That's the real defect.
+
+[10:06] VIKRAM SINGH: I agree. That's what we're fixing.
+
+[10:07] NEHA GUPTA: Let me take you through the timeline, because I think
+it's important you can see the whole thing. The drift can be evidenced from
+at least the seventeenth. Your report was the nineteenth at eight fifteen in
+the morning. Rahul confirmed the staleness by nine ten. We escalated at nine
+thirty.
+
+[10:08] RAHUL SHARMA: And we agreed at ten fifteen that you would disable
+the affected listings. I want to record that that was your decision and it
+was correct. Stopping new oversells mattered more than trading on bad data.
+
+[10:08] SAMEER KHANNA: It cost me about twenty-nine hours of sales but the
+alternative was more cancellations. It was the right call. What's the fix?
+
+[10:09] VIKRAM SINGH: Four things, and three are already done. The scheduler
+is pinned to the Indian timezone explicitly. The old mapping table is
+removed. The mapping is rebuilt against the current catalogue. And the full
+position has been resynchronised, which completed at eleven thirty this
+morning.
+
+[10:10] FARAH QURESHI: We should verify that ourselves.
+
+[10:10] VIKRAM SINGH: You should, and I'd expect you to. I'll send you the
+comparison report this afternoon.
+
+[10:10] SAMEER KHANNA: Good. Now the part that matters more to me. Farah,
+raise the rejection issue.
+
+[10:11] FARAH QURESHI: We're seeing fourteen hundred rejected rows in the
+first report.
+
+[10:11] RAHUL SHARMA: 1,940.
+
+[10:11] FARAH QURESHI: 1,940. That sounds like a lot and I want to
+understand whether that's us doing something wrong.
+
+[10:12] VIKRAM SINGH: It's the opposite. Those rows are stock entries for
+SKUs that don't exist in the current catalogue. Before, they would have been
+silently resolved through the old mapping. Now they're rejected and reported.
+So they're the mapping problem becoming visible.
+
+[10:13] FARAH QURESHI: So they're discontinued SKUs.
+
+[10:13] VIKRAM SINGH: Almost certainly. But I'd rather you confirm it than
+me assume it. If those are discontinued SKUs you've removed from the
+catalogue, the correct fix is for your export to stop sending them.
+
+[10:14] FARAH QURESHI: I can check that today. Our export includes
+everything with a stock record, and we don't always clean up the
+discontinued ones.
+
+[10:14] SAMEER KHANNA: Then clean it up. I don't want to be sending noise
+and I don't want to miss a real rejection because of it.
+
+[10:15] NEHA GUPTA: That's a good outcome. Can I raise a request from the
+operations side?
+
+[10:15] SAMEER KHANNA: Go ahead.
+
+[10:16] NEHA GUPTA: The rejection report currently comes at the end of the
+run. Farah, would it be useful earlier?
+
+[10:16] FARAH QURESHI: Enormously. If I get it at the end of the run at
+two thirty in the morning, nobody acts on it until the morning and by then
+I've already sent a bad file. If I get it within half an hour of processing
+I can correct and resend the same night.
+
+[10:17] NEHA GUPTA: Then that's what we'll do. Within thirty minutes.
+
+[10:17] SAMEER KHANNA: That's more useful than anything else we've discussed.
+Thank you.
+
+[10:18] NEHA GUPTA: There's one more thing I want to raise, and it's the
+part I'm least comfortable with. The drift existed from at least the
+seventeenth. It may have existed earlier. We don't know, because nothing was
+measuring it. That's not a technical gap, that's a control gap.
+
+[10:19] SAMEER KHANNA: Agreed. What's the control?
+
+[10:19] NEHA GUPTA: Two things. We're publishing a freshness metric per feed
+so we can see how old the data is at any moment. And we're alerting above six
+hours staleness. Six hours is the requirement in your integration
+specification. It was written down and never enforced.
+
+[10:20] SAMEER KHANNA: Six hours was in the spec?
+
+[10:20] VIKRAM SINGH: Yes, STK-3. It says published availability must be no
+more than six hours behind source. There was no mechanism measuring it.
+
+[10:21] SAMEER KHANNA: So we had a requirement and no test.
+
+[10:21] VIKRAM SINGH: Correct.
+
+[10:21] SAMEER KHANNA: I'd like that stated in writing in the incident
+report. A requirement without a test isn't a control.
+
+[10:22] VIKRAM SINGH: It will be.
+
+[10:23] FARAH QURESHI: Can I ask about the oversold orders?
+
+[10:23] RAHUL SHARMA: 412 of them. All refunded with priority handling as of
+the twenty-third - that's tomorrow. I'll confirm once it's done.
+
+[10:24] FARAH QURESHI: Refunded in full?
+
+[10:24] RAHUL SHARMA: In full, and I'm making sure there are no cancellation
+charges. If any appear, tell me and I'll reverse them.
+
+[10:25] SAMEER KHANNA: Farah, can you check that against your own list?
+
+[10:25] FARAH QURESHI: I'll reconcile it tomorrow when Rahul confirms.
+
+[10:26] NEHA GUPTA: Let me summarise the actions so we're aligned. Scheduler
+timezone - done. Stale mapping removed - done. Mapping rebuilt - done.
+Resynchronisation - done this morning. Freshness metric - end of next week.
+Alerting at six hours - early June. Rejection report within thirty minutes -
+mid June. Timezone audit across all our jobs - end of July, because this
+wasn't specific to your feed.
+
+[10:27] SAMEER KHANNA: That last one is interesting. How many other jobs?
+
+[10:28] VIKRAM SINGH: Initial sweep found three more using implicit
+timezone resolution. None currently causing incorrect behaviour. All being
+corrected.
+
+[10:28] SAMEER KHANNA: Good. That's the difference between fixing a bug and
+fixing a class of bug.
+
+[10:29] NEHA GUPTA: Farah, do you want to add anything?
+
+[10:29] FARAH QURESHI: Only that I'd like the rejection report format
+specified. I don't want a wall of text, I want SKU, reason, source row.
+
+[10:30] VIKRAM SINGH: SKU, reason code, source row number, and the file it
+came from. I'll confirm the format with you before it's built.
+
+[10:30] FARAH QURESHI: Good.
+
+[10:31] SAMEER KHANNA: Neha, one last question. If this happens again, how
+fast will you know?
+
+[10:31] NEHA GUPTA: With the freshness metric and alerting, within fifteen
+minutes of a run publishing stale data.
+
+[10:32] SAMEER KHANNA: Then I'm satisfied. Let's have a follow-up in two
+weeks to confirm the controls are live.
+
+[10:32] NEHA GUPTA: I'll send the invite.
+
+[10:33] SAMEER KHANNA: Thank you all.
+
+[10:33] NEHA GUPTA: Thank you, Sameer. Farah, I'll send the comparison
+report this afternoon.
+
+[10:34] FARAH QURESHI: I'll look for it.
+
+[10:34] RAHUL SHARMA: I'll confirm the refunds tomorrow.
+
+[10:35] SAMEER KHANNA: Good. Goodbye.
+
+================================================================================
+DECISIONS
+================================================================================
+1. Root cause accepted: scheduler timezone offset combined with a stale SKU
+   mapping fallback.
+2. Seller's decision to disable affected listings recorded as correct.
+3. Unknown-SKU rows will be rejected and reported rather than resolved.
+4. Rejection report to be delivered within 30 minutes of processing, in a
+   specified format.
+5. Freshness metric per feed and alerting above 6 hours to be introduced.
+6. Timezone audit extended to all scheduled jobs.
+7. Follow-up review in two weeks.
+
+FOLLOW-UP ACTIONS
+================================================================================
+Owner           Action                                          Target
+Vikram Singh    Send resynchronisation comparison report        2026-05-20
+Rahul Sharma    Confirm 412 refunds complete                    2026-05-23
+Neha Gupta      Publish per-feed freshness metric               2026-05-29
+Neha Gupta      Alert on freshness breach above 6 hours         2026-06-05
+Vikram Singh    Rejection report within 30 minutes               2026-06-12
+Neha Gupta      Timezone audit across all scheduled jobs        2026-07-24
+Farah Qureshi   Remove discontinued SKUs from the stock export  2026-05-22
+Neha Gupta      Follow-up review with seller                    2026-06-03
+
+RECORDING ENDS 10:35 IST
+================================================================================

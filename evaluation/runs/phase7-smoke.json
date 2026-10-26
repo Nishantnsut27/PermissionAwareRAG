@@ -1,0 +1,785 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-24T11:17:26+00:00",
+  "candidate_pool": 20,
+  "rerank_threshold": 0.2,
+  "summary": {
+    "scored_cases": 4,
+    "weights": {
+      "total": 0.06,
+      "aspect": 0.4,
+      "event": 0.25,
+      "intent": 0.15,
+      "evidence": 0.12,
+      "seller": 0.08
+    },
+    "baseline": {
+      "recall": 1.0,
+      "precision": 0.575,
+      "mrr": 0.875,
+      "mean_selected_chunks": 6.75
+    },
+    "intent": {
+      "recall": 0.875,
+      "precision": 0.525,
+      "mrr": 0.875,
+      "mean_selected_chunks": 7.25
+    },
+    "aspects": {
+      "recall": 1.0,
+      "precision": 0.575,
+      "mrr": 0.8333,
+      "mean_selected_chunks": 7
+    },
+    "event": {
+      "recall": 1.0,
+      "precision": 0.575,
+      "mrr": 0.875,
+      "mean_selected_chunks": 6.75
+    },
+    "evidence": {
+      "recall": 1.0,
+      "precision": 0.575,
+      "mrr": 0.875,
+      "mean_selected_chunks": 7
+    },
+    "seller": {
+      "recall": 1.0,
+      "precision": 0.575,
+      "mrr": 0.875,
+      "mean_selected_chunks": 7.25
+    },
+    "combined": {
+      "recall": 1.0,
+      "precision": 0.575,
+      "mrr": 0.875,
+      "mean_selected_chunks": 7
+    },
+    "combined_hints": {
+      "recall": 1.0,
+      "precision": 0.575,
+      "mrr": 0.875,
+      "mean_selected_chunks": 7.25
+    },
+    "per_query": {
+      "intent": {
+        "improved": [],
+        "regressed": [
+          {
+            "eval_id": "E001",
+            "category": "authorized_factual",
+            "recall": [
+              1.0,
+              0.5
+            ],
+            "precision": [
+              0.4,
+              0.2
+            ],
+            "mrr": [
+              0.5,
+              0.5
+            ],
+            "gold_ranks": [
+              {
+                "TKT-2026-0312-114": 2,
+                "PRJ-S001-003": 5
+              },
+              {
+                "TKT-2026-0312-114": 2,
+                "PRJ-S001-003": null
+              }
+            ],
+            "plan": {
+              "intent": "root_cause",
+              "required_aspects": [
+                "cause",
+                "financial_impact"
+              ],
+              "evidence_types": [
+                "account_overview"
+              ],
+              "identifiers": [],
+              "seller_scope": [
+                "S001"
+              ]
+            },
+            "reason": "recall"
+          }
+        ],
+        "unchanged_count": 3
+      },
+      "aspects": {
+        "improved": [],
+        "regressed": [
+          {
+            "eval_id": "E001",
+            "category": "authorized_factual",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.4,
+              0.4
+            ],
+            "mrr": [
+              0.5,
+              0.3333
+            ],
+            "gold_ranks": [
+              {
+                "TKT-2026-0312-114": 2,
+                "PRJ-S001-003": 5
+              },
+              {
+                "TKT-2026-0312-114": 3,
+                "PRJ-S001-003": 5
+              }
+            ],
+            "plan": {
+              "intent": "root_cause",
+              "required_aspects": [
+                "cause",
+                "financial_impact"
+              ],
+              "evidence_types": [
+                "account_overview"
+              ],
+              "identifiers": [],
+              "seller_scope": [
+                "S001"
+              ]
+            },
+            "reason": "precision/mrr"
+          }
+        ],
+        "unchanged_count": 3
+      },
+      "event": {
+        "improved": [],
+        "regressed": [],
+        "unchanged_count": 4
+      },
+      "evidence": {
+        "improved": [],
+        "regressed": [],
+        "unchanged_count": 4
+      },
+      "seller": {
+        "improved": [],
+        "regressed": [],
+        "unchanged_count": 4
+      },
+      "combined": {
+        "improved": [],
+        "regressed": [],
+        "unchanged_count": 4
+      },
+      "combined_hints": {
+        "improved": [],
+        "regressed": [],
+        "unchanged_count": 4
+      }
+    },
+    "recall_regressions": {
+      "intent": [
+        "E001"
+      ],
+      "aspects": [],
+      "event": [],
+      "evidence": [],
+      "seller": [],
+      "combined": [],
+      "combined_hints": []
+    },
+    "cost": {
+      "jina_calls_this_run": 8,
+      "jina_calls_per_case_in_production": 1,
+      "mean_jina_latency_s": 1.244,
+      "max_query_chars": {
+        "plain": 129,
+        "hinted": 174
+      },
+      "mean_hint_added_chars": 46
+    }
+  },
+  "rows": [
+    {
+      "eval_id": "E001",
+      "category": "authorized_factual",
+      "expected": [
+        "TKT-2026-0312-114",
+        "PRJ-S001-003"
+      ],
+      "pool_documents": 15,
+      "hint_added_chars": 59,
+      "plan": {
+        "intent": "root_cause",
+        "required_aspects": [
+          "cause",
+          "financial_impact"
+        ],
+        "evidence_types": [
+          "account_overview"
+        ],
+        "identifiers": [],
+        "seller_scope": [
+          "S001"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 2,
+          "PRJ-S001-003": 5
+        }
+      },
+      "intent": {
+        "recall": 0.5,
+        "precision": 0.2,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "CALL-2026-0225-013"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 2,
+          "PRJ-S001-003": null
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.3333333333333333,
+        "documents": [
+          "S001-ACC-001",
+          "CALL-2026-0313-018",
+          "TKT-2026-0312-114",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 3,
+          "PRJ-S001-003": 5
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 2,
+          "PRJ-S001-003": 5
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 2,
+          "PRJ-S001-003": 5
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 2,
+          "PRJ-S001-003": 5
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 2,
+          "PRJ-S001-003": 5
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 2,
+          "PRJ-S001-003": 5
+        }
+      }
+    },
+    {
+      "eval_id": "E002",
+      "category": "authorized_factual",
+      "expected": [
+        "INC-2026-0519",
+        "TKT-2026-0519-207"
+      ],
+      "pool_documents": 9,
+      "hint_added_chars": 40,
+      "plan": {
+        "intent": "root_cause",
+        "required_aspects": [
+          "cause"
+        ],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "seller_scope": [
+          "S002"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "TKT-2026-0519-207": 3
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "TKT-2026-0519-207": 3
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "TKT-2026-0519-207": 3
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "TKT-2026-0519-207": 3
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "INC-2026-0716",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "TKT-2026-0519-207": 4
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "TKT-2026-0519-207": 3
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "TKT-2026-0519-207": 3
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "INC-2026-0716",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "TKT-2026-0519-207": 4
+        }
+      }
+    },
+    {
+      "eval_id": "E003",
+      "category": "authorized_factual",
+      "expected": [
+        "INC-2026-0812",
+        "TKT-2026-0812-308"
+      ],
+      "pool_documents": 10,
+      "hint_added_chars": 40,
+      "plan": {
+        "intent": "root_cause",
+        "required_aspects": [
+          "cause"
+        ],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "seller_scope": []
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1,
+          "TKT-2026-0812-308": 2
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1,
+          "TKT-2026-0812-308": 2
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1,
+          "TKT-2026-0812-308": 2
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1,
+          "TKT-2026-0812-308": 2
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1,
+          "TKT-2026-0812-308": 2
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1,
+          "TKT-2026-0812-308": 2
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1,
+          "TKT-2026-0812-308": 2
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1,
+          "TKT-2026-0812-308": 2
+        }
+      }
+    },
+    {
+      "eval_id": "E004",
+      "category": "authorized_factual",
+      "expected": [
+        "OPS-RB-004"
+      ],
+      "pool_documents": 11,
+      "hint_added_chars": 45,
+      "plan": {
+        "intent": "policy",
+        "required_aspects": [
+          "policy_requirement"
+        ],
+        "evidence_types": [
+          "runbook"
+        ],
+        "identifiers": [],
+        "seller_scope": []
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "OPS-RB-004": 1
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "OPS-RB-004": 1
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "OPS-RB-004": 1
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "OPS-RB-004": 1
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "OPS-RB-004": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "OPS-RB-004": 1
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "OPS-RB-004": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "OPS-RB-004": 1
+        }
+      }
+    }
+  ]
+}

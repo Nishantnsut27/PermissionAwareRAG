@@ -1,0 +1,239 @@
+NEXORA COMMERCE PVT. LTD. - CALL TRANSCRIPT
+This is a synthetic record created for a prototype dataset. It is not a real
+conversation and does not describe real people or companies.
+
+================================================================================
+CALL RECORD
+================================================================================
+Call ID          : CALL-2026-0717-052
+Date             : 17 July 2026
+Start time       : 11:00 IST
+Duration         : 52 minutes
+Seller           : S002 - BluePeak Electronics
+Topic            : Order API failures during flash sale - joint review
+Related scenario : SC-003
+Related ticket   : TKT-2026-0716-268
+
+Participants
+  Sameer Khanna        Head of Marketplace Integrations, BluePeak Electronics
+  Dinesh Prabhu        Engineering Lead, BluePeak Electronics
+  Vikram Singh         Software Engineer, Nexora (Engineering)
+  Rahul Sharma         Support Engineer, Nexora (Support)
+  Neha Gupta           System Engineer, Nexora (Operations)
+
+NOTE: This call was direct and included disagreement. It is recorded in full
+because both parties' contributions are relevant to the remediation plan.
+
+Classification   : CONFIDENTIAL
+================================================================================
+
+[11:00] VIKRAM SINGH: Thanks for making time. I'd like to go through what
+happened without softening anything. I'll start with our contribution,
+because it's substantial.
+
+[11:00] SAMEER KHANNA: Good, but I want to be clear before we start. I spent
+real money on that campaign. I lost roughly two thousand eight hundred
+orders. I don't want this call to end with 'capacity is hard'.
+
+[11:01] VIKRAM SINGH: Understood. Let me give you the sequence and then I'll
+tell you exactly what we're fixing and what we need from you.
+
+[11:01] VIKRAM SINGH: Your sale started at eight in the evening. Traffic went
+to about nine times your baseline. By two minutes past eight your inventory
+lookups were slowing down - they went from about forty milliseconds to six to
+nine hundred milliseconds, because we're fanning out across a much larger set
+of SKUs than a normal order.
+
+[11:02] DINESH PRABHU: Why does the lookup slow down with volume?
+
+[11:03] VIKRAM SINGH: It's a synchronous call in the order path. Each
+placement holds a connection while it waits. Slower calls mean connections
+are held longer, and we have a fixed pool of a hundred and twenty.
+
+[11:03] DINESH PRABHU: So you ran out of connections.
+
+[11:03] VIKRAM SINGH: At 20:16, yes. But we would probably have survived it.
+What turned it into a forty-minute outage was the retry behaviour.
+
+[11:04] DINESH PRABHU: Meaning?
+
+[11:04] VIKRAM SINGH: Your client retries a timed-out placement until it
+succeeds. There's no cap and no backoff.
+
+[11:05] DINESH PRABHU: That's standard defensive behaviour.
+
+[11:05] VIKRAM SINGH: It's standard until the dependency is saturated. At
+20:18 we measured inbound volume at about three point four times what your
+actual buyer activity implied. So roughly seventy percent of the traffic
+hitting us was retries of requests that had already failed.
+
+[11:06] SAMEER KHANNA: That's a big claim.
+
+[11:06] VIKRAM SINGH: I'll send you the data. It's in the incident record.
+
+[11:07] DINESH PRABHU: Even if that's true, why didn't your system protect
+itself? A client shouldn't be able to take down your order path.
+
+[11:07] VIKRAM SINGH: That's the right question and the answer is that it
+should have. We have no circuit breaker on the inventory lookup, the
+connection acquisition had no timeout, and our request timeout on that path
+was ten seconds. Ten seconds with a hundred and twenty connections caps you
+at twelve placements a second once the dependency is slow.
+
+[11:08] DINESH PRABHU: So you were capped at twelve a second.
+
+[11:08] VIKRAM SINGH: Effectively, yes.
+
+[11:08] SAMEER KHANNA: Then we agree. You had no protection and we amplified
+it.
+
+[11:09] VIKRAM SINGH: That's exactly how I'd describe it. Neither alone
+produces what happened.
+
+[11:09] NEHA GUPTA: Can I add the operational lesson? There was also no
+advance notice.
+
+[11:10] SAMEER KHANNA: We announced it publicly.
+
+[11:10] NEHA GUPTA: Publicly, yes. Internally, we learned about it when the
+traffic arrived. We had no opportunity to assess capacity, pre-scale anything
+or have anyone specifically watching. That's not a criticism of your
+marketing, it's that we don't have a notification path.
+
+[11:11] SAMEER KHANNA: I'd accept that as a fair point. What do you want?
+
+[11:11] NEHA GUPTA: Ten working days notice before any promotional event, so
+we can do a capacity assessment and give you a written readiness statement.
+And I'd want that to be a contractual expectation, not a favour, because
+otherwise it slips.
+
+[11:12] SAMEER KHANNA: Ten working days is workable. I'll agree to that
+provided the readiness statement is real and not a rubber stamp.
+
+[11:12] NEHA GUPTA: It will name an owner for any residual risk. If we can't
+serve the profile, we'll tell you before the event.
+
+[11:13] SAMEER KHANNA: Then agreed.
+
+[11:13] RAHUL SHARMA: Sameer, can I ask something from the support side?
+
+[11:13] SAMEER KHANNA: Go on.
+
+[11:14] RAHUL SHARMA: When I asked you on the call last night what your
+client does on a timeout, you told me it retries until it succeeds. That was
+the single most useful piece of information in the whole incident and it
+came from you within five minutes. I want to make sure Dinesh sees that the
+information exchange worked even though the night didn't.
+
+[11:15] DINESH PRABHU: Noted. And I'll own the client changes.
+
+[11:15] VIKRAM SINGH: Then let me lay out what we're doing and what we need.
+
+[11:16] VIKRAM SINGH: On our side. A circuit breaker on the inventory
+lookup. Pool resize from a hundred and twenty to three hundred, with a
+seven-hundred-and-fifty-millisecond acquisition timeout so it fails fast
+instead of queueing. Request timeout down from ten seconds to two and a
+half. And we're changing overload responses from a 503 to a 429 with a
+Retry-After header, so a client knows what to do instead of guessing.
+
+[11:17] DINESH PRABHU: The 429 is the important one for us. A 503 is
+ambiguous.
+
+[11:17] VIKRAM SINGH: It is, and that's why we're changing it.
+
+[11:18] VIKRAM SINGH: On your side. Bound the retries - I'd suggest three
+attempts maximum, exponential backoff with jitter. Honour Retry-After. And
+add a client-side circuit breaker, because if we degrade again you shouldn't
+keep hammering us.
+
+[11:19] DINESH PRABHU: Agreed on all three. What's your timeline?
+
+[11:19] VIKRAM SINGH: Our changes are targeted for late August. I'd want a
+load test at four times last night's peak to prove them. Can you have the
+client changes by October?
+
+[11:20] DINESH PRABHU: October is achievable if nothing else slips.
+
+[11:20] SAMEER KHANNA: Make it achievable, not aspirational.
+
+[11:21] DINESH PRABHU: I'll commit to October.
+
+[11:22] VIKRAM SINGH: I'd also like to run a joint validation in November.
+A simulated sale, a forced consumer rebalance, and a partial dependency
+failure, with operations executing their recovery procedure against each.
+
+[11:22] DINESH PRABHU: Are you testing us?
+
+[11:23] VIKRAM SINGH: I'm testing both sides. Last night neither side was
+ready. A test in November is cheaper than a repeat in December.
+
+[11:23] SAMEER KHANNA: I don't object to that. Far better than discovering
+it during the festive peak.
+
+[11:24] NEHA GUPTA: Let's also be clear about remediation of the failed
+orders. Rahul, what's the position?
+
+[11:24] RAHUL SHARMA: 3,900 failed placements. 1,120 were replayed this
+morning where the cart was still valid. The rest are lost - either the cart
+expired or the customer bought elsewhere.
+
+[11:25] SAMEER KHANNA: I'm not asking for compensation. It was a failure with
+two contributions and we've agreed a way forward. I'd rather spend the energy
+on the November validation.
+
+[11:25] VIKRAM SINGH: I appreciate that, and I want it recorded that you
+took that position.
+
+[11:26] NEHA GUPTA: Let me close out the actions so there's no ambiguity.
+Platform: circuit breaker, pool resize with acquisition timeout, request
+timeout reduction, 429 with Retry-After - all late August, validated at four
+times peak. Capacity model and readiness statement - early October. BluePeak:
+bounded retries with backoff, honour Retry-After, client circuit breaker -
+October. Both: ten working day notice, contractual. Joint validation -
+November.
+
+[11:27] DINESH PRABHU: One addition. I want the load test results shared
+with us before the November validation.
+
+[11:27] VIKRAM SINGH: You'll get them.
+
+[11:28] SAMEER KHANNA: Then I think we're done. Vikram, for what it's worth,
+this call is why I stay on this platform. I've had vendors tell me a
+forty-minute outage was entirely my fault. You didn't.
+
+[11:28] VIKRAM SINGH: It wasn't entirely your fault. It also wasn't entirely
+ours. I'd rather we both fixed our halves than spent the morning deciding
+who to blame.
+
+[11:29] SAMEER KHANNA: Agreed. Goodbye.
+
+[11:29] DINESH PRABHU: I'll send you our client change plan next week.
+
+[11:29] VIKRAM SINGH: I'll look for it.
+
+================================================================================
+DECISIONS
+================================================================================
+1. Root cause recorded as joint: missing platform protection and unbounded
+   client retries. Both contributions accepted by both parties.
+2. Platform to add a circuit breaker, resize the pool with an acquisition
+   timeout, reduce the request timeout, and return 429 with Retry-After.
+3. Seller to bound retries with exponential backoff and jitter, honour
+   Retry-After, and add a client-side circuit breaker.
+4. Ten working days capacity notice to become a contractual expectation.
+5. Joint validation exercise agreed for November 2026.
+6. Seller declined compensation; position recorded.
+
+FOLLOW-UP ACTIONS
+================================================================================
+Owner           Action                                          Target
+Vikram Singh    Circuit breaker, pool, timeout, 429 handling    2026-08-26
+Vikram Singh    Load test at 4x peak and share results with     2026-08-24
+                seller
+Neha Gupta      Capacity model and readiness statement          2026-10-09
+Dinesh Prabhu   Client retry and circuit breaker changes        2026-10-23
+Neha Gupta      Joint validation exercise                       2026-11-20
+Rahul Sharma    Replay of eligible failed orders                2026-07-18
+
+RECORDING ENDS 11:29 IST
+================================================================================

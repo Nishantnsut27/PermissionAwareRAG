@@ -1,0 +1,213 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-23T18:23:41+00:00",
+  "candidate_pool": 20,
+  "summary": {
+    "cases": 8,
+    "baseline": {
+      "in_pool_rate": 100.0,
+      "mean_first_chunk_rank": 4.125,
+      "mean_chunks_of_doc": 1.5
+    },
+    "plan": {
+      "in_pool_rate": 100.0,
+      "mean_first_chunk_rank": 1.125,
+      "mean_chunks_of_doc": 1.5
+    },
+    "gains": {
+      "rescued": 0,
+      "lost": 0,
+      "rank_improved": 6
+    },
+    "negative_controls": {
+      "checked": 8,
+      "leaks": 0
+    }
+  },
+  "rows": [
+    {
+      "doc_id": "CALL-2026-0116-004",
+      "document_type": "Call Transcript",
+      "seller_id": "S003",
+      "query": "What information does CALL-2026-0116-004 contain?",
+      "user": "U-001",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 2,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 12,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-002",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "CALL-2026-0225-013",
+      "document_type": "Call Transcript",
+      "seller_id": "S001",
+      "query": "What information does CALL-2026-0225-013 contain?",
+      "user": "U-001",
+      "n_authorized_users": 3,
+      "n_unauthorized_users": 2,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 2,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-003",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "CALL-2026-0313-018",
+      "document_type": "Call Transcript",
+      "seller_id": "S001",
+      "query": "What information does CALL-2026-0313-018 contain?",
+      "user": "U-001",
+      "n_authorized_users": 3,
+      "n_unauthorized_users": 2,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 7,
+        "chunks_of_doc": 2
+      },
+      "negative_control": {
+        "user": "U-003",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "CALL-2026-0422-029",
+      "document_type": "Call Transcript",
+      "seller_id": "S002",
+      "query": "What information does CALL-2026-0422-029 contain?",
+      "user": "U-005",
+      "n_authorized_users": 1,
+      "n_unauthorized_users": 4,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 4,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "CALL-2026-0520-041",
+      "document_type": "Call Transcript",
+      "seller_id": "S002",
+      "query": "What information does CALL-2026-0520-041 contain?",
+      "user": "U-002",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "CALL-2026-0619-047",
+      "document_type": "Call Transcript",
+      "seller_id": "S003",
+      "query": "What information does CALL-2026-0619-047 contain?",
+      "user": "U-001",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 3
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 2,
+        "chunks_of_doc": 3
+      },
+      "negative_control": {
+        "user": "U-002",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "CALL-2026-0717-052",
+      "document_type": "Call Transcript",
+      "seller_id": "S002",
+      "query": "What information does CALL-2026-0717-052 contain?",
+      "user": "U-002",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "CALL-2026-0806-063",
+      "document_type": "Call Transcript",
+      "seller_id": "S004",
+      "query": "What information does CALL-2026-0806-063 contain?",
+      "user": "U-005",
+      "n_authorized_users": 1,
+      "n_unauthorized_users": 4,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 4,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    }
+  ]
+}

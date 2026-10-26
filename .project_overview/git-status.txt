@@ -1,0 +1,78 @@
+## Evalution...origin/Evalution
+ M .env.example
+ M .gitignore
+ M Data/documents/calls/S001/CALL-2026-0225-013_tax_invoice_mismatch.txt
+ M Data/documents/calls/S001/CALL-2026-0313-018_settlement_shortfall.txt
+ M Data/documents/calls/S002/CALL-2026-0422-029_credential_rotation.txt
+ M Data/documents/calls/S002/CALL-2026-0520-041_inventory_drift.txt
+ M Data/documents/calls/S002/CALL-2026-0717-052_flash_sale_postmortem.txt
+ M Data/documents/calls/S003/CALL-2026-0116-004_tier_upgrade_request.txt
+ M Data/documents/calls/S003/CALL-2026-0619-047_label_failover.txt
+ M Data/documents/calls/S003/CALL-2026-0904-071_duplicate_refunds.txt
+ M Data/documents/calls/S004/CALL-2026-0806-063_size_chart_report.txt
+ M Data/documents/calls/S004/CALL-2026-0909-074_suspension_review.txt
+ M Data/scenario-context/scenario_overview.txt
+ M access_control/reports/audit.jsonl
+ M access_control/src/retrieval.py
+ M answering/src/config.py
+ M answering/src/reranker.py
+ M answering/src/selection.py
+ M answering/src/service.py
+ M sofar.md
+?? .project_overview/
+?? answering/src/context_packing.py
+?? answering/src/evidence_selection.py
+?? answering/src/openjev_client.py
+?? answering/src/query_aware.py
+?? answering/src/query_aware_rerank.py
+?? answering/src/query_planner.py
+?? docs/
+?? evaluation/phase8_split.py
+?? evaluation/run_final_metrics_eval.py
+?? evaluation/run_fp_investigation.py
+?? evaluation/run_phase10_security.py
+?? evaluation/run_phase7_eval.py
+?? evaluation/run_phase8_eval.py
+?? evaluation/run_phase8_security.py
+?? evaluation/run_phase8_sweep.py
+?? evaluation/run_phase9_eval.py
+?? evaluation/run_phase9_security.py
+?? evaluation/run_query_plan_eval.py
+?? evaluation/run_stage_eval.py
+?? evaluation/run_targeted_identifier_eval.py
+?? evaluation/runs/final-metrics-audit.jsonl
+?? evaluation/runs/final-metrics-eval.json
+?? evaluation/runs/final-metrics-pool10.json
+?? evaluation/runs/final-metrics-smoke.json
+?? evaluation/runs/fp-investigation.json
+?? evaluation/runs/phase10-security.json
+?? evaluation/runs/phase7-audit.jsonl
+?? evaluation/runs/phase7-eval.json
+?? evaluation/runs/phase7-jina-scores-smoke.json
+?? evaluation/runs/phase7-jina-scores.json
+?? evaluation/runs/phase7-smoke.json
+?? evaluation/runs/phase8-audit.jsonl
+?? evaluation/runs/phase8-eval-dev.json
+?? evaluation/runs/phase8-eval-holdout.json
+?? evaluation/runs/phase8-security-all.json
+?? evaluation/runs/phase8-security-audit.jsonl
+?? evaluation/runs/phase8-split.json
+?? evaluation/runs/phase8-sweep-audit.jsonl
+?? evaluation/runs/phase9-audit.jsonl
+?? evaluation/runs/phase9-eval-all.json
+?? evaluation/runs/phase9-eval-dev.json
+?? evaluation/runs/phase9-eval-holdout.json
+?? evaluation/runs/phase9-security-all.json
+?? evaluation/runs/phase9-security-audit.jsonl
+?? evaluation/runs/query-understanding-eval.json
+?? evaluation/runs/stage-eval-audit.jsonl
+?? evaluation/runs/stage-eval-rework.json
+?? evaluation/runs/stage-eval-smoke.json
+?? evaluation/runs/stage-eval.json
+?? evaluation/runs/targeted-identifier-audit.jsonl
+?? evaluation/runs/targeted-identifier-eval.json
+?? evaluation/runs/targeted-identifier-smoke.json
+?? evaluation/tests/
+?? phase7.md
+?? phase8.md
+?? prompt.md

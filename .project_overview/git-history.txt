@@ -1,0 +1,343 @@
+commit 7bfeb993b7eba22e314245761c0cadb74c853f5d
+Author:     Nishant30488 <143648131+Nishant30488@users.noreply.github.com>
+AuthorDate: Thu Sep 17 16:00:11 2026 +0530
+Commit:     Nishant30488 <143648131+Nishant30488@users.noreply.github.com>
+CommitDate: Thu Sep 17 16:00:11 2026 +0530
+
+    feat(data): add synthetic enterprise knowledge dataset
+
+ Data/README.md                                     | 223 ++++++++
+ .../CALL-2026-0225-013_tax_invoice_mismatch.txt    | 170 ++++++
+ .../CALL-2026-0313-018_settlement_shortfall.txt    | 172 ++++++
+ .../CALL-2026-0422-029_credential_rotation.txt     | 206 ++++++++
+ .../S002/CALL-2026-0520-041_inventory_drift.txt    | 257 +++++++++
+ .../CALL-2026-0717-052_flash_sale_postmortem.txt   | 239 +++++++++
+ .../CALL-2026-0116-004_tier_upgrade_request.txt    | 184 +++++++
+ .../S003/CALL-2026-0619-047_label_failover.txt     | 201 +++++++
+ .../S003/CALL-2026-0904-071_duplicate_refunds.txt  | 191 +++++++
+ .../S004/CALL-2026-0806-063_size_chart_report.txt  | 233 +++++++++
+ .../S004/CALL-2026-0909-074_suspension_review.txt  | 251 +++++++++
+ ...-0312_settlement_ledger_duplicate_reversals.pdf | 156 ++++++
+ .../INC-2026-0812_checkout_token_regression.pdf    | 156 ++++++
+ .../INC-2026-0421_sftp_credential_exposure.pdf     | 169 ++++++
+ .../S002/INC-2026-0519_inventory_sync_drift.pdf    | 150 ++++++
+ .../INC-2026-0716_order_api_pool_exhaustion.pdf    | 156 ++++++
+ .../S003/INC-2026-0618_label_failover_failure.pdf  | 169 ++++++
+ .../INC-2026-0903_duplicate_refund_processing.pdf  | 169 ++++++
+ .../INC-2026-0805_size_chart_double_conversion.pdf | 175 +++++++
+ .../OPS-RB-001_seller_onboarding_runbook.pdf       | 150 ++++++
+ .../OPS-RB-002_service_recovery_procedure.pdf      | 150 ++++++
+ .../OPS-RB-003_incident_escalation_procedure.pdf   | 131 +++++
+ .../OPS-RB-004_payment_recovery_runbook.pdf        | 156 ++++++
+ .../OPS-RB-005_deployment_rollback_procedure.pdf   | 150 ++++++
+ ...RB-006_peak_operational_readiness_checklist.pdf | 150 ++++++
+ .../POL-BIZ-003_seller_onboarding_policy.pdf       | 150 ++++++
+ .../POL-BIZ-004_seller_escalation_policy.pdf       | 131 +++++
+ .../POL-FIN-002_payment_settlement_policy.pdf      | 150 ++++++
+ .../POL-IT-001_data_access_policy.pdf              | 150 ++++++
+ .../POL-IT-002_data_retention_policy.pdf           | 131 +++++
+ .../POL-OPS-006_account_suspension_policy.pdf      | 150 ++++++
+ ...L-SEC-001_security_incident_response_policy.pdf | 131 +++++
+ ...02_confidential_information_handling_policy.pdf | 131 +++++
+ .../S001/account_decision_record_tax_mapping.pdf   | 112 ++++
+ .../projects/S001/integration_project_plan.pdf     | 131 +++++
+ .../projects/S001/seller_onboarding_summary.pdf    | 112 ++++
+ .../settlement_reconciliation_project_status.pdf   | 112 ++++
+ .../projects/S002/implementation_plan.pdf          | 137 +++++
+ .../projects/S002/integration_requirements.pdf     | 131 +++++
+ .../S002/inventory_data_quality_project_status.pdf | 112 ++++
+ .../S003/account_decision_record_tier_upgrade.pdf  | 112 ++++
+ .../projects/S003/onboarding_project_plan.pdf      | 112 ++++
+ .../projects/S003/technical_integration_notes.pdf  | 112 ++++
+ .../account_decision_record_suspension_review.pdf  | 112 ++++
+ .../S004/catalogue_quality_project_status.pdf      | 131 +++++
+ .../projects/S004/dropship_onboarding_project.pdf  | 112 ++++
+ ...TKT-2026-0224-091_tax_invoice_rate_mismatch.pdf | 112 ++++
+ .../TKT-2026-0312-114_settlement_shortfall.pdf     | 112 ++++
+ .../S001/TKT-2026-0812-308_checkout_failures.pdf   |  93 ++++
+ .../S002/TKT-2026-0421-162_credential_exposure.pdf | 112 ++++
+ .../TKT-2026-0519-207_inventory_sync_drift.pdf     | 112 ++++
+ .../TKT-2026-0602-217_settlement_feed_stale.pdf    | 112 ++++
+ .../S002/TKT-2026-0716-268_order_api_timeouts.pdf  | 118 +++++
+ .../TKT-2026-0115-054_settlement_terms_request.pdf | 112 ++++
+ .../TKT-2026-0618-233_shipping_labels_stuck.pdf    | 112 ++++
+ .../S003/TKT-2026-0903-336_duplicate_refunds.pdf   | 112 ++++
+ .../S004/TKT-2026-0805-301_return_rate_spike.pdf   | 112 ++++
+ .../TKT-2026-0908-341_account_suspension_query.pdf | 112 ++++
+ Data/identity/organization_and_users.pdf           | 181 +++++++
+ Data/scenario-context/scenario_overview.txt        | 576 +++++++++++++++++++++
+ Data/sellers/S001/account_overview.pdf             | 131 +++++
+ Data/sellers/S002/account_overview.pdf             | 131 +++++
+ Data/sellers/S003/account_overview.pdf             | 112 ++++
+ Data/sellers/S004/account_overview.pdf             | 112 ++++
+ 64 files changed, 9750 insertions(+)
+
+commit 784f6cdb4cf35f7d2ee9ca3dc1eda2039670906e
+Author:     Nishant30488 <143648131+Nishant30488@users.noreply.github.com>
+AuthorDate: Fri Sep 18 09:42:27 2026 +0530
+Commit:     Nishant30488 <143648131+Nishant30488@users.noreply.github.com>
+CommitDate: Fri Sep 18 09:42:27 2026 +0530
+
+    feat: implement document ingestion and recursive chunking
+
+ .gitignore                                    |  19 ++
+ ingestion/processed/chunks/chunks.jsonl       | 209 +++++++++++++++++++
+ ingestion/processed/documents/documents.jsonl |  63 ++++++
+ ingestion/run_ingestion.py                    |  70 +++++++
+ ingestion/src/__init__.py                     |   1 +
+ ingestion/src/chunking.py                     |  86 ++++++++
+ ingestion/src/cleaning.py                     | 111 ++++++++++
+ ingestion/src/config.py                       | 125 ++++++++++++
+ ingestion/src/discovery.py                    |  56 +++++
+ ingestion/src/loaders.py                      |  39 ++++
+ ingestion/src/metadata.py                     | 284 ++++++++++++++++++++++++++
+ ingestion/src/models.py                       | 131 ++++++++++++
+ ingestion/src/pipeline.py                     | 244 ++++++++++++++++++++++
+ ingestion/src/reporting.py                    | 181 ++++++++++++++++
+ ingestion/src/validation.py                   | 113 ++++++++++
+ requirements.txt                              |   6 +
+ 16 files changed, 1738 insertions(+)
+
+commit 2c93fbcb363278b695e97d60da4c95a4c14de8f2
+Author:     Nishant30488 <143648131+Nishant30488@users.noreply.github.com>
+AuthorDate: Fri Sep 18 13:57:05 2026 +0530
+Commit:     Nishant30488 <143648131+Nishant30488@users.noreply.github.com>
+CommitDate: Fri Sep 18 13:57:05 2026 +0530
+
+    feat: add Jina embeddings and Qdrant vector indexing
+
+ .gitignore                    |   2 +
+ indexing/pipeline.py          |  84 ++++++++++++++++++++++++++
+ indexing/src/__init__.py      |   0
+ indexing/src/config.py        |  81 +++++++++++++++++++++++++
+ indexing/src/embeddings.py    | 107 +++++++++++++++++++++++++++++++++
+ indexing/src/hybrid_search.py |  31 ++++++++++
+ indexing/src/indexing.py      |  99 +++++++++++++++++++++++++++++++
+ indexing/src/models.py        |  56 ++++++++++++++++++
+ indexing/src/qdrant_store.py  | 133 ++++++++++++++++++++++++++++++++++++++++++
+ indexing/src/retrieval.py     |  75 ++++++++++++++++++++++++
+ indexing/src/sparse_search.py |  87 +++++++++++++++++++++++++++
+ indexing/tests/test_phase3.py |  55 +++++++++++++++++
+ requirements.txt              |   5 ++
+ 13 files changed, 815 insertions(+)
+
+commit e96ff73e7c77517fb82685224ef94e8f9f70a6cf
+Author:     Nishant30488 <143648131+Nishant30488@users.noreply.github.com>
+AuthorDate: Fri Sep 18 17:22:12 2026 +0530
+Commit:     Nishant30488 <143648131+Nishant30488@users.noreply.github.com>
+CommitDate: Fri Sep 18 17:22:12 2026 +0530
+
+    feat: implement permission aware access control
+
+ .env.example                        |   9 +
+ .gitignore                          |   4 +
+ access_control/src/__init__.py      |   0
+ access_control/src/audit.py         |  69 +++++
+ access_control/src/engine.py        | 104 +++++++
+ access_control/src/policy.py        |  92 +++++++
+ access_control/src/retrieval.py     |  99 +++++++
+ access_control/src/users.py         |  49 ++++
+ access_control/tests/test_access.py | 528 ++++++++++++++++++++++++++++++++++++
+ indexing/pipeline.py                |  13 +-
+ indexing/src/config.py              |   2 +-
+ indexing/src/embeddings.py          |  18 +-
+ indexing/src/indexing.py            |  19 +-
+ indexing/src/qdrant_store.py        | 134 ++++++---
+ indexing/src/retrieval.py           |  12 +-
+ indexing/src/sparse_search.py       |   4 +-
+ indexing/tests/test_phase3.py       | 155 +++++++++--
+ ingestion/src/pipeline.py           |   2 +-
+ 18 files changed, 1243 insertions(+), 70 deletions(-)
+
+commit f77341ec952742e27e08687a6ca5e28115ca1820
+Author:     Nishant30488 <143648131+Nishant30488@users.noreply.github.com>
+AuthorDate: Fri Sep 18 17:57:15 2026 +0530
+Commit:     Nishant30488 <143648131+Nishant30488@users.noreply.github.com>
+CommitDate: Fri Sep 18 17:57:15 2026 +0530
+
+    feat: implement permission-aware RAG pipeline
+
+ .env.example                    |  29 +++
+ .gitignore                      |   5 +
+ access_control/src/engine.py    |  37 ++-
+ access_control/src/policy.py    |   4 +
+ access_control/src/retrieval.py |   8 +-
+ answering/run_query.py          |  70 +++++
+ answering/serve.py              |  35 +++
+ answering/src/__init__.py       |   1 +
+ answering/src/api.py            | 190 ++++++++++++++
+ answering/src/config.py         |  79 ++++++
+ answering/src/context.py        | 128 +++++++++
+ answering/src/conversation.py   |  72 +++++
+ answering/src/llm.py            | 127 +++++++++
+ answering/src/prompts.py        |  77 ++++++
+ answering/src/reranker.py       |  83 ++++++
+ answering/src/service.py        | 361 +++++++++++++++++++++++++
+ answering/tests/test_phase5.py  | 565 ++++++++++++++++++++++++++++++++++++++++
+ 17 files changed, 1862 insertions(+), 9 deletions(-)
+
+commit 7ca7b3d71c3048931578d8a146e5eb548b422615
+Author:     Nishant30488 <143648131+Nishant30488@users.noreply.github.com>
+AuthorDate: Fri Sep 18 22:14:38 2026 +0530
+Commit:     Nishant30488 <143648131+Nishant30488@users.noreply.github.com>
+CommitDate: Fri Sep 18 22:14:38 2026 +0530
+
+    feat: add streamlit UI with streaming responses
+
+ .gitignore                          |  36 +-
+ Data/README.md                      | 223 -----------
+ access_control/tests/test_access.py | 528 --------------------------
+ answering/src/context.py            |   7 +-
+ answering/src/llm.py                |   3 +
+ answering/src/prompts.py            |  13 +-
+ answering/src/service.py            |  26 +-
+ answering/tests/test_phase5.py      | 565 ----------------------------
+ api_client.py                       | 109 ++++++
+ app.py                              | 720 ++++++++++++++++++++++++++++++++++++
+ indexing/tests/test_phase3.py       | 172 ---------
+ ingestion/src/cleaning.py           |  50 ++-
+ requirements.txt                    |   2 +
+ 13 files changed, 942 insertions(+), 1512 deletions(-)
+
+commit 85352747b98c61b7da311bd059171ec9b32623dd
+Author:     Nishant Raj <143648131+Nishantnsut27@users.noreply.github.com>
+AuthorDate: Fri Sep 18 22:28:58 2026 +0530
+Commit:     Nishant Raj <143648131+Nishantnsut27@users.noreply.github.com>
+CommitDate: Fri Sep 18 22:28:58 2026 +0530
+
+    backend deployment process
+
+ answering/src/config.py | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+commit a552c9dec735edbeb98843cb8e8b6c5cbe42dc6a
+Author:     Nishantnsut27 <143648131+Nishantnsut27@users.noreply.github.com>
+AuthorDate: Tue Sep 22 19:15:21 2026 +0530
+Commit:     Nishantnsut27 <143648131+Nishantnsut27@users.noreply.github.com>
+CommitDate: Tue Sep 22 19:15:21 2026 +0530
+
+    Add evaluation pipeline and update answering flow
+
+ .env.example                          |   16 +-
+ .gitignore                            |    9 +
+ answering/src/api.py                  |   77 +-
+ answering/src/config.py               |   24 +-
+ answering/src/groq_keys.py            |  251 ++
+ answering/src/llm.py                  |  134 +-
+ answering/src/service.py              |   29 +-
+ api_client.py                         |   25 +
+ app.py                                |  758 +++-
+ evaluation/__init__.py                |    8 +
+ evaluation/dataset.py                 |  298 ++
+ evaluation/evaluator.py               |  316 ++
+ evaluation/golden_dataset.json        |  893 ++++
+ evaluation/judge.py                   |  222 +
+ evaluation/metrics.py                 |  297 ++
+ evaluation/reports.py                 |   62 +
+ evaluation/results.json               | 6899 +++++++++++++++++++++++++++++++
+ evaluation/runner.py                  |  354 ++
+ evaluation/runs/full-20260921-v2.json | 7304 +++++++++++++++++++++++++++++++++
+ evaluation/runs/legacy-20260919.json  | 4737 +++++++++++++++++++++
+ evaluation/runs/limited-20260921.json |  317 ++
+ run.bat                               |   43 +
+ 22 files changed, 22987 insertions(+), 86 deletions(-)
+
+commit 4110970acb42041ad32c77716bca3f3d57e8706f
+Author:     Nishantnsut27 <143648131+Nishantnsut27@users.noreply.github.com>
+AuthorDate: Tue Sep 22 19:47:46 2026 +0530
+Commit:     Nishantnsut27 <143648131+Nishantnsut27@users.noreply.github.com>
+CommitDate: Tue Sep 22 19:47:46 2026 +0530
+
+    fix: include sparse vocabulary for production retrieval
+
+ .gitignore                               |     4 +-
+ access_control/reports/audit.jsonl       | 10684 +++++++++++++++++++++++++++++
+ indexing/reports/indexing_report.json    |    31 +
+ indexing/reports/sanity_checks.json      |   692 ++
+ indexing/reports/sparse_vocab.json       |     1 +
+ ingestion/reports/ingestion_summary.json |   203 +
+ ingestion/reports/ingestion_summary.txt  |    85 +
+ ingestion/reports/validation_errors.json |    94 +
+ 8 files changed, 11791 insertions(+), 3 deletions(-)
+
+commit e3f6d220b3530c9b777a0a170f0e806e1a59a9cb
+Author:     Nishant Raj <143648131+Nishantnsut27@users.noreply.github.com>
+AuthorDate: Tue Sep 22 19:52:55 2026 +0530
+Commit:     Nishant Raj <143648131+Nishantnsut27@users.noreply.github.com>
+CommitDate: Tue Sep 22 19:52:55 2026 +0530
+
+    fix: highlight sidebar toggle in orange
+
+ app.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 8efc5998c478539f974bcd386cdc63d14e20777c
+Author:     Nishant Raj <143648131+Nishantnsut27@users.noreply.github.com>
+AuthorDate: Tue Sep 22 19:55:56 2026 +0530
+Commit:     Nishant Raj <143648131+Nishantnsut27@users.noreply.github.com>
+CommitDate: Tue Sep 22 19:55:56 2026 +0530
+
+    fix: make sidebar toggle arrow black
+
+ app.py | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
+
+commit 872b3f6a592cfd198a74e2993abeabaa1886aa89
+Author:     Nishantnsut27 <143648131+Nishantnsut27@users.noreply.github.com>
+AuthorDate: Tue Sep 22 22:19:02 2026 +0530
+Commit:     Nishantnsut27 <143648131+Nishantnsut27@users.noreply.github.com>
+CommitDate: Tue Sep 22 22:19:02 2026 +0530
+
+     add permission-aware RAG workflow and UI diagrams
+
+ images/Permission_aware_rag_workflow.png | Bin 0 -> 1726520 bytes
+ images/permission_aware_rag_ui.png       | Bin 0 -> 1618249 bytes
+ images/permission_matrix.png             | Bin 0 -> 1580285 bytes
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 9d3e0af7523fc5cdf7acc4a55f00507f776fd0cd
+Author:     Nishant Raj <143648131+Nishantnsut27@users.noreply.github.com>
+AuthorDate: Tue Sep 22 22:30:52 2026 +0530
+Commit:     Nishant Raj <143648131+Nishantnsut27@users.noreply.github.com>
+CommitDate: Tue Sep 22 22:30:52 2026 +0530
+
+    docs: add comprehensive permission-aware RAG README
+
+ README.md | 564 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 564 insertions(+)
+
+commit 0b48ff61304541a21746a28751422cb5794d5c05
+Author:     Nishant Raj <143648131+Nishantnsut27@users.noreply.github.com>
+AuthorDate: Tue Sep 22 22:40:34 2026 +0530
+Commit:     Nishant Raj <143648131+Nishantnsut27@users.noreply.github.com>
+CommitDate: Tue Sep 22 22:40:34 2026 +0530
+
+    docs: refine README flow and local run guide
+
+ README.md | 70 ++++++++++++++++-----------------------------------------------
+ 1 file changed, 17 insertions(+), 53 deletions(-)
+
+commit 6cd0a925c1a8a9e5ae943d181bebad43dcf9f262
+Author:     Nishantnsut27 <143648131+Nishantnsut27@users.noreply.github.com>
+AuthorDate: Wed Sep 23 19:05:35 2026 +0530
+Commit:     Nishantnsut27 <143648131+Nishantnsut27@users.noreply.github.com>
+CommitDate: Wed Sep 23 19:05:35 2026 +0530
+
+    Evalution Matrix
+
+ .gitignore                               |    4 +-
+ _rerank_cache.json                       | 3149 ++++++++++++
+ access_control/reports/audit.jsonl       | 7808 +++++++++++++++++++++++++++++
+ answering/src/config.py                  |   32 +-
+ answering/src/context.py                 |  119 +-
+ answering/src/reranker.py                |  120 +-
+ answering/src/selection.py               |  213 +
+ answering/src/service.py                 |   19 +-
+ app.py                                   |   94 +-
+ evaluation/metrics.py                    |   47 +-
+ evaluation/runner.py                     |    6 +
+ evaluation/runs/full-20260923-fixed.json | 7921 ++++++++++++++++++++++++++++++
+ improvement.md                           |  348 ++
+ jev.md                                   |  457 ++
+ sofar.md                                 |  312 ++
+ 15 files changed, 20569 insertions(+), 80 deletions(-)

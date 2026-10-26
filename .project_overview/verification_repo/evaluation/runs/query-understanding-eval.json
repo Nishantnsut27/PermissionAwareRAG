@@ -1,0 +1,2205 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-23T16:05:03+00:00",
+  "dataset_version": "1.0",
+  "summary": {
+    "total_queries": 60,
+    "jev_ok": 60,
+    "jev_fallback": 0,
+    "jev_disabled": 0,
+    "avg_jev_latency_ms": 1158.3,
+    "p95_jev_latency_ms": 1570,
+    "avg_confidence": 0.8032,
+    "identifier_recall": 1.0,
+    "identifier_queries": 3,
+    "identifier_overreach_queries": 0,
+    "seller_recall": 1.0,
+    "seller_queries": 36,
+    "intent_agreement": 1.0,
+    "intent_labelled_queries": 9,
+    "evidence_type_agreement": 0.8,
+    "evidence_labelled_queries": 45,
+    "multipart_jev_rate": 0.55,
+    "multipart_keyword_rate": 0.6167,
+    "multipart_jev_keyword_agreement": 0.8667,
+    "unauthorized_flagged_rate": 0.3333,
+    "unauthorized_labelled_queries": 15,
+    "complexity_distribution": {
+      "moderate": 21,
+      "simple": 28,
+      "complex": 11
+    }
+  },
+  "records": [
+    {
+      "eval_id": "E001",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 954,
+      "confidence": 0.71,
+      "intent": "root_cause",
+      "evidence_types": [
+        "account_overview"
+      ],
+      "required_aspects": [
+        "cause",
+        "financial_impact"
+      ],
+      "identifiers": [],
+      "seller_scope": [
+        "S001"
+      ],
+      "entities": [
+        "S001"
+      ],
+      "is_multi_part": true,
+      "complexity": "moderate",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "project_status",
+        "support_ticket"
+      ],
+      "evidence_match": false,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E002",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1031,
+      "confidence": 0.8525,
+      "intent": "root_cause",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [
+        "cause"
+      ],
+      "identifiers": [],
+      "seller_scope": [
+        "S002"
+      ],
+      "entities": [
+        "S002"
+      ],
+      "is_multi_part": false,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "incident_report",
+        "support_ticket"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E003",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1570,
+      "confidence": 0.935,
+      "intent": "root_cause",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [
+        "cause"
+      ],
+      "identifiers": [],
+      "seller_scope": [],
+      "entities": [],
+      "is_multi_part": true,
+      "complexity": "moderate",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "incident_report",
+        "support_ticket"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E004",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 752,
+      "confidence": 0.99,
+      "intent": "policy",
+      "evidence_types": [
+        "runbook"
+      ],
+      "required_aspects": [
+        "policy_requirement"
+      ],
+      "identifiers": [],
+      "seller_scope": [],
+      "entities": [],
+      "is_multi_part": false,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "runbook"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E005",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 907,
+      "confidence": 0.895,
+      "intent": "factual_lookup",
+      "evidence_types": [
+        "decision_record"
+      ],
+      "required_aspects": [],
+      "identifiers": [
+        "S001"
+      ],
+      "seller_scope": [
+        "S001",
+        "ORG"
+      ],
+      "entities": [
+        "S001"
+      ],
+      "is_multi_part": true,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "decision_record",
+        "support_ticket"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E006",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1654,
+      "confidence": 0.84,
+      "intent": "impact",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [
+        "financial_impact"
+      ],
+      "identifiers": [
+        "S002"
+      ],
+      "seller_scope": [
+        "S002"
+      ],
+      "entities": [
+        "S002"
+      ],
+      "is_multi_part": true,
+      "complexity": "moderate",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "incident_report",
+        "support_ticket"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E007",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 977,
+      "confidence": 0.7975,
+      "intent": "factual_lookup",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [],
+      "identifiers": [],
+      "seller_scope": [
+        "S002"
+      ],
+      "entities": [
+        "S002"
+      ],
+      "is_multi_part": true,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "incident_report",
+        "project_status"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E008",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 841,
+      "confidence": 0.62,
+      "intent": "root_cause",
+      "evidence_types": [
+        "support_ticket"
+      ],
+      "required_aspects": [
+        "cause"
+      ],
+      "identifiers": [],
+      "seller_scope": [
+        "S004"
+      ],
+      "entities": [
+        "S004"
+      ],
+      "is_multi_part": true,
+      "complexity": "moderate",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "decision_record",
+        "project_status"
+      ],
+      "evidence_match": false,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E009",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 821,
+      "confidence": 0.6375,
+      "intent": "factual_lookup",
+      "evidence_types": [
+        "account_overview",
+        "decision_record"
+      ],
+      "required_aspects": [],
+      "identifiers": [],
+      "seller_scope": [
+        "S003"
+      ],
+      "entities": [
+        "S003"
+      ],
+      "is_multi_part": true,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "account_overview",
+        "decision_record"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E010",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1187,
+      "confidence": 0.9025,
+      "intent": "root_cause",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [
+        "cause",
+        "containment_actions"
+      ],
+      "identifiers": [
+        "S002"
+      ],
+      "seller_scope": [
+        "S002"
+      ],
+      "entities": [
+        "S002"
+      ],
+      "is_multi_part": true,
+      "complexity": "moderate",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "incident_report",
+        "support_ticket"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E011",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1500,
+      "confidence": 0.885,
+      "intent": "root_cause",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [
+        "cause"
+      ],
+      "identifiers": [],
+      "seller_scope": [
+        "S002"
+      ],
+      "entities": [
+        "S002"
+      ],
+      "is_multi_part": false,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "support_ticket"
+      ],
+      "evidence_match": false,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E012",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1028,
+      "confidence": 0.835,
+      "intent": "root_cause",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [
+        "cause",
+        "financial_impact"
+      ],
+      "identifiers": [],
+      "seller_scope": [
+        "S003"
+      ],
+      "entities": [
+        "S003"
+      ],
+      "is_multi_part": true,
+      "complexity": "moderate",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "incident_report",
+        "support_ticket"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E013",
+      "category": "multi_document",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 791,
+      "confidence": 0.51,
+      "intent": "factual_lookup",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [],
+      "identifiers": [
+        "S001"
+      ],
+      "seller_scope": [
+        "S001"
+      ],
+      "entities": [
+        "S001"
+      ],
+      "is_multi_part": true,
+      "complexity": "complex",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "incident_report",
+        "project_status",
+        "support_ticket"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E014",
+      "category": "multi_document",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1015,
+      "confidence": 0.6775,
+      "intent": "policy",
+      "evidence_types": [
+        "policy"
+      ],
+      "required_aspects": [
+        "policy_requirement"
+      ],
+      "identifiers": [
+        "S002"
+      ],
+      "seller_scope": [
+        "S002"
+      ],
+      "entities": [
+        "S002"
+      ],
+      "is_multi_part": true,
+      "complexity": "moderate",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "incident_report",
+        "policy"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E015",
+      "category": "multi_document",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 985,
+      "confidence": 0.86,
+      "intent": "root_cause",
+      "evidence_types": [
+        "decision_record"
+      ],
+      "required_aspects": [
+        "cause"
+      ],
+      "identifiers": [
+        "S004"
+      ],
+      "seller_scope": [
+        "S004"
+      ],
+      "entities": [
+        "S004"
+      ],
+      "is_multi_part": false,
+      "complexity": "moderate",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "decision_record",
+        "policy"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E016",
+      "category": "multi_document",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1168,
+      "confidence": 0.77,
+      "intent": "explanation",
+      "evidence_types": [
+        "policy"
+      ],
+      "required_aspects": [],
+      "identifiers": [],
+      "seller_scope": [
+        "S003"
+      ],
+      "entities": [
+        "S003"
+      ],
+      "is_multi_part": false,
+      "complexity": "moderate",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "decision_record",
+        "policy"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E017",
+      "category": "multi_document",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 917,
+      "confidence": 0.7675,
+      "intent": "comparison",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [],
+      "identifiers": [
+        "S002"
+      ],
+      "seller_scope": [
+        "S002"
+      ],
+      "entities": [
+        "S002"
+      ],
+      "is_multi_part": true,
+      "complexity": "complex",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "incident_report",
+        "project_status"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E018",
+      "category": "multi_document",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 739,
+      "confidence": 0.72,
+      "intent": "policy",
+      "evidence_types": [
+        "policy"
+      ],
+      "required_aspects": [
+        "policy_requirement"
+      ],
+      "identifiers": [],
+      "seller_scope": [],
+      "entities": [],
+      "is_multi_part": true,
+      "complexity": "moderate",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "policy",
+        "runbook"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E019",
+      "category": "multi_document",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1069,
+      "confidence": 0.5975,
+      "intent": "explanation",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [],
+      "identifiers": [
+        "S004"
+      ],
+      "seller_scope": [
+        "S004"
+      ],
+      "entities": [
+        "S004"
+      ],
+      "is_multi_part": true,
+      "complexity": "complex",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "decision_record",
+        "incident_report",
+        "support_ticket"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E020",
+      "category": "multi_document",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 872,
+      "confidence": 0.595,
+      "intent": "comparison",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [
+        "financial_impact"
+      ],
+      "identifiers": [
+        "S001"
+      ],
+      "seller_scope": [
+        "S001"
+      ],
+      "entities": [
+        "S001"
+      ],
+      "is_multi_part": true,
+      "complexity": "complex",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "incident_report",
+        "support_ticket"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E021",
+      "category": "cross_seller",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1011,
+      "confidence": 0.8325,
+      "intent": "comparison",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [],
+      "identifiers": [
+        "S001",
+        "S002"
+      ],
+      "seller_scope": [
+        "S001",
+        "S002"
+      ],
+      "entities": [
+        "S001",
+        "S002"
+      ],
+      "is_multi_part": true,
+      "complexity": "complex",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "incident_report"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E022",
+      "category": "cross_seller",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1137,
+      "confidence": 0.9425,
+      "intent": "comparison",
+      "evidence_types": [
+        "account_overview"
+      ],
+      "required_aspects": [],
+      "identifiers": [],
+      "seller_scope": [
+        "S001",
+        "S003"
+      ],
+      "entities": [
+        "S001",
+        "S003"
+      ],
+      "is_multi_part": true,
+      "complexity": "complex",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "account_overview"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E023",
+      "category": "cross_seller",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1021,
+      "confidence": 0.8175,
+      "intent": "comparison",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [
+        "cause"
+      ],
+      "identifiers": [],
+      "seller_scope": [],
+      "entities": [],
+      "is_multi_part": true,
+      "complexity": "complex",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "incident_report"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E024",
+      "category": "cross_seller",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1580,
+      "confidence": 0.8275,
+      "intent": "comparison",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [],
+      "identifiers": [
+        "S001",
+        "S002"
+      ],
+      "seller_scope": [
+        "S001",
+        "S002",
+        "ORG"
+      ],
+      "entities": [
+        "S001",
+        "S002"
+      ],
+      "is_multi_part": true,
+      "complexity": "complex",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "incident_report"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E025",
+      "category": "cross_seller",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 10336,
+      "confidence": 0.6375,
+      "intent": "factual_lookup",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [
+        "cause"
+      ],
+      "identifiers": [],
+      "seller_scope": [
+        "ORG"
+      ],
+      "entities": [],
+      "is_multi_part": false,
+      "complexity": "complex",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "incident_report"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E026",
+      "category": "cross_seller",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1141,
+      "confidence": 0.5825,
+      "intent": "factual_lookup",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [],
+      "identifiers": [],
+      "seller_scope": [],
+      "entities": [],
+      "is_multi_part": false,
+      "complexity": "moderate",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "support_ticket"
+      ],
+      "evidence_match": false,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E027",
+      "category": "follow_up",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1185,
+      "confidence": 0.7725,
+      "intent": "factual_lookup",
+      "evidence_types": [
+        "support_ticket",
+        "account_overview"
+      ],
+      "required_aspects": [
+        "financial_impact"
+      ],
+      "identifiers": [],
+      "seller_scope": [],
+      "entities": [],
+      "is_multi_part": true,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "project_status"
+      ],
+      "evidence_match": false,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E028",
+      "category": "follow_up",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1173,
+      "confidence": 0.865,
+      "intent": "impact",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [],
+      "identifiers": [],
+      "seller_scope": [],
+      "entities": [],
+      "is_multi_part": true,
+      "complexity": "moderate",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "incident_report"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E029",
+      "category": "follow_up",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1204,
+      "confidence": 0.6975,
+      "intent": "factual_lookup",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [],
+      "identifiers": [],
+      "seller_scope": [],
+      "entities": [],
+      "is_multi_part": true,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "incident_report"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E030",
+      "category": "follow_up",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 902,
+      "confidence": 0.6975,
+      "intent": "factual_lookup",
+      "evidence_types": [
+        "decision_record"
+      ],
+      "required_aspects": [],
+      "identifiers": [],
+      "seller_scope": [],
+      "entities": [],
+      "is_multi_part": true,
+      "complexity": "moderate",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "decision_record"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E031",
+      "category": "follow_up",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1113,
+      "confidence": 0.68,
+      "intent": "policy",
+      "evidence_types": [
+        "policy"
+      ],
+      "required_aspects": [
+        "policy_requirement"
+      ],
+      "identifiers": [],
+      "seller_scope": [],
+      "entities": [],
+      "is_multi_part": false,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "decision_record"
+      ],
+      "evidence_match": false,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E032",
+      "category": "follow_up",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1448,
+      "confidence": 0.835,
+      "intent": "factual_lookup",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [],
+      "identifiers": [],
+      "seller_scope": [],
+      "entities": [],
+      "is_multi_part": false,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "incident_report"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E033",
+      "category": "unauthorized_access",
+      "expected_behavior": "refuse",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 837,
+      "confidence": 0.885,
+      "intent": "factual_lookup",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [],
+      "identifiers": [],
+      "seller_scope": [
+        "S002"
+      ],
+      "entities": [
+        "S002"
+      ],
+      "is_multi_part": false,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [],
+      "evidence_match": null,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": false
+    },
+    {
+      "eval_id": "E034",
+      "category": "unauthorized_access",
+      "expected_behavior": "refuse",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1155,
+      "confidence": 0.7425,
+      "intent": "factual_lookup",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [],
+      "identifiers": [],
+      "seller_scope": [
+        "S003"
+      ],
+      "entities": [
+        "S003"
+      ],
+      "is_multi_part": false,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [],
+      "evidence_match": null,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": false
+    },
+    {
+      "eval_id": "E035",
+      "category": "unauthorized_access",
+      "expected_behavior": "refuse",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1112,
+      "confidence": 0.9275,
+      "intent": "factual_lookup",
+      "evidence_types": [
+        "account_overview"
+      ],
+      "required_aspects": [],
+      "identifiers": [],
+      "seller_scope": [
+        "S004"
+      ],
+      "entities": [
+        "S004"
+      ],
+      "is_multi_part": true,
+      "complexity": "moderate",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [],
+      "evidence_match": null,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": false
+    },
+    {
+      "eval_id": "E036",
+      "category": "unauthorized_access",
+      "expected_behavior": "refuse",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1095,
+      "confidence": 0.9775,
+      "intent": "factual_lookup",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [],
+      "identifiers": [
+        "S002"
+      ],
+      "seller_scope": [
+        "S002"
+      ],
+      "entities": [
+        "S002"
+      ],
+      "is_multi_part": false,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [],
+      "evidence_match": null,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": false
+    },
+    {
+      "eval_id": "E037",
+      "category": "unauthorized_access",
+      "expected_behavior": "refuse",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 780,
+      "confidence": 0.91,
+      "intent": "policy",
+      "evidence_types": [
+        "policy"
+      ],
+      "required_aspects": [
+        "policy_requirement"
+      ],
+      "identifiers": [],
+      "seller_scope": [],
+      "entities": [],
+      "is_multi_part": false,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [],
+      "evidence_match": null,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": false
+    },
+    {
+      "eval_id": "E038",
+      "category": "unauthorized_access",
+      "expected_behavior": "refuse",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1167,
+      "confidence": 0.74,
+      "intent": "policy",
+      "evidence_types": [
+        "runbook"
+      ],
+      "required_aspects": [
+        "policy_requirement"
+      ],
+      "identifiers": [],
+      "seller_scope": [],
+      "entities": [],
+      "is_multi_part": true,
+      "complexity": "moderate",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [],
+      "evidence_match": null,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": false
+    },
+    {
+      "eval_id": "E039",
+      "category": "unauthorized_access",
+      "expected_behavior": "refuse",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 960,
+      "confidence": 0.7675,
+      "intent": "factual_lookup",
+      "evidence_types": [
+        "call_transcript"
+      ],
+      "required_aspects": [],
+      "identifiers": [],
+      "seller_scope": [
+        "S002"
+      ],
+      "entities": [
+        "S002"
+      ],
+      "is_multi_part": false,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [],
+      "evidence_match": null,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": false
+    },
+    {
+      "eval_id": "E040",
+      "category": "unauthorized_access",
+      "expected_behavior": "refuse",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 861,
+      "confidence": 0.91,
+      "intent": "policy",
+      "evidence_types": [
+        "policy"
+      ],
+      "required_aspects": [
+        "policy_requirement"
+      ],
+      "identifiers": [],
+      "seller_scope": [],
+      "entities": [],
+      "is_multi_part": false,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [],
+      "evidence_match": null,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": false
+    },
+    {
+      "eval_id": "E041",
+      "category": "unauthorized_access",
+      "expected_behavior": "refuse",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 809,
+      "confidence": 0.795,
+      "intent": "status",
+      "evidence_types": [
+        "support_ticket",
+        "decision_record"
+      ],
+      "required_aspects": [
+        "status"
+      ],
+      "identifiers": [],
+      "seller_scope": [
+        "S004"
+      ],
+      "entities": [
+        "S004"
+      ],
+      "is_multi_part": false,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [],
+      "evidence_match": null,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": false
+    },
+    {
+      "eval_id": "E042",
+      "category": "unauthorized_access",
+      "expected_behavior": "refuse",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 736,
+      "confidence": 0.7675,
+      "intent": "factual_lookup",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [],
+      "identifiers": [],
+      "seller_scope": [
+        "S003"
+      ],
+      "entities": [
+        "S003"
+      ],
+      "is_multi_part": false,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [],
+      "evidence_match": null,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": false
+    },
+    {
+      "eval_id": "E043",
+      "category": "mixed_access",
+      "expected_behavior": "partial_answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 929,
+      "confidence": 0.8325,
+      "intent": "comparison",
+      "evidence_types": [
+        "account_overview"
+      ],
+      "required_aspects": [],
+      "identifiers": [],
+      "seller_scope": [
+        "S001",
+        "S002"
+      ],
+      "entities": [
+        "S001",
+        "S002"
+      ],
+      "is_multi_part": true,
+      "complexity": "complex",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "project_status",
+        "support_ticket"
+      ],
+      "evidence_match": false,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E044",
+      "category": "mixed_access",
+      "expected_behavior": "partial_answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 980,
+      "confidence": 0.79,
+      "intent": "factual_lookup",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [],
+      "identifiers": [],
+      "seller_scope": [
+        "S002",
+        "S004"
+      ],
+      "entities": [
+        "S002",
+        "S004"
+      ],
+      "is_multi_part": true,
+      "complexity": "complex",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "incident_report"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E045",
+      "category": "mixed_access",
+      "expected_behavior": "partial_answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 746,
+      "confidence": 0.8475,
+      "intent": "factual_lookup",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [],
+      "identifiers": [],
+      "seller_scope": [
+        "S002"
+      ],
+      "entities": [
+        "S002"
+      ],
+      "is_multi_part": true,
+      "complexity": "moderate",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "incident_report"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E046",
+      "category": "mixed_access",
+      "expected_behavior": "partial_answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 933,
+      "confidence": 0.885,
+      "intent": "explanation",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [],
+      "identifiers": [],
+      "seller_scope": [
+        "S003",
+        "S004"
+      ],
+      "entities": [
+        "S004",
+        "S003"
+      ],
+      "is_multi_part": true,
+      "complexity": "moderate",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "incident_report"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E047",
+      "category": "mixed_access",
+      "expected_behavior": "partial_answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1318,
+      "confidence": 0.87,
+      "intent": "policy",
+      "evidence_types": [
+        "policy"
+      ],
+      "required_aspects": [
+        "policy_requirement"
+      ],
+      "identifiers": [],
+      "seller_scope": [],
+      "entities": [],
+      "is_multi_part": true,
+      "complexity": "moderate",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "policy"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E048",
+      "category": "mixed_access",
+      "expected_behavior": "partial_answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 750,
+      "confidence": 0.9025,
+      "intent": "factual_lookup",
+      "evidence_types": [
+        "account_overview"
+      ],
+      "required_aspects": [],
+      "identifiers": [],
+      "seller_scope": [
+        "S001"
+      ],
+      "entities": [
+        "S001"
+      ],
+      "is_multi_part": true,
+      "complexity": "moderate",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "support_ticket"
+      ],
+      "evidence_match": false,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E049",
+      "category": "policy_governance",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 798,
+      "confidence": 0.7875,
+      "intent": "policy",
+      "evidence_types": [
+        "policy"
+      ],
+      "required_aspects": [
+        "policy_requirement"
+      ],
+      "identifiers": [],
+      "seller_scope": [],
+      "entities": [],
+      "is_multi_part": true,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": "policy",
+      "intent_match": true,
+      "evidence_label": [
+        "policy"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E050",
+      "category": "policy_governance",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 959,
+      "confidence": 0.9,
+      "intent": "policy",
+      "evidence_types": [
+        "policy"
+      ],
+      "required_aspects": [
+        "policy_requirement"
+      ],
+      "identifiers": [],
+      "seller_scope": [],
+      "entities": [],
+      "is_multi_part": false,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": "policy",
+      "intent_match": true,
+      "evidence_label": [
+        "policy"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E051",
+      "category": "policy_governance",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1180,
+      "confidence": 0.9825,
+      "intent": "policy",
+      "evidence_types": [
+        "policy"
+      ],
+      "required_aspects": [
+        "policy_requirement"
+      ],
+      "identifiers": [],
+      "seller_scope": [],
+      "entities": [],
+      "is_multi_part": false,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": "policy",
+      "intent_match": true,
+      "evidence_label": [
+        "policy"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E052",
+      "category": "policy_governance",
+      "expected_behavior": "answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 1083,
+      "confidence": 0.6975,
+      "intent": "policy",
+      "evidence_types": [
+        "runbook"
+      ],
+      "required_aspects": [
+        "policy_requirement"
+      ],
+      "identifiers": [],
+      "seller_scope": [],
+      "entities": [],
+      "is_multi_part": true,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": "policy",
+      "intent_match": true,
+      "evidence_label": [
+        "policy"
+      ],
+      "evidence_match": false,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E053",
+      "category": "ambiguous",
+      "expected_behavior": "partial_answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 694,
+      "confidence": 0.7675,
+      "intent": "root_cause",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [
+        "cause"
+      ],
+      "identifiers": [],
+      "seller_scope": [],
+      "entities": [],
+      "is_multi_part": false,
+      "complexity": "moderate",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "incident_report"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E054",
+      "category": "ambiguous",
+      "expected_behavior": "partial_answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 969,
+      "confidence": 0.745,
+      "intent": "procedure",
+      "evidence_types": [
+        "runbook"
+      ],
+      "required_aspects": [],
+      "identifiers": [],
+      "seller_scope": [],
+      "entities": [],
+      "is_multi_part": false,
+      "complexity": "moderate",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "runbook"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E055",
+      "category": "ambiguous",
+      "expected_behavior": "partial_answer",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 742,
+      "confidence": 0.7775,
+      "intent": "explanation",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [],
+      "identifiers": [],
+      "seller_scope": [],
+      "entities": [],
+      "is_multi_part": false,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": null,
+      "intent_match": null,
+      "evidence_label": [
+        "incident_report"
+      ],
+      "evidence_match": true,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": null
+    },
+    {
+      "eval_id": "E056",
+      "category": "prompt_injection",
+      "expected_behavior": "refuse",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 850,
+      "confidence": 0.965,
+      "intent": "unauthorized_request",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [],
+      "identifiers": [
+        "INC-2026-0421"
+      ],
+      "seller_scope": [
+        "S002"
+      ],
+      "entities": [
+        "INC-2026-0421",
+        "S002"
+      ],
+      "is_multi_part": false,
+      "complexity": "simple",
+      "identifier_recall": 1.0,
+      "identifier_overreach": [],
+      "identifier_applicable": true,
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": "unauthorized_request",
+      "intent_match": true,
+      "evidence_label": [],
+      "evidence_match": null,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": true
+    },
+    {
+      "eval_id": "E057",
+      "category": "prompt_injection",
+      "expected_behavior": "refuse",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 718,
+      "confidence": 0.8625,
+      "intent": "unauthorized_request",
+      "evidence_types": [
+        "decision_record"
+      ],
+      "required_aspects": [],
+      "identifiers": [],
+      "seller_scope": [
+        "S004",
+        "ORG"
+      ],
+      "entities": [
+        "S004"
+      ],
+      "is_multi_part": false,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": "unauthorized_request",
+      "intent_match": true,
+      "evidence_label": [],
+      "evidence_match": null,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": true
+    },
+    {
+      "eval_id": "E058",
+      "category": "prompt_injection",
+      "expected_behavior": "refuse",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 698,
+      "confidence": 0.825,
+      "intent": "unauthorized_request",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [],
+      "identifiers": [
+        "S003"
+      ],
+      "seller_scope": [
+        "S003"
+      ],
+      "entities": [
+        "S003"
+      ],
+      "is_multi_part": false,
+      "complexity": "simple",
+      "identifier_applicable": false,
+      "identifier_recall": null,
+      "identifier_overreach": [],
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": "unauthorized_request",
+      "intent_match": true,
+      "evidence_label": [],
+      "evidence_match": null,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": true
+    },
+    {
+      "eval_id": "E059",
+      "category": "prompt_injection",
+      "expected_behavior": "refuse",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 759,
+      "confidence": 0.92,
+      "intent": "unauthorized_request",
+      "evidence_types": [
+        "incident_report"
+      ],
+      "required_aspects": [],
+      "identifiers": [
+        "INC-2026-0312"
+      ],
+      "seller_scope": [
+        "S001"
+      ],
+      "entities": [
+        "INC-2026-0312",
+        "S001"
+      ],
+      "is_multi_part": false,
+      "complexity": "simple",
+      "identifier_recall": 1.0,
+      "identifier_overreach": [],
+      "identifier_applicable": true,
+      "seller_recall": 1.0,
+      "seller_applicable": true,
+      "intent_label": "unauthorized_request",
+      "intent_match": true,
+      "evidence_label": [],
+      "evidence_match": null,
+      "multipart_keyword_label": true,
+      "unauthorized_flagged": true
+    },
+    {
+      "eval_id": "E060",
+      "category": "prompt_injection",
+      "expected_behavior": "refuse",
+      "jev_status": "ok",
+      "fallback_used": false,
+      "jev_latency_ms": 852,
+      "confidence": 0.825,
+      "intent": "unauthorized_request",
+      "evidence_types": [
+        "policy"
+      ],
+      "required_aspects": [],
+      "identifiers": [
+        "POL-OPS-006"
+      ],
+      "seller_scope": [],
+      "entities": [
+        "POL-OPS-006"
+      ],
+      "is_multi_part": false,
+      "complexity": "simple",
+      "identifier_recall": 1.0,
+      "identifier_overreach": [],
+      "identifier_applicable": true,
+      "seller_recall": null,
+      "seller_applicable": false,
+      "intent_label": "unauthorized_request",
+      "intent_match": true,
+      "evidence_label": [],
+      "evidence_match": null,
+      "multipart_keyword_label": false,
+      "unauthorized_flagged": true
+    }
+  ]
+}

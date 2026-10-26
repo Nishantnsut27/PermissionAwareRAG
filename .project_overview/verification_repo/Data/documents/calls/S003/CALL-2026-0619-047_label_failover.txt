@@ -1,0 +1,201 @@
+NEXORA COMMERCE PVT. LTD. - CALL TRANSCRIPT
+This is a synthetic record created for a prototype dataset. It is not a real
+conversation and does not describe real people or companies.
+
+================================================================================
+CALL RECORD
+================================================================================
+Call ID          : CALL-2026-0619-047
+Date             : 19 June 2026
+Start time       : 11:00 IST
+Duration         : 24 minutes
+Seller           : S003 - GreenCart Organics
+Topic            : Label generation failure of 18 June - outcome and prevention
+Related scenario : SC-005
+Related ticket   : TKT-2026-0618-233
+
+Participants
+  Ananya Rao           Co-founder and Operations, GreenCart Organics
+  Neha Gupta           System Engineer, Nexora (Operations)
+  Rahul Sharma         Support Engineer, Nexora (Support)
+  Vikram Singh         Software Engineer, Nexora (Engineering)
+
+Classification   : CONFIDENTIAL
+================================================================================
+
+[11:00] NEHA GUPTA: Ananya, thank you for joining. I want to start with the
+outcome so you're not waiting for it. The 640 orders that missed their slots
+have been refunded in full as of yesterday afternoon. No charges, no
+deductions.
+
+[11:00] ANANYA RAO: Thank you. I saw the refunds come through. Can we talk
+about the produce?
+
+[11:01] NEHA GUPTA: Please.
+
+[11:01] ANANYA RAO: 640 baskets went in the bin. Some of it could have been
+donated if we'd known at seven in the morning. By the time we knew, the
+window had gone. I'm not asking you to pay for it - I'm asking you to
+understand what a label outage actually costs us.
+
+[11:02] NEHA GUPTA: I do understand it, and I want to say that we classified
+it correctly as a critical incident for exactly that reason. On any other
+account this would have been a two-hour delay. For you it was destroyed
+inventory.
+
+[11:02] ANANYA RAO: Then explain to me why a documented failover didn't
+work.
+
+[11:03] VIKRAM SINGH: I'll take that. It's a fair question and the answer
+isn't good. You had a backup courier provider configured. The credentials
+for the backup had expired. When the primary degraded and our system tried to
+switch, the login to the backup failed, and our code treated that as a
+temporary problem with the backup and quietly went back to retrying the
+primary.
+
+[11:04] ANANYA RAO: Quietly.
+
+[11:04] VIKRAM SINGH: It logged at debug level. Nobody saw it. Our monitoring
+reported a degraded primary provider, which is what it looked like from the
+outside.
+
+[11:05] ANANYA RAO: How long had the backup credential been expired?
+
+[11:05] VIKRAM SINGH: It expired on the thirty-first of May. Three weeks
+before this.
+
+[11:06] ANANYA RAO: And nobody knew because nobody checked.
+
+[11:06] VIKRAM SINGH: Correct.
+
+[11:06] NEHA GUPTA: There's a harder version of that, Ananya, and you're
+entitled to hear it. The failover was set up during your onboarding and
+recorded as complete in October 2025. It was never tested. Not once. So for
+eight months we told you - implicitly - that you had redundancy, and you had
+none.
+
+[11:07] ANANYA RAO: [pause] That's the part that troubles me. The outage is
+one thing. Being told I had a backup when I didn't is another.
+
+[11:07] NEHA GUPTA: I agree, and it's why we've changed how we close those
+items. A failover is only closed now if we've actually failed over and
+watched it work. A configuration entry isn't evidence.
+
+[11:08] ANANYA RAO: So when will it actually be tested?
+
+[11:09] NEHA GUPTA: Fifteenth of July. That's a milestone in your conditional
+upgrade programme, and it requires a live test rather than a configuration
+check. I'll send you the test plan in advance.
+
+[11:09] ANANYA RAO: July feels far away given what happened yesterday.
+
+[11:10] NEHA GUPTA: It does, and I'd rather give you the honest position than
+a date I can't meet. What protects you between now and then is the credential
+rotation, which is already done, and the pre-flight check, which is in within
+a fortnight. The live test proves the whole path and it's already scheduled.
+
+[11:10] ANANYA RAO: So right now, today, if it happened again?
+
+[11:11] NEHA GUPTA: Today, you would still have failover, because the
+credentials are now valid. What you wouldn't have is early warning of the
+next expiry, until the monitoring is in.
+
+[11:11] ANANYA RAO: That's honest. Thank you.
+
+[11:13] RAHUL SHARMA: Ananya, can I add something from the support side?
+
+[11:13] ANANYA RAO: Please.
+
+[11:13] RAHUL SHARMA: You called at six fifty in the morning. If you had
+called at nine, the morning slot would have been gone entirely and it
+would have been worse. That call is the reason fourteen hundred and sixty
+orders made it into a later slot.
+
+[11:14] ANANYA RAO: My dark store managers called me at ten to seven. They'd
+already started picking. I'd rather they hadn't.
+
+[11:14] RAHUL SHARMA: In future, do you want us to notify you rather than
+the other way round?
+
+[11:15] ANANYA RAO: Obviously. But you've just told me you didn't even know
+the failover had failed, so how would you have notified me?
+
+[11:15] RAHUL SHARMA: Fair. But there's a step before that - a synthetic
+check that tries to generate a label every five minutes. That would have
+caught this within five minutes rather than seventy. It's being built.
+
+[11:16] ANANYA RAO: Then that's what I want. I don't need a phone call, I
+need you to know before I do.
+
+[11:16] NEHA GUPTA: That's a good way to put it. Let me close out the
+actions.
+
+[11:17] NEHA GUPTA: Credential expiry monitoring across provider
+integrations, end of June. Scheduled pre-flight validation of backups, early
+July. Failover failure logged as an error rather than debug, early July.
+Synthetic label generation check every five minutes, early August. Live
+failover test, fifteenth of July as part of your milestone programme.
+Quarterly live failover tests thereafter.
+
+[11:18] ANANYA RAO: And the onboarding standard?
+
+[11:18] NEHA GUPTA: Changed. A failover item cannot be closed on
+configuration evidence any more. It needs a successful test.
+
+[11:19] ANANYA RAO: Good. Then I'm satisfied on the technical side.
+
+[11:19] NEHA GUPTA: Is there anything on the commercial side you want to
+raise?
+
+[11:20] ANANYA RAO: The refunds cover the customer. The produce is my loss
+and I'll absorb it. I'm small enough that six hundred baskets matters, but I
+understand you've got a rule about what you compensate and I'm not going to
+fight it. What I want is that this doesn't happen again, and I want it
+written down that we discussed it.
+
+[11:21] NEHA GUPTA: It's written down. And for what it's worth, the refunds
+used the refund-on-report exception on your account, which is why they went
+through same-day without a return. That's a benefit of how your account is
+configured.
+
+[11:21] ANANYA RAO: I know. It's one of the reasons I stay.
+
+[11:22] NEHA GUPTA: Let me confirm one thing before we finish. Your
+milestone for the tier upgrade - the verified failover - will be signed off
+after the July test. If it passes.
+
+[11:22] ANANYA RAO: If it passes.
+
+[11:23] NEHA GUPTA: If it passes. I'll send you the test plan in advance so
+your team can watch.
+
+[11:23] ANANYA RAO: I'd like that. Thank you both.
+
+[11:24] RAHUL SHARMA: I'll send the refund reconciliation this afternoon so
+you can match it to your own records.
+
+[11:24] ANANYA RAO: Please. Goodbye.
+
+================================================================================
+DECISIONS
+================================================================================
+1. Refunds for the 640 missed-slot orders confirmed as full and complete.
+2. Produce losses accepted by the seller and not compensated; recorded.
+3. Failover items may no longer be closed on configuration evidence.
+4. Live failover test to be performed on 15 July 2026 as part of the tier
+   milestone programme.
+5. Synthetic label generation check to be introduced.
+6. Seller to receive the failover test plan in advance.
+
+FOLLOW-UP ACTIONS
+================================================================================
+Owner           Action                                          Target
+Neha Gupta      Credential expiry monitoring                    2026-06-26
+Vikram Singh    Scheduled failover pre-flight validation        2026-07-03
+Vikram Singh    Failover failure logged as an error             2026-07-03
+Vikram Singh    Synthetic label generation check                2026-08-07
+Neha Gupta      Live failover test                              2026-07-15
+Rahul Sharma    Refund reconciliation to seller                 2026-06-19
+
+RECORDING ENDS 11:24 IST
+================================================================================

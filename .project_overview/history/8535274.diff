@@ -1,0 +1,24 @@
+commit 85352747b98c61b7da311bd059171ec9b32623dd
+Author:     Nishant Raj <143648131+Nishantnsut27@users.noreply.github.com>
+AuthorDate: Fri Sep 18 22:28:58 2026 +0530
+Commit:     Nishant Raj <143648131+Nishantnsut27@users.noreply.github.com>
+CommitDate: Fri Sep 18 22:28:58 2026 +0530
+
+    backend deployment process
+
+diff --git a/answering/src/config.py b/answering/src/config.py
+index d0ca7d5..76e9e50 100644
+--- a/answering/src/config.py
++++ b/answering/src/config.py
+@@ -44,8 +44,9 @@ JINA_RERANK_MODEL = os.getenv(
+ RERANK_TIMEOUT_S = _int("RERANK_TIMEOUT_S", 30)
+ RERANK_ENABLED = os.getenv("RERANK_ENABLED", "true").strip().lower() != "false"
+ 
+-API_HOST = os.getenv("API_HOST", "127.0.0.1")
+-API_PORT = _int("API_PORT", 8000)
++# Render exposes the HTTP port through PORT. Keep API_PORT as a local fallback.
++API_HOST = os.getenv("API_HOST", "0.0.0.0")
++API_PORT = _int("PORT", _int("API_PORT", 8000))
+ 
+ 
+ @dataclass(frozen=True)

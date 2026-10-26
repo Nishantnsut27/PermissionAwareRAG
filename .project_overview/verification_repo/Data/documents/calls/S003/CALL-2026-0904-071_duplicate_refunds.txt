@@ -1,0 +1,191 @@
+NEXORA COMMERCE PVT. LTD. - CALL TRANSCRIPT
+This is a synthetic record created for a prototype dataset. It is not a real
+conversation and does not describe real people or companies.
+
+================================================================================
+CALL RECORD
+================================================================================
+Call ID          : CALL-2026-0904-071
+Date             : 4 September 2026
+Start time       : 11:00 IST
+Duration         : 22 minutes
+Seller           : S003 - GreenCart Organics
+Topic            : Duplicate refunds of 2-3 September - recovery terms
+Related scenario : SC-007
+Related ticket   : TKT-2026-0903-336
+
+Participants
+  Ananya Rao           Co-founder and Operations, GreenCart Organics
+  Neha Gupta           System Engineer, Nexora (Operations)
+  Rahul Sharma         Support Engineer, Nexora (Support)
+  Vikram Singh         Software Engineer, Nexora (Engineering)
+
+Classification   : CONFIDENTIAL
+================================================================================
+
+[11:00] NEHA GUPTA: Ananya, I know you raised this yesterday afternoon with
+Rahul. I want to deal with the commercial question first because that's the
+one that's keeping you up.
+
+[11:00] ANANYA RAO: Yes. I'll be direct. INR 1,18,000 came out that
+shouldn't have. If you take that from my next settlement in one go, I will
+have a problem paying my suppliers that week.
+
+[11:01] NEHA GUPTA: Then you won't be asked to. We'll recover it across four
+settlement cycles, starting with the fifteenth of September. No interest, no
+fee.
+
+[11:01] ANANYA RAO: That's a big relief. May I ask why, so I understand the
+principle?
+
+[11:02] NEHA GUPTA: Because you didn't cause it. The error was ours. We
+recover the money because it's ours to recover, but the terms have to reflect
+that you didn't create the problem. A single debit would be operationally
+simpler for us and would hurt you for no reason.
+
+[11:02] ANANYA RAO: Thank you. Not everyone thinks that way.
+
+[11:03] NEHA GUPTA: Vikram, can you explain the cause plainly? Ananya should
+have it.
+
+[11:03] VIKRAM SINGH: Your refunds go through a component that listens for
+refund events. We restarted that component on Tuesday night for a
+deployment. When it restarted, some events that had already been handled got
+delivered again - that's normal for this kind of message system - and our
+component applied them a second time because it didn't check whether it had
+seen the event before.
+
+[11:04] ANANYA RAO: So the same refund was sent twice.
+
+[11:04] VIKRAM SINGH: Yes. 640 refunds were applied twice.
+
+[11:05] ANANYA RAO: Why us? Was it something about our account?
+
+[11:05] VIKRAM SINGH: It's about your refund volume, not your account. You
+refund on report without a physical return because your goods are
+perishable. That means you generate several times more refund events per
+order than any other seller. The fault was platform-wide - three orders on
+other accounts were also affected - but it showed up on you first and worst.
+
+[11:06] ANANYA RAO: So we were unlucky.
+
+[11:06] VIKRAM SINGH: You were structurally exposed. That's different from
+unlucky, and it's why your account record now notes it, so future changes to
+refunds consider you first.
+
+[11:07] ANANYA RAO: I appreciate that. What happened to the customers who
+got double refunds?
+
+[11:07] RAHUL SHARMA: 412 of the duplicate transactions hadn't settled yet
+and were reversed at the payment processor. 228 had already settled.
+
+[11:08] ANANYA RAO: And you're asking those customers for the money back?
+
+[11:08] RAHUL SHARMA: No. Those are being written off. It's not proportionate
+to pursue a few hundred rupees from a customer who received a genuine refund
+in the first place.
+
+[11:09] ANANYA RAO: So the write-off is your cost, but you're recovering the
+1,18,000 from me?
+
+[11:09] NEHA GUPTA: That's the right question and I want to be precise.
+There are two different amounts. The 1,18,000 is money that left our payment
+rails to your customers and did not belong to them. The 228 written-off cases
+are amounts we chose not to chase customers for. Both are our error. We're
+recovering the 1,18,000 from your settlement because it's a refund that
+shouldn't have been issued on your account, and we're absorbing the rest
+because chasing it costs more than it's worth.
+
+[11:10] ANANYA RAO: I understand the distinction. I don't love it but I
+understand it. Is there flexibility on the schedule?
+
+[11:10] NEHA GUPTA: We can extend to six cycles if four is tight. Beyond
+that I'd need to take it back for approval.
+
+[11:11] ANANYA RAO: Four is manageable. I'll take four.
+
+[11:11] NEHA GUPTA: Then four it is. Confirmed.
+
+[11:12] ANANYA RAO: What stops this happening again?
+
+[11:12] VIKRAM SINGH: The component now keeps a record of every refund event
+it has processed, so a redelivery is recognised and ignored. We deployed it
+yesterday. I replayed the same event fifty times in testing and it applied
+once.
+
+[11:13] ANANYA RAO: And the other components that work the same way?
+
+[11:13] VIKRAM SINGH: We're auditing all of them. I'd rather tell you we
+found two more and fixed them than tell you there were none.
+
+[11:14] ANANYA RAO: Were those two on payments?
+
+[11:14] VIKRAM SINGH: No. Neither was financial. Both fixed.
+
+[11:14] ANANYA RAO: Good. That's reassuring because it means you looked.
+
+[11:15] NEHA GUPTA: Ananya, one more thing and it's about your tier
+milestone.
+
+[11:15] ANANYA RAO: The reconciliation one.
+
+[11:16] NEHA GUPTA: Yes. This incident is exactly the kind of thing that
+milestone is meant to protect against. Your own reconciliation is what found
+it. But the milestone is about automated reconciliation at your end, and this
+event doesn't change that assessment. It remains outstanding.
+
+[11:17] ANANYA RAO: I know. It's been outstanding because I've been
+firefighting your incidents instead of building it. Which is a bit ironic.
+
+[11:17] NEHA GUPTA: It is, and I'll note that two of the three incidents on
+your account this year pulled your team onto recovery work. I'll raise it -
+the milestone shouldn't be unreachable because you're busy with our
+failures.
+
+[11:18] ANANYA RAO: I'd appreciate that. I do want weekly settlement
+eventually.
+
+[11:18] NEHA GUPTA: Then let's make sure the milestone is measured on your
+capability, not on your availability.
+
+[11:19] ANANYA RAO: Thank you. And the recovery schedule - I'll see the
+first deduction on the fifteenth?
+
+[11:19] NEHA GUPTA: First deduction on the fifteenth, itemised separately so
+you can see it clearly.
+
+[11:20] ANANYA RAO: Good. That's all I needed.
+
+[11:20] RAHUL SHARMA: I'll confirm the reversal figures in writing today so
+your reconciliation can be closed.
+
+[11:21] ANANYA RAO: Please. Thank you both for handling this the way you
+did.
+
+[11:21] NEHA GUPTA: Thank you for raising it precisely, with the twelve
+orders checked. That's what made it diagnosable in an afternoon.
+
+[11:22] ANANYA RAO: Goodbye.
+
+================================================================================
+DECISIONS
+================================================================================
+1. Excess of INR 1,18,000 to be recovered across four settlement cycles,
+   beginning 15 September 2026, with no interest or fee.
+2. 228 settled duplicate refunds written off, not pursued from customers.
+3. Recovery recorded as itemised deductions so the seller can verify them.
+4. Seller agreed to four cycles rather than six.
+5. Tier reconciliation milestone to be reassessed on capability rather than
+   elapsed time, given two incidents consumed the seller's capacity.
+
+FOLLOW-UP ACTIONS
+================================================================================
+Owner           Action                                          Target
+Vikram Singh    Idempotency store deployed                      2026-09-04
+Vikram Singh    Audit all consumers for idempotency             2026-09-19
+Rahul Sharma    Written reversal figures to seller              2026-09-04
+Neha Gupta      First staged recovery deduction                  2026-09-15
+Neha Gupta      Raise milestone assessment issue with Business   2026-09-08
+
+RECORDING ENDS 11:22 IST
+================================================================================

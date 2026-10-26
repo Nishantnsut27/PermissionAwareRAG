@@ -1,0 +1,1346 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-23T18:26:32+00:00",
+  "candidate_pool": 20,
+  "summary": {
+    "cases": 57,
+    "baseline": {
+      "in_pool_rate": 100.0,
+      "mean_first_chunk_rank": 1.912,
+      "mean_chunks_of_doc": 1.596
+    },
+    "plan": {
+      "in_pool_rate": 100.0,
+      "mean_first_chunk_rank": 1.105,
+      "mean_chunks_of_doc": 1.596
+    },
+    "gains": {
+      "rescued": 0,
+      "lost": 0,
+      "rank_improved": 14
+    },
+    "negative_controls": {
+      "checked": 51,
+      "leaks": 0
+    }
+  },
+  "rows": [
+    {
+      "doc_id": "CALL-2026-0116-004",
+      "document_type": "Call Transcript",
+      "seller_id": "S003",
+      "query": "What information does CALL-2026-0116-004 contain?",
+      "user": "U-001",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 2,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 12,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-002",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "CALL-2026-0225-013",
+      "document_type": "Call Transcript",
+      "seller_id": "S001",
+      "query": "What information does CALL-2026-0225-013 contain?",
+      "user": "U-001",
+      "n_authorized_users": 3,
+      "n_unauthorized_users": 2,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 2,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-003",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "CALL-2026-0313-018",
+      "document_type": "Call Transcript",
+      "seller_id": "S001",
+      "query": "What information does CALL-2026-0313-018 contain?",
+      "user": "U-001",
+      "n_authorized_users": 3,
+      "n_unauthorized_users": 2,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 7,
+        "chunks_of_doc": 2
+      },
+      "negative_control": {
+        "user": "U-003",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "CALL-2026-0422-029",
+      "document_type": "Call Transcript",
+      "seller_id": "S002",
+      "query": "What information does CALL-2026-0422-029 contain?",
+      "user": "U-005",
+      "n_authorized_users": 1,
+      "n_unauthorized_users": 4,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 4,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "CALL-2026-0520-041",
+      "document_type": "Call Transcript",
+      "seller_id": "S002",
+      "query": "What information does CALL-2026-0520-041 contain?",
+      "user": "U-002",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "CALL-2026-0619-047",
+      "document_type": "Call Transcript",
+      "seller_id": "S003",
+      "query": "What information does CALL-2026-0619-047 contain?",
+      "user": "U-001",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 3
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 2,
+        "chunks_of_doc": 3
+      },
+      "negative_control": {
+        "user": "U-002",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "CALL-2026-0717-052",
+      "document_type": "Call Transcript",
+      "seller_id": "S002",
+      "query": "What information does CALL-2026-0717-052 contain?",
+      "user": "U-002",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "CALL-2026-0806-063",
+      "document_type": "Call Transcript",
+      "seller_id": "S004",
+      "query": "What information does CALL-2026-0806-063 contain?",
+      "user": "U-005",
+      "n_authorized_users": 1,
+      "n_unauthorized_users": 4,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 4,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "CALL-2026-0904-071",
+      "document_type": "Call Transcript",
+      "seller_id": "S003",
+      "query": "What information does CALL-2026-0904-071 contain?",
+      "user": "U-001",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 9,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-002",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "CALL-2026-0909-074",
+      "document_type": "Call Transcript",
+      "seller_id": "S004",
+      "query": "What information does CALL-2026-0909-074 contain?",
+      "user": "U-005",
+      "n_authorized_users": 1,
+      "n_unauthorized_users": 4,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 2,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 8,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "INC-2026-0312",
+      "document_type": "Incident Report",
+      "seller_id": "S001",
+      "query": "What happened in INC-2026-0312?",
+      "user": "U-002",
+      "n_authorized_users": 3,
+      "n_unauthorized_users": 2,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "INC-2026-0421",
+      "document_type": "Security Incident Report",
+      "seller_id": "S002",
+      "query": "What happened in INC-2026-0421?",
+      "user": "U-005",
+      "n_authorized_users": 1,
+      "n_unauthorized_users": 4,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "INC-2026-0519",
+      "document_type": "Incident Report",
+      "seller_id": "S002",
+      "query": "What happened in INC-2026-0519?",
+      "user": "U-002",
+      "n_authorized_users": 4,
+      "n_unauthorized_users": 1,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "INC-2026-0618",
+      "document_type": "Incident Report",
+      "seller_id": "S003",
+      "query": "What happened in INC-2026-0618?",
+      "user": "U-005",
+      "n_authorized_users": 1,
+      "n_unauthorized_users": 4,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "INC-2026-0716",
+      "document_type": "Incident Report",
+      "seller_id": "S002",
+      "query": "What happened in INC-2026-0716?",
+      "user": "U-002",
+      "n_authorized_users": 4,
+      "n_unauthorized_users": 1,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "INC-2026-0805",
+      "document_type": "Incident Report",
+      "seller_id": "S004",
+      "query": "What happened in INC-2026-0805?",
+      "user": "U-004",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 3
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 3
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "INC-2026-0812",
+      "document_type": "Incident Report",
+      "seller_id": "S001",
+      "query": "What happened in INC-2026-0812?",
+      "user": "U-002",
+      "n_authorized_users": 3,
+      "n_unauthorized_users": 2,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "INC-2026-0903",
+      "document_type": "Incident Report",
+      "seller_id": "S003",
+      "query": "What happened in INC-2026-0903?",
+      "user": "U-005",
+      "n_authorized_users": 1,
+      "n_unauthorized_users": 4,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 2,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 2,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "OPS-RB-001",
+      "document_type": "Runbook",
+      "seller_id": "Organization-wide",
+      "query": "What does the runbook OPS-RB-001 say?",
+      "user": "U-004",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "OPS-RB-002",
+      "document_type": "Operational Procedure",
+      "seller_id": "Organization-wide",
+      "query": "What steps does OPS-RB-002 define?",
+      "user": "U-004",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "OPS-RB-003",
+      "document_type": "Operational Procedure",
+      "seller_id": "Organization-wide",
+      "query": "What steps does OPS-RB-003 define?",
+      "user": "U-004",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 2,
+        "chunks_of_doc": 2
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 2,
+        "chunks_of_doc": 2
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "OPS-RB-004",
+      "document_type": "Runbook",
+      "seller_id": "Organization-wide",
+      "query": "What does the runbook OPS-RB-004 say?",
+      "user": "U-004",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "OPS-RB-005",
+      "document_type": "Operational Procedure",
+      "seller_id": "Organization-wide",
+      "query": "What steps does OPS-RB-005 define?",
+      "user": "U-004",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 2,
+        "chunks_of_doc": 2
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 2,
+        "chunks_of_doc": 2
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "OPS-RB-006",
+      "document_type": "Operational Checklist",
+      "seller_id": "Organization-wide",
+      "query": "What items does the checklist OPS-RB-006 cover?",
+      "user": "U-004",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 3
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 3
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "POL-BIZ-003",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "query": "What does policy POL-BIZ-003 require?",
+      "user": "U-001",
+      "n_authorized_users": 5,
+      "n_unauthorized_users": 0,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": null,
+        "leaked": null,
+        "skipped": "no unauthorized user available"
+      }
+    },
+    {
+      "doc_id": "POL-BIZ-004",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "query": "What does policy POL-BIZ-004 require?",
+      "user": "U-001",
+      "n_authorized_users": 5,
+      "n_unauthorized_users": 0,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": null,
+        "leaked": null,
+        "skipped": "no unauthorized user available"
+      }
+    },
+    {
+      "doc_id": "POL-FIN-002",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "query": "What does policy POL-FIN-002 require?",
+      "user": "U-001",
+      "n_authorized_users": 5,
+      "n_unauthorized_users": 0,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 3
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 3
+      },
+      "negative_control": {
+        "user": null,
+        "leaked": null,
+        "skipped": "no unauthorized user available"
+      }
+    },
+    {
+      "doc_id": "POL-IT-001",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "query": "What does policy POL-IT-001 require?",
+      "user": "U-005",
+      "n_authorized_users": 1,
+      "n_unauthorized_users": 4,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "POL-IT-002",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "query": "What does policy POL-IT-002 require?",
+      "user": "U-001",
+      "n_authorized_users": 5,
+      "n_unauthorized_users": 0,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "negative_control": {
+        "user": null,
+        "leaked": null,
+        "skipped": "no unauthorized user available"
+      }
+    },
+    {
+      "doc_id": "POL-OPS-006",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "query": "What does policy POL-OPS-006 require?",
+      "user": "U-004",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "POL-SEC-001",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "query": "What does policy POL-SEC-001 require?",
+      "user": "U-001",
+      "n_authorized_users": 5,
+      "n_unauthorized_users": 0,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 3
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 3
+      },
+      "negative_control": {
+        "user": null,
+        "leaked": null,
+        "skipped": "no unauthorized user available"
+      }
+    },
+    {
+      "doc_id": "POL-SEC-002",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "query": "What does policy POL-SEC-002 require?",
+      "user": "U-001",
+      "n_authorized_users": 5,
+      "n_unauthorized_users": 0,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 3
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 3
+      },
+      "negative_control": {
+        "user": null,
+        "leaked": null,
+        "skipped": "no unauthorized user available"
+      }
+    },
+    {
+      "doc_id": "PRJ-S001-001",
+      "document_type": "Project Document",
+      "seller_id": "S001",
+      "query": "What is the current status of PRJ-S001-001?",
+      "user": "U-001",
+      "n_authorized_users": 3,
+      "n_unauthorized_users": 2,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 2,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-002",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "PRJ-S001-002",
+      "document_type": "Project Document",
+      "seller_id": "S001",
+      "query": "What is the current status of PRJ-S001-002?",
+      "user": "U-001",
+      "n_authorized_users": 3,
+      "n_unauthorized_users": 2,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "negative_control": {
+        "user": "U-002",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "PRJ-S001-003",
+      "document_type": "Project Status Report",
+      "seller_id": "S001",
+      "query": "What is the current status of PRJ-S001-003?",
+      "user": "U-001",
+      "n_authorized_users": 4,
+      "n_unauthorized_users": 1,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 3
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 3
+      },
+      "negative_control": {
+        "user": "U-004",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "PRJ-S001-004",
+      "document_type": "Decision Record",
+      "seller_id": "S001",
+      "query": "What was decided in PRJ-S001-004?",
+      "user": "U-001",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-002",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "PRJ-S002-001",
+      "document_type": "Requirements Document",
+      "seller_id": "S002",
+      "query": "What is the scope of PRJ-S002-001?",
+      "user": "U-003",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "PRJ-S002-002",
+      "document_type": "Implementation Plan",
+      "seller_id": "S002",
+      "query": "What is the delivery status of PRJ-S002-002?",
+      "user": "U-003",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "PRJ-S002-003",
+      "document_type": "Project Status Report",
+      "seller_id": "S002",
+      "query": "What is the current status of PRJ-S002-003?",
+      "user": "U-002",
+      "n_authorized_users": 4,
+      "n_unauthorized_users": 1,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "PRJ-S003-001",
+      "document_type": "Project Document",
+      "seller_id": "S003",
+      "query": "What is the current status of PRJ-S003-001?",
+      "user": "U-001",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 3,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-002",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "PRJ-S003-002",
+      "document_type": "Technical Notes",
+      "seller_id": "S003",
+      "query": "What do PRJ-S003-002 technical notes cover?",
+      "user": "U-005",
+      "n_authorized_users": 1,
+      "n_unauthorized_users": 4,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "PRJ-S003-003",
+      "document_type": "Decision Record",
+      "seller_id": "S003",
+      "query": "What was decided in PRJ-S003-003?",
+      "user": "U-001",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "negative_control": {
+        "user": "U-002",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "PRJ-S004-001",
+      "document_type": "Project Document",
+      "seller_id": "S004",
+      "query": "What is the current status of PRJ-S004-001?",
+      "user": "U-005",
+      "n_authorized_users": 1,
+      "n_unauthorized_users": 4,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 2,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "PRJ-S004-002",
+      "document_type": "Project Status Report",
+      "seller_id": "S004",
+      "query": "What is the current status of PRJ-S004-002?",
+      "user": "U-004",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "PRJ-S004-003",
+      "document_type": "Decision Record",
+      "seller_id": "S004",
+      "query": "What was decided in PRJ-S004-003?",
+      "user": "U-004",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 3
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 3
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "TKT-2026-0115-054",
+      "document_type": "Support Ticket",
+      "seller_id": "S003",
+      "query": "What is the resolution status of TKT-2026-0115-054?",
+      "user": "U-001",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 2,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 2,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-002",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "TKT-2026-0224-091",
+      "document_type": "Support Ticket",
+      "seller_id": "S001",
+      "query": "What is the resolution status of TKT-2026-0224-091?",
+      "user": "U-001",
+      "n_authorized_users": 4,
+      "n_unauthorized_users": 1,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-004",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "TKT-2026-0312-114",
+      "document_type": "Support Ticket",
+      "seller_id": "S001",
+      "query": "What is the resolution status of TKT-2026-0312-114?",
+      "user": "U-001",
+      "n_authorized_users": 4,
+      "n_unauthorized_users": 1,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 2,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-004",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "TKT-2026-0421-162",
+      "document_type": "Support Ticket",
+      "seller_id": "S002",
+      "query": "What is the resolution status of TKT-2026-0421-162?",
+      "user": "U-005",
+      "n_authorized_users": 1,
+      "n_unauthorized_users": 4,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "TKT-2026-0519-207",
+      "document_type": "Support Ticket",
+      "seller_id": "S002",
+      "query": "What is the resolution status of TKT-2026-0519-207?",
+      "user": "U-002",
+      "n_authorized_users": 3,
+      "n_unauthorized_users": 2,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "TKT-2026-0602-217",
+      "document_type": "Support Ticket",
+      "seller_id": "S002",
+      "query": "What is the resolution status of TKT-2026-0602-217?",
+      "user": "U-002",
+      "n_authorized_users": 3,
+      "n_unauthorized_users": 2,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "TKT-2026-0618-233",
+      "document_type": "Support Ticket",
+      "seller_id": "S003",
+      "query": "What is the resolution status of TKT-2026-0618-233?",
+      "user": "U-001",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "negative_control": {
+        "user": "U-002",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "TKT-2026-0716-268",
+      "document_type": "Support Ticket",
+      "seller_id": "S002",
+      "query": "What is the resolution status of TKT-2026-0716-268?",
+      "user": "U-002",
+      "n_authorized_users": 3,
+      "n_unauthorized_users": 2,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "TKT-2026-0805-301",
+      "document_type": "Support Ticket",
+      "seller_id": "S004",
+      "query": "What is the resolution status of TKT-2026-0805-301?",
+      "user": "U-005",
+      "n_authorized_users": 1,
+      "n_unauthorized_users": 4,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 3,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "TKT-2026-0812-308",
+      "document_type": "Support Ticket",
+      "seller_id": "S001",
+      "query": "What is the resolution status of TKT-2026-0812-308?",
+      "user": "U-001",
+      "n_authorized_users": 4,
+      "n_unauthorized_users": 1,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 2
+      },
+      "negative_control": {
+        "user": "U-004",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "TKT-2026-0903-336",
+      "document_type": "Support Ticket",
+      "seller_id": "S003",
+      "query": "What is the resolution status of TKT-2026-0903-336?",
+      "user": "U-001",
+      "n_authorized_users": 2,
+      "n_unauthorized_users": 3,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 2,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-002",
+        "leaked": false
+      }
+    },
+    {
+      "doc_id": "TKT-2026-0908-341",
+      "document_type": "Support Ticket",
+      "seller_id": "S004",
+      "query": "What is the resolution status of TKT-2026-0908-341?",
+      "user": "U-005",
+      "n_authorized_users": 1,
+      "n_unauthorized_users": 4,
+      "plan": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "baseline": {
+        "in_pool": true,
+        "first_chunk_rank": 1,
+        "chunks_of_doc": 1
+      },
+      "negative_control": {
+        "user": "U-001",
+        "leaked": false
+      }
+    }
+  ]
+}

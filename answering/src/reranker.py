@@ -10,6 +10,13 @@ neutral default - an unranked context is what the document-aware selection
 stage is protecting against. A rate limit is transient, so it is retried with
 backoff rather than treated as a permanent failure. Only a genuinely
 unrecoverable response degrades to fusion order.
+
+Phase 7 note: the reranker can additionally consume a QueryPlan to tell an
+answer-bearing passage from a merely related one. That influence is bounded and
+ordering-only - the relevance threshold is applied to the raw Jina score before
+any plan term exists - so a plan can reorder the surviving passages but can
+never change which passages survive, and a plan-aware run degrades to exactly
+the pre-Phase-7 behaviour when the plan is absent or the feature is disabled.
 """
 from __future__ import annotations
 
@@ -19,7 +26,7 @@ from dataclasses import dataclass
 
 import requests
 
-from . import config
+from . import config, query_aware_rerank
 
 logger = logging.getLogger(__name__)
 
@@ -51,6 +58,11 @@ class RerankOutcome:
     applied: bool
     error: str | None = None
     attempts: int = 0
+    # Phase 7: whether the bounded QueryPlan compatibility term was added to
+    # the Jina scores, and how much it moved them. Diagnostics only.
+    plan_applied: bool = False
+    mean_adjustment: float = 0.0
+    max_adjustment: float = 0.0
 
 
 def _headers() -> dict[str, str]:
@@ -94,15 +106,27 @@ def _request(query: str, documents: list[str]) -> list[dict]:
     return results
 
 
-def rerank(query: str, chunks: list, threshold: float | None = None) -> RerankOutcome:
+def rerank(query: str, chunks: list, threshold: float | None = None,
+           plan=None, weights=None) -> RerankOutcome:
     """Order authorized chunks by relevance and drop those below threshold.
 
     Returns the original order with no scores if reranking is unavailable.
+
+    Phase 7: when `plan` is supplied and plan-aware reranking is enabled, the
+    Jina query gains a compact statement of the information need and each score
+    gains a bounded QueryPlan-compatibility term. The relevance THRESHOLD is
+    deliberately applied to the raw Jina score, so the set of passages that
+    survive is identical to the pre-Phase-7 pipeline and the plan can only ever
+    change their order. Phase 7 reorders; it never filters.
     """
     if not chunks:
         return RerankOutcome(items=[], applied=False)
     if not config.RERANK_ENABLED or not config.JINA_API_KEY:
         return RerankOutcome([(c, None) for c in chunks], False, "disabled")
+
+    plan_aware = plan is not None and config.RERANK_PLAN_AWARE
+    effective_query = (query_aware_rerank.plan_aware_query(query, plan)
+                       if plan_aware else query)
 
     documents = [(c.text or "")[:MAX_DOC_CHARS] for c in chunks]
     attempts = 0
@@ -111,7 +135,7 @@ def rerank(query: str, chunks: list, threshold: float | None = None) -> RerankOu
     for attempt in range(config.RERANK_MAX_RETRIES + 1):
         attempts = attempt + 1
         try:
-            results = _request(query, documents)
+            results = _request(effective_query, documents)
             last_error = None
             break
         except _Retryable as exc:
@@ -135,7 +159,7 @@ def rerank(query: str, chunks: list, threshold: float | None = None) -> RerankOu
         return RerankOutcome([(c, None) for c in chunks], False,
                              str(last_error)[:200], attempts)
 
-    scored: list[tuple[object, float | None]] = []
+    scored: list[tuple[object, float]] = []
     for item in results:
         index = item.get("index")
         if not isinstance(index, int) or not 0 <= index < len(chunks):
@@ -145,7 +169,25 @@ def rerank(query: str, chunks: list, threshold: float | None = None) -> RerankOu
         return RerankOutcome([(c, None) for c in chunks], False,
                              "no usable scores", attempts)
 
-    scored.sort(key=lambda pair: pair[1], reverse=True)
+    # Relevance gating stays a pure Jina decision, on the raw score, BEFORE any
+    # plan term is added. This is what makes Phase 7 provably recall-neutral at
+    # this stage: the surviving set cannot differ from baseline.
     if threshold is not None:
         scored = [pair for pair in scored if pair[1] >= threshold]
-    return RerankOutcome(items=scored, applied=True, attempts=attempts)
+
+    if not plan_aware:
+        scored.sort(key=lambda pair: pair[1], reverse=True)
+        return RerankOutcome(items=scored, applied=True, attempts=attempts)
+
+    adjusted: list[tuple[object, float]] = []
+    deltas: list[float] = []
+    for chunk, raw in scored:
+        value = query_aware_rerank.adjust(raw, chunk, plan, weights)
+        deltas.append(value - raw)
+        adjusted.append((chunk, value))
+    # Stable sort: an equal adjusted score keeps Jina's own ordering.
+    adjusted.sort(key=lambda pair: pair[1], reverse=True)
+    return RerankOutcome(
+        items=adjusted, applied=True, attempts=attempts, plan_applied=True,
+        mean_adjustment=(sum(deltas) / len(deltas)) if deltas else 0.0,
+        max_adjustment=max(deltas) if deltas else 0.0)

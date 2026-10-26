@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-23T18:43:05+00:00",
+  "summary": {
+    "scored_cases": 6,
+    "baseline": {
+      "recall": 1.0,
+      "precision": 0.5167,
+      "mrr": 0.9167,
+      "mean_selected_chunks": 7.6667
+    },
+    "plan": {
+      "recall": 1.0,
+      "precision": 0.5167,
+      "mrr": 0.9167,
+      "mean_selected_chunks": 7.5
+    },
+    "recall_regressions": [],
+    "recall_improvements": 0
+  },
+  "rows": [
+    {
+      "eval_id": "E001",
+      "category": "authorized_factual",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 7
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 7
+      }
+    },
+    {
+      "eval_id": "E002",
+      "category": "authorized_factual",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 11
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 11
+      }
+    },
+    {
+      "eval_id": "E003",
+      "category": "authorized_factual",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4
+      }
+    },
+    {
+      "eval_id": "E004",
+      "category": "authorized_factual",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 5
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 5
+      }
+    },
+    {
+      "eval_id": "E005",
+      "category": "authorized_factual",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S001-004",
+          "S001-ACC-001",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 10
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S001-004",
+          "S001-ACC-001",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 10
+      }
+    },
+    {
+      "eval_id": "E006",
+      "category": "authorized_factual",
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "CALL-2026-0717-052",
+          "PRJ-S002-003",
+          "TKT-2026-0602-217"
+        ],
+        "n_selected": 9
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 8
+      }
+    }
+  ]
+}

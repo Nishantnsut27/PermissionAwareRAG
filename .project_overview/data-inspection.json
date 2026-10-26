@@ -1,0 +1,1449 @@
+[
+  {
+    "path": "Data/documents/calls/S001/CALL-2026-0225-013_tax_invoice_mismatch.txt",
+    "pages": 1,
+    "characters": 7255,
+    "metadata": {
+      "document_id": "CALL-2026-0225-013",
+      "seller_id": "S001",
+      "classification": "CONFIDENTIAL",
+      "owner": "Aditya Verma",
+      "department": "Business",
+      "created_date": "2026-02-25",
+      "scenario_ids": [
+        "SC-004"
+      ],
+      "scenario_id": "SC-004",
+      "document_type": "Call Transcript",
+      "extra_metadata": {
+        "departments_present": [
+          "Business",
+          "Support"
+        ]
+      }
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/calls/S001/CALL-2026-0313-018_settlement_shortfall.txt",
+    "pages": 1,
+    "characters": 7763,
+    "metadata": {
+      "document_id": "CALL-2026-0313-018",
+      "seller_id": "S001",
+      "classification": "CONFIDENTIAL",
+      "owner": "Aditya Verma",
+      "department": "Business",
+      "created_date": "2026-03-13",
+      "scenario_ids": [
+        "SC-001"
+      ],
+      "scenario_id": "SC-001",
+      "document_type": "Call Transcript",
+      "extra_metadata": {
+        "departments_present": [
+          "Business",
+          "Support"
+        ]
+      }
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/calls/S002/CALL-2026-0422-029_credential_rotation.txt",
+    "pages": 1,
+    "characters": 9239,
+    "metadata": {
+      "document_id": "CALL-2026-0422-029",
+      "seller_id": "S002",
+      "classification": "RESTRICTED",
+      "owner": "Admin",
+      "department": "IT",
+      "created_date": "2026-04-22",
+      "scenario_ids": [
+        "SC-008"
+      ],
+      "scenario_id": "SC-008",
+      "document_type": "Call Transcript",
+      "extra_metadata": {
+        "departments_present": [
+          "IT",
+          "Support"
+        ]
+      }
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/calls/S002/CALL-2026-0520-041_inventory_drift.txt",
+    "pages": 1,
+    "characters": 11010,
+    "metadata": {
+      "document_id": "CALL-2026-0520-041",
+      "seller_id": "S002",
+      "classification": "CONFIDENTIAL",
+      "owner": "Neha Gupta",
+      "department": "Operations",
+      "created_date": "2026-05-20",
+      "scenario_ids": [
+        "SC-002"
+      ],
+      "scenario_id": "SC-002",
+      "document_type": "Call Transcript",
+      "extra_metadata": {
+        "departments_present": [
+          "Engineering",
+          "Operations",
+          "Support"
+        ]
+      }
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/calls/S002/CALL-2026-0717-052_flash_sale_postmortem.txt",
+    "pages": 1,
+    "characters": 10634,
+    "metadata": {
+      "document_id": "CALL-2026-0717-052",
+      "seller_id": "S002",
+      "classification": "CONFIDENTIAL",
+      "owner": "Vikram Singh",
+      "department": "Engineering",
+      "created_date": "2026-07-17",
+      "scenario_ids": [
+        "SC-003"
+      ],
+      "scenario_id": "SC-003",
+      "document_type": "Call Transcript",
+      "extra_metadata": {
+        "departments_present": [
+          "Engineering",
+          "Operations",
+          "Support"
+        ]
+      }
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/calls/S003/CALL-2026-0116-004_tier_upgrade_request.txt",
+    "pages": 1,
+    "characters": 8246,
+    "metadata": {
+      "document_id": "CALL-2026-0116-004",
+      "seller_id": "S003",
+      "classification": "INTERNAL",
+      "owner": "Aditya Verma",
+      "department": "Business",
+      "created_date": "2026-01-16",
+      "scenario_ids": [
+        "SC-009"
+      ],
+      "scenario_id": "SC-009",
+      "document_type": "Call Transcript",
+      "extra_metadata": {
+        "departments_present": [
+          "Business",
+          "Operations"
+        ]
+      }
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/calls/S003/CALL-2026-0619-047_label_failover.txt",
+    "pages": 1,
+    "characters": 8726,
+    "metadata": {
+      "document_id": "CALL-2026-0619-047",
+      "seller_id": "S003",
+      "classification": "CONFIDENTIAL",
+      "owner": "Neha Gupta",
+      "department": "Operations",
+      "created_date": "2026-06-19",
+      "scenario_ids": [
+        "SC-005"
+      ],
+      "scenario_id": "SC-005",
+      "document_type": "Call Transcript",
+      "extra_metadata": {
+        "departments_present": [
+          "Engineering",
+          "Operations",
+          "Support"
+        ]
+      }
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/calls/S003/CALL-2026-0904-071_duplicate_refunds.txt",
+    "pages": 1,
+    "characters": 8265,
+    "metadata": {
+      "document_id": "CALL-2026-0904-071",
+      "seller_id": "S003",
+      "classification": "CONFIDENTIAL",
+      "owner": "Neha Gupta",
+      "department": "Operations",
+      "created_date": "2026-09-04",
+      "scenario_ids": [
+        "SC-007"
+      ],
+      "scenario_id": "SC-007",
+      "document_type": "Call Transcript",
+      "extra_metadata": {
+        "departments_present": [
+          "Engineering",
+          "Operations",
+          "Support"
+        ]
+      }
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/calls/S004/CALL-2026-0806-063_size_chart_report.txt",
+    "pages": 1,
+    "characters": 9871,
+    "metadata": {
+      "document_id": "CALL-2026-0806-063",
+      "seller_id": "S004",
+      "classification": "CONFIDENTIAL",
+      "owner": "Vikram Singh",
+      "department": "Engineering",
+      "created_date": "2026-08-06",
+      "scenario_ids": [
+        "SC-006"
+      ],
+      "scenario_id": "SC-006",
+      "document_type": "Call Transcript",
+      "extra_metadata": {
+        "departments_present": [
+          "Engineering",
+          "Support"
+        ]
+      }
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/calls/S004/CALL-2026-0909-074_suspension_review.txt",
+    "pages": 1,
+    "characters": 11079,
+    "metadata": {
+      "document_id": "CALL-2026-0909-074",
+      "seller_id": "S004",
+      "classification": "CONFIDENTIAL",
+      "owner": "Neha Gupta",
+      "department": "Operations",
+      "created_date": "2026-09-09",
+      "scenario_ids": [
+        "SC-012"
+      ],
+      "scenario_id": "SC-012",
+      "document_type": "Call Transcript",
+      "extra_metadata": {
+        "departments_present": [
+          "Business",
+          "Operations",
+          "Support"
+        ]
+      }
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/engineering/S001/INC-2026-0312_settlement_ledger_duplicate_reversals.pdf",
+    "pages": 5,
+    "characters": 11933,
+    "metadata": {
+      "document_id": "INC-2026-0312",
+      "document_type": "Incident Report",
+      "seller_id": "S001",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "owner": "Vikram Singh",
+      "created_date": "2026-03-16",
+      "scenario_ids": [
+        "SC-001"
+      ],
+      "scenario_id": "SC-001",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/engineering/S001/INC-2026-0812_checkout_token_regression.pdf",
+    "pages": 5,
+    "characters": 10204,
+    "metadata": {
+      "document_id": "INC-2026-0812",
+      "document_type": "Incident Report",
+      "seller_id": "S001",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "owner": "Vikram Singh",
+      "created_date": "2026-08-14",
+      "scenario_ids": [
+        "SC-010"
+      ],
+      "scenario_id": "SC-010",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/engineering/S002/INC-2026-0421_sftp_credential_exposure.pdf",
+    "pages": 6,
+    "characters": 13081,
+    "metadata": {
+      "document_id": "INC-2026-0421",
+      "document_type": "Security Incident Report",
+      "seller_id": "S002",
+      "department": "Engineering",
+      "classification": "RESTRICTED",
+      "owner": "Admin",
+      "created_date": "2026-04-25",
+      "scenario_ids": [
+        "SC-008"
+      ],
+      "scenario_id": "SC-008",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/engineering/S002/INC-2026-0519_inventory_sync_drift.pdf",
+    "pages": 5,
+    "characters": 11140,
+    "metadata": {
+      "document_id": "INC-2026-0519",
+      "document_type": "Incident Report",
+      "seller_id": "S002",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "owner": "Vikram Singh",
+      "created_date": "2026-05-22",
+      "scenario_ids": [
+        "SC-002"
+      ],
+      "scenario_id": "SC-002",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/engineering/S002/INC-2026-0716_order_api_pool_exhaustion.pdf",
+    "pages": 5,
+    "characters": 10801,
+    "metadata": {
+      "document_id": "INC-2026-0716",
+      "document_type": "Incident Report",
+      "seller_id": "S002",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "owner": "Vikram Singh",
+      "created_date": "2026-07-18",
+      "scenario_ids": [
+        "SC-003"
+      ],
+      "scenario_id": "SC-003",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/engineering/S003/INC-2026-0618_label_failover_failure.pdf",
+    "pages": 6,
+    "characters": 11765,
+    "metadata": {
+      "document_id": "INC-2026-0618",
+      "document_type": "Incident Report",
+      "seller_id": "S003",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "owner": "Vikram Singh",
+      "created_date": "2026-06-20",
+      "scenario_ids": [
+        "SC-005"
+      ],
+      "scenario_id": "SC-005",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/engineering/S003/INC-2026-0903_duplicate_refund_processing.pdf",
+    "pages": 6,
+    "characters": 11970,
+    "metadata": {
+      "document_id": "INC-2026-0903",
+      "document_type": "Incident Report",
+      "seller_id": "S003",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "owner": "Vikram Singh",
+      "created_date": "2026-09-06",
+      "scenario_ids": [
+        "SC-007"
+      ],
+      "scenario_id": "SC-007",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/engineering/S004/INC-2026-0805_size_chart_double_conversion.pdf",
+    "pages": 6,
+    "characters": 12770,
+    "metadata": {
+      "document_id": "INC-2026-0805",
+      "document_type": "Incident Report",
+      "seller_id": "S004",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "owner": "Vikram Singh",
+      "created_date": "2026-08-22",
+      "scenario_ids": [
+        "SC-006"
+      ],
+      "scenario_id": "SC-006",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/operations/organization-wide/OPS-RB-001_seller_onboarding_runbook.pdf",
+    "pages": 5,
+    "characters": 10477,
+    "metadata": {
+      "document_id": "OPS-RB-001",
+      "document_type": "Runbook",
+      "seller_id": "Organization-wide",
+      "department": "Operations",
+      "classification": "INTERNAL",
+      "owner": "Neha Gupta",
+      "created_date": "2025-04-18",
+      "scenario_ids": [
+        "SC-009"
+      ],
+      "scenario_id": "SC-009",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/operations/organization-wide/OPS-RB-002_service_recovery_procedure.pdf",
+    "pages": 5,
+    "characters": 9284,
+    "metadata": {
+      "document_id": "OPS-RB-002",
+      "document_type": "Operational Procedure",
+      "seller_id": "Organization-wide",
+      "department": "Operations",
+      "classification": "INTERNAL",
+      "owner": "Neha Gupta",
+      "created_date": "2025-07-09",
+      "scenario_ids": [
+        "SC-002",
+        "SC-005",
+        "SC-006",
+        "SC-011"
+      ],
+      "scenario_id": "SC-002, SC-005, SC-006, SC-011",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/operations/organization-wide/OPS-RB-003_incident_escalation_procedure.pdf",
+    "pages": 4,
+    "characters": 8699,
+    "metadata": {
+      "document_id": "OPS-RB-003",
+      "document_type": "Operational Procedure",
+      "seller_id": "Organization-wide",
+      "department": "Operations",
+      "classification": "INTERNAL",
+      "owner": "Neha Gupta",
+      "created_date": "2025-09-02",
+      "scenario_ids": [
+        "SC-003",
+        "SC-008",
+        "SC-012"
+      ],
+      "scenario_id": "SC-003, SC-008, SC-012",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/operations/organization-wide/OPS-RB-004_payment_recovery_runbook.pdf",
+    "pages": 5,
+    "characters": 9534,
+    "metadata": {
+      "document_id": "OPS-RB-004",
+      "document_type": "Runbook",
+      "seller_id": "Organization-wide",
+      "department": "Operations",
+      "classification": "INTERNAL",
+      "owner": "Neha Gupta",
+      "created_date": "2025-11-12",
+      "scenario_ids": [
+        "SC-001",
+        "SC-004",
+        "SC-007"
+      ],
+      "scenario_id": "SC-001, SC-004, SC-007",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/operations/organization-wide/OPS-RB-005_deployment_rollback_procedure.pdf",
+    "pages": 5,
+    "characters": 8856,
+    "metadata": {
+      "document_id": "OPS-RB-005",
+      "document_type": "Operational Procedure",
+      "seller_id": "Organization-wide",
+      "department": "Operations",
+      "classification": "INTERNAL",
+      "owner": "Neha Gupta",
+      "created_date": "2026-01-29",
+      "scenario_ids": [
+        "SC-010"
+      ],
+      "scenario_id": "SC-010",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/operations/organization-wide/OPS-RB-006_peak_operational_readiness_checklist.pdf",
+    "pages": 5,
+    "characters": 8839,
+    "metadata": {
+      "document_id": "OPS-RB-006",
+      "document_type": "Operational Checklist",
+      "seller_id": "Organization-wide",
+      "department": "Operations",
+      "classification": "INTERNAL",
+      "owner": "Neha Gupta",
+      "created_date": "2026-08-14",
+      "scenario_ids": [
+        "SC-003",
+        "SC-010"
+      ],
+      "scenario_id": "SC-003, SC-010",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/policies/organization-wide/POL-BIZ-003_seller_onboarding_policy.pdf",
+    "pages": 5,
+    "characters": 10314,
+    "metadata": {
+      "document_id": "POL-BIZ-003",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "department": "Business",
+      "classification": "INTERNAL",
+      "owner": "Aditya Verma",
+      "created_date": "2026-07-24",
+      "scenario_ids": [
+        "SC-009"
+      ],
+      "scenario_id": "SC-009",
+      "extra_metadata": {
+        "version": "2.3",
+        "effective_date": "2026-07-24"
+      }
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/policies/organization-wide/POL-BIZ-004_seller_escalation_policy.pdf",
+    "pages": 4,
+    "characters": 8822,
+    "metadata": {
+      "document_id": "POL-BIZ-004",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "department": "Business",
+      "classification": "INTERNAL",
+      "owner": "Aditya Verma",
+      "created_date": "2026-09-22",
+      "scenario_ids": [
+        "SC-003",
+        "SC-005",
+        "SC-006",
+        "SC-010"
+      ],
+      "scenario_id": "SC-003, SC-005, SC-006, SC-010",
+      "extra_metadata": {
+        "version": "2.1",
+        "effective_date": "2026-09-22"
+      }
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/policies/organization-wide/POL-FIN-002_payment_settlement_policy.pdf",
+    "pages": 5,
+    "characters": 10095,
+    "metadata": {
+      "document_id": "POL-FIN-002",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "department": "Operations",
+      "classification": "INTERNAL",
+      "owner": "Neha Gupta",
+      "created_date": "2026-04-01",
+      "scenario_ids": [
+        "SC-001",
+        "SC-004",
+        "SC-007",
+        "SC-011"
+      ],
+      "scenario_id": "SC-001, SC-004, SC-007, SC-011",
+      "extra_metadata": {
+        "version": "3.2",
+        "effective_date": "2026-04-01"
+      }
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/policies/organization-wide/POL-IT-001_data_access_policy.pdf",
+    "pages": 5,
+    "characters": 10396,
+    "metadata": {
+      "document_id": "POL-IT-001",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "department": "IT",
+      "classification": "RESTRICTED",
+      "owner": "Admin",
+      "created_date": "2026-09-14",
+      "scenario_ids": [
+        "SC-002",
+        "SC-008"
+      ],
+      "scenario_id": "SC-002, SC-008",
+      "extra_metadata": {
+        "version": "4.1",
+        "effective_date": "2026-09-14"
+      }
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/policies/organization-wide/POL-IT-002_data_retention_policy.pdf",
+    "pages": 4,
+    "characters": 6925,
+    "metadata": {
+      "document_id": "POL-IT-002",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "department": "IT",
+      "classification": "INTERNAL",
+      "owner": "Admin",
+      "created_date": "2026-03-02",
+      "scenario_ids": [],
+      "scenario_id": null,
+      "extra_metadata": {
+        "version": "2.1",
+        "effective_date": "2026-03-02"
+      }
+    },
+    "issues": [
+      {
+        "severity": "WARNING",
+        "code": "SCENARIO_ID_ABSENT",
+        "message": "document is not linked to a scenario",
+        "document_id": "POL-IT-002",
+        "source_file": "documents/policies/organization-wide/POL-IT-002_data_retention_policy.pdf",
+        "field": "scenario_id"
+      }
+    ]
+  },
+  {
+    "path": "Data/documents/policies/organization-wide/POL-OPS-006_account_suspension_policy.pdf",
+    "pages": 5,
+    "characters": 10318,
+    "metadata": {
+      "document_id": "POL-OPS-006",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "department": "Operations",
+      "classification": "RESTRICTED",
+      "owner": "Neha Gupta",
+      "created_date": "2026-10-16",
+      "scenario_ids": [
+        "SC-006",
+        "SC-012"
+      ],
+      "scenario_id": "SC-006, SC-012",
+      "extra_metadata": {
+        "version": "3.0",
+        "effective_date": "2026-10-16"
+      }
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/policies/organization-wide/POL-SEC-001_security_incident_response_policy.pdf",
+    "pages": 4,
+    "characters": 8099,
+    "metadata": {
+      "document_id": "POL-SEC-001",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "department": "IT",
+      "classification": "INTERNAL",
+      "owner": "Admin",
+      "created_date": "2026-04-30",
+      "scenario_ids": [
+        "SC-008"
+      ],
+      "scenario_id": "SC-008",
+      "extra_metadata": {
+        "version": "3.1",
+        "effective_date": "2026-04-30"
+      }
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/policies/organization-wide/POL-SEC-002_confidential_information_handling_policy.pdf",
+    "pages": 4,
+    "characters": 8606,
+    "metadata": {
+      "document_id": "POL-SEC-002",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "department": "IT",
+      "classification": "INTERNAL",
+      "owner": "Admin",
+      "created_date": "2026-06-12",
+      "scenario_ids": [
+        "SC-008"
+      ],
+      "scenario_id": "SC-008",
+      "extra_metadata": {
+        "version": "2.2",
+        "effective_date": "2026-06-12"
+      }
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/projects/S001/account_decision_record_tax_mapping.pdf",
+    "pages": 3,
+    "characters": 5838,
+    "metadata": {
+      "document_id": "PRJ-S001-004",
+      "document_type": "Decision Record",
+      "seller_id": "S001",
+      "department": "Business",
+      "classification": "CONFIDENTIAL",
+      "owner": "Aditya Verma",
+      "created_date": "2026-03-02",
+      "scenario_ids": [
+        "SC-004"
+      ],
+      "scenario_id": "SC-004",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/projects/S001/integration_project_plan.pdf",
+    "pages": 4,
+    "characters": 7101,
+    "metadata": {
+      "document_id": "PRJ-S001-002",
+      "document_type": "Project Document",
+      "seller_id": "S001",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "owner": "Vikram Singh",
+      "created_date": "2023-06-19",
+      "scenario_ids": [],
+      "scenario_id": null,
+      "extra_metadata": {}
+    },
+    "issues": [
+      {
+        "severity": "WARNING",
+        "code": "SCENARIO_ID_ABSENT",
+        "message": "document is not linked to a scenario",
+        "document_id": "PRJ-S001-002",
+        "source_file": "documents/projects/S001/integration_project_plan.pdf",
+        "field": "scenario_id"
+      }
+    ]
+  },
+  {
+    "path": "Data/documents/projects/S001/seller_onboarding_summary.pdf",
+    "pages": 3,
+    "characters": 5783,
+    "metadata": {
+      "document_id": "PRJ-S001-001",
+      "document_type": "Project Document",
+      "seller_id": "S001",
+      "department": "Operations",
+      "classification": "CONFIDENTIAL",
+      "owner": "Neha Gupta",
+      "created_date": "2023-03-06",
+      "scenario_ids": [],
+      "scenario_id": null,
+      "extra_metadata": {}
+    },
+    "issues": [
+      {
+        "severity": "WARNING",
+        "code": "SCENARIO_ID_ABSENT",
+        "message": "document is not linked to a scenario",
+        "document_id": "PRJ-S001-001",
+        "source_file": "documents/projects/S001/seller_onboarding_summary.pdf",
+        "field": "scenario_id"
+      }
+    ]
+  },
+  {
+    "path": "Data/documents/projects/S001/settlement_reconciliation_project_status.pdf",
+    "pages": 3,
+    "characters": 5982,
+    "metadata": {
+      "document_id": "PRJ-S001-003",
+      "document_type": "Project Status Report",
+      "seller_id": "S001",
+      "department": "Operations",
+      "classification": "CONFIDENTIAL",
+      "owner": "Neha Gupta",
+      "created_date": "2026-09-01",
+      "scenario_ids": [
+        "SC-001"
+      ],
+      "scenario_id": "SC-001",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/projects/S002/implementation_plan.pdf",
+    "pages": 4,
+    "characters": 6699,
+    "metadata": {
+      "document_id": "PRJ-S002-002",
+      "document_type": "Implementation Plan",
+      "seller_id": "S002",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "owner": "Vikram Singh",
+      "created_date": "2026-07-28",
+      "scenario_ids": [
+        "SC-003",
+        "SC-011"
+      ],
+      "scenario_id": "SC-003, SC-011",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/projects/S002/integration_requirements.pdf",
+    "pages": 4,
+    "characters": 7139,
+    "metadata": {
+      "document_id": "PRJ-S002-001",
+      "document_type": "Requirements Document",
+      "seller_id": "S002",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "owner": "Vikram Singh",
+      "created_date": "2024-10-08",
+      "scenario_ids": [],
+      "scenario_id": null,
+      "extra_metadata": {}
+    },
+    "issues": [
+      {
+        "severity": "WARNING",
+        "code": "SCENARIO_ID_ABSENT",
+        "message": "document is not linked to a scenario",
+        "document_id": "PRJ-S002-001",
+        "source_file": "documents/projects/S002/integration_requirements.pdf",
+        "field": "scenario_id"
+      }
+    ]
+  },
+  {
+    "path": "Data/documents/projects/S002/inventory_data_quality_project_status.pdf",
+    "pages": 3,
+    "characters": 5600,
+    "metadata": {
+      "document_id": "PRJ-S002-003",
+      "document_type": "Project Status Report",
+      "seller_id": "S002",
+      "department": "Operations",
+      "classification": "CONFIDENTIAL",
+      "owner": "Neha Gupta",
+      "created_date": "2026-06-30",
+      "scenario_ids": [
+        "SC-002"
+      ],
+      "scenario_id": "SC-002",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/projects/S003/account_decision_record_tier_upgrade.pdf",
+    "pages": 3,
+    "characters": 6359,
+    "metadata": {
+      "document_id": "PRJ-S003-003",
+      "document_type": "Decision Record",
+      "seller_id": "S003",
+      "department": "Business",
+      "classification": "CONFIDENTIAL",
+      "owner": "Aditya Verma",
+      "created_date": "2026-01-20",
+      "scenario_ids": [
+        "SC-009"
+      ],
+      "scenario_id": "SC-009",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/projects/S003/onboarding_project_plan.pdf",
+    "pages": 3,
+    "characters": 5550,
+    "metadata": {
+      "document_id": "PRJ-S003-001",
+      "document_type": "Project Document",
+      "seller_id": "S003",
+      "department": "Operations",
+      "classification": "CONFIDENTIAL",
+      "owner": "Neha Gupta",
+      "created_date": "2025-08-25",
+      "scenario_ids": [],
+      "scenario_id": null,
+      "extra_metadata": {}
+    },
+    "issues": [
+      {
+        "severity": "WARNING",
+        "code": "SCENARIO_ID_ABSENT",
+        "message": "document is not linked to a scenario",
+        "document_id": "PRJ-S003-001",
+        "source_file": "documents/projects/S003/onboarding_project_plan.pdf",
+        "field": "scenario_id"
+      }
+    ]
+  },
+  {
+    "path": "Data/documents/projects/S003/technical_integration_notes.pdf",
+    "pages": 3,
+    "characters": 6860,
+    "metadata": {
+      "document_id": "PRJ-S003-002",
+      "document_type": "Technical Notes",
+      "seller_id": "S003",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "owner": "Vikram Singh",
+      "created_date": "2026-09-22",
+      "scenario_ids": [
+        "SC-005",
+        "SC-007"
+      ],
+      "scenario_id": "SC-005, SC-007",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/projects/S004/account_decision_record_suspension_review.pdf",
+    "pages": 3,
+    "characters": 6644,
+    "metadata": {
+      "document_id": "PRJ-S004-003",
+      "document_type": "Decision Record",
+      "seller_id": "S004",
+      "department": "Operations",
+      "classification": "RESTRICTED",
+      "owner": "Neha Gupta",
+      "created_date": "2026-09-10",
+      "scenario_ids": [
+        "SC-006",
+        "SC-012"
+      ],
+      "scenario_id": "SC-006, SC-012",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/projects/S004/catalogue_quality_project_status.pdf",
+    "pages": 4,
+    "characters": 6936,
+    "metadata": {
+      "document_id": "PRJ-S004-002",
+      "document_type": "Project Status Report",
+      "seller_id": "S004",
+      "department": "Operations",
+      "classification": "CONFIDENTIAL",
+      "owner": "Neha Gupta",
+      "created_date": "2026-09-28",
+      "scenario_ids": [
+        "SC-006",
+        "SC-012"
+      ],
+      "scenario_id": "SC-006, SC-012",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/projects/S004/dropship_onboarding_project.pdf",
+    "pages": 3,
+    "characters": 6548,
+    "metadata": {
+      "document_id": "PRJ-S004-001",
+      "document_type": "Project Document",
+      "seller_id": "S004",
+      "department": "Operations",
+      "classification": "CONFIDENTIAL",
+      "owner": "Neha Gupta",
+      "created_date": "2025-10-06",
+      "scenario_ids": [],
+      "scenario_id": null,
+      "extra_metadata": {}
+    },
+    "issues": [
+      {
+        "severity": "WARNING",
+        "code": "SCENARIO_ID_ABSENT",
+        "message": "document is not linked to a scenario",
+        "document_id": "PRJ-S004-001",
+        "source_file": "documents/projects/S004/dropship_onboarding_project.pdf",
+        "field": "scenario_id"
+      }
+    ]
+  },
+  {
+    "path": "Data/documents/support/S001/TKT-2026-0224-091_tax_invoice_rate_mismatch.pdf",
+    "pages": 3,
+    "characters": 4751,
+    "metadata": {
+      "document_id": "TKT-2026-0224-091",
+      "document_type": "Support Ticket",
+      "seller_id": "S001",
+      "department": "Support",
+      "classification": "CONFIDENTIAL",
+      "owner": "Rahul Sharma",
+      "created_date": "2026-02-24",
+      "scenario_ids": [
+        "SC-004"
+      ],
+      "scenario_id": "SC-004",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/support/S001/TKT-2026-0312-114_settlement_shortfall.pdf",
+    "pages": 3,
+    "characters": 5025,
+    "metadata": {
+      "document_id": "TKT-2026-0312-114",
+      "document_type": "Support Ticket",
+      "seller_id": "S001",
+      "department": "Support",
+      "classification": "CONFIDENTIAL",
+      "owner": "Rahul Sharma",
+      "created_date": "2026-03-12",
+      "scenario_ids": [
+        "SC-001"
+      ],
+      "scenario_id": "SC-001",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/support/S001/TKT-2026-0812-308_checkout_failures.pdf",
+    "pages": 2,
+    "characters": 4392,
+    "metadata": {
+      "document_id": "TKT-2026-0812-308",
+      "document_type": "Support Ticket",
+      "seller_id": "S001",
+      "department": "Support",
+      "classification": "CONFIDENTIAL",
+      "owner": "Rahul Sharma",
+      "created_date": "2026-08-12",
+      "scenario_ids": [
+        "SC-010"
+      ],
+      "scenario_id": "SC-010",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/support/S002/TKT-2026-0421-162_credential_exposure.pdf",
+    "pages": 3,
+    "characters": 4670,
+    "metadata": {
+      "document_id": "TKT-2026-0421-162",
+      "document_type": "Support Ticket",
+      "seller_id": "S002",
+      "department": "Support",
+      "classification": "RESTRICTED",
+      "owner": "Rahul Sharma",
+      "created_date": "2026-04-21",
+      "scenario_ids": [
+        "SC-008"
+      ],
+      "scenario_id": "SC-008",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/support/S002/TKT-2026-0519-207_inventory_sync_drift.pdf",
+    "pages": 3,
+    "characters": 4695,
+    "metadata": {
+      "document_id": "TKT-2026-0519-207",
+      "document_type": "Support Ticket",
+      "seller_id": "S002",
+      "department": "Support",
+      "classification": "CONFIDENTIAL",
+      "owner": "Rahul Sharma",
+      "created_date": "2026-05-19",
+      "scenario_ids": [
+        "SC-002"
+      ],
+      "scenario_id": "SC-002",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/support/S002/TKT-2026-0602-217_settlement_feed_stale.pdf",
+    "pages": 3,
+    "characters": 5171,
+    "metadata": {
+      "document_id": "TKT-2026-0602-217",
+      "document_type": "Support Ticket",
+      "seller_id": "S002",
+      "department": "Support",
+      "classification": "CONFIDENTIAL",
+      "owner": "Rahul Sharma",
+      "created_date": "2026-06-02",
+      "scenario_ids": [
+        "SC-011"
+      ],
+      "scenario_id": "SC-011",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/support/S002/TKT-2026-0716-268_order_api_timeouts.pdf",
+    "pages": 3,
+    "characters": 4715,
+    "metadata": {
+      "document_id": "TKT-2026-0716-268",
+      "document_type": "Support Ticket",
+      "seller_id": "S002",
+      "department": "Support",
+      "classification": "CONFIDENTIAL",
+      "owner": "Rahul Sharma",
+      "created_date": "2026-07-16",
+      "scenario_ids": [
+        "SC-003"
+      ],
+      "scenario_id": "SC-003",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/support/S003/TKT-2026-0115-054_settlement_terms_request.pdf",
+    "pages": 3,
+    "characters": 4514,
+    "metadata": {
+      "document_id": "TKT-2026-0115-054",
+      "document_type": "Support Ticket",
+      "seller_id": "S003",
+      "department": "Support",
+      "classification": "CONFIDENTIAL",
+      "owner": "Rahul Sharma",
+      "created_date": "2026-01-15",
+      "scenario_ids": [
+        "SC-009"
+      ],
+      "scenario_id": "SC-009",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/support/S003/TKT-2026-0618-233_shipping_labels_stuck.pdf",
+    "pages": 3,
+    "characters": 5205,
+    "metadata": {
+      "document_id": "TKT-2026-0618-233",
+      "document_type": "Support Ticket",
+      "seller_id": "S003",
+      "department": "Support",
+      "classification": "CONFIDENTIAL",
+      "owner": "Rahul Sharma",
+      "created_date": "2026-06-18",
+      "scenario_ids": [
+        "SC-005"
+      ],
+      "scenario_id": "SC-005",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/support/S003/TKT-2026-0903-336_duplicate_refunds.pdf",
+    "pages": 3,
+    "characters": 5440,
+    "metadata": {
+      "document_id": "TKT-2026-0903-336",
+      "document_type": "Support Ticket",
+      "seller_id": "S003",
+      "department": "Support",
+      "classification": "CONFIDENTIAL",
+      "owner": "Rahul Sharma",
+      "created_date": "2026-09-03",
+      "scenario_ids": [
+        "SC-007"
+      ],
+      "scenario_id": "SC-007",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/support/S004/TKT-2026-0805-301_return_rate_spike.pdf",
+    "pages": 3,
+    "characters": 5265,
+    "metadata": {
+      "document_id": "TKT-2026-0805-301",
+      "document_type": "Support Ticket",
+      "seller_id": "S004",
+      "department": "Support",
+      "classification": "CONFIDENTIAL",
+      "owner": "Rahul Sharma",
+      "created_date": "2026-08-05",
+      "scenario_ids": [
+        "SC-006"
+      ],
+      "scenario_id": "SC-006",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/documents/support/S004/TKT-2026-0908-341_account_suspension_query.pdf",
+    "pages": 3,
+    "characters": 5376,
+    "metadata": {
+      "document_id": "TKT-2026-0908-341",
+      "document_type": "Support Ticket",
+      "seller_id": "S004",
+      "department": "Support",
+      "classification": "CONFIDENTIAL",
+      "owner": "Rahul Sharma",
+      "created_date": "2026-09-08",
+      "scenario_ids": [
+        "SC-012"
+      ],
+      "scenario_id": "SC-012",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/identity/organization_and_users.pdf",
+    "pages": 6,
+    "characters": 13767,
+    "metadata": {
+      "document_id": "ORG-001",
+      "document_type": "Organization Reference",
+      "seller_id": "Organization-wide",
+      "department": "IT",
+      "classification": "INTERNAL",
+      "owner": "Admin",
+      "created_date": "2025-10-06",
+      "scenario_ids": [],
+      "scenario_id": null,
+      "extra_metadata": {}
+    },
+    "issues": [
+      {
+        "severity": "WARNING",
+        "code": "SCENARIO_ID_ABSENT",
+        "message": "document is not linked to a scenario",
+        "document_id": "ORG-001",
+        "source_file": "identity/organization_and_users.pdf",
+        "field": "scenario_id"
+      }
+    ]
+  },
+  {
+    "path": "Data/scenario-context/scenario_overview.txt",
+    "pages": 1,
+    "characters": 27255,
+    "metadata": {
+      "document_id": "scenario_overview",
+      "document_type": "Scenario Context",
+      "seller_id": "Organization-wide",
+      "classification": "RESTRICTED",
+      "department": null,
+      "owner": null,
+      "created_date": null,
+      "scenario_ids": [],
+      "scenario_id": null,
+      "extra_metadata": {}
+    },
+    "issues": [
+      {
+        "severity": "WARNING",
+        "code": "DEPARTMENT_MISSING",
+        "message": "department is not present in the source",
+        "document_id": "scenario_overview",
+        "source_file": "scenario-context/scenario_overview.txt",
+        "field": "department"
+      },
+      {
+        "severity": "WARNING",
+        "code": "CREATED_DATE_MISSING",
+        "message": "created_date is not present in the source",
+        "document_id": "scenario_overview",
+        "source_file": "scenario-context/scenario_overview.txt",
+        "field": "created_date"
+      },
+      {
+        "severity": "WARNING",
+        "code": "SCENARIO_ID_ABSENT",
+        "message": "document is not linked to a scenario",
+        "document_id": "scenario_overview",
+        "source_file": "scenario-context/scenario_overview.txt",
+        "field": "scenario_id"
+      },
+      {
+        "severity": "WARNING",
+        "code": "OWNER_MISSING",
+        "message": "owner is not present in the source",
+        "document_id": "scenario_overview",
+        "source_file": "scenario-context/scenario_overview.txt",
+        "field": "owner"
+      }
+    ]
+  },
+  {
+    "path": "Data/sellers/S001/account_overview.pdf",
+    "pages": 4,
+    "characters": 7865,
+    "metadata": {
+      "document_id": "S001-ACC-001",
+      "document_type": "Account Overview",
+      "seller_id": "S001",
+      "department": "Business",
+      "classification": "CONFIDENTIAL",
+      "owner": "Aditya Verma",
+      "created_date": "2026-09-14",
+      "scenario_ids": [
+        "SC-001",
+        "SC-004",
+        "SC-010"
+      ],
+      "scenario_id": "SC-001, SC-004, SC-010",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/sellers/S002/account_overview.pdf",
+    "pages": 4,
+    "characters": 7513,
+    "metadata": {
+      "document_id": "S002-ACC-001",
+      "document_type": "Account Overview",
+      "seller_id": "S002",
+      "department": "Operations",
+      "classification": "CONFIDENTIAL",
+      "owner": "Neha Gupta",
+      "created_date": "2026-09-14",
+      "scenario_ids": [
+        "SC-002",
+        "SC-003",
+        "SC-008",
+        "SC-011"
+      ],
+      "scenario_id": "SC-002, SC-003, SC-008, SC-011",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/sellers/S003/account_overview.pdf",
+    "pages": 3,
+    "characters": 6896,
+    "metadata": {
+      "document_id": "S003-ACC-001",
+      "document_type": "Account Overview",
+      "seller_id": "S003",
+      "department": "Business",
+      "classification": "CONFIDENTIAL",
+      "owner": "Aditya Verma",
+      "created_date": "2026-09-14",
+      "scenario_ids": [
+        "SC-005",
+        "SC-007",
+        "SC-009"
+      ],
+      "scenario_id": "SC-005, SC-007, SC-009",
+      "extra_metadata": {}
+    },
+    "issues": []
+  },
+  {
+    "path": "Data/sellers/S004/account_overview.pdf",
+    "pages": 3,
+    "characters": 6574,
+    "metadata": {
+      "document_id": "S004-ACC-001",
+      "document_type": "Account Overview",
+      "seller_id": "S004",
+      "department": "Operations",
+      "classification": "CONFIDENTIAL",
+      "owner": "Neha Gupta",
+      "created_date": "2026-09-14",
+      "scenario_ids": [
+        "SC-006",
+        "SC-012"
+      ],
+      "scenario_id": "SC-006, SC-012",
+      "extra_metadata": {}
+    },
+    "issues": []
+  }
+]

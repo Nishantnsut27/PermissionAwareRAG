@@ -1,0 +1,94 @@
+{
+  "errors": [],
+  "warnings": [
+    {
+      "severity": "WARNING",
+      "code": "SCENARIO_ID_ABSENT",
+      "message": "document is not linked to a scenario",
+      "document_id": "POL-IT-002",
+      "source_file": "documents/policies/organization-wide/POL-IT-002_data_retention_policy.pdf",
+      "field": "scenario_id"
+    },
+    {
+      "severity": "WARNING",
+      "code": "SCENARIO_ID_ABSENT",
+      "message": "document is not linked to a scenario",
+      "document_id": "PRJ-S001-002",
+      "source_file": "documents/projects/S001/integration_project_plan.pdf",
+      "field": "scenario_id"
+    },
+    {
+      "severity": "WARNING",
+      "code": "SCENARIO_ID_ABSENT",
+      "message": "document is not linked to a scenario",
+      "document_id": "PRJ-S001-001",
+      "source_file": "documents/projects/S001/seller_onboarding_summary.pdf",
+      "field": "scenario_id"
+    },
+    {
+      "severity": "WARNING",
+      "code": "SCENARIO_ID_ABSENT",
+      "message": "document is not linked to a scenario",
+      "document_id": "PRJ-S002-001",
+      "source_file": "documents/projects/S002/integration_requirements.pdf",
+      "field": "scenario_id"
+    },
+    {
+      "severity": "WARNING",
+      "code": "SCENARIO_ID_ABSENT",
+      "message": "document is not linked to a scenario",
+      "document_id": "PRJ-S003-001",
+      "source_file": "documents/projects/S003/onboarding_project_plan.pdf",
+      "field": "scenario_id"
+    },
+    {
+      "severity": "WARNING",
+      "code": "SCENARIO_ID_ABSENT",
+      "message": "document is not linked to a scenario",
+      "document_id": "PRJ-S004-001",
+      "source_file": "documents/projects/S004/dropship_onboarding_project.pdf",
+      "field": "scenario_id"
+    },
+    {
+      "severity": "WARNING",
+      "code": "SCENARIO_ID_ABSENT",
+      "message": "document is not linked to a scenario",
+      "document_id": "ORG-001",
+      "source_file": "identity/organization_and_users.pdf",
+      "field": "scenario_id"
+    },
+    {
+      "severity": "WARNING",
+      "code": "DEPARTMENT_MISSING",
+      "message": "department is not present in the source",
+      "document_id": "scenario_overview",
+      "source_file": "scenario-context/scenario_overview.txt",
+      "field": "department"
+    },
+    {
+      "severity": "WARNING",
+      "code": "CREATED_DATE_MISSING",
+      "message": "created_date is not present in the source",
+      "document_id": "scenario_overview",
+      "source_file": "scenario-context/scenario_overview.txt",
+      "field": "created_date"
+    },
+    {
+      "severity": "WARNING",
+      "code": "SCENARIO_ID_ABSENT",
+      "message": "document is not linked to a scenario",
+      "document_id": "scenario_overview",
+      "source_file": "scenario-context/scenario_overview.txt",
+      "field": "scenario_id"
+    },
+    {
+      "severity": "WARNING",
+      "code": "OWNER_MISSING",
+      "message": "owner is not present in the source",
+      "document_id": "scenario_overview",
+      "source_file": "scenario-context/scenario_overview.txt",
+      "field": "owner"
+    }
+  ],
+  "failed_documents": []
+}

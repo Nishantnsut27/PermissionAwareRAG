@@ -1,0 +1,3668 @@
+[
+  {
+    "path": "evaluation/results.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "fingerprint",
+      "run_id",
+      "started_at",
+      "generated_at",
+      "partial",
+      "selection_complete",
+      "selected_ids",
+      "stop_reason",
+      "dataset",
+      "model",
+      "case_delay_s",
+      "duration_s",
+      "summary",
+      "matrix",
+      "results"
+    ],
+    "run_id": "run-20260921-101046-946190",
+    "generated_at": "2026-09-21T11:49:46+00:00",
+    "summary": {
+      "total_cases": 60,
+      "passed": 47,
+      "failed": 12,
+      "errors": 1,
+      "retrieval": {
+        "recall_at_k": 0.8889,
+        "precision_at_k": 0.5174,
+        "mrr": 0.7574,
+        "scored_cases": 45
+      },
+      "generation": {
+        "groundedness": 0.9618,
+        "answer_relevancy": 0.9902,
+        "answer_correctness": 0.8201,
+        "fact_coverage": 0.8201,
+        "scored_cases": 44
+      },
+      "security": {
+        "authorization_accuracy": 1.0,
+        "unauthorized_retrieval_rate": 0.0,
+        "answer_leakage_rate": 0.0,
+        "behavior_match_rate": 0.9661,
+        "prompt_injection_blocked": 1.0,
+        "prompt_injection_cases": 5,
+        "scored_cases": 59,
+        "retrieval_checked_cases": 60,
+        "leakage_checked_cases": 21,
+        "unscored_cases": 1
+      },
+      "by_category": {
+        "authorized_factual": {
+          "total": 12,
+          "passed": 8,
+          "failed": 4,
+          "errors": 0
+        },
+        "multi_document": {
+          "total": 8,
+          "passed": 7,
+          "failed": 1,
+          "errors": 0
+        },
+        "cross_seller": {
+          "total": 6,
+          "passed": 4,
+          "failed": 2,
+          "errors": 0
+        },
+        "follow_up": {
+          "total": 6,
+          "passed": 4,
+          "failed": 2,
+          "errors": 0
+        },
+        "unauthorized_access": {
+          "total": 10,
+          "passed": 8,
+          "failed": 1,
+          "errors": 1
+        },
+        "mixed_access": {
+          "total": 6,
+          "passed": 6,
+          "failed": 0,
+          "errors": 0
+        },
+        "policy_governance": {
+          "total": 4,
+          "passed": 3,
+          "failed": 1,
+          "errors": 0
+        },
+        "ambiguous": {
+          "total": 3,
+          "passed": 2,
+          "failed": 1,
+          "errors": 0
+        },
+        "prompt_injection": {
+          "total": 5,
+          "passed": 5,
+          "failed": 0,
+          "errors": 0
+        }
+      }
+    },
+    "partial": true,
+    "selected_ids_count": 60,
+    "schema_version": 2,
+    "result_count": 60
+  },
+  {
+    "path": "evaluation/runs/final-metrics-eval.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "generated_at",
+      "summary",
+      "rows"
+    ],
+    "generated_at": "2026-09-23T18:58:14+00:00",
+    "summary": {
+      "scored_cases": 45,
+      "baseline": {
+        "recall": 0.9556,
+        "precision": 0.4115,
+        "mrr": 0.9119,
+        "mean_selected_chunks": 7.9778
+      },
+      "plan": {
+        "recall": 0.9556,
+        "precision": 0.4126,
+        "mrr": 0.9119,
+        "mean_selected_chunks": 7.8667
+      },
+      "recall_regressions": [],
+      "recall_improvements": 0
+    },
+    "schema_version": 1
+  },
+  {
+    "path": "evaluation/runs/final-metrics-pool10.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "generated_at",
+      "candidate_pool",
+      "summary",
+      "rows"
+    ],
+    "generated_at": "2026-09-23T19:07:07+00:00",
+    "summary": {
+      "scored_cases": 45,
+      "baseline": {
+        "recall": 0.9296,
+        "precision": 0.4278,
+        "mrr": 0.8489,
+        "mean_selected_chunks": 6.5111
+      },
+      "plan": {
+        "recall": 0.9259,
+        "precision": 0.4341,
+        "mrr": 0.8415,
+        "mean_selected_chunks": 6.2889
+      },
+      "recall_regressions": [
+        {
+          "eval_id": "E053",
+          "baseline": 1.0,
+          "plan": 0.0
+        }
+      ],
+      "recall_improvements": 2
+    },
+    "schema_version": 1
+  },
+  {
+    "path": "evaluation/runs/final-metrics-smoke.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "generated_at",
+      "summary",
+      "rows"
+    ],
+    "generated_at": "2026-09-23T18:43:05+00:00",
+    "summary": {
+      "scored_cases": 6,
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.5167,
+        "mrr": 0.9167,
+        "mean_selected_chunks": 7.6667
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.5167,
+        "mrr": 0.9167,
+        "mean_selected_chunks": 7.5
+      },
+      "recall_regressions": [],
+      "recall_improvements": 0
+    },
+    "schema_version": 1
+  },
+  {
+    "path": "evaluation/runs/fp-investigation.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "generated_at",
+      "candidate_pool",
+      "summary",
+      "rows"
+    ],
+    "generated_at": "2026-09-23T17:33:32+00:00",
+    "summary": {
+      "scored_cases": 45,
+      "pool_doc_slots": 493,
+      "gold_slots": 75,
+      "implied_pool_precision": 0.1521,
+      "false_positives": 418,
+      "fp_categories": {
+        "F. wrong document type": 139,
+        "D. generic organization document": 119,
+        "A. same seller, wrong evidence": 118,
+        "G. related evidence type, not answer-bearing": 24,
+        "C. same keywords, wrong event": 13,
+        "A. same seller, wrong event/time": 5
+      },
+      "same_seller_fp_document_types": {
+        "Support Ticket": 39,
+        "Call Transcript": 26,
+        "Project Document": 16,
+        "Incident Report": 15,
+        "Project Status Report": 12,
+        "Account Overview": 5,
+        "Decision Record": 4,
+        "Requirements Document": 3,
+        "Implementation Plan": 2,
+        "Technical Notes": 1
+      },
+      "cases_with_date_in_query": 12,
+      "gold_missed_cases": [
+        "E025",
+        "E032"
+      ]
+    },
+    "schema_version": 1
+  },
+  {
+    "path": "evaluation/runs/full-20260921-v2.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "fingerprint",
+      "run_id",
+      "started_at",
+      "generated_at",
+      "partial",
+      "selection_complete",
+      "selected_ids",
+      "stop_reason",
+      "dataset",
+      "progress",
+      "model",
+      "case_delay_s",
+      "duration_s",
+      "summary",
+      "matrix",
+      "results"
+    ],
+    "run_id": "run-20260921-114043-959525",
+    "generated_at": "2026-09-22T03:39:59+00:00",
+    "summary": {
+      "total_cases": 60,
+      "passed": 48,
+      "failed": 12,
+      "errors": 0,
+      "retrieval": {
+        "recall_at_k": 0.8667,
+        "precision_at_k": 0.5098,
+        "mrr": 0.7463,
+        "scored_cases": 45
+      },
+      "generation": {
+        "groundedness": 0.9795,
+        "answer_relevancy": 0.9859,
+        "answer_correctness": 0.8305,
+        "fact_coverage": 0.8125,
+        "scored_cases": 44
+      },
+      "security": {
+        "authorization_accuracy": 0.9833,
+        "unauthorized_retrieval_rate": 0.0,
+        "answer_leakage_rate": 0.0455,
+        "behavior_match_rate": 0.95,
+        "prompt_injection_blocked": 1.0,
+        "prompt_injection_cases": 5,
+        "scored_cases": 60,
+        "retrieval_checked_cases": 60,
+        "leakage_checked_cases": 22,
+        "unscored_cases": 0
+      },
+      "by_category": {
+        "authorized_factual": {
+          "total": 12,
+          "passed": 8,
+          "failed": 4,
+          "errors": 0
+        },
+        "multi_document": {
+          "total": 8,
+          "passed": 8,
+          "failed": 0,
+          "errors": 0
+        },
+        "cross_seller": {
+          "total": 6,
+          "passed": 5,
+          "failed": 1,
+          "errors": 0
+        },
+        "follow_up": {
+          "total": 6,
+          "passed": 4,
+          "failed": 2,
+          "errors": 0
+        },
+        "unauthorized_access": {
+          "total": 10,
+          "passed": 8,
+          "failed": 2,
+          "errors": 0
+        },
+        "mixed_access": {
+          "total": 6,
+          "passed": 5,
+          "failed": 1,
+          "errors": 0
+        },
+        "policy_governance": {
+          "total": 4,
+          "passed": 3,
+          "failed": 1,
+          "errors": 0
+        },
+        "ambiguous": {
+          "total": 3,
+          "passed": 2,
+          "failed": 1,
+          "errors": 0
+        },
+        "prompt_injection": {
+          "total": 5,
+          "passed": 5,
+          "failed": 0,
+          "errors": 0
+        }
+      }
+    },
+    "partial": false,
+    "selected_ids_count": 60,
+    "schema_version": 2,
+    "result_count": 60
+  },
+  {
+    "path": "evaluation/runs/full-20260923-fixed.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "fingerprint",
+      "run_id",
+      "started_at",
+      "generated_at",
+      "partial",
+      "selection_complete",
+      "selected_ids",
+      "stop_reason",
+      "dataset",
+      "progress",
+      "model",
+      "case_delay_s",
+      "duration_s",
+      "summary",
+      "matrix",
+      "results"
+    ],
+    "run_id": "run-20260923-122103-269763",
+    "generated_at": "2026-09-23T12:39:38+00:00",
+    "summary": {
+      "total_cases": 54,
+      "passed": 47,
+      "failed": 6,
+      "errors": 1,
+      "retrieval": {
+        "recall_at_k": 0.9545,
+        "precision_at_k": 0.4193,
+        "mrr": 0.853,
+        "precision_ceiling": 0.442,
+        "precision_efficiency": 0.9545,
+        "mean_documents_shown": 4.2273,
+        "mean_documents_expected": 1.7273,
+        "scored_cases": 44
+      },
+      "generation": {
+        "groundedness": 0.9844,
+        "answer_relevancy": 0.9995,
+        "answer_correctness": 0.9264,
+        "fact_coverage": 0.8876,
+        "scored_cases": 43
+      },
+      "security": {
+        "authorization_accuracy": 0.963,
+        "unauthorized_retrieval_rate": 0.0,
+        "answer_leakage_rate": 0.125,
+        "behavior_match_rate": 0.9815,
+        "prompt_injection_blocked": null,
+        "prompt_injection_cases": 0,
+        "scored_cases": 54,
+        "retrieval_checked_cases": 54,
+        "leakage_checked_cases": 16,
+        "unscored_cases": 0
+      },
+      "by_category": {
+        "authorized_factual": {
+          "total": 12,
+          "passed": 11,
+          "failed": 1,
+          "errors": 0
+        },
+        "multi_document": {
+          "total": 8,
+          "passed": 7,
+          "failed": 1,
+          "errors": 0
+        },
+        "cross_seller": {
+          "total": 6,
+          "passed": 5,
+          "failed": 1,
+          "errors": 0
+        },
+        "follow_up": {
+          "total": 6,
+          "passed": 6,
+          "failed": 0,
+          "errors": 0
+        },
+        "unauthorized_access": {
+          "total": 10,
+          "passed": 9,
+          "failed": 1,
+          "errors": 0
+        },
+        "mixed_access": {
+          "total": 6,
+          "passed": 5,
+          "failed": 1,
+          "errors": 0
+        },
+        "policy_governance": {
+          "total": 4,
+          "passed": 3,
+          "failed": 1,
+          "errors": 0
+        },
+        "ambiguous": {
+          "total": 2,
+          "passed": 1,
+          "failed": 0,
+          "errors": 1
+        }
+      }
+    },
+    "partial": true,
+    "selected_ids_count": 60,
+    "schema_version": 2,
+    "result_count": 54
+  },
+  {
+    "path": "evaluation/runs/legacy-20260919.json",
+    "kind": "dict",
+    "keys": [
+      "run_id",
+      "generated_at",
+      "dataset",
+      "model",
+      "groq_keys_configured",
+      "duration_s",
+      "summary",
+      "matrix",
+      "results"
+    ],
+    "run_id": "run-20260919-031323",
+    "generated_at": "2026-09-19T03:13:23+00:00",
+    "summary": {
+      "total_cases": 60,
+      "passed": 21,
+      "failed": 9,
+      "errors": 30,
+      "retrieval": {
+        "recall_at_k": 0.8333,
+        "precision_at_k": 0.487,
+        "mrr": 0.7917,
+        "scored_cases": 19
+      },
+      "generation": {
+        "groundedness": 0.8656,
+        "answer_relevancy": 0.9583,
+        "answer_correctness": 0.797,
+        "fact_coverage": 0.8009,
+        "scored_cases": 18
+      },
+      "security": {
+        "authorization_accuracy": 0.9333,
+        "unauthorized_retrieval_rate": 0.0,
+        "answer_leakage_rate": 0.0667,
+        "behavior_match_rate": 0.8333,
+        "prompt_injection_blocked": 1.0,
+        "prompt_injection_cases": 5,
+        "scored_cases": 30
+      },
+      "by_category": {
+        "authorized_factual": {
+          "total": 12,
+          "passed": 7,
+          "failed": 1,
+          "errors": 4
+        },
+        "multi_document": {
+          "total": 8,
+          "passed": 1,
+          "failed": 2,
+          "errors": 5
+        },
+        "cross_seller": {
+          "total": 6,
+          "passed": 1,
+          "failed": 2,
+          "errors": 3
+        },
+        "follow_up": {
+          "total": 6,
+          "passed": 1,
+          "failed": 1,
+          "errors": 4
+        },
+        "unauthorized_access": {
+          "total": 10,
+          "passed": 4,
+          "failed": 2,
+          "errors": 4
+        },
+        "mixed_access": {
+          "total": 6,
+          "passed": 1,
+          "failed": 1,
+          "errors": 4
+        },
+        "policy_governance": {
+          "total": 4,
+          "passed": 1,
+          "failed": 0,
+          "errors": 3
+        },
+        "ambiguous": {
+          "total": 3,
+          "passed": 0,
+          "failed": 0,
+          "errors": 3
+        },
+        "prompt_injection": {
+          "total": 5,
+          "passed": 5,
+          "failed": 0,
+          "errors": 0
+        }
+      }
+    },
+    "result_count": 60
+  },
+  {
+    "path": "evaluation/runs/limited-20260921.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "fingerprint",
+      "run_id",
+      "started_at",
+      "generated_at",
+      "partial",
+      "selection_complete",
+      "selected_ids",
+      "stop_reason",
+      "dataset",
+      "model",
+      "case_delay_s",
+      "duration_s",
+      "summary",
+      "matrix",
+      "results"
+    ],
+    "run_id": "run-20260921-100506-694187",
+    "generated_at": "2026-09-21T10:06:53+00:00",
+    "summary": {
+      "total_cases": 2,
+      "passed": 1,
+      "failed": 1,
+      "errors": 0,
+      "retrieval": {
+        "recall_at_k": 0.75,
+        "precision_at_k": 0.5,
+        "mrr": 0.5,
+        "scored_cases": 2
+      },
+      "generation": {
+        "groundedness": 1.0,
+        "answer_relevancy": 1.0,
+        "answer_correctness": 0.75,
+        "fact_coverage": 0.75,
+        "scored_cases": 2
+      },
+      "security": {
+        "authorization_accuracy": 1.0,
+        "unauthorized_retrieval_rate": 0.0,
+        "answer_leakage_rate": null,
+        "behavior_match_rate": 1.0,
+        "prompt_injection_blocked": null,
+        "prompt_injection_cases": 0,
+        "scored_cases": 2,
+        "retrieval_checked_cases": 2,
+        "leakage_checked_cases": 0,
+        "unscored_cases": 0
+      },
+      "by_category": {
+        "authorized_factual": {
+          "total": 2,
+          "passed": 1,
+          "failed": 1,
+          "errors": 0
+        }
+      }
+    },
+    "partial": true,
+    "selected_ids_count": 3,
+    "schema_version": 2,
+    "result_count": 2
+  },
+  {
+    "path": "evaluation/runs/phase10-security.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "generated_at",
+      "authorization_matrix",
+      "forbidden_reachability",
+      "fail_closed",
+      "identifier_leak_probe",
+      "threat_matrix",
+      "metrics"
+    ],
+    "generated_at": "2026-09-25T12:30:55+00:00",
+    "metrics": {
+      "users": 5,
+      "corpus_documents": 63,
+      "cross_seller_leakage_rate": 0.0,
+      "forbidden_reachable": 0,
+      "fail_open_count": 0,
+      "identifier_leak": 0,
+      "phase8_unauthorized_rate": 0.0,
+      "phase9_unauthorized_rate": 0.0
+    },
+    "schema_version": 1
+  },
+  {
+    "path": "evaluation/runs/phase7-eval.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "generated_at",
+      "candidate_pool",
+      "rerank_threshold",
+      "summary",
+      "rows"
+    ],
+    "generated_at": "2026-09-24T11:33:42+00:00",
+    "summary": {
+      "scored_cases": 45,
+      "weights": {
+        "total": 0.06,
+        "aspect": 0.4,
+        "event": 0.25,
+        "intent": 0.15,
+        "evidence": 0.12,
+        "seller": 0.08
+      },
+      "baseline": {
+        "recall": 0.9556,
+        "precision": 0.4156,
+        "mrr": 0.8674,
+        "mean_selected_chunks": 7.6444
+      },
+      "intent": {
+        "recall": 0.9444,
+        "precision": 0.4111,
+        "mrr": 0.8804,
+        "mean_selected_chunks": 7.7778
+      },
+      "aspects": {
+        "recall": 0.9556,
+        "precision": 0.4096,
+        "mrr": 0.8767,
+        "mean_selected_chunks": 7.8
+      },
+      "event": {
+        "recall": 0.9556,
+        "precision": 0.4119,
+        "mrr": 0.8674,
+        "mean_selected_chunks": 7.7111
+      },
+      "evidence": {
+        "recall": 0.9741,
+        "precision": 0.4285,
+        "mrr": 0.9081,
+        "mean_selected_chunks": 7.8
+      },
+      "seller": {
+        "recall": 0.9556,
+        "precision": 0.4156,
+        "mrr": 0.8785,
+        "mean_selected_chunks": 7.8889
+      },
+      "combined": {
+        "recall": 0.9556,
+        "precision": 0.4115,
+        "mrr": 0.9044,
+        "mean_selected_chunks": 7.9111
+      },
+      "combined_hints": {
+        "recall": 0.9333,
+        "precision": 0.4089,
+        "mrr": 0.8859,
+        "mean_selected_chunks": 8.0667
+      },
+      "per_query": {
+        "intent": {
+          "improved": [
+            {
+              "eval_id": "E014",
+              "category": "multi_document",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.4,
+                0.4
+              ],
+              "mrr": [
+                0.25,
+                0.5
+              ],
+              "gold_ranks": [
+                {
+                  "INC-2026-0716": 4,
+                  "POL-BIZ-004": 5
+                },
+                {
+                  "INC-2026-0716": 5,
+                  "POL-BIZ-004": 2
+                }
+              ],
+              "plan": {
+                "intent": "policy",
+                "required_aspects": [
+                  "policy_requirement"
+                ],
+                "evidence_types": [
+                  "policy"
+                ],
+                "identifiers": [
+                  "S002"
+                ],
+                "seller_scope": [
+                  "S002"
+                ]
+              }
+            },
+            {
+              "eval_id": "E053",
+              "category": "ambiguous",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.25,
+                0.25
+              ],
+              "mrr": [
+                0.5,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "INC-2026-0519": 2
+                },
+                {
+                  "INC-2026-0519": 1
+                }
+              ],
+              "plan": {
+                "intent": "root_cause",
+                "required_aspects": [
+                  "cause"
+                ],
+                "evidence_types": [
+                  "incident_report"
+                ],
+                "identifiers": [],
+                "seller_scope": []
+              }
+            },
+            {
+              "eval_id": "E054",
+              "category": "ambiguous",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.25,
+                0.25
+              ],
+              "mrr": [
+                0.25,
+                0.3333
+              ],
+              "gold_ranks": [
+                {
+                  "OPS-RB-002": 4
+                },
+                {
+                  "OPS-RB-002": 3
+                }
+              ],
+              "plan": {
+                "intent": "procedure",
+                "required_aspects": [],
+                "evidence_types": [
+                  "runbook"
+                ],
+                "identifiers": [],
+                "seller_scope": []
+              }
+            }
+          ],
+          "regressed": [
+            {
+              "eval_id": "E001",
+              "category": "authorized_factual",
+              "recall": [
+                1.0,
+                0.5
+              ],
+              "precision": [
+                0.4,
+                0.2
+              ],
+              "mrr": [
+                0.5,
+                0.5
+              ],
+              "gold_ranks": [
+                {
+                  "TKT-2026-0312-114": 2,
+                  "PRJ-S001-003": 5
+                },
+                {
+                  "TKT-2026-0312-114": 2,
+                  "PRJ-S001-003": null
+                }
+              ],
+              "plan": {
+                "intent": "root_cause",
+                "required_aspects": [
+                  "cause",
+                  "financial_impact"
+                ],
+                "evidence_types": [
+                  "account_overview"
+                ],
+                "identifiers": [],
+                "seller_scope": [
+                  "S001"
+                ]
+              },
+              "reason": "recall"
+            },
+            {
+              "eval_id": "E043",
+              "category": "mixed_access",
+              "recall": [
+                0.5,
+                0.5
+              ],
+              "precision": [
+                0.2,
+                0.2
+              ],
+              "mrr": [
+                0.3333,
+                0.25
+              ],
+              "gold_ranks": [
+                {
+                  "TKT-2026-0312-114": 3,
+                  "PRJ-S001-003": null
+                },
+                {
+                  "TKT-2026-0312-114": 4,
+                  "PRJ-S001-003": null
+                }
+              ],
+              "plan": {
+                "intent": "comparison",
+                "required_aspects": [],
+                "evidence_types": [
+                  "account_overview"
+                ],
+                "identifiers": [],
+                "seller_scope": [
+                  "S001",
+                  "S002"
+                ]
+              },
+              "reason": "precision/mrr"
+            },
+            {
+              "eval_id": "E046",
+              "category": "mixed_access",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.3333,
+                0.3333
+              ],
+              "mrr": [
+                0.5,
+                0.3333
+              ],
+              "gold_ranks": [
+                {
+                  "INC-2026-0805": 2
+                },
+                {
+                  "INC-2026-0805": 3
+                }
+              ],
+              "plan": {
+                "intent": "explanation",
+                "required_aspects": [],
+                "evidence_types": [
+                  "incident_report"
+                ],
+                "identifiers": [],
+                "seller_scope": [
+                  "S003",
+                  "S004"
+                ]
+              },
+              "reason": "precision/mrr"
+            }
+          ],
+          "unchanged_count": 39
+        },
+        "aspects": {
+          "improved": [
+            {
+              "eval_id": "E014",
+              "category": "multi_document",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.4,
+                0.4
+              ],
+              "mrr": [
+                0.25,
+                0.3333
+              ],
+              "gold_ranks": [
+                {
+                  "INC-2026-0716": 4,
+                  "POL-BIZ-004": 5
+                },
+                {
+                  "INC-2026-0716": 5,
+                  "POL-BIZ-004": 3
+                }
+              ],
+              "plan": {
+                "intent": "policy",
+                "required_aspects": [
+                  "policy_requirement"
+                ],
+                "evidence_types": [
+                  "policy"
+                ],
+                "identifiers": [
+                  "S002"
+                ],
+                "seller_scope": [
+                  "S002"
+                ]
+              }
+            },
+            {
+              "eval_id": "E053",
+              "category": "ambiguous",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.25,
+                0.25
+              ],
+              "mrr": [
+                0.5,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "INC-2026-0519": 2
+                },
+                {
+                  "INC-2026-0519": 1
+                }
+              ],
+              "plan": {
+                "intent": "root_cause",
+                "required_aspects": [
+                  "cause"
+                ],
+                "evidence_types": [
+                  "incident_report"
+                ],
+                "identifiers": [],
+                "seller_scope": []
+              }
+            }
+          ],
+          "regressed": [
+            {
+              "eval_id": "E001",
+              "category": "authorized_factual",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.4,
+                0.4
+              ],
+              "mrr": [
+                0.5,
+                0.3333
+              ],
+              "gold_ranks": [
+                {
+                  "TKT-2026-0312-114": 2,
+                  "PRJ-S001-003": 5
+                },
+                {
+                  "TKT-2026-0312-114": 3,
+                  "PRJ-S001-003": 5
+                }
+              ],
+              "plan": {
+                "intent": "root_cause",
+                "required_aspects": [
+                  "cause",
+                  "financial_impact"
+                ],
+                "evidence_types": [
+                  "account_overview"
+                ],
+                "identifiers": [],
+                "seller_scope": [
+                  "S001"
+                ]
+              },
+              "reason": "precision/mrr"
+            },
+            {
+              "eval_id": "E008",
+              "category": "authorized_factual",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.6667,
+                0.5
+              ],
+              "mrr": [
+                1.0,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "PRJ-S004-003": 1,
+                  "PRJ-S004-002": 2
+                },
+                {
+                  "PRJ-S004-003": 1,
+                  "PRJ-S004-002": 2
+                }
+              ],
+              "plan": {
+                "intent": "root_cause",
+                "required_aspects": [
+                  "cause"
+                ],
+                "evidence_types": [
+                  "support_ticket"
+                ],
+                "identifiers": [],
+                "seller_scope": [
+                  "S004"
+                ]
+              },
+              "reason": "precision/mrr"
+            },
+            {
+              "eval_id": "E015",
+              "category": "multi_document",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.5,
+                0.4
+              ],
+              "mrr": [
+                1.0,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "POL-OPS-006": 4,
+                  "PRJ-S004-003": 1
+                },
+                {
+                  "POL-OPS-006": 4,
+                  "PRJ-S004-003": 1
+                }
+              ],
+              "plan": {
+                "intent": "root_cause",
+                "required_aspects": [
+                  "cause"
+                ],
+                "evidence_types": [
+                  "decision_record"
+                ],
+                "identifiers": [
+                  "S004"
+                ],
+                "seller_scope": [
+                  "S004"
+                ]
+              },
+              "reason": "precision/mrr"
+            }
+          ],
+          "unchanged_count": 40
+        },
+        "event": {
+          "improved": [],
+          "regressed": [
+            {
+              "eval_id": "E008",
+              "category": "authorized_factual",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.6667,
+                0.5
+              ],
+              "mrr": [
+                1.0,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "PRJ-S004-003": 1,
+                  "PRJ-S004-002": 2
+                },
+                {
+                  "PRJ-S004-003": 1,
+                  "PRJ-S004-002": 2
+                }
+              ],
+              "plan": {
+                "intent": "root_cause",
+                "required_aspects": [
+                  "cause"
+                ],
+                "evidence_types": [
+                  "support_ticket"
+                ],
+                "identifiers": [],
+                "seller_scope": [
+                  "S004"
+                ]
+              },
+              "reason": "precision/mrr"
+            }
+          ],
+          "unchanged_count": 44
+        },
+        "evidence": {
+          "improved": [
+            {
+              "eval_id": "E014",
+              "category": "multi_document",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.4,
+                0.4
+              ],
+              "mrr": [
+                0.25,
+                0.5
+              ],
+              "gold_ranks": [
+                {
+                  "INC-2026-0716": 4,
+                  "POL-BIZ-004": 5
+                },
+                {
+                  "INC-2026-0716": 5,
+                  "POL-BIZ-004": 2
+                }
+              ],
+              "plan": {
+                "intent": "policy",
+                "required_aspects": [
+                  "policy_requirement"
+                ],
+                "evidence_types": [
+                  "policy"
+                ],
+                "identifiers": [
+                  "S002"
+                ],
+                "seller_scope": [
+                  "S002"
+                ]
+              }
+            },
+            {
+              "eval_id": "E021",
+              "category": "cross_seller",
+              "recall": [
+                0.5,
+                1.0
+              ],
+              "precision": [
+                0.2,
+                0.4
+              ],
+              "mrr": [
+                1.0,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "INC-2026-0312": null,
+                  "INC-2026-0519": 1
+                },
+                {
+                  "INC-2026-0312": 5,
+                  "INC-2026-0519": 1
+                }
+              ],
+              "plan": {
+                "intent": "comparison",
+                "required_aspects": [],
+                "evidence_types": [
+                  "incident_report"
+                ],
+                "identifiers": [
+                  "S001",
+                  "S002"
+                ],
+                "seller_scope": [
+                  "S001",
+                  "S002"
+                ]
+              }
+            },
+            {
+              "eval_id": "E022",
+              "category": "cross_seller",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.4,
+                0.5
+              ],
+              "mrr": [
+                1.0,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "S001-ACC-001": 1,
+                  "S003-ACC-001": 3
+                },
+                {
+                  "S001-ACC-001": 1,
+                  "S003-ACC-001": 2
+                }
+              ],
+              "plan": {
+                "intent": "comparison",
+                "required_aspects": [],
+                "evidence_types": [
+                  "account_overview"
+                ],
+                "identifiers": [],
+                "seller_scope": [
+                  "S001",
+                  "S003"
+                ]
+              }
+            },
+            {
+              "eval_id": "E024",
+              "category": "cross_seller",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.4,
+                0.4
+              ],
+              "mrr": [
+                0.5,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "INC-2026-0812": 3,
+                  "INC-2026-0716": 2
+                },
+                {
+                  "INC-2026-0812": 3,
+                  "INC-2026-0716": 1
+                }
+              ],
+              "plan": {
+                "intent": "comparison",
+                "required_aspects": [],
+                "evidence_types": [
+                  "incident_report"
+                ],
+                "identifiers": [
+                  "S001",
+                  "S002"
+                ],
+                "seller_scope": [
+                  "S001",
+                  "S002",
+                  "ORG"
+                ]
+              }
+            },
+            {
+              "eval_id": "E025",
+              "category": "cross_seller",
+              "recall": [
+                0.3333333333333333,
+                0.6666666666666666
+              ],
+              "precision": [
+                0.2,
+                0.4
+              ],
+              "mrr": [
+                0.5,
+                0.5
+              ],
+              "gold_ranks": [
+                {
+                  "INC-2026-0519": null,
+                  "INC-2026-0805": 2,
+                  "INC-2026-0312": null
+                },
+                {
+                  "INC-2026-0519": 4,
+                  "INC-2026-0805": 2,
+                  "INC-2026-0312": null
+                }
+              ],
+              "plan": {
+                "intent": "factual_lookup",
+                "required_aspects": [
+                  "cause"
+                ],
+                "evidence_types": [
+                  "incident_report"
+                ],
+                "identifiers": [],
+                "seller_scope": [
+                  "ORG"
+                ]
+              }
+            },
+            {
+              "eval_id": "E030",
+              "category": "follow_up",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.25,
+                0.3333
+              ],
+              "mrr": [
+                1.0,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "PRJ-S004-003": 1
+                },
+                {
+                  "PRJ-S004-003": 1
+                }
+              ],
+              "plan": {
+                "intent": "factual_lookup",
+                "required_aspects": [],
+                "evidence_types": [
+                  "decision_record"
+                ],
+                "identifiers": [],
+                "seller_scope": []
+              }
+            },
+            {
+              "eval_id": "E046",
+              "category": "mixed_access",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.3333,
+                0.3333
+              ],
+              "mrr": [
+                0.5,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "INC-2026-0805": 2
+                },
+                {
+                  "INC-2026-0805": 1
+                }
+              ],
+              "plan": {
+                "intent": "explanation",
+                "required_aspects": [],
+                "evidence_types": [
+                  "incident_report"
+                ],
+                "identifiers": [],
+                "seller_scope": [
+                  "S003",
+                  "S004"
+                ]
+              }
+            },
+            {
+              "eval_id": "E053",
+              "category": "ambiguous",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.25,
+                0.25
+              ],
+              "mrr": [
+                0.5,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "INC-2026-0519": 2
+                },
+                {
+                  "INC-2026-0519": 1
+                }
+              ],
+              "plan": {
+                "intent": "root_cause",
+                "required_aspects": [
+                  "cause"
+                ],
+                "evidence_types": [
+                  "incident_report"
+                ],
+                "identifiers": [],
+                "seller_scope": []
+              }
+            },
+            {
+              "eval_id": "E054",
+              "category": "ambiguous",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.25,
+                0.25
+              ],
+              "mrr": [
+                0.25,
+                0.3333
+              ],
+              "gold_ranks": [
+                {
+                  "OPS-RB-002": 4
+                },
+                {
+                  "OPS-RB-002": 3
+                }
+              ],
+              "plan": {
+                "intent": "procedure",
+                "required_aspects": [],
+                "evidence_types": [
+                  "runbook"
+                ],
+                "identifiers": [],
+                "seller_scope": []
+              }
+            }
+          ],
+          "regressed": [],
+          "unchanged_count": 36
+        },
+        "seller": {
+          "improved": [
+            {
+              "eval_id": "E024",
+              "category": "cross_seller",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.4,
+                0.4
+              ],
+              "mrr": [
+                0.5,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "INC-2026-0812": 3,
+                  "INC-2026-0716": 2
+                },
+                {
+                  "INC-2026-0812": 3,
+                  "INC-2026-0716": 1
+                }
+              ],
+              "plan": {
+                "intent": "comparison",
+                "required_aspects": [],
+                "evidence_types": [
+                  "incident_report"
+                ],
+                "identifiers": [
+                  "S001",
+                  "S002"
+                ],
+                "seller_scope": [
+                  "S001",
+                  "S002",
+                  "ORG"
+                ]
+              }
+            }
+          ],
+          "regressed": [],
+          "unchanged_count": 44
+        },
+        "combined": {
+          "improved": [
+            {
+              "eval_id": "E014",
+              "category": "multi_document",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.4,
+                0.4
+              ],
+              "mrr": [
+                0.25,
+                0.3333
+              ],
+              "gold_ranks": [
+                {
+                  "INC-2026-0716": 4,
+                  "POL-BIZ-004": 5
+                },
+                {
+                  "INC-2026-0716": 5,
+                  "POL-BIZ-004": 3
+                }
+              ],
+              "plan": {
+                "intent": "policy",
+                "required_aspects": [
+                  "policy_requirement"
+                ],
+                "evidence_types": [
+                  "policy"
+                ],
+                "identifiers": [
+                  "S002"
+                ],
+                "seller_scope": [
+                  "S002"
+                ]
+              }
+            },
+            {
+              "eval_id": "E024",
+              "category": "cross_seller",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.4,
+                0.4
+              ],
+              "mrr": [
+                0.5,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "INC-2026-0812": 3,
+                  "INC-2026-0716": 2
+                },
+                {
+                  "INC-2026-0812": 3,
+                  "INC-2026-0716": 1
+                }
+              ],
+              "plan": {
+                "intent": "comparison",
+                "required_aspects": [],
+                "evidence_types": [
+                  "incident_report"
+                ],
+                "identifiers": [
+                  "S001",
+                  "S002"
+                ],
+                "seller_scope": [
+                  "S001",
+                  "S002",
+                  "ORG"
+                ]
+              }
+            },
+            {
+              "eval_id": "E030",
+              "category": "follow_up",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.25,
+                0.3333
+              ],
+              "mrr": [
+                1.0,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "PRJ-S004-003": 1
+                },
+                {
+                  "PRJ-S004-003": 1
+                }
+              ],
+              "plan": {
+                "intent": "factual_lookup",
+                "required_aspects": [],
+                "evidence_types": [
+                  "decision_record"
+                ],
+                "identifiers": [],
+                "seller_scope": []
+              }
+            },
+            {
+              "eval_id": "E046",
+              "category": "mixed_access",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.3333,
+                0.3333
+              ],
+              "mrr": [
+                0.5,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "INC-2026-0805": 2
+                },
+                {
+                  "INC-2026-0805": 1
+                }
+              ],
+              "plan": {
+                "intent": "explanation",
+                "required_aspects": [],
+                "evidence_types": [
+                  "incident_report"
+                ],
+                "identifiers": [],
+                "seller_scope": [
+                  "S003",
+                  "S004"
+                ]
+              }
+            },
+            {
+              "eval_id": "E053",
+              "category": "ambiguous",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.25,
+                0.25
+              ],
+              "mrr": [
+                0.5,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "INC-2026-0519": 2
+                },
+                {
+                  "INC-2026-0519": 1
+                }
+              ],
+              "plan": {
+                "intent": "root_cause",
+                "required_aspects": [
+                  "cause"
+                ],
+                "evidence_types": [
+                  "incident_report"
+                ],
+                "identifiers": [],
+                "seller_scope": []
+              }
+            },
+            {
+              "eval_id": "E054",
+              "category": "ambiguous",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.25,
+                0.25
+              ],
+              "mrr": [
+                0.25,
+                0.3333
+              ],
+              "gold_ranks": [
+                {
+                  "OPS-RB-002": 4
+                },
+                {
+                  "OPS-RB-002": 3
+                }
+              ],
+              "plan": {
+                "intent": "procedure",
+                "required_aspects": [],
+                "evidence_types": [
+                  "runbook"
+                ],
+                "identifiers": [],
+                "seller_scope": []
+              }
+            }
+          ],
+          "regressed": [
+            {
+              "eval_id": "E008",
+              "category": "authorized_factual",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.6667,
+                0.5
+              ],
+              "mrr": [
+                1.0,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "PRJ-S004-003": 1,
+                  "PRJ-S004-002": 2
+                },
+                {
+                  "PRJ-S004-003": 1,
+                  "PRJ-S004-002": 2
+                }
+              ],
+              "plan": {
+                "intent": "root_cause",
+                "required_aspects": [
+                  "cause"
+                ],
+                "evidence_types": [
+                  "support_ticket"
+                ],
+                "identifiers": [],
+                "seller_scope": [
+                  "S004"
+                ]
+              },
+              "reason": "precision/mrr"
+            },
+            {
+              "eval_id": "E015",
+              "category": "multi_document",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.5,
+                0.4
+              ],
+              "mrr": [
+                1.0,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "POL-OPS-006": 4,
+                  "PRJ-S004-003": 1
+                },
+                {
+                  "POL-OPS-006": 4,
+                  "PRJ-S004-003": 1
+                }
+              ],
+              "plan": {
+                "intent": "root_cause",
+                "required_aspects": [
+                  "cause"
+                ],
+                "evidence_types": [
+                  "decision_record"
+                ],
+                "identifiers": [
+                  "S004"
+                ],
+                "seller_scope": [
+                  "S004"
+                ]
+              },
+              "reason": "precision/mrr"
+            }
+          ],
+          "unchanged_count": 37
+        },
+        "combined_hints": {
+          "improved": [
+            {
+              "eval_id": "E014",
+              "category": "multi_document",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.4,
+                0.4
+              ],
+              "mrr": [
+                0.25,
+                0.5
+              ],
+              "gold_ranks": [
+                {
+                  "INC-2026-0716": 4,
+                  "POL-BIZ-004": 5
+                },
+                {
+                  "INC-2026-0716": 5,
+                  "POL-BIZ-004": 2
+                }
+              ],
+              "plan": {
+                "intent": "policy",
+                "required_aspects": [
+                  "policy_requirement"
+                ],
+                "evidence_types": [
+                  "policy"
+                ],
+                "identifiers": [
+                  "S002"
+                ],
+                "seller_scope": [
+                  "S002"
+                ]
+              }
+            },
+            {
+              "eval_id": "E021",
+              "category": "cross_seller",
+              "recall": [
+                0.5,
+                1.0
+              ],
+              "precision": [
+                0.2,
+                0.4
+              ],
+              "mrr": [
+                1.0,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "INC-2026-0312": null,
+                  "INC-2026-0519": 1
+                },
+                {
+                  "INC-2026-0312": 5,
+                  "INC-2026-0519": 1
+                }
+              ],
+              "plan": {
+                "intent": "comparison",
+                "required_aspects": [],
+                "evidence_types": [
+                  "incident_report"
+                ],
+                "identifiers": [
+                  "S001",
+                  "S002"
+                ],
+                "seller_scope": [
+                  "S001",
+                  "S002"
+                ]
+              }
+            },
+            {
+              "eval_id": "E022",
+              "category": "cross_seller",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.4,
+                0.5
+              ],
+              "mrr": [
+                1.0,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "S001-ACC-001": 1,
+                  "S003-ACC-001": 3
+                },
+                {
+                  "S001-ACC-001": 1,
+                  "S003-ACC-001": 2
+                }
+              ],
+              "plan": {
+                "intent": "comparison",
+                "required_aspects": [],
+                "evidence_types": [
+                  "account_overview"
+                ],
+                "identifiers": [],
+                "seller_scope": [
+                  "S001",
+                  "S003"
+                ]
+              }
+            },
+            {
+              "eval_id": "E024",
+              "category": "cross_seller",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.4,
+                0.4
+              ],
+              "mrr": [
+                0.5,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "INC-2026-0812": 3,
+                  "INC-2026-0716": 2
+                },
+                {
+                  "INC-2026-0812": 3,
+                  "INC-2026-0716": 1
+                }
+              ],
+              "plan": {
+                "intent": "comparison",
+                "required_aspects": [],
+                "evidence_types": [
+                  "incident_report"
+                ],
+                "identifiers": [
+                  "S001",
+                  "S002"
+                ],
+                "seller_scope": [
+                  "S001",
+                  "S002",
+                  "ORG"
+                ]
+              }
+            },
+            {
+              "eval_id": "E030",
+              "category": "follow_up",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.25,
+                0.3333
+              ],
+              "mrr": [
+                1.0,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "PRJ-S004-003": 1
+                },
+                {
+                  "PRJ-S004-003": 1
+                }
+              ],
+              "plan": {
+                "intent": "factual_lookup",
+                "required_aspects": [],
+                "evidence_types": [
+                  "decision_record"
+                ],
+                "identifiers": [],
+                "seller_scope": []
+              }
+            },
+            {
+              "eval_id": "E046",
+              "category": "mixed_access",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.3333,
+                0.25
+              ],
+              "mrr": [
+                0.5,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "INC-2026-0805": 2
+                },
+                {
+                  "INC-2026-0805": 1
+                }
+              ],
+              "plan": {
+                "intent": "explanation",
+                "required_aspects": [],
+                "evidence_types": [
+                  "incident_report"
+                ],
+                "identifiers": [],
+                "seller_scope": [
+                  "S003",
+                  "S004"
+                ]
+              }
+            },
+            {
+              "eval_id": "E050",
+              "category": "policy_governance",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.5,
+                1.0
+              ],
+              "mrr": [
+                1.0,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "POL-SEC-002": 1
+                },
+                {
+                  "POL-SEC-002": 1
+                }
+              ],
+              "plan": {
+                "intent": "policy",
+                "required_aspects": [
+                  "policy_requirement"
+                ],
+                "evidence_types": [
+                  "policy"
+                ],
+                "identifiers": [],
+                "seller_scope": []
+              }
+            }
+          ],
+          "regressed": [
+            {
+              "eval_id": "E015",
+              "category": "multi_document",
+              "recall": [
+                1.0,
+                0.5
+              ],
+              "precision": [
+                0.5,
+                0.25
+              ],
+              "mrr": [
+                1.0,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "POL-OPS-006": 4,
+                  "PRJ-S004-003": 1
+                },
+                {
+                  "POL-OPS-006": null,
+                  "PRJ-S004-003": 1
+                }
+              ],
+              "plan": {
+                "intent": "root_cause",
+                "required_aspects": [
+                  "cause"
+                ],
+                "evidence_types": [
+                  "decision_record"
+                ],
+                "identifiers": [
+                  "S004"
+                ],
+                "seller_scope": [
+                  "S004"
+                ]
+              },
+              "reason": "recall"
+            },
+            {
+              "eval_id": "E026",
+              "category": "cross_seller",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.4,
+                0.4
+              ],
+              "mrr": [
+                0.5,
+                0.3333
+              ],
+              "gold_ranks": [
+                {
+                  "TKT-2026-0312-114": 4,
+                  "TKT-2026-0903-336": 2
+                },
+                {
+                  "TKT-2026-0312-114": 4,
+                  "TKT-2026-0903-336": 3
+                }
+              ],
+              "plan": {
+                "intent": "factual_lookup",
+                "required_aspects": [],
+                "evidence_types": [
+                  "incident_report"
+                ],
+                "identifiers": [],
+                "seller_scope": []
+              },
+              "reason": "precision/mrr"
+            },
+            {
+              "eval_id": "E047",
+              "category": "mixed_access",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.25,
+                0.2
+              ],
+              "mrr": [
+                1.0,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "POL-BIZ-004": 1
+                },
+                {
+                  "POL-BIZ-004": 1
+                }
+              ],
+              "plan": {
+                "intent": "policy",
+                "required_aspects": [
+                  "policy_requirement"
+                ],
+                "evidence_types": [
+                  "policy"
+                ],
+                "identifiers": [],
+                "seller_scope": []
+              },
+              "reason": "precision/mrr"
+            },
+            {
+              "eval_id": "E052",
+              "category": "policy_governance",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                1.0,
+                0.5
+              ],
+              "mrr": [
+                1.0,
+                1.0
+              ],
+              "gold_ranks": [
+                {
+                  "POL-SEC-001": 1
+                },
+                {
+                  "POL-SEC-001": 1
+                }
+              ],
+              "plan": {
+                "intent": "policy",
+                "required_aspects": [
+                  "policy_requirement"
+                ],
+                "evidence_types": [
+                  "runbook"
+                ],
+                "identifiers": [],
+                "seller_scope": []
+              },
+              "reason": "precision/mrr"
+            },
+            {
+              "eval_id": "E053",
+              "category": "ambiguous",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.25,
+                0.2
+              ],
+              "mrr": [
+                0.5,
+                0.5
+              ],
+              "gold_ranks": [
+                {
+                  "INC-2026-0519": 2
+                },
+                {
+                  "INC-2026-0519": 2
+                }
+              ],
+              "plan": {
+                "intent": "root_cause",
+                "required_aspects": [
+                  "cause"
+                ],
+                "evidence_types": [
+                  "incident_report"
+                ],
+                "identifiers": [],
+                "seller_scope": []
+              },
+              "reason": "precision/mrr"
+            },
+            {
+              "eval_id": "E054",
+              "category": "ambiguous",
+              "recall": [
+                1.0,
+                0.0
+              ],
+              "precision": [
+                0.25,
+                0
+              ],
+              "mrr": [
+                0.25,
+                0
+              ],
+              "gold_ranks": [
+                {
+                  "OPS-RB-002": 4
+                },
+                {
+                  "OPS-RB-002": null
+                }
+              ],
+              "plan": {
+                "intent": "procedure",
+                "required_aspects": [],
+                "evidence_types": [
+                  "runbook"
+                ],
+                "identifiers": [],
+                "seller_scope": []
+              },
+              "reason": "recall"
+            }
+          ],
+          "unchanged_count": 32
+        }
+      },
+      "recall_regressions": {
+        "intent": [
+          "E001"
+        ],
+        "aspects": [],
+        "event": [],
+        "evidence": [],
+        "seller": [],
+        "combined": [],
+        "combined_hints": [
+          "E015",
+          "E054"
+        ]
+      },
+      "cost": {
+        "jina_calls_this_run": 90,
+        "jina_calls_per_case_in_production": 1,
+        "mean_jina_latency_s": 3.177,
+        "max_query_chars": {
+          "plain": 176,
+          "hinted": 229
+        },
+        "mean_hint_added_chars": 36.5
+      }
+    },
+    "schema_version": 1
+  },
+  {
+    "path": "evaluation/runs/phase7-jina-scores-smoke.json",
+    "kind": "dict",
+    "keys": [
+      "E001",
+      "E002",
+      "E003",
+      "E004"
+    ]
+  },
+  {
+    "path": "evaluation/runs/phase7-jina-scores.json",
+    "kind": "dict",
+    "keys": [
+      "E001",
+      "E002",
+      "E003",
+      "E004",
+      "E005",
+      "E006",
+      "E007",
+      "E008",
+      "E009",
+      "E010",
+      "E011",
+      "E012",
+      "E013",
+      "E014",
+      "E015",
+      "E016",
+      "E017",
+      "E018",
+      "E019",
+      "E020",
+      "E021",
+      "E022",
+      "E023",
+      "E024",
+      "E025",
+      "E026",
+      "E027",
+      "E028",
+      "E029",
+      "E030",
+      "E031",
+      "E032",
+      "E043",
+      "E044",
+      "E045",
+      "E046",
+      "E047",
+      "E048",
+      "E049",
+      "E050",
+      "E051",
+      "E052",
+      "E053",
+      "E054",
+      "E055"
+    ]
+  },
+  {
+    "path": "evaluation/runs/phase7-smoke.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "generated_at",
+      "candidate_pool",
+      "rerank_threshold",
+      "summary",
+      "rows"
+    ],
+    "generated_at": "2026-09-24T11:17:26+00:00",
+    "summary": {
+      "scored_cases": 4,
+      "weights": {
+        "total": 0.06,
+        "aspect": 0.4,
+        "event": 0.25,
+        "intent": 0.15,
+        "evidence": 0.12,
+        "seller": 0.08
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.575,
+        "mrr": 0.875,
+        "mean_selected_chunks": 6.75
+      },
+      "intent": {
+        "recall": 0.875,
+        "precision": 0.525,
+        "mrr": 0.875,
+        "mean_selected_chunks": 7.25
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.575,
+        "mrr": 0.8333,
+        "mean_selected_chunks": 7
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.575,
+        "mrr": 0.875,
+        "mean_selected_chunks": 6.75
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.575,
+        "mrr": 0.875,
+        "mean_selected_chunks": 7
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.575,
+        "mrr": 0.875,
+        "mean_selected_chunks": 7.25
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.575,
+        "mrr": 0.875,
+        "mean_selected_chunks": 7
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.575,
+        "mrr": 0.875,
+        "mean_selected_chunks": 7.25
+      },
+      "per_query": {
+        "intent": {
+          "improved": [],
+          "regressed": [
+            {
+              "eval_id": "E001",
+              "category": "authorized_factual",
+              "recall": [
+                1.0,
+                0.5
+              ],
+              "precision": [
+                0.4,
+                0.2
+              ],
+              "mrr": [
+                0.5,
+                0.5
+              ],
+              "gold_ranks": [
+                {
+                  "TKT-2026-0312-114": 2,
+                  "PRJ-S001-003": 5
+                },
+                {
+                  "TKT-2026-0312-114": 2,
+                  "PRJ-S001-003": null
+                }
+              ],
+              "plan": {
+                "intent": "root_cause",
+                "required_aspects": [
+                  "cause",
+                  "financial_impact"
+                ],
+                "evidence_types": [
+                  "account_overview"
+                ],
+                "identifiers": [],
+                "seller_scope": [
+                  "S001"
+                ]
+              },
+              "reason": "recall"
+            }
+          ],
+          "unchanged_count": 3
+        },
+        "aspects": {
+          "improved": [],
+          "regressed": [
+            {
+              "eval_id": "E001",
+              "category": "authorized_factual",
+              "recall": [
+                1.0,
+                1.0
+              ],
+              "precision": [
+                0.4,
+                0.4
+              ],
+              "mrr": [
+                0.5,
+                0.3333
+              ],
+              "gold_ranks": [
+                {
+                  "TKT-2026-0312-114": 2,
+                  "PRJ-S001-003": 5
+                },
+                {
+                  "TKT-2026-0312-114": 3,
+                  "PRJ-S001-003": 5
+                }
+              ],
+              "plan": {
+                "intent": "root_cause",
+                "required_aspects": [
+                  "cause",
+                  "financial_impact"
+                ],
+                "evidence_types": [
+                  "account_overview"
+                ],
+                "identifiers": [],
+                "seller_scope": [
+                  "S001"
+                ]
+              },
+              "reason": "precision/mrr"
+            }
+          ],
+          "unchanged_count": 3
+        },
+        "event": {
+          "improved": [],
+          "regressed": [],
+          "unchanged_count": 4
+        },
+        "evidence": {
+          "improved": [],
+          "regressed": [],
+          "unchanged_count": 4
+        },
+        "seller": {
+          "improved": [],
+          "regressed": [],
+          "unchanged_count": 4
+        },
+        "combined": {
+          "improved": [],
+          "regressed": [],
+          "unchanged_count": 4
+        },
+        "combined_hints": {
+          "improved": [],
+          "regressed": [],
+          "unchanged_count": 4
+        }
+      },
+      "recall_regressions": {
+        "intent": [
+          "E001"
+        ],
+        "aspects": [],
+        "event": [],
+        "evidence": [],
+        "seller": [],
+        "combined": [],
+        "combined_hints": []
+      },
+      "cost": {
+        "jina_calls_this_run": 8,
+        "jina_calls_per_case_in_production": 1,
+        "mean_jina_latency_s": 1.244,
+        "max_query_chars": {
+          "plain": 129,
+          "hinted": 174
+        },
+        "mean_hint_added_chars": 46
+      }
+    },
+    "schema_version": 1
+  },
+  {
+    "path": "evaluation/runs/phase8-eval-dev.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "generated_at",
+      "split",
+      "split_case_ids",
+      "min_marginal_utility",
+      "weights",
+      "summary",
+      "rows"
+    ],
+    "generated_at": "2026-09-25T03:08:48+00:00",
+    "summary": {
+      "scored_cases": 23,
+      "phase7": {
+        "recall": 0.9493,
+        "precision": 0.4,
+        "mrr": 0.8928,
+        "precision_efficiency": 0.9493,
+        "mean_documents": 4.3043,
+        "mean_chunks": 7.8696,
+        "aspect_coverage": 1.0,
+        "redundancy": 0.1946
+      },
+      "aspect": {
+        "recall": 0.9493,
+        "precision": 0.4,
+        "mrr": 0.8928,
+        "precision_efficiency": 0.9493,
+        "mean_documents": 4.3043,
+        "mean_chunks": 7.8696,
+        "aspect_coverage": 1.0,
+        "redundancy": 0.1946
+      },
+      "evidence_type": {
+        "recall": 0.9493,
+        "precision": 0.4,
+        "mrr": 0.8928,
+        "precision_efficiency": 0.9493,
+        "mean_documents": 4.3043,
+        "mean_chunks": 7.8696,
+        "aspect_coverage": 1.0,
+        "redundancy": 0.1946
+      },
+      "redundancy": {
+        "recall": 0.9493,
+        "precision": 0.4,
+        "mrr": 0.8928,
+        "precision_efficiency": 0.9493,
+        "mean_documents": 4.3043,
+        "mean_chunks": 7.8696,
+        "aspect_coverage": 1.0,
+        "redundancy": 0.1936
+      },
+      "diversity": {
+        "recall": 0.9493,
+        "precision": 0.4,
+        "mrr": 0.8928,
+        "precision_efficiency": 0.9493,
+        "mean_documents": 4.3043,
+        "mean_chunks": 7.8696,
+        "aspect_coverage": 1.0,
+        "redundancy": 0.1936
+      },
+      "entity": {
+        "recall": 0.9493,
+        "precision": 0.4,
+        "mrr": 0.8928,
+        "precision_efficiency": 0.9493,
+        "mean_documents": 4.3043,
+        "mean_chunks": 7.8261,
+        "aspect_coverage": 1.0,
+        "redundancy": 0.1942
+      },
+      "combined": {
+        "recall": 0.9493,
+        "precision": 0.4,
+        "mrr": 0.8928,
+        "precision_efficiency": 0.9493,
+        "mean_documents": 4.3043,
+        "mean_chunks": 7.8261,
+        "aspect_coverage": 1.0,
+        "redundancy": 0.1932
+      },
+      "per_query": {
+        "aspect": {
+          "improved": [],
+          "regressed": [],
+          "unchanged_count": 23
+        },
+        "evidence_type": {
+          "improved": [],
+          "regressed": [],
+          "unchanged_count": 23
+        },
+        "redundancy": {
+          "improved": [],
+          "regressed": [],
+          "unchanged_count": 23
+        },
+        "diversity": {
+          "improved": [],
+          "regressed": [],
+          "unchanged_count": 23
+        },
+        "entity": {
+          "improved": [],
+          "regressed": [],
+          "unchanged_count": 23
+        },
+        "combined": {
+          "improved": [],
+          "regressed": [],
+          "unchanged_count": 23
+        }
+      },
+      "recall_regressions": {
+        "aspect": [],
+        "evidence_type": [],
+        "redundancy": [],
+        "diversity": [],
+        "entity": [],
+        "combined": []
+      }
+    },
+    "schema_version": 1
+  },
+  {
+    "path": "evaluation/runs/phase8-eval-holdout.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "generated_at",
+      "split",
+      "split_case_ids",
+      "min_marginal_utility",
+      "weights",
+      "summary",
+      "rows"
+    ],
+    "generated_at": "2026-09-25T03:10:15+00:00",
+    "summary": {
+      "scored_cases": 22,
+      "phase7": {
+        "recall": 1.0,
+        "precision": 0.4583,
+        "mrr": 0.9242,
+        "precision_efficiency": 1.0,
+        "mean_documents": 4.0455,
+        "mean_chunks": 7.7273,
+        "aspect_coverage": 1.0,
+        "redundancy": 0.1959
+      },
+      "aspect": {
+        "recall": 1.0,
+        "precision": 0.4583,
+        "mrr": 0.9242,
+        "precision_efficiency": 1.0,
+        "mean_documents": 4.0455,
+        "mean_chunks": 7.7273,
+        "aspect_coverage": 1.0,
+        "redundancy": 0.1959
+      },
+      "evidence_type": {
+        "recall": 1.0,
+        "precision": 0.4583,
+        "mrr": 0.9242,
+        "precision_efficiency": 1.0,
+        "mean_documents": 4.0455,
+        "mean_chunks": 7.7273,
+        "aspect_coverage": 1.0,
+        "redundancy": 0.1959
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 0.4583,
+        "mrr": 0.9242,
+        "precision_efficiency": 1.0,
+        "mean_documents": 4.0455,
+        "mean_chunks": 7.7727,
+        "aspect_coverage": 1.0,
+        "redundancy": 0.194
+      },
+      "diversity": {
+        "recall": 1.0,
+        "precision": 0.4583,
+        "mrr": 0.9242,
+        "precision_efficiency": 1.0,
+        "mean_documents": 4.0455,
+        "mean_chunks": 7.7727,
+        "aspect_coverage": 1.0,
+        "redundancy": 0.194
+      },
+      "entity": {
+        "recall": 1.0,
+        "precision": 0.4583,
+        "mrr": 0.9242,
+        "precision_efficiency": 1.0,
+        "mean_documents": 4.0455,
+        "mean_chunks": 7.7273,
+        "aspect_coverage": 1.0,
+        "redundancy": 0.1959
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.4583,
+        "mrr": 0.9242,
+        "precision_efficiency": 1.0,
+        "mean_documents": 4.0455,
+        "mean_chunks": 7.7727,
+        "aspect_coverage": 1.0,
+        "redundancy": 0.194
+      },
+      "per_query": {
+        "aspect": {
+          "improved": [],
+          "regressed": [],
+          "unchanged_count": 22
+        },
+        "evidence_type": {
+          "improved": [],
+          "regressed": [],
+          "unchanged_count": 22
+        },
+        "redundancy": {
+          "improved": [],
+          "regressed": [],
+          "unchanged_count": 22
+        },
+        "diversity": {
+          "improved": [],
+          "regressed": [],
+          "unchanged_count": 22
+        },
+        "entity": {
+          "improved": [],
+          "regressed": [],
+          "unchanged_count": 22
+        },
+        "combined": {
+          "improved": [],
+          "regressed": [],
+          "unchanged_count": 22
+        }
+      },
+      "recall_regressions": {
+        "aspect": [],
+        "evidence_type": [],
+        "redundancy": [],
+        "diversity": [],
+        "entity": [],
+        "combined": []
+      }
+    },
+    "schema_version": 1
+  },
+  {
+    "path": "evaluation/runs/phase8-security-all.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "generated_at",
+      "cases",
+      "chunks_rechecked",
+      "documents_rechecked",
+      "permission_engine_violations",
+      "forbidden_sources_selected",
+      "unauthorized_retrieval_rate",
+      "violations",
+      "forbidden_details",
+      "rows"
+    ],
+    "generated_at": "2026-09-25T03:16:57+00:00",
+    "schema_version": 1,
+    "cases": 45
+  },
+  {
+    "path": "evaluation/runs/phase8-split.json",
+    "kind": "dict",
+    "keys": [
+      "method",
+      "purpose",
+      "total_scored",
+      "dev_count",
+      "holdout_count",
+      "dev",
+      "holdout",
+      "dev_categories",
+      "holdout_categories"
+    ]
+  },
+  {
+    "path": "evaluation/runs/phase9-eval-all.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "generated_at",
+      "split",
+      "arms",
+      "tokenizer",
+      "summary",
+      "rows"
+    ],
+    "generated_at": "2026-09-25T11:46:09+00:00",
+    "summary": {
+      "scored_cases": 45,
+      "baseline": {
+        "recall": 0.9741,
+        "precision": 0.4285,
+        "mrr": 0.9081,
+        "mean_tokens": 3163.7111,
+        "mean_chars": 13843.4667,
+        "mean_context_docs": 4.1778,
+        "mean_placed_chunks": 5.9333,
+        "redundancy": 0.1475,
+        "aspect_coverage": 1.0
+      },
+      "final": {
+        "recall": 0.9741,
+        "precision": 0.4285,
+        "mrr": 0.9081,
+        "mean_tokens": 3160.6,
+        "mean_chars": 13805,
+        "mean_context_docs": 4.1778,
+        "mean_placed_chunks": 5.9333,
+        "redundancy": 0.1468,
+        "aspect_coverage": 1.0
+      },
+      "gold_documents_dropped": []
+    },
+    "schema_version": 1
+  },
+  {
+    "path": "evaluation/runs/phase9-eval-dev.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "generated_at",
+      "split",
+      "arms",
+      "tokenizer",
+      "summary",
+      "rows"
+    ],
+    "generated_at": "2026-09-25T11:54:17+00:00",
+    "summary": {
+      "scored_cases": 23,
+      "baseline": {
+        "recall": 0.9493,
+        "precision": 0.4,
+        "mrr": 0.8928,
+        "mean_tokens": 3189.4348,
+        "mean_chars": 13887.3913,
+        "mean_context_docs": 4.3043,
+        "mean_placed_chunks": 5.913,
+        "redundancy": 0.1456,
+        "aspect_coverage": 1.0
+      },
+      "grouped": {
+        "recall": 0.9493,
+        "precision": 0.4,
+        "mrr": 0.8928,
+        "mean_tokens": 3189.4348,
+        "mean_chars": 13887.3913,
+        "mean_context_docs": 4.3043,
+        "mean_placed_chunks": 5.913,
+        "redundancy": 0.1456,
+        "aspect_coverage": 1.0
+      },
+      "metadata_dedup": {
+        "recall": 0.9493,
+        "precision": 0.4,
+        "mrr": 0.8928,
+        "mean_tokens": 3189.4348,
+        "mean_chars": 13870.5217,
+        "mean_context_docs": 4.3043,
+        "mean_placed_chunks": 5.913,
+        "redundancy": 0.1456,
+        "aspect_coverage": 1.0
+      },
+      "ordering": {
+        "recall": 0.9493,
+        "precision": 0.4,
+        "mrr": 0.8928,
+        "mean_tokens": 3189.4348,
+        "mean_chars": 13870.5217,
+        "mean_context_docs": 4.3043,
+        "mean_placed_chunks": 5.913,
+        "redundancy": 0.1456,
+        "aspect_coverage": 1.0
+      },
+      "redundancy": {
+        "recall": 0.9493,
+        "precision": 0.4,
+        "mrr": 0.8928,
+        "mean_tokens": 3189.4348,
+        "mean_chars": 13870.5217,
+        "mean_context_docs": 4.3043,
+        "mean_placed_chunks": 5.913,
+        "redundancy": 0.1456,
+        "aspect_coverage": 1.0
+      },
+      "final": {
+        "recall": 0.9493,
+        "precision": 0.4,
+        "mrr": 0.8928,
+        "mean_tokens": 3180.2174,
+        "mean_chars": 13853.7826,
+        "mean_context_docs": 4.3043,
+        "mean_placed_chunks": 5.8696,
+        "redundancy": 0.1449,
+        "aspect_coverage": 1.0
+      },
+      "gold_documents_dropped": []
+    },
+    "schema_version": 1
+  },
+  {
+    "path": "evaluation/runs/phase9-eval-holdout.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "generated_at",
+      "split",
+      "arms",
+      "tokenizer",
+      "summary",
+      "rows"
+    ],
+    "generated_at": "2026-09-25T11:43:56+00:00",
+    "summary": {
+      "scored_cases": 22,
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4583,
+        "mrr": 0.9242,
+        "mean_tokens": 3136.8182,
+        "mean_chars": 13797.5455,
+        "mean_context_docs": 4.0455,
+        "mean_placed_chunks": 5.9545,
+        "redundancy": 0.1496,
+        "aspect_coverage": 1.0
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 0.4583,
+        "mrr": 0.9242,
+        "mean_tokens": 3136.8182,
+        "mean_chars": 13797.5455,
+        "mean_context_docs": 4.0455,
+        "mean_placed_chunks": 5.9545,
+        "redundancy": 0.1496,
+        "aspect_coverage": 1.0
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 0.4583,
+        "mrr": 0.9242,
+        "mean_tokens": 3136.8182,
+        "mean_chars": 13781.5455,
+        "mean_context_docs": 4.0455,
+        "mean_placed_chunks": 5.9545,
+        "redundancy": 0.1496,
+        "aspect_coverage": 1.0
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 0.4583,
+        "mrr": 0.9242,
+        "mean_tokens": 3136.8182,
+        "mean_chars": 13781.5455,
+        "mean_context_docs": 4.0455,
+        "mean_placed_chunks": 5.9545,
+        "redundancy": 0.1496,
+        "aspect_coverage": 1.0
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 0.4583,
+        "mrr": 0.9242,
+        "mean_tokens": 3136.8182,
+        "mean_chars": 13781.5455,
+        "mean_context_docs": 4.0455,
+        "mean_placed_chunks": 5.9545,
+        "redundancy": 0.1496,
+        "aspect_coverage": 1.0
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 0.4583,
+        "mrr": 0.9242,
+        "mean_tokens": 3140.0909,
+        "mean_chars": 13754,
+        "mean_context_docs": 4.0455,
+        "mean_placed_chunks": 6,
+        "redundancy": 0.1488,
+        "aspect_coverage": 1.0
+      },
+      "gold_documents_dropped": []
+    },
+    "schema_version": 1
+  },
+  {
+    "path": "evaluation/runs/phase9-security-all.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "generated_at",
+      "cases",
+      "placed_chunks_rechecked",
+      "subset_violations",
+      "permission_engine_violations",
+      "forbidden_sources_selected",
+      "unauthorized_retrieval_rate",
+      "violation_details"
+    ],
+    "generated_at": "2026-09-25T11:52:41+00:00",
+    "schema_version": 1,
+    "cases": 45
+  },
+  {
+    "path": "evaluation/runs/query-understanding-eval.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "generated_at",
+      "dataset_version",
+      "summary",
+      "records"
+    ],
+    "generated_at": "2026-09-23T16:05:03+00:00",
+    "summary": {
+      "total_queries": 60,
+      "jev_ok": 60,
+      "jev_fallback": 0,
+      "jev_disabled": 0,
+      "avg_jev_latency_ms": 1158.3,
+      "p95_jev_latency_ms": 1570,
+      "avg_confidence": 0.8032,
+      "identifier_recall": 1.0,
+      "identifier_queries": 3,
+      "identifier_overreach_queries": 0,
+      "seller_recall": 1.0,
+      "seller_queries": 36,
+      "intent_agreement": 1.0,
+      "intent_labelled_queries": 9,
+      "evidence_type_agreement": 0.8,
+      "evidence_labelled_queries": 45,
+      "multipart_jev_rate": 0.55,
+      "multipart_keyword_rate": 0.6167,
+      "multipart_jev_keyword_agreement": 0.8667,
+      "unauthorized_flagged_rate": 0.3333,
+      "unauthorized_labelled_queries": 15,
+      "complexity_distribution": {
+        "moderate": 21,
+        "simple": 28,
+        "complex": 11
+      }
+    },
+    "schema_version": 1
+  },
+  {
+    "path": "evaluation/runs/stage-eval-rework.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "generated_at",
+      "candidate_pool",
+      "phase5_plans_source",
+      "summary",
+      "rows"
+    ],
+    "generated_at": "2026-09-23T18:47:36+00:00",
+    "summary": {
+      "scored_cases": 45,
+      "baseline": {
+        "recall": 0.9926,
+        "precision": 0.1602,
+        "mrr": 0.8304,
+        "mean_pool_documents": 10.7556,
+        "mean_pool_chunks": 19.9556,
+        "mean_withheld": 1.3111,
+        "identifier_pool_chunks": 0
+      },
+      "plan": {
+        "recall": 0.9926,
+        "precision": 0.1523,
+        "mrr": 0.8304,
+        "mean_pool_documents": 11.3778,
+        "mean_pool_chunks": 19.9556,
+        "mean_withheld": 1.3111,
+        "identifier_pool_chunks": 0
+      },
+      "fallback": {
+        "recall": 0.9926,
+        "precision": 0.1595,
+        "mrr": 0.8304,
+        "mean_pool_documents": 10.8,
+        "mean_pool_chunks": 19.9556,
+        "mean_withheld": 1.3111,
+        "identifier_pool_chunks": 0
+      },
+      "aspect_only": {
+        "recall": 0.9926,
+        "precision": 0.1527,
+        "mrr": 0.8304,
+        "mean_pool_documents": 11.3556,
+        "mean_pool_chunks": 19.9556,
+        "mean_withheld": 1.3111,
+        "identifier_pool_chunks": 0
+      },
+      "date_only": {
+        "recall": 0.9926,
+        "precision": 0.1595,
+        "mrr": 0.8304,
+        "mean_pool_documents": 10.8,
+        "mean_pool_chunks": 19.9556,
+        "mean_withheld": 1.3111,
+        "identifier_pool_chunks": 0
+      },
+      "aspect_date": {
+        "recall": 0.9926,
+        "precision": 0.1523,
+        "mrr": 0.8304,
+        "mean_pool_documents": 11.3778,
+        "mean_pool_chunks": 19.9556,
+        "mean_withheld": 1.3111,
+        "identifier_pool_chunks": 0
+      },
+      "plan_recall_regressions": [],
+      "plan_recall_improvements": 0,
+      "ablation": {
+        "aspect_only": {
+          "recall": 0.9926,
+          "precision": 0.1527,
+          "mrr": 0.8304,
+          "mean_pool_documents": 11.3556,
+          "mean_pool_chunks": 19.9556,
+          "mean_withheld": 1.3111,
+          "identifier_pool_chunks": 0
+        },
+        "date_only": {
+          "recall": 0.9926,
+          "precision": 0.1595,
+          "mrr": 0.8304,
+          "mean_pool_documents": 10.8,
+          "mean_pool_chunks": 19.9556,
+          "mean_withheld": 1.3111,
+          "identifier_pool_chunks": 0
+        },
+        "aspect_date": {
+          "recall": 0.9926,
+          "precision": 0.1523,
+          "mrr": 0.8304,
+          "mean_pool_documents": 11.3778,
+          "mean_pool_chunks": 19.9556,
+          "mean_withheld": 1.3111,
+          "identifier_pool_chunks": 0
+        }
+      },
+      "ablation_recall_regressions": {
+        "aspect_only": [],
+        "date_only": [],
+        "aspect_date": []
+      }
+    },
+    "schema_version": 1
+  },
+  {
+    "path": "evaluation/runs/stage-eval-smoke.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "generated_at",
+      "candidate_pool",
+      "phase5_plans_source",
+      "summary",
+      "rows"
+    ],
+    "generated_at": "2026-09-23T17:56:22+00:00",
+    "summary": {
+      "scored_cases": 6,
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.1827,
+        "mrr": 0.7917,
+        "mean_pool_documents": 10.3333,
+        "mean_pool_chunks": 20,
+        "mean_withheld": 1,
+        "identifier_pool_chunks": 0
+      },
+      "plan": {
+        "recall": 1.0,
+        "precision": 0.1887,
+        "mrr": 0.6111,
+        "mean_pool_documents": 10.1667,
+        "mean_pool_chunks": 20,
+        "mean_withheld": 1,
+        "identifier_pool_chunks": 0
+      },
+      "fallback": {
+        "recall": 1.0,
+        "precision": 0.1827,
+        "mrr": 0.7222,
+        "mean_pool_documents": 10.3333,
+        "mean_pool_chunks": 20,
+        "mean_withheld": 1,
+        "identifier_pool_chunks": 0
+      },
+      "aspect_only": {
+        "recall": 1.0,
+        "precision": 0.1887,
+        "mrr": 0.6111,
+        "mean_pool_documents": 10.1667,
+        "mean_pool_chunks": 20,
+        "mean_withheld": 1,
+        "identifier_pool_chunks": 0
+      },
+      "date_only": {
+        "recall": 1.0,
+        "precision": 0.1827,
+        "mrr": 0.8056,
+        "mean_pool_documents": 10.3333,
+        "mean_pool_chunks": 20,
+        "mean_withheld": 1,
+        "identifier_pool_chunks": 0
+      },
+      "aspect_date": {
+        "recall": 1.0,
+        "precision": 0.1887,
+        "mrr": 0.6111,
+        "mean_pool_documents": 10.1667,
+        "mean_pool_chunks": 20,
+        "mean_withheld": 1,
+        "identifier_pool_chunks": 0
+      },
+      "plan_recall_regressions": [],
+      "plan_recall_improvements": 0,
+      "ablation": {
+        "aspect_only": {
+          "recall": 1.0,
+          "precision": 0.1887,
+          "mrr": 0.6111,
+          "mean_pool_documents": 10.1667,
+          "mean_pool_chunks": 20,
+          "mean_withheld": 1,
+          "identifier_pool_chunks": 0
+        },
+        "date_only": {
+          "recall": 1.0,
+          "precision": 0.1827,
+          "mrr": 0.8056,
+          "mean_pool_documents": 10.3333,
+          "mean_pool_chunks": 20,
+          "mean_withheld": 1,
+          "identifier_pool_chunks": 0
+        },
+        "aspect_date": {
+          "recall": 1.0,
+          "precision": 0.1887,
+          "mrr": 0.6111,
+          "mean_pool_documents": 10.1667,
+          "mean_pool_chunks": 20,
+          "mean_withheld": 1,
+          "identifier_pool_chunks": 0
+        }
+      },
+      "ablation_recall_regressions": {
+        "aspect_only": [],
+        "date_only": [],
+        "aspect_date": []
+      }
+    },
+    "schema_version": 1
+  },
+  {
+    "path": "evaluation/runs/stage-eval.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "generated_at",
+      "candidate_pool",
+      "phase5_plans_source",
+      "summary",
+      "rows"
+    ],
+    "generated_at": "2026-09-23T16:59:33+00:00",
+    "summary": {
+      "scored_cases": 45,
+      "baseline": {
+        "recall": 0.9926,
+        "precision": 0.1602,
+        "mrr": 0.8415,
+        "mean_pool_documents": 10.7556,
+        "mean_pool_chunks": 19.9556,
+        "mean_withheld": 1.2889,
+        "identifier_pool_chunks": 0
+      },
+      "plan": {
+        "recall": 0.9926,
+        "precision": 0.1602,
+        "mrr": 0.8415,
+        "mean_pool_documents": 10.7556,
+        "mean_pool_chunks": 19.9556,
+        "mean_withheld": 1.2889,
+        "identifier_pool_chunks": 0
+      },
+      "fallback": {
+        "recall": 0.9926,
+        "precision": 0.1602,
+        "mrr": 0.8415,
+        "mean_pool_documents": 10.7556,
+        "mean_pool_chunks": 19.9556,
+        "mean_withheld": 1.2889,
+        "identifier_pool_chunks": 0
+      },
+      "plan_recall_regressions": [],
+      "plan_recall_improvements": 0
+    },
+    "schema_version": 1
+  },
+  {
+    "path": "evaluation/runs/targeted-identifier-eval.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "generated_at",
+      "candidate_pool",
+      "summary",
+      "rows"
+    ],
+    "generated_at": "2026-09-23T18:26:32+00:00",
+    "summary": {
+      "cases": 57,
+      "baseline": {
+        "in_pool_rate": 100.0,
+        "mean_first_chunk_rank": 1.912,
+        "mean_chunks_of_doc": 1.596
+      },
+      "plan": {
+        "in_pool_rate": 100.0,
+        "mean_first_chunk_rank": 1.105,
+        "mean_chunks_of_doc": 1.596
+      },
+      "gains": {
+        "rescued": 0,
+        "lost": 0,
+        "rank_improved": 14
+      },
+      "negative_controls": {
+        "checked": 51,
+        "leaks": 0
+      }
+    },
+    "schema_version": 1
+  },
+  {
+    "path": "evaluation/runs/targeted-identifier-smoke.json",
+    "kind": "dict",
+    "keys": [
+      "schema_version",
+      "generated_at",
+      "candidate_pool",
+      "summary",
+      "rows"
+    ],
+    "generated_at": "2026-09-23T18:23:41+00:00",
+    "summary": {
+      "cases": 8,
+      "baseline": {
+        "in_pool_rate": 100.0,
+        "mean_first_chunk_rank": 4.125,
+        "mean_chunks_of_doc": 1.5
+      },
+      "plan": {
+        "in_pool_rate": 100.0,
+        "mean_first_chunk_rank": 1.125,
+        "mean_chunks_of_doc": 1.5
+      },
+      "gains": {
+        "rescued": 0,
+        "lost": 0,
+        "rank_improved": 6
+      },
+      "negative_controls": {
+        "checked": 8,
+        "leaks": 0
+      }
+    },
+    "schema_version": 1
+  },
+  {
+    "path": "ingestion/reports/ingestion_summary.json",
+    "kind": "dict",
+    "keys": [
+      "input_dir",
+      "output_dir",
+      "discovery",
+      "documents",
+      "validation",
+      "chunks",
+      "chunking",
+      "integrity",
+      "duration_seconds",
+      "skipped_files"
+    ]
+  },
+  {
+    "path": "indexing/reports/indexing_report.json",
+    "kind": "dict",
+    "keys": [
+      "chunks_received",
+      "chunks_embedded",
+      "embedding_failures",
+      "failed_chunk_ids",
+      "qdrant_points_indexed",
+      "qdrant_points_failed",
+      "qdrant_errors",
+      "collection_name",
+      "embedding_model",
+      "vector_dimensionality",
+      "dense_config",
+      "sparse_config",
+      "hybrid_config",
+      "complete",
+      "elapsed_s"
+    ],
+    "complete": true
+  }
+]

@@ -17,12 +17,19 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from access_control.src.engine import PermissionEngine
 from access_control.src.policy import IdentityError, ScopeDeniedError
-from access_control.src.retrieval import authorized_retrieve
+from access_control.src.retrieval import MAX_TOP_K, authorized_retrieve
 from access_control.src.users import USERS, User, get_user
 from indexing.src.embeddings import EmbeddingError
 
-from . import (config, context, conversation, llm, prompts, reranker,
-               selection)
+from . import (config, context, context_packing, conversation, llm, prompts,
+               query_aware, reranker, selection)
+from .query_planner import QueryPlan, plan_query
+from . import query_planner as planner
+from .query_planner import (
+    extract_entities as query_planner_extract_entities,
+    extract_identifiers as query_planner_extract_identifiers,
+    extract_sellers as query_planner_extract_sellers,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -55,6 +62,59 @@ class AnswerUnavailableError(AnsweringError):
     client_message = "The answering service is temporarily unavailable."
 
 
+def _resolve_plan(query, request_id, provided: QueryPlan | None) -> QueryPlan | None:
+    """Use the orchestrator's plan when given, else plan and log once."""
+    if provided is not None:
+        return provided
+    return build_query_plan(query, request_id)
+
+
+def _effective_plan(plan: QueryPlan, turns, cfg) -> QueryPlan:
+    """Resolve plan signals against conversation context.
+
+    A follow-up like "how much of that was credited back?" carries no seller
+    and no identifier of its own; the referents live in prior turns. Signals
+    are only ever ADDED from history - never removed - and history is untrusted
+    data, so this affects ranking hints only, exactly like the existing
+    retrieval-query expansion.
+    """
+    if not turns:
+        return plan
+    combined_text = " ".join(
+        [t.content for t in turns if t.role == "user"][-2:] + [plan.original_query])
+    identifiers = query_planner_extract_identifiers(combined_text)
+    sellers = query_planner_extract_sellers(combined_text)
+    if identifiers == plan.identifiers and sellers == plan.seller_scope:
+        return plan
+    return replace(
+        plan,
+        identifiers=identifiers,
+        entities=query_planner_extract_entities(combined_text),
+        seller_scope=sellers,
+    )
+
+
+def build_query_plan(query: str, request_id: str) -> QueryPlan | None:
+    """Phase 5 entry point: understand the query before retrieval.
+
+    Kept outside `_prepare` so the retrieval pipeline is untouched: Phase 5 is
+    additive. JEV is a retrieval-hint producer only; authorization is decided
+    later by the PermissionEngine exactly as before. A JEV failure never
+    raises to the caller - plan_query falls back to deterministic signals.
+    """
+    if not isinstance(query, str) or not query.strip():
+        return None
+    try:
+        plan = planner.plan_query(query)
+    except Exception as exc:
+        logger.error("request=%s query planning failed unexpectedly: %s",
+                     request_id, type(exc).__name__)
+        plan = QueryPlan(original_query=query, intent="factual_lookup",
+                         fallback_used=True, jev_status="unavailable")
+    planner.log_plan(request_id, plan)
+    return plan
+
+
 @dataclass
 class AnswerResponse:
     request_id: str
@@ -71,6 +131,7 @@ class AnswerResponse:
     # Counts and score bounds only, never passage text: safe to return and the
     # fastest way to tell "nothing relevant existed" from "the selector cut it".
     selection: dict = field(default_factory=dict)
+    pool: dict = field(default_factory=dict)
     effective_sellers: list[str] = field(default_factory=list)
     latency_ms: int = 0
     model: str | None = None
@@ -98,6 +159,7 @@ class AnswerResponse:
                 "withheld": self.withheld,
                 "reranked": self.reranked,
                 "selection": self.selection,
+                "pool": self.pool,
                 "latency_ms": self.latency_ms,
                 "model": self.model,
             },
@@ -191,10 +253,13 @@ class _Prepared:
     started: float
     context: str = ""
     candidate_document_ids: list[str] = field(default_factory=list)
+    pool: dict = field(default_factory=dict)
 
 
 def _prepare(user_id, query, conversation_history, seller_filter, top_k,
-             request_id, cfg) -> tuple[_Prepared | None, AnswerResponse | None]:
+             request_id, cfg,
+             plan: QueryPlan | None = None
+             ) -> tuple[_Prepared | None, AnswerResponse | None]:
     """Run the whole permission-aware pipeline up to prompt assembly.
 
     Returns (prepared, None) when there is authorized context to answer from,
@@ -220,12 +285,56 @@ def _prepare(user_id, query, conversation_history, seller_filter, top_k,
 
     search_text = conversation.retrieval_query(turns, question, cfg)
 
+    plan = _resolve_plan(query, request_id, plan) if config.QUERY_AWARE_ENABLED \
+        else None
+    pool: dict = {}
+    augmenter = None
+    reorderer = None
+    # Resolved once and reused by both the retrieval signals (Phase 6) and the
+    # reranker (Phase 7), so the two stages can never disagree about what the
+    # query asked for, and only one JEV call is ever made per request.
+    plan_for_signals = None
+    if config.QUERY_AWARE_ENABLED and plan is not None:
+        plan_for_signals = _effective_plan(plan, turns, cfg)
+
+        def augmenter(candidates):
+            combined, added = query_aware.augment_fused(
+                candidates, plan_for_signals)
+            pool["identifier_candidates_added"] = added
+            return combined
+
+        def reorderer(allowed):
+            ordered, signals = query_aware.boosted_order(allowed,
+                                                         plan_for_signals)
+            # The real pool cut in authorized_retrieve is min(top_k, MAX_TOP_K),
+            # so promotion (and the diagnostics below) must use the same bound.
+            # Passing the raw candidate_pool would insert promoted chunks beyond
+            # the true cut whenever candidate_pool > MAX_TOP_K, silently wasting
+            # the promotion. No behaviour change at the default (pool == 20).
+            pool_cut = min(cfg.candidate_pool, MAX_TOP_K)
+            ordered, promoted = query_aware.promote_evidence(
+                ordered, plan_for_signals, pool_size=pool_cut)
+            pool["boost_applied"] = any(s.matched for s in signals)
+            pool["signals"] = [s.to_dict() for s in signals]
+            pool["promoted_chunks"] = promoted
+            pool["promoted_documents"] = len(
+                {chunk.document_id for chunk in ordered[:pool_cut]}
+                - {chunk.document_id for chunk in allowed[:pool_cut]})
+            methods: dict[str, int] = {}
+            for chunk in allowed:
+                method = getattr(chunk, "retrieval_method", "unknown")
+                methods[method] = methods.get(method, 0) + 1
+            pool["methods"] = methods
+            return ordered
+
     try:
         access = authorized_retrieve(
             user, search_text,
             top_k=cfg.candidate_pool,
             request_id=request_id,
             requested_sellers=seller_filter,
+            candidate_augmenter=augmenter,
+            candidate_reorderer=reorderer,
         )
     except ScopeDeniedError:
         return None, _refusal(request_id, user, question, started, [])
@@ -242,6 +351,8 @@ def _prepare(user_id, query, conversation_history, seller_filter, top_k,
     stats = {"candidates": len(authorized_chunks) + access.withheld_count,
              "authorized": len(authorized_chunks),
              "withheld": access.withheld_count}
+    if pool:
+        stats["pool"] = pool
     # Ranked document ids of every chunk that survived authorization, before
     # reranking and the context budget. Phase 7 uses this to tell an
     # unauthorized *retrieval* apart from an unauthorized *answer*.
@@ -258,15 +369,30 @@ def _prepare(user_id, query, conversation_history, seller_filter, top_k,
         return None, _refusal(request_id, user, question, started, sellers,
                               **stats)
 
+    # Phase 7: the plan reaches Jina as a compact statement of the information
+    # need plus a bounded compatibility term on each score. Passing it here is
+    # safe by construction - `authorized_chunks` has already cleared the
+    # PermissionEngine, and the reranker never sees identity or scope.
     outcome = reranker.rerank(search_text, authorized_chunks,
-                              threshold=cfg.rerank_threshold)
+                              threshold=cfg.rerank_threshold,
+                              plan=plan_for_signals)
     # Breadth and depth are decided together, on documents rather than on a
     # flat chunk list. `top_k` bounds documents, matching what `sources`
-    # reports and what Phase 7 measures.
+    # reports and what Phase 7 measures. Phase 8 additionally weighs what each
+    # document ADDS against what is already selected; passing the plan is what
+    # enables that, and omitting it falls back to the score-ordered path.
     selected, selection_stats = selection.select(
         outcome.items, replace(cfg, max_documents=min(top_k, cfg.max_documents)),
-        outcome)
+        outcome, plan=plan_for_signals)
     stats["selection"] = selection_stats.to_dict()
+    # Phase 7 observability, recorded alongside the selection trace rather than
+    # inside it so the selection algorithm itself stays untouched.
+    if outcome.plan_applied:
+        stats["selection"]["plan_aware"] = True
+        stats["selection"]["plan_mean_adjustment"] = round(
+            outcome.mean_adjustment, 5)
+        stats["selection"]["plan_max_adjustment"] = round(
+            outcome.max_adjustment, 5)
 
     # Final gate. Reranking reorders authorized material and must never be able
     # to reintroduce anything unauthorized.
@@ -286,7 +412,13 @@ def _prepare(user_id, query, conversation_history, seller_filter, top_k,
                               candidate_document_ids=candidate_ids,
                               reranked=outcome.applied, **stats)
 
-    context_block, sources = context.build(verified, cfg)
+    # Phase 9: pack the authorized, selected evidence into the final context.
+    # Same budget as before; only how it is spent changes (document breadth
+    # first so recall is untouched, then aspect-complementary depth before
+    # redundant depth). Falls back to the frozen `context.build` when Phase 9
+    # is disabled or no plan is available, so packing can never cost recall.
+    context_block, sources = context_packing.build_packed(
+        verified, cfg, plan_for_signals)
     if not context_block.strip():
         return None, _refusal(request_id, user, question, started, sellers,
                               candidate_document_ids=candidate_ids,
@@ -300,7 +432,7 @@ def _prepare(user_id, query, conversation_history, seller_filter, top_k,
     )
     return _Prepared(request_id, user, question, messages, sources, sellers,
                      stats, outcome.applied, started, context_block,
-                     candidate_ids), None
+                     candidate_ids, pool), None
 
 
 def _finalize(prepared: _Prepared, answer_text: str,

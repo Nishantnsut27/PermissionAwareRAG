@@ -1,0 +1,3909 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-23T16:59:33+00:00",
+  "candidate_pool": 20,
+  "phase5_plans_source": "C:\\Users\\Nishant Raj\\OneDrive\\Desktop\\Projects\\fde\\evaluation\\runs\\query-understanding-eval.json",
+  "summary": {
+    "scored_cases": 45,
+    "baseline": {
+      "recall": 0.9926,
+      "precision": 0.1602,
+      "mrr": 0.8415,
+      "mean_pool_documents": 10.7556,
+      "mean_pool_chunks": 19.9556,
+      "mean_withheld": 1.2889,
+      "identifier_pool_chunks": 0
+    },
+    "plan": {
+      "recall": 0.9926,
+      "precision": 0.1602,
+      "mrr": 0.8415,
+      "mean_pool_documents": 10.7556,
+      "mean_pool_chunks": 19.9556,
+      "mean_withheld": 1.2889,
+      "identifier_pool_chunks": 0
+    },
+    "fallback": {
+      "recall": 0.9926,
+      "precision": 0.1602,
+      "mrr": 0.8415,
+      "mean_pool_documents": 10.7556,
+      "mean_pool_chunks": 19.9556,
+      "mean_withheld": 1.2889,
+      "identifier_pool_chunks": 0
+    },
+    "plan_recall_regressions": [],
+    "plan_recall_improvements": 0
+  },
+  "rows": [
+    {
+      "eval_id": "E001",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "TKT-2026-0312-114",
+        "PRJ-S001-003"
+      ],
+      "baseline": {
+        "documents": [
+          "S001-ACC-001",
+          "PRJ-S001-001",
+          "CALL-2026-0313-018",
+          "TKT-2026-0312-114",
+          "PRJ-S001-004",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "PRJ-S001-002",
+          "PRJ-S001-003",
+          "TKT-2026-0812-308",
+          "ORG-001",
+          "PRJ-S003-003"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 0.25
+      },
+      "plan": {
+        "documents": [
+          "S001-ACC-001",
+          "PRJ-S001-001",
+          "CALL-2026-0313-018",
+          "TKT-2026-0312-114",
+          "PRJ-S001-004",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "PRJ-S001-002",
+          "PRJ-S001-003",
+          "TKT-2026-0812-308",
+          "ORG-001",
+          "PRJ-S003-003"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 0.25
+      },
+      "fallback": {
+        "documents": [
+          "S001-ACC-001",
+          "PRJ-S001-001",
+          "CALL-2026-0313-018",
+          "TKT-2026-0312-114",
+          "PRJ-S001-004",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "PRJ-S001-002",
+          "PRJ-S001-003",
+          "TKT-2026-0812-308",
+          "ORG-001",
+          "PRJ-S003-003"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 0.25
+      }
+    },
+    {
+      "eval_id": "E002",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0519",
+        "TKT-2026-0519-207"
+      ],
+      "baseline": {
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "INC-2026-0716",
+          "TKT-2026-0602-217",
+          "CALL-2026-0717-052",
+          "TKT-2026-0716-268",
+          "ORG-001"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.2222222222222222,
+        "mrr": 0.5
+      },
+      "plan": {
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "INC-2026-0716",
+          "TKT-2026-0602-217",
+          "CALL-2026-0717-052",
+          "TKT-2026-0716-268",
+          "ORG-001"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.2222222222222222,
+        "mrr": 0.5
+      },
+      "fallback": {
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "INC-2026-0716",
+          "TKT-2026-0602-217",
+          "CALL-2026-0717-052",
+          "TKT-2026-0716-268",
+          "ORG-001"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.2222222222222222,
+        "mrr": 0.5
+      }
+    },
+    {
+      "eval_id": "E003",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0812",
+        "TKT-2026-0812-308"
+      ],
+      "baseline": {
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308",
+          "INC-2026-0519",
+          "INC-2026-0716",
+          "INC-2026-0312",
+          "TKT-2026-0716-268",
+          "TKT-2026-0602-217",
+          "PRJ-S002-001"
+        ],
+        "pool_size": 20,
+        "authorized": 31,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308",
+          "INC-2026-0519",
+          "INC-2026-0716",
+          "INC-2026-0312",
+          "TKT-2026-0716-268",
+          "TKT-2026-0602-217",
+          "PRJ-S002-001"
+        ],
+        "pool_size": 20,
+        "authorized": 31,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308",
+          "INC-2026-0519",
+          "INC-2026-0716",
+          "INC-2026-0312",
+          "TKT-2026-0716-268",
+          "TKT-2026-0602-217",
+          "PRJ-S002-001"
+        ],
+        "pool_size": 20,
+        "authorized": 31,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E004",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "OPS-RB-004"
+      ],
+      "baseline": {
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002",
+          "OPS-RB-002",
+          "POL-SEC-001",
+          "POL-SEC-002",
+          "OPS-RB-005",
+          "OPS-RB-003",
+          "OPS-RB-001",
+          "PRJ-S004-002",
+          "POL-BIZ-004",
+          "PRJ-S004-003"
+        ],
+        "pool_size": 20,
+        "authorized": 24,
+        "withheld": 6,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.09090909090909091,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002",
+          "OPS-RB-002",
+          "POL-SEC-001",
+          "POL-SEC-002",
+          "OPS-RB-005",
+          "OPS-RB-003",
+          "OPS-RB-001",
+          "PRJ-S004-002",
+          "POL-BIZ-004",
+          "PRJ-S004-003"
+        ],
+        "pool_size": 20,
+        "authorized": 24,
+        "withheld": 6,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.09090909090909091,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002",
+          "OPS-RB-002",
+          "POL-SEC-001",
+          "POL-SEC-002",
+          "OPS-RB-005",
+          "OPS-RB-003",
+          "OPS-RB-001",
+          "PRJ-S004-002",
+          "POL-BIZ-004",
+          "PRJ-S004-003"
+        ],
+        "pool_size": 20,
+        "authorized": 24,
+        "withheld": 6,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.09090909090909091,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E005",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "PRJ-S001-004",
+        "TKT-2026-0224-091"
+      ],
+      "baseline": {
+        "documents": [
+          "PRJ-S001-004",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "S001-ACC-001",
+          "POL-FIN-002",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "TKT-2026-0312-114",
+          "PRJ-S001-003",
+          "CALL-2026-0619-047",
+          "PRJ-S001-002",
+          "CALL-2026-0904-071"
+        ],
+        "pool_size": 20,
+        "authorized": 26,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "PRJ-S001-004",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "S001-ACC-001",
+          "POL-FIN-002",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "TKT-2026-0312-114",
+          "PRJ-S001-003",
+          "CALL-2026-0619-047",
+          "PRJ-S001-002",
+          "CALL-2026-0904-071"
+        ],
+        "pool_size": 20,
+        "authorized": 26,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "PRJ-S001-004",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "S001-ACC-001",
+          "POL-FIN-002",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "TKT-2026-0312-114",
+          "PRJ-S001-003",
+          "CALL-2026-0619-047",
+          "PRJ-S001-002",
+          "CALL-2026-0904-071"
+        ],
+        "pool_size": 20,
+        "authorized": 26,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E006",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0716",
+        "TKT-2026-0716-268"
+      ],
+      "baseline": {
+        "documents": [
+          "TKT-2026-0716-268",
+          "INC-2026-0716",
+          "CALL-2026-0717-052",
+          "TKT-2026-0602-217",
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "TKT-2026-0812-308",
+          "POL-SEC-001",
+          "CALL-2026-0225-013"
+        ],
+        "pool_size": 20,
+        "authorized": 29,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "TKT-2026-0716-268",
+          "INC-2026-0716",
+          "CALL-2026-0717-052",
+          "TKT-2026-0602-217",
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "TKT-2026-0812-308",
+          "POL-SEC-001",
+          "CALL-2026-0225-013"
+        ],
+        "pool_size": 20,
+        "authorized": 29,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "TKT-2026-0716-268",
+          "INC-2026-0716",
+          "CALL-2026-0717-052",
+          "TKT-2026-0602-217",
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "TKT-2026-0812-308",
+          "POL-SEC-001",
+          "CALL-2026-0225-013"
+        ],
+        "pool_size": 20,
+        "authorized": 29,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E007",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0519",
+        "PRJ-S002-003"
+      ],
+      "baseline": {
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "TKT-2026-0602-217",
+          "PRJ-S002-001",
+          "PRJ-S002-002",
+          "INC-2026-0716",
+          "POL-SEC-001",
+          "TKT-2026-0716-268"
+        ],
+        "pool_size": 20,
+        "authorized": 25,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.2222222222222222,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "TKT-2026-0602-217",
+          "PRJ-S002-001",
+          "PRJ-S002-002",
+          "INC-2026-0716",
+          "POL-SEC-001",
+          "TKT-2026-0716-268"
+        ],
+        "pool_size": 20,
+        "authorized": 25,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.2222222222222222,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "TKT-2026-0602-217",
+          "PRJ-S002-001",
+          "PRJ-S002-002",
+          "INC-2026-0716",
+          "POL-SEC-001",
+          "TKT-2026-0716-268"
+        ],
+        "pool_size": 20,
+        "authorized": 25,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.2222222222222222,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E008",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "PRJ-S004-003",
+        "PRJ-S004-002"
+      ],
+      "baseline": {
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006",
+          "INC-2026-0519",
+          "INC-2026-0716",
+          "POL-IT-002",
+          "ORG-001",
+          "PRJ-S002-003"
+        ],
+        "pool_size": 20,
+        "authorized": 25,
+        "withheld": 4,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.2222222222222222,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006",
+          "INC-2026-0519",
+          "INC-2026-0716",
+          "POL-IT-002",
+          "ORG-001",
+          "PRJ-S002-003"
+        ],
+        "pool_size": 20,
+        "authorized": 25,
+        "withheld": 4,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.2222222222222222,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006",
+          "INC-2026-0519",
+          "INC-2026-0716",
+          "POL-IT-002",
+          "ORG-001",
+          "PRJ-S002-003"
+        ],
+        "pool_size": 20,
+        "authorized": 25,
+        "withheld": 4,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.2222222222222222,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E009",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "PRJ-S003-003",
+        "S003-ACC-001"
+      ],
+      "baseline": {
+        "documents": [
+          "S003-ACC-001",
+          "PRJ-S003-003",
+          "PRJ-S003-001",
+          "CALL-2026-0116-004",
+          "TKT-2026-0115-054",
+          "TKT-2026-0618-233",
+          "CALL-2026-0619-047",
+          "ORG-001",
+          "TKT-2026-0903-336",
+          "S001-ACC-001",
+          "PRJ-S001-001"
+        ],
+        "pool_size": 20,
+        "authorized": 24,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.18181818181818182,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "S003-ACC-001",
+          "PRJ-S003-003",
+          "PRJ-S003-001",
+          "CALL-2026-0116-004",
+          "TKT-2026-0115-054",
+          "TKT-2026-0618-233",
+          "CALL-2026-0619-047",
+          "ORG-001",
+          "TKT-2026-0903-336",
+          "S001-ACC-001",
+          "PRJ-S001-001"
+        ],
+        "pool_size": 20,
+        "authorized": 24,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.18181818181818182,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "S003-ACC-001",
+          "PRJ-S003-003",
+          "PRJ-S003-001",
+          "CALL-2026-0116-004",
+          "TKT-2026-0115-054",
+          "TKT-2026-0618-233",
+          "CALL-2026-0619-047",
+          "ORG-001",
+          "TKT-2026-0903-336",
+          "S001-ACC-001",
+          "PRJ-S001-001"
+        ],
+        "pool_size": 20,
+        "authorized": 24,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.18181818181818182,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E010",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0421",
+        "TKT-2026-0421-162"
+      ],
+      "baseline": {
+        "documents": [
+          "INC-2026-0421",
+          "POL-SEC-001",
+          "scenario_overview",
+          "TKT-2026-0421-162",
+          "OPS-RB-003",
+          "POL-BIZ-004",
+          "CALL-2026-0422-029",
+          "INC-2026-0519",
+          "S002-ACC-001"
+        ],
+        "pool_size": 20,
+        "authorized": 31,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.2222222222222222,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "INC-2026-0421",
+          "POL-SEC-001",
+          "scenario_overview",
+          "TKT-2026-0421-162",
+          "OPS-RB-003",
+          "POL-BIZ-004",
+          "CALL-2026-0422-029",
+          "INC-2026-0519",
+          "S002-ACC-001"
+        ],
+        "pool_size": 20,
+        "authorized": 31,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.2222222222222222,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "INC-2026-0421",
+          "POL-SEC-001",
+          "scenario_overview",
+          "TKT-2026-0421-162",
+          "OPS-RB-003",
+          "POL-BIZ-004",
+          "CALL-2026-0422-029",
+          "INC-2026-0519",
+          "S002-ACC-001"
+        ],
+        "pool_size": 20,
+        "authorized": 31,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.2222222222222222,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E011",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "TKT-2026-0602-217"
+      ],
+      "baseline": {
+        "documents": [
+          "PRJ-S002-003",
+          "TKT-2026-0602-217",
+          "TKT-2026-0519-207",
+          "INC-2026-0519",
+          "INC-2026-0716",
+          "CALL-2026-0520-041",
+          "TKT-2026-0716-268",
+          "CALL-2026-0717-052",
+          "POL-FIN-002"
+        ],
+        "pool_size": 20,
+        "authorized": 25,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 19,
+          "dense": 1
+        },
+        "recall": 1.0,
+        "precision": 0.1111111111111111,
+        "mrr": 0.5
+      },
+      "plan": {
+        "documents": [
+          "PRJ-S002-003",
+          "TKT-2026-0602-217",
+          "TKT-2026-0519-207",
+          "INC-2026-0519",
+          "INC-2026-0716",
+          "CALL-2026-0520-041",
+          "TKT-2026-0716-268",
+          "CALL-2026-0717-052",
+          "POL-FIN-002"
+        ],
+        "pool_size": 20,
+        "authorized": 25,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 19,
+          "dense": 1
+        },
+        "recall": 1.0,
+        "precision": 0.1111111111111111,
+        "mrr": 0.5
+      },
+      "fallback": {
+        "documents": [
+          "PRJ-S002-003",
+          "TKT-2026-0602-217",
+          "TKT-2026-0519-207",
+          "INC-2026-0519",
+          "INC-2026-0716",
+          "CALL-2026-0520-041",
+          "TKT-2026-0716-268",
+          "CALL-2026-0717-052",
+          "POL-FIN-002"
+        ],
+        "pool_size": 20,
+        "authorized": 25,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 19,
+          "dense": 1
+        },
+        "recall": 1.0,
+        "precision": 0.1111111111111111,
+        "mrr": 0.5
+      }
+    },
+    {
+      "eval_id": "E012",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0903",
+        "TKT-2026-0903-336"
+      ],
+      "baseline": {
+        "documents": [
+          "CALL-2026-0904-071",
+          "TKT-2026-0903-336",
+          "INC-2026-0903",
+          "PRJ-S003-002",
+          "S003-ACC-001",
+          "PRJ-S003-001",
+          "CALL-2026-0116-004",
+          "CALL-2026-0619-047",
+          "INC-2026-0312",
+          "scenario_overview",
+          "INC-2026-0618"
+        ],
+        "pool_size": 20,
+        "authorized": 28,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.18181818181818182,
+        "mrr": 0.5
+      },
+      "plan": {
+        "documents": [
+          "CALL-2026-0904-071",
+          "TKT-2026-0903-336",
+          "INC-2026-0903",
+          "PRJ-S003-002",
+          "S003-ACC-001",
+          "PRJ-S003-001",
+          "CALL-2026-0116-004",
+          "CALL-2026-0619-047",
+          "INC-2026-0312",
+          "scenario_overview",
+          "INC-2026-0618"
+        ],
+        "pool_size": 20,
+        "authorized": 28,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.18181818181818182,
+        "mrr": 0.5
+      },
+      "fallback": {
+        "documents": [
+          "CALL-2026-0904-071",
+          "TKT-2026-0903-336",
+          "INC-2026-0903",
+          "PRJ-S003-002",
+          "S003-ACC-001",
+          "PRJ-S003-001",
+          "CALL-2026-0116-004",
+          "CALL-2026-0619-047",
+          "INC-2026-0312",
+          "scenario_overview",
+          "INC-2026-0618"
+        ],
+        "pool_size": 20,
+        "authorized": 28,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.18181818181818182,
+        "mrr": 0.5
+      }
+    },
+    {
+      "eval_id": "E013",
+      "category": "multi_document",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0312",
+        "TKT-2026-0312-114",
+        "PRJ-S001-003"
+      ],
+      "baseline": {
+        "documents": [
+          "PRJ-S001-003",
+          "TKT-2026-0312-114",
+          "INC-2026-0312",
+          "PRJ-S002-003",
+          "PRJ-S001-001",
+          "INC-2026-0812",
+          "INC-2026-0716",
+          "TKT-2026-0224-091",
+          "TKT-2026-0602-217",
+          "PRJ-S001-002",
+          "ORG-001",
+          "INC-2026-0519",
+          "TKT-2026-0519-207"
+        ],
+        "pool_size": 20,
+        "authorized": 29,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.23076923076923078,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "PRJ-S001-003",
+          "TKT-2026-0312-114",
+          "INC-2026-0312",
+          "PRJ-S002-003",
+          "PRJ-S001-001",
+          "INC-2026-0812",
+          "INC-2026-0716",
+          "TKT-2026-0224-091",
+          "TKT-2026-0602-217",
+          "PRJ-S001-002",
+          "ORG-001",
+          "INC-2026-0519",
+          "TKT-2026-0519-207"
+        ],
+        "pool_size": 20,
+        "authorized": 29,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.23076923076923078,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "PRJ-S001-003",
+          "TKT-2026-0312-114",
+          "INC-2026-0312",
+          "PRJ-S002-003",
+          "PRJ-S001-001",
+          "INC-2026-0812",
+          "INC-2026-0716",
+          "TKT-2026-0224-091",
+          "TKT-2026-0602-217",
+          "PRJ-S001-002",
+          "ORG-001",
+          "INC-2026-0519",
+          "TKT-2026-0519-207"
+        ],
+        "pool_size": 20,
+        "authorized": 29,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.23076923076923078,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E014",
+      "category": "multi_document",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0716",
+        "POL-BIZ-004"
+      ],
+      "baseline": {
+        "documents": [
+          "POL-BIZ-004",
+          "INC-2026-0716",
+          "CALL-2026-0717-052",
+          "TKT-2026-0716-268",
+          "PRJ-S002-003",
+          "TKT-2026-0224-091",
+          "CALL-2026-0520-041",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "TKT-2026-0812-308",
+          "TKT-2026-0312-114",
+          "INC-2026-0812"
+        ],
+        "pool_size": 20,
+        "authorized": 33,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 13,
+          "dense": 7
+        },
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "POL-BIZ-004",
+          "INC-2026-0716",
+          "CALL-2026-0717-052",
+          "TKT-2026-0716-268",
+          "PRJ-S002-003",
+          "TKT-2026-0224-091",
+          "CALL-2026-0520-041",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "TKT-2026-0812-308",
+          "TKT-2026-0312-114",
+          "INC-2026-0812"
+        ],
+        "pool_size": 20,
+        "authorized": 33,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 13,
+          "dense": 7
+        },
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "POL-BIZ-004",
+          "INC-2026-0716",
+          "CALL-2026-0717-052",
+          "TKT-2026-0716-268",
+          "PRJ-S002-003",
+          "TKT-2026-0224-091",
+          "CALL-2026-0520-041",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "TKT-2026-0812-308",
+          "TKT-2026-0312-114",
+          "INC-2026-0812"
+        ],
+        "pool_size": 20,
+        "authorized": 33,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 13,
+          "dense": 7
+        },
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E015",
+      "category": "multi_document",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "POL-OPS-006",
+        "PRJ-S004-003"
+      ],
+      "baseline": {
+        "documents": [
+          "PRJ-S004-003",
+          "POL-OPS-006",
+          "PRJ-S004-002",
+          "OPS-RB-003",
+          "INC-2026-0805",
+          "POL-BIZ-004",
+          "ORG-001",
+          "INC-2026-0519"
+        ],
+        "pool_size": 20,
+        "authorized": 20,
+        "withheld": 7,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "PRJ-S004-003",
+          "POL-OPS-006",
+          "PRJ-S004-002",
+          "OPS-RB-003",
+          "INC-2026-0805",
+          "POL-BIZ-004",
+          "ORG-001",
+          "INC-2026-0519"
+        ],
+        "pool_size": 20,
+        "authorized": 20,
+        "withheld": 7,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "PRJ-S004-003",
+          "POL-OPS-006",
+          "PRJ-S004-002",
+          "OPS-RB-003",
+          "INC-2026-0805",
+          "POL-BIZ-004",
+          "ORG-001",
+          "INC-2026-0519"
+        ],
+        "pool_size": 20,
+        "authorized": 20,
+        "withheld": 7,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E016",
+      "category": "multi_document",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "PRJ-S003-003",
+        "POL-BIZ-003"
+      ],
+      "baseline": {
+        "documents": [
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "S003-ACC-001",
+          "PRJ-S003-001",
+          "CALL-2026-0116-004",
+          "POL-BIZ-003",
+          "ORG-001",
+          "S001-ACC-001",
+          "POL-BIZ-004",
+          "TKT-2026-0618-233"
+        ],
+        "pool_size": 20,
+        "authorized": 23,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 18,
+          "dense": 2
+        },
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "S003-ACC-001",
+          "PRJ-S003-001",
+          "CALL-2026-0116-004",
+          "POL-BIZ-003",
+          "ORG-001",
+          "S001-ACC-001",
+          "POL-BIZ-004",
+          "TKT-2026-0618-233"
+        ],
+        "pool_size": 20,
+        "authorized": 23,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 18,
+          "dense": 2
+        },
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "S003-ACC-001",
+          "PRJ-S003-001",
+          "CALL-2026-0116-004",
+          "POL-BIZ-003",
+          "ORG-001",
+          "S001-ACC-001",
+          "POL-BIZ-004",
+          "TKT-2026-0618-233"
+        ],
+        "pool_size": 20,
+        "authorized": 23,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 18,
+          "dense": 2
+        },
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E017",
+      "category": "multi_document",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0519",
+        "PRJ-S002-003"
+      ],
+      "baseline": {
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "PRJ-S001-003",
+          "PRJ-S002-001",
+          "PRJ-S001-002",
+          "TKT-2026-0224-091",
+          "POL-BIZ-004",
+          "TKT-2026-0716-268",
+          "INC-2026-0812",
+          "PRJ-S001-001"
+        ],
+        "pool_size": 20,
+        "authorized": 31,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.18181818181818182,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "PRJ-S001-003",
+          "PRJ-S002-001",
+          "PRJ-S001-002",
+          "TKT-2026-0224-091",
+          "POL-BIZ-004",
+          "TKT-2026-0716-268",
+          "INC-2026-0812",
+          "PRJ-S001-001"
+        ],
+        "pool_size": 20,
+        "authorized": 31,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.18181818181818182,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "PRJ-S001-003",
+          "PRJ-S002-001",
+          "PRJ-S001-002",
+          "TKT-2026-0224-091",
+          "POL-BIZ-004",
+          "TKT-2026-0716-268",
+          "INC-2026-0812",
+          "PRJ-S001-001"
+        ],
+        "pool_size": 20,
+        "authorized": 31,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.18181818181818182,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E018",
+      "category": "multi_document",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "POL-FIN-002",
+        "OPS-RB-004"
+      ],
+      "baseline": {
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002",
+          "OPS-RB-002",
+          "POL-SEC-001",
+          "OPS-RB-001",
+          "POL-BIZ-003",
+          "ORG-001",
+          "INC-2026-0519",
+          "POL-BIZ-004",
+          "OPS-RB-005"
+        ],
+        "pool_size": 20,
+        "authorized": 22,
+        "withheld": 7,
+        "methods": {
+          "hybrid": 13,
+          "dense": 7
+        },
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002",
+          "OPS-RB-002",
+          "POL-SEC-001",
+          "OPS-RB-001",
+          "POL-BIZ-003",
+          "ORG-001",
+          "INC-2026-0519",
+          "POL-BIZ-004",
+          "OPS-RB-005"
+        ],
+        "pool_size": 20,
+        "authorized": 22,
+        "withheld": 7,
+        "methods": {
+          "hybrid": 13,
+          "dense": 7
+        },
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002",
+          "OPS-RB-002",
+          "POL-SEC-001",
+          "OPS-RB-001",
+          "POL-BIZ-003",
+          "ORG-001",
+          "INC-2026-0519",
+          "POL-BIZ-004",
+          "OPS-RB-005"
+        ],
+        "pool_size": 20,
+        "authorized": 22,
+        "withheld": 7,
+        "methods": {
+          "hybrid": 13,
+          "dense": 7
+        },
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E019",
+      "category": "multi_document",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0805",
+        "PRJ-S004-003",
+        "TKT-2026-0805-301"
+      ],
+      "baseline": {
+        "documents": [
+          "PRJ-S004-002",
+          "scenario_overview",
+          "PRJ-S004-003",
+          "S004-ACC-001",
+          "INC-2026-0805",
+          "TKT-2026-0805-301",
+          "CALL-2026-0909-074",
+          "TKT-2026-0908-341",
+          "CALL-2026-0806-063",
+          "PRJ-S004-001"
+        ],
+        "pool_size": 20,
+        "authorized": 26,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.3,
+        "mrr": 0.3333333333333333
+      },
+      "plan": {
+        "documents": [
+          "PRJ-S004-002",
+          "scenario_overview",
+          "PRJ-S004-003",
+          "S004-ACC-001",
+          "INC-2026-0805",
+          "TKT-2026-0805-301",
+          "CALL-2026-0909-074",
+          "TKT-2026-0908-341",
+          "CALL-2026-0806-063",
+          "PRJ-S004-001"
+        ],
+        "pool_size": 20,
+        "authorized": 26,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.3,
+        "mrr": 0.3333333333333333
+      },
+      "fallback": {
+        "documents": [
+          "PRJ-S004-002",
+          "scenario_overview",
+          "PRJ-S004-003",
+          "S004-ACC-001",
+          "INC-2026-0805",
+          "TKT-2026-0805-301",
+          "CALL-2026-0909-074",
+          "TKT-2026-0908-341",
+          "CALL-2026-0806-063",
+          "PRJ-S004-001"
+        ],
+        "pool_size": 20,
+        "authorized": 26,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.3,
+        "mrr": 0.3333333333333333
+      }
+    },
+    {
+      "eval_id": "E020",
+      "category": "multi_document",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "TKT-2026-0812-308",
+        "INC-2026-0812"
+      ],
+      "baseline": {
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308",
+          "TKT-2026-0312-114",
+          "INC-2026-0312",
+          "PRJ-S001-003",
+          "CALL-2026-0520-041",
+          "ORG-001",
+          "INC-2026-0519",
+          "CALL-2026-0313-018",
+          "TKT-2026-0519-207",
+          "INC-2026-0716"
+        ],
+        "pool_size": 20,
+        "authorized": 31,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.18181818181818182,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308",
+          "TKT-2026-0312-114",
+          "INC-2026-0312",
+          "PRJ-S001-003",
+          "CALL-2026-0520-041",
+          "ORG-001",
+          "INC-2026-0519",
+          "CALL-2026-0313-018",
+          "TKT-2026-0519-207",
+          "INC-2026-0716"
+        ],
+        "pool_size": 20,
+        "authorized": 31,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.18181818181818182,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308",
+          "TKT-2026-0312-114",
+          "INC-2026-0312",
+          "PRJ-S001-003",
+          "CALL-2026-0520-041",
+          "ORG-001",
+          "INC-2026-0519",
+          "CALL-2026-0313-018",
+          "TKT-2026-0519-207",
+          "INC-2026-0716"
+        ],
+        "pool_size": 20,
+        "authorized": 31,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.18181818181818182,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E021",
+      "category": "cross_seller",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0312",
+        "INC-2026-0519"
+      ],
+      "baseline": {
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S001-003",
+          "PRJ-S002-003",
+          "CALL-2026-0313-018",
+          "TKT-2026-0312-114",
+          "TKT-2026-0519-207",
+          "INC-2026-0312",
+          "ORG-001",
+          "CALL-2026-0520-041",
+          "POL-FIN-002"
+        ],
+        "pool_size": 20,
+        "authorized": 30,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S001-003",
+          "PRJ-S002-003",
+          "CALL-2026-0313-018",
+          "TKT-2026-0312-114",
+          "TKT-2026-0519-207",
+          "INC-2026-0312",
+          "ORG-001",
+          "CALL-2026-0520-041",
+          "POL-FIN-002"
+        ],
+        "pool_size": 20,
+        "authorized": 30,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S001-003",
+          "PRJ-S002-003",
+          "CALL-2026-0313-018",
+          "TKT-2026-0312-114",
+          "TKT-2026-0519-207",
+          "INC-2026-0312",
+          "ORG-001",
+          "CALL-2026-0520-041",
+          "POL-FIN-002"
+        ],
+        "pool_size": 20,
+        "authorized": 30,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E022",
+      "category": "cross_seller",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "S001-ACC-001",
+        "S003-ACC-001"
+      ],
+      "baseline": {
+        "documents": [
+          "S001-ACC-001",
+          "S003-ACC-001",
+          "PRJ-S001-001",
+          "ORG-001",
+          "PRJ-S003-001",
+          "TKT-2026-0115-054",
+          "PRJ-S003-003",
+          "TKT-2026-0812-308",
+          "PRJ-S001-002",
+          "TKT-2026-0903-336",
+          "TKT-2026-0618-233",
+          "CALL-2026-0116-004",
+          "CALL-2026-0313-018",
+          "TKT-2026-0224-091",
+          "CALL-2026-0225-013"
+        ],
+        "pool_size": 20,
+        "authorized": 26,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.13333333333333333,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "S001-ACC-001",
+          "S003-ACC-001",
+          "PRJ-S001-001",
+          "ORG-001",
+          "PRJ-S003-001",
+          "TKT-2026-0115-054",
+          "PRJ-S003-003",
+          "TKT-2026-0812-308",
+          "PRJ-S001-002",
+          "TKT-2026-0903-336",
+          "TKT-2026-0618-233",
+          "CALL-2026-0116-004",
+          "CALL-2026-0313-018",
+          "TKT-2026-0224-091",
+          "CALL-2026-0225-013"
+        ],
+        "pool_size": 20,
+        "authorized": 26,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.13333333333333333,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "S001-ACC-001",
+          "S003-ACC-001",
+          "PRJ-S001-001",
+          "ORG-001",
+          "PRJ-S003-001",
+          "TKT-2026-0115-054",
+          "PRJ-S003-003",
+          "TKT-2026-0812-308",
+          "PRJ-S001-002",
+          "TKT-2026-0903-336",
+          "TKT-2026-0618-233",
+          "CALL-2026-0116-004",
+          "CALL-2026-0313-018",
+          "TKT-2026-0224-091",
+          "CALL-2026-0225-013"
+        ],
+        "pool_size": 20,
+        "authorized": 26,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.13333333333333333,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E023",
+      "category": "cross_seller",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0805",
+        "INC-2026-0519"
+      ],
+      "baseline": {
+        "documents": [
+          "INC-2026-0805",
+          "PRJ-S004-002",
+          "OPS-RB-004",
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "PRJ-S004-003",
+          "OPS-RB-003",
+          "POL-SEC-001",
+          "OPS-RB-005",
+          "POL-BIZ-004"
+        ],
+        "pool_size": 20,
+        "authorized": 21,
+        "withheld": 10,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "INC-2026-0805",
+          "PRJ-S004-002",
+          "OPS-RB-004",
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "PRJ-S004-003",
+          "OPS-RB-003",
+          "POL-SEC-001",
+          "OPS-RB-005",
+          "POL-BIZ-004"
+        ],
+        "pool_size": 20,
+        "authorized": 21,
+        "withheld": 10,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "INC-2026-0805",
+          "PRJ-S004-002",
+          "OPS-RB-004",
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "PRJ-S004-003",
+          "OPS-RB-003",
+          "POL-SEC-001",
+          "OPS-RB-005",
+          "POL-BIZ-004"
+        ],
+        "pool_size": 20,
+        "authorized": 21,
+        "withheld": 10,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E024",
+      "category": "cross_seller",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0812",
+        "INC-2026-0716"
+      ],
+      "baseline": {
+        "documents": [
+          "INC-2026-0716",
+          "PRJ-S002-002",
+          "TKT-2026-0716-268",
+          "INC-2026-0812",
+          "TKT-2026-0812-308",
+          "INC-2026-0312",
+          "INC-2026-0519",
+          "ORG-001",
+          "PRJ-S001-002",
+          "TKT-2026-0602-217",
+          "PRJ-S002-003"
+        ],
+        "pool_size": 20,
+        "authorized": 29,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.18181818181818182,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "INC-2026-0716",
+          "PRJ-S002-002",
+          "TKT-2026-0716-268",
+          "INC-2026-0812",
+          "TKT-2026-0812-308",
+          "INC-2026-0312",
+          "INC-2026-0519",
+          "ORG-001",
+          "PRJ-S001-002",
+          "TKT-2026-0602-217",
+          "PRJ-S002-003"
+        ],
+        "pool_size": 20,
+        "authorized": 29,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.18181818181818182,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "INC-2026-0716",
+          "PRJ-S002-002",
+          "TKT-2026-0716-268",
+          "INC-2026-0812",
+          "TKT-2026-0812-308",
+          "INC-2026-0312",
+          "INC-2026-0519",
+          "ORG-001",
+          "PRJ-S001-002",
+          "TKT-2026-0602-217",
+          "PRJ-S002-003"
+        ],
+        "pool_size": 20,
+        "authorized": 29,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.18181818181818182,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E025",
+      "category": "cross_seller",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0519",
+        "INC-2026-0805",
+        "INC-2026-0312"
+      ],
+      "baseline": {
+        "documents": [
+          "scenario_overview",
+          "INC-2026-0805",
+          "PRJ-S002-003",
+          "PRJ-S002-002",
+          "CALL-2026-0904-071",
+          "INC-2026-0519",
+          "OPS-RB-004",
+          "PRJ-S002-001",
+          "OPS-RB-003",
+          "INC-2026-0716",
+          "INC-2026-0812",
+          "TKT-2026-0903-336",
+          "INC-2026-0903"
+        ],
+        "pool_size": 20,
+        "authorized": 34,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 13,
+          "dense": 7
+        },
+        "recall": 0.6666666666666666,
+        "precision": 0.15384615384615385,
+        "mrr": 0.5
+      },
+      "plan": {
+        "documents": [
+          "scenario_overview",
+          "INC-2026-0805",
+          "PRJ-S002-003",
+          "PRJ-S002-002",
+          "CALL-2026-0904-071",
+          "INC-2026-0519",
+          "OPS-RB-004",
+          "PRJ-S002-001",
+          "OPS-RB-003",
+          "INC-2026-0716",
+          "INC-2026-0812",
+          "TKT-2026-0903-336",
+          "INC-2026-0903"
+        ],
+        "pool_size": 20,
+        "authorized": 34,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 13,
+          "dense": 7
+        },
+        "recall": 0.6666666666666666,
+        "precision": 0.15384615384615385,
+        "mrr": 0.5
+      },
+      "fallback": {
+        "documents": [
+          "scenario_overview",
+          "INC-2026-0805",
+          "PRJ-S002-003",
+          "PRJ-S002-002",
+          "CALL-2026-0904-071",
+          "INC-2026-0519",
+          "OPS-RB-004",
+          "PRJ-S002-001",
+          "OPS-RB-003",
+          "INC-2026-0716",
+          "INC-2026-0812",
+          "TKT-2026-0903-336",
+          "INC-2026-0903"
+        ],
+        "pool_size": 20,
+        "authorized": 34,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 13,
+          "dense": 7
+        },
+        "recall": 0.6666666666666666,
+        "precision": 0.15384615384615385,
+        "mrr": 0.5
+      }
+    },
+    {
+      "eval_id": "E026",
+      "category": "cross_seller",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "TKT-2026-0312-114",
+        "TKT-2026-0903-336"
+      ],
+      "baseline": {
+        "documents": [
+          "TKT-2026-0312-114",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "S001-ACC-001",
+          "CALL-2026-0225-013",
+          "CALL-2026-0313-018",
+          "POL-FIN-002",
+          "POL-IT-002",
+          "S003-ACC-001",
+          "PRJ-S001-004",
+          "CALL-2026-0116-004",
+          "PRJ-S003-003",
+          "ORG-001"
+        ],
+        "pool_size": 20,
+        "authorized": 34,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.15384615384615385,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "TKT-2026-0312-114",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "S001-ACC-001",
+          "CALL-2026-0225-013",
+          "CALL-2026-0313-018",
+          "POL-FIN-002",
+          "POL-IT-002",
+          "S003-ACC-001",
+          "PRJ-S001-004",
+          "CALL-2026-0116-004",
+          "PRJ-S003-003",
+          "ORG-001"
+        ],
+        "pool_size": 20,
+        "authorized": 34,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.15384615384615385,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "TKT-2026-0312-114",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "S001-ACC-001",
+          "CALL-2026-0225-013",
+          "CALL-2026-0313-018",
+          "POL-FIN-002",
+          "POL-IT-002",
+          "S003-ACC-001",
+          "PRJ-S001-004",
+          "CALL-2026-0116-004",
+          "PRJ-S003-003",
+          "ORG-001"
+        ],
+        "pool_size": 20,
+        "authorized": 34,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.15384615384615385,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E027",
+      "category": "follow_up",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "PRJ-S001-003"
+      ],
+      "baseline": {
+        "documents": [
+          "PRJ-S001-001",
+          "S001-ACC-001",
+          "CALL-2026-0313-018",
+          "TKT-2026-0312-114",
+          "PRJ-S001-003",
+          "CALL-2026-0225-013",
+          "PRJ-S001-004",
+          "PRJ-S001-002",
+          "TKT-2026-0224-091",
+          "TKT-2026-0812-308",
+          "PRJ-S003-003",
+          "ORG-001"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.08333333333333333,
+        "mrr": 0.2
+      },
+      "plan": {
+        "documents": [
+          "PRJ-S001-001",
+          "S001-ACC-001",
+          "CALL-2026-0313-018",
+          "TKT-2026-0312-114",
+          "PRJ-S001-003",
+          "CALL-2026-0225-013",
+          "PRJ-S001-004",
+          "PRJ-S001-002",
+          "TKT-2026-0224-091",
+          "TKT-2026-0812-308",
+          "PRJ-S003-003",
+          "ORG-001"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.08333333333333333,
+        "mrr": 0.2
+      },
+      "fallback": {
+        "documents": [
+          "PRJ-S001-001",
+          "S001-ACC-001",
+          "CALL-2026-0313-018",
+          "TKT-2026-0312-114",
+          "PRJ-S001-003",
+          "CALL-2026-0225-013",
+          "PRJ-S001-004",
+          "PRJ-S001-002",
+          "TKT-2026-0224-091",
+          "TKT-2026-0812-308",
+          "PRJ-S003-003",
+          "ORG-001"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.08333333333333333,
+        "mrr": 0.2
+      }
+    },
+    {
+      "eval_id": "E028",
+      "category": "follow_up",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0519"
+      ],
+      "baseline": {
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "INC-2026-0716",
+          "CALL-2026-0717-052",
+          "TKT-2026-0716-268",
+          "TKT-2026-0602-217",
+          "POL-BIZ-004",
+          "INC-2026-0312"
+        ],
+        "pool_size": 20,
+        "authorized": 29,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.1,
+        "mrr": 0.5
+      },
+      "plan": {
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "INC-2026-0716",
+          "CALL-2026-0717-052",
+          "TKT-2026-0716-268",
+          "TKT-2026-0602-217",
+          "POL-BIZ-004",
+          "INC-2026-0312"
+        ],
+        "pool_size": 20,
+        "authorized": 29,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.1,
+        "mrr": 0.5
+      },
+      "fallback": {
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "INC-2026-0716",
+          "CALL-2026-0717-052",
+          "TKT-2026-0716-268",
+          "TKT-2026-0602-217",
+          "POL-BIZ-004",
+          "INC-2026-0312"
+        ],
+        "pool_size": 20,
+        "authorized": 29,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.1,
+        "mrr": 0.5
+      }
+    },
+    {
+      "eval_id": "E029",
+      "category": "follow_up",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0812"
+      ],
+      "baseline": {
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308",
+          "INC-2026-0519",
+          "INC-2026-0312",
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "POL-FIN-002"
+        ],
+        "pool_size": 20,
+        "authorized": 32,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.14285714285714285,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308",
+          "INC-2026-0519",
+          "INC-2026-0312",
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "POL-FIN-002"
+        ],
+        "pool_size": 20,
+        "authorized": 32,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.14285714285714285,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308",
+          "INC-2026-0519",
+          "INC-2026-0312",
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "POL-FIN-002"
+        ],
+        "pool_size": 20,
+        "authorized": 32,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.14285714285714285,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E030",
+      "category": "follow_up",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "PRJ-S004-003"
+      ],
+      "baseline": {
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006",
+          "PRJ-S002-003",
+          "OPS-RB-003",
+          "INC-2026-0519",
+          "OPS-RB-004",
+          "POL-BIZ-004"
+        ],
+        "pool_size": 20,
+        "authorized": 24,
+        "withheld": 4,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.1111111111111111,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006",
+          "PRJ-S002-003",
+          "OPS-RB-003",
+          "INC-2026-0519",
+          "OPS-RB-004",
+          "POL-BIZ-004"
+        ],
+        "pool_size": 20,
+        "authorized": 24,
+        "withheld": 4,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.1111111111111111,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006",
+          "PRJ-S002-003",
+          "OPS-RB-003",
+          "INC-2026-0519",
+          "OPS-RB-004",
+          "POL-BIZ-004"
+        ],
+        "pool_size": 20,
+        "authorized": 24,
+        "withheld": 4,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.1111111111111111,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E031",
+      "category": "follow_up",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "PRJ-S003-003"
+      ],
+      "baseline": {
+        "documents": [
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "S003-ACC-001",
+          "CALL-2026-0116-004",
+          "PRJ-S003-001",
+          "POL-BIZ-003",
+          "S001-ACC-001",
+          "ORG-001",
+          "CALL-2026-0619-047",
+          "TKT-2026-0618-233",
+          "CALL-2026-0904-071",
+          "POL-FIN-002"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.08333333333333333,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "S003-ACC-001",
+          "CALL-2026-0116-004",
+          "PRJ-S003-001",
+          "POL-BIZ-003",
+          "S001-ACC-001",
+          "ORG-001",
+          "CALL-2026-0619-047",
+          "TKT-2026-0618-233",
+          "CALL-2026-0904-071",
+          "POL-FIN-002"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.08333333333333333,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "S003-ACC-001",
+          "CALL-2026-0116-004",
+          "PRJ-S003-001",
+          "POL-BIZ-003",
+          "S001-ACC-001",
+          "ORG-001",
+          "CALL-2026-0619-047",
+          "TKT-2026-0618-233",
+          "CALL-2026-0904-071",
+          "POL-FIN-002"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.08333333333333333,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E032",
+      "category": "follow_up",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0903"
+      ],
+      "baseline": {
+        "documents": [
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "INC-2026-0903",
+          "PRJ-S003-002",
+          "S003-ACC-001",
+          "CALL-2026-0619-047",
+          "PRJ-S003-001",
+          "CALL-2026-0116-004",
+          "TKT-2026-0312-114",
+          "scenario_overview",
+          "INC-2026-0312",
+          "PRJ-S003-003"
+        ],
+        "pool_size": 20,
+        "authorized": 30,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.08333333333333333,
+        "mrr": 0.3333333333333333
+      },
+      "plan": {
+        "documents": [
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "INC-2026-0903",
+          "PRJ-S003-002",
+          "S003-ACC-001",
+          "CALL-2026-0619-047",
+          "PRJ-S003-001",
+          "CALL-2026-0116-004",
+          "TKT-2026-0312-114",
+          "scenario_overview",
+          "INC-2026-0312",
+          "PRJ-S003-003"
+        ],
+        "pool_size": 20,
+        "authorized": 30,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.08333333333333333,
+        "mrr": 0.3333333333333333
+      },
+      "fallback": {
+        "documents": [
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "INC-2026-0903",
+          "PRJ-S003-002",
+          "S003-ACC-001",
+          "CALL-2026-0619-047",
+          "PRJ-S003-001",
+          "CALL-2026-0116-004",
+          "TKT-2026-0312-114",
+          "scenario_overview",
+          "INC-2026-0312",
+          "PRJ-S003-003"
+        ],
+        "pool_size": 20,
+        "authorized": 30,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.08333333333333333,
+        "mrr": 0.3333333333333333
+      }
+    },
+    {
+      "eval_id": "E033",
+      "category": "unauthorized_access",
+      "expected_behavior": "refuse",
+      "applicable": false
+    },
+    {
+      "eval_id": "E034",
+      "category": "unauthorized_access",
+      "expected_behavior": "refuse",
+      "applicable": false
+    },
+    {
+      "eval_id": "E035",
+      "category": "unauthorized_access",
+      "expected_behavior": "refuse",
+      "applicable": false
+    },
+    {
+      "eval_id": "E036",
+      "category": "unauthorized_access",
+      "expected_behavior": "refuse",
+      "applicable": false
+    },
+    {
+      "eval_id": "E037",
+      "category": "unauthorized_access",
+      "expected_behavior": "refuse",
+      "applicable": false
+    },
+    {
+      "eval_id": "E038",
+      "category": "unauthorized_access",
+      "expected_behavior": "refuse",
+      "applicable": false
+    },
+    {
+      "eval_id": "E039",
+      "category": "unauthorized_access",
+      "expected_behavior": "refuse",
+      "applicable": false
+    },
+    {
+      "eval_id": "E040",
+      "category": "unauthorized_access",
+      "expected_behavior": "refuse",
+      "applicable": false
+    },
+    {
+      "eval_id": "E041",
+      "category": "unauthorized_access",
+      "expected_behavior": "refuse",
+      "applicable": false
+    },
+    {
+      "eval_id": "E042",
+      "category": "unauthorized_access",
+      "expected_behavior": "refuse",
+      "applicable": false
+    },
+    {
+      "eval_id": "E043",
+      "category": "mixed_access",
+      "expected_behavior": "partial_answer",
+      "applicable": true,
+      "expected": [
+        "TKT-2026-0312-114",
+        "PRJ-S001-003"
+      ],
+      "baseline": {
+        "documents": [
+          "S001-ACC-001",
+          "PRJ-S001-001",
+          "CALL-2026-0313-018",
+          "TKT-2026-0312-114",
+          "PRJ-S001-002",
+          "PRJ-S001-004",
+          "CALL-2026-0225-013",
+          "PRJ-S001-003",
+          "ORG-001",
+          "TKT-2026-0224-091",
+          "PRJ-S003-001",
+          "TKT-2026-0812-308"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 0.25
+      },
+      "plan": {
+        "documents": [
+          "S001-ACC-001",
+          "PRJ-S001-001",
+          "CALL-2026-0313-018",
+          "TKT-2026-0312-114",
+          "PRJ-S001-002",
+          "PRJ-S001-004",
+          "CALL-2026-0225-013",
+          "PRJ-S001-003",
+          "ORG-001",
+          "TKT-2026-0224-091",
+          "PRJ-S003-001",
+          "TKT-2026-0812-308"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 0.25
+      },
+      "fallback": {
+        "documents": [
+          "S001-ACC-001",
+          "PRJ-S001-001",
+          "CALL-2026-0313-018",
+          "TKT-2026-0312-114",
+          "PRJ-S001-002",
+          "PRJ-S001-004",
+          "CALL-2026-0225-013",
+          "PRJ-S001-003",
+          "ORG-001",
+          "TKT-2026-0224-091",
+          "PRJ-S003-001",
+          "TKT-2026-0812-308"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 0.25
+      }
+    },
+    {
+      "eval_id": "E044",
+      "category": "mixed_access",
+      "expected_behavior": "partial_answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0519",
+        "INC-2026-0716"
+      ],
+      "baseline": {
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "TKT-2026-0602-217",
+          "TKT-2026-0519-207",
+          "PRJ-S002-003",
+          "CALL-2026-0520-041",
+          "INC-2026-0519",
+          "CALL-2026-0717-052",
+          "ORG-001",
+          "POL-SEC-001",
+          "POL-IT-002",
+          "INC-2026-0812"
+        ],
+        "pool_size": 20,
+        "authorized": 28,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "TKT-2026-0602-217",
+          "TKT-2026-0519-207",
+          "PRJ-S002-003",
+          "CALL-2026-0520-041",
+          "INC-2026-0519",
+          "CALL-2026-0717-052",
+          "ORG-001",
+          "POL-SEC-001",
+          "POL-IT-002",
+          "INC-2026-0812"
+        ],
+        "pool_size": 20,
+        "authorized": 28,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "TKT-2026-0602-217",
+          "TKT-2026-0519-207",
+          "PRJ-S002-003",
+          "CALL-2026-0520-041",
+          "INC-2026-0519",
+          "CALL-2026-0717-052",
+          "ORG-001",
+          "POL-SEC-001",
+          "POL-IT-002",
+          "INC-2026-0812"
+        ],
+        "pool_size": 20,
+        "authorized": 28,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E045",
+      "category": "mixed_access",
+      "expected_behavior": "partial_answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0519",
+        "INC-2026-0716"
+      ],
+      "baseline": {
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0519-207",
+          "TKT-2026-0716-268",
+          "INC-2026-0519",
+          "TKT-2026-0602-217",
+          "ORG-001",
+          "PRJ-S002-003",
+          "PRJ-S002-001",
+          "POL-SEC-001",
+          "INC-2026-0812",
+          "PRJ-S001-003"
+        ],
+        "pool_size": 20,
+        "authorized": 29,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.18181818181818182,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0519-207",
+          "TKT-2026-0716-268",
+          "INC-2026-0519",
+          "TKT-2026-0602-217",
+          "ORG-001",
+          "PRJ-S002-003",
+          "PRJ-S002-001",
+          "POL-SEC-001",
+          "INC-2026-0812",
+          "PRJ-S001-003"
+        ],
+        "pool_size": 20,
+        "authorized": 29,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.18181818181818182,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0519-207",
+          "TKT-2026-0716-268",
+          "INC-2026-0519",
+          "TKT-2026-0602-217",
+          "ORG-001",
+          "PRJ-S002-003",
+          "PRJ-S002-001",
+          "POL-SEC-001",
+          "INC-2026-0812",
+          "PRJ-S001-003"
+        ],
+        "pool_size": 20,
+        "authorized": 29,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.18181818181818182,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E046",
+      "category": "mixed_access",
+      "expected_behavior": "partial_answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0805"
+      ],
+      "baseline": {
+        "documents": [
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "PRJ-S004-003",
+          "ORG-001",
+          "OPS-RB-004",
+          "INC-2026-0519",
+          "POL-OPS-006",
+          "POL-FIN-002",
+          "PRJ-S002-003"
+        ],
+        "pool_size": 19,
+        "authorized": 19,
+        "withheld": 7,
+        "methods": {
+          "hybrid": 15,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.1111111111111111,
+        "mrr": 0.5
+      },
+      "plan": {
+        "documents": [
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "PRJ-S004-003",
+          "ORG-001",
+          "OPS-RB-004",
+          "INC-2026-0519",
+          "POL-OPS-006",
+          "POL-FIN-002",
+          "PRJ-S002-003"
+        ],
+        "pool_size": 19,
+        "authorized": 19,
+        "withheld": 7,
+        "methods": {
+          "hybrid": 15,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.1111111111111111,
+        "mrr": 0.5
+      },
+      "fallback": {
+        "documents": [
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "PRJ-S004-003",
+          "ORG-001",
+          "OPS-RB-004",
+          "INC-2026-0519",
+          "POL-OPS-006",
+          "POL-FIN-002",
+          "PRJ-S002-003"
+        ],
+        "pool_size": 19,
+        "authorized": 19,
+        "withheld": 7,
+        "methods": {
+          "hybrid": 15,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.1111111111111111,
+        "mrr": 0.5
+      }
+    },
+    {
+      "eval_id": "E047",
+      "category": "mixed_access",
+      "expected_behavior": "partial_answer",
+      "applicable": true,
+      "expected": [
+        "POL-BIZ-004"
+      ],
+      "baseline": {
+        "documents": [
+          "POL-BIZ-004",
+          "POL-SEC-001",
+          "ORG-001",
+          "POL-BIZ-003",
+          "POL-FIN-002",
+          "CALL-2026-0116-004",
+          "CALL-2026-0619-047",
+          "S001-ACC-001",
+          "POL-SEC-002",
+          "POL-IT-002",
+          "CALL-2026-0313-018"
+        ],
+        "pool_size": 20,
+        "authorized": 33,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.09090909090909091,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "POL-BIZ-004",
+          "POL-SEC-001",
+          "ORG-001",
+          "POL-BIZ-003",
+          "POL-FIN-002",
+          "CALL-2026-0116-004",
+          "CALL-2026-0619-047",
+          "S001-ACC-001",
+          "POL-SEC-002",
+          "POL-IT-002",
+          "CALL-2026-0313-018"
+        ],
+        "pool_size": 20,
+        "authorized": 33,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.09090909090909091,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "POL-BIZ-004",
+          "POL-SEC-001",
+          "ORG-001",
+          "POL-BIZ-003",
+          "POL-FIN-002",
+          "CALL-2026-0116-004",
+          "CALL-2026-0619-047",
+          "S001-ACC-001",
+          "POL-SEC-002",
+          "POL-IT-002",
+          "CALL-2026-0313-018"
+        ],
+        "pool_size": 20,
+        "authorized": 33,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.09090909090909091,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E048",
+      "category": "mixed_access",
+      "expected_behavior": "partial_answer",
+      "applicable": true,
+      "expected": [
+        "TKT-2026-0224-091",
+        "TKT-2026-0312-114",
+        "TKT-2026-0812-308"
+      ],
+      "baseline": {
+        "documents": [
+          "CALL-2026-0313-018",
+          "TKT-2026-0812-308",
+          "ORG-001",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "TKT-2026-0312-114",
+          "INC-2026-0812",
+          "INC-2026-0312",
+          "PRJ-S001-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0717-052"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.2727272727272727,
+        "mrr": 0.5
+      },
+      "plan": {
+        "documents": [
+          "CALL-2026-0313-018",
+          "TKT-2026-0812-308",
+          "ORG-001",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "TKT-2026-0312-114",
+          "INC-2026-0812",
+          "INC-2026-0312",
+          "PRJ-S001-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0717-052"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.2727272727272727,
+        "mrr": 0.5
+      },
+      "fallback": {
+        "documents": [
+          "CALL-2026-0313-018",
+          "TKT-2026-0812-308",
+          "ORG-001",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "TKT-2026-0312-114",
+          "INC-2026-0812",
+          "INC-2026-0312",
+          "PRJ-S001-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0717-052"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "recall": 1.0,
+        "precision": 0.2727272727272727,
+        "mrr": 0.5
+      }
+    },
+    {
+      "eval_id": "E049",
+      "category": "policy_governance",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "POL-IT-002"
+      ],
+      "baseline": {
+        "documents": [
+          "POL-IT-002",
+          "ORG-001",
+          "POL-SEC-001",
+          "POL-SEC-002",
+          "OPS-RB-003",
+          "POL-BIZ-004",
+          "OPS-RB-002"
+        ],
+        "pool_size": 19,
+        "authorized": 19,
+        "withheld": 8,
+        "methods": {
+          "hybrid": 16,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.14285714285714285,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "POL-IT-002",
+          "ORG-001",
+          "POL-SEC-001",
+          "POL-SEC-002",
+          "OPS-RB-003",
+          "POL-BIZ-004",
+          "OPS-RB-002"
+        ],
+        "pool_size": 19,
+        "authorized": 19,
+        "withheld": 8,
+        "methods": {
+          "hybrid": 16,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.14285714285714285,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "POL-IT-002",
+          "ORG-001",
+          "POL-SEC-001",
+          "POL-SEC-002",
+          "OPS-RB-003",
+          "POL-BIZ-004",
+          "OPS-RB-002"
+        ],
+        "pool_size": 19,
+        "authorized": 19,
+        "withheld": 8,
+        "methods": {
+          "hybrid": 16,
+          "dense": 3
+        },
+        "recall": 1.0,
+        "precision": 0.14285714285714285,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E050",
+      "category": "policy_governance",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "POL-SEC-002"
+      ],
+      "baseline": {
+        "documents": [
+          "POL-SEC-002",
+          "POL-IT-002",
+          "POL-SEC-001",
+          "POL-BIZ-004",
+          "ORG-001",
+          "PRJ-S001-001",
+          "INC-2026-0519",
+          "POL-FIN-002",
+          "INC-2026-0812",
+          "TKT-2026-0519-207",
+          "POL-BIZ-003",
+          "PRJ-S001-003"
+        ],
+        "pool_size": 20,
+        "authorized": 30,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.08333333333333333,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "POL-SEC-002",
+          "POL-IT-002",
+          "POL-SEC-001",
+          "POL-BIZ-004",
+          "ORG-001",
+          "PRJ-S001-001",
+          "INC-2026-0519",
+          "POL-FIN-002",
+          "INC-2026-0812",
+          "TKT-2026-0519-207",
+          "POL-BIZ-003",
+          "PRJ-S001-003"
+        ],
+        "pool_size": 20,
+        "authorized": 30,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.08333333333333333,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "POL-SEC-002",
+          "POL-IT-002",
+          "POL-SEC-001",
+          "POL-BIZ-004",
+          "ORG-001",
+          "PRJ-S001-001",
+          "INC-2026-0519",
+          "POL-FIN-002",
+          "INC-2026-0812",
+          "TKT-2026-0519-207",
+          "POL-BIZ-003",
+          "PRJ-S001-003"
+        ],
+        "pool_size": 20,
+        "authorized": 30,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.08333333333333333,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E051",
+      "category": "policy_governance",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "POL-BIZ-003"
+      ],
+      "baseline": {
+        "documents": [
+          "POL-BIZ-003",
+          "PRJ-S001-001",
+          "POL-FIN-002",
+          "PRJ-S003-001",
+          "POL-SEC-001",
+          "POL-BIZ-004",
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "ORG-001",
+          "POL-SEC-002",
+          "CALL-2026-0619-047",
+          "POL-IT-002"
+        ],
+        "pool_size": 20,
+        "authorized": 31,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.08333333333333333,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "POL-BIZ-003",
+          "PRJ-S001-001",
+          "POL-FIN-002",
+          "PRJ-S003-001",
+          "POL-SEC-001",
+          "POL-BIZ-004",
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "ORG-001",
+          "POL-SEC-002",
+          "CALL-2026-0619-047",
+          "POL-IT-002"
+        ],
+        "pool_size": 20,
+        "authorized": 31,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.08333333333333333,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "POL-BIZ-003",
+          "PRJ-S001-001",
+          "POL-FIN-002",
+          "PRJ-S003-001",
+          "POL-SEC-001",
+          "POL-BIZ-004",
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "ORG-001",
+          "POL-SEC-002",
+          "CALL-2026-0619-047",
+          "POL-IT-002"
+        ],
+        "pool_size": 20,
+        "authorized": 31,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.08333333333333333,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E052",
+      "category": "policy_governance",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "POL-SEC-001"
+      ],
+      "baseline": {
+        "documents": [
+          "POL-SEC-001",
+          "POL-SEC-002",
+          "ORG-001",
+          "POL-BIZ-004",
+          "CALL-2026-0225-013",
+          "INC-2026-0716",
+          "TKT-2026-0312-114",
+          "INC-2026-0812",
+          "POL-FIN-002",
+          "POL-IT-002",
+          "POL-BIZ-003"
+        ],
+        "pool_size": 20,
+        "authorized": 30,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.09090909090909091,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "POL-SEC-001",
+          "POL-SEC-002",
+          "ORG-001",
+          "POL-BIZ-004",
+          "CALL-2026-0225-013",
+          "INC-2026-0716",
+          "TKT-2026-0312-114",
+          "INC-2026-0812",
+          "POL-FIN-002",
+          "POL-IT-002",
+          "POL-BIZ-003"
+        ],
+        "pool_size": 20,
+        "authorized": 30,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.09090909090909091,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "POL-SEC-001",
+          "POL-SEC-002",
+          "ORG-001",
+          "POL-BIZ-004",
+          "CALL-2026-0225-013",
+          "INC-2026-0716",
+          "TKT-2026-0312-114",
+          "INC-2026-0812",
+          "POL-FIN-002",
+          "POL-IT-002",
+          "POL-BIZ-003"
+        ],
+        "pool_size": 20,
+        "authorized": 30,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "recall": 1.0,
+        "precision": 0.09090909090909091,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E053",
+      "category": "ambiguous",
+      "expected_behavior": "partial_answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0519"
+      ],
+      "baseline": {
+        "documents": [
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "CALL-2026-0717-052",
+          "PRJ-S002-003",
+          "CALL-2026-0313-018",
+          "PRJ-S001-003",
+          "TKT-2026-0716-268",
+          "TKT-2026-0312-114",
+          "INC-2026-0716",
+          "INC-2026-0312",
+          "CALL-2026-0225-013",
+          "INC-2026-0812"
+        ],
+        "pool_size": 20,
+        "authorized": 30,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.07692307692307693,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "CALL-2026-0717-052",
+          "PRJ-S002-003",
+          "CALL-2026-0313-018",
+          "PRJ-S001-003",
+          "TKT-2026-0716-268",
+          "TKT-2026-0312-114",
+          "INC-2026-0716",
+          "INC-2026-0312",
+          "CALL-2026-0225-013",
+          "INC-2026-0812"
+        ],
+        "pool_size": 20,
+        "authorized": 30,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.07692307692307693,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "CALL-2026-0717-052",
+          "PRJ-S002-003",
+          "CALL-2026-0313-018",
+          "PRJ-S001-003",
+          "TKT-2026-0716-268",
+          "TKT-2026-0312-114",
+          "INC-2026-0716",
+          "INC-2026-0312",
+          "CALL-2026-0225-013",
+          "INC-2026-0812"
+        ],
+        "pool_size": 20,
+        "authorized": 30,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.07692307692307693,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E054",
+      "category": "ambiguous",
+      "expected_behavior": "partial_answer",
+      "applicable": true,
+      "expected": [
+        "OPS-RB-002"
+      ],
+      "baseline": {
+        "documents": [
+          "OPS-RB-002",
+          "OPS-RB-003",
+          "INC-2026-0716",
+          "OPS-RB-006",
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "POL-BIZ-003",
+          "POL-BIZ-004",
+          "PRJ-S004-003",
+          "OPS-RB-004",
+          "POL-SEC-001",
+          "INC-2026-0805"
+        ],
+        "pool_size": 20,
+        "authorized": 28,
+        "withheld": 5,
+        "methods": {
+          "hybrid": 13,
+          "dense": 7
+        },
+        "recall": 1.0,
+        "precision": 0.08333333333333333,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "OPS-RB-002",
+          "OPS-RB-003",
+          "INC-2026-0716",
+          "OPS-RB-006",
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "POL-BIZ-003",
+          "POL-BIZ-004",
+          "PRJ-S004-003",
+          "OPS-RB-004",
+          "POL-SEC-001",
+          "INC-2026-0805"
+        ],
+        "pool_size": 20,
+        "authorized": 28,
+        "withheld": 5,
+        "methods": {
+          "hybrid": 13,
+          "dense": 7
+        },
+        "recall": 1.0,
+        "precision": 0.08333333333333333,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "OPS-RB-002",
+          "OPS-RB-003",
+          "INC-2026-0716",
+          "OPS-RB-006",
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "POL-BIZ-003",
+          "POL-BIZ-004",
+          "PRJ-S004-003",
+          "OPS-RB-004",
+          "POL-SEC-001",
+          "INC-2026-0805"
+        ],
+        "pool_size": 20,
+        "authorized": 28,
+        "withheld": 5,
+        "methods": {
+          "hybrid": 13,
+          "dense": 7
+        },
+        "recall": 1.0,
+        "precision": 0.08333333333333333,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E055",
+      "category": "ambiguous",
+      "expected_behavior": "partial_answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0716"
+      ],
+      "baseline": {
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0519-207",
+          "TKT-2026-0716-268",
+          "TKT-2026-0602-217",
+          "INC-2026-0312",
+          "INC-2026-0519",
+          "TKT-2026-0812-308",
+          "PRJ-S002-002",
+          "POL-BIZ-004",
+          "POL-SEC-002",
+          "INC-2026-0812",
+          "TKT-2026-0224-091"
+        ],
+        "pool_size": 20,
+        "authorized": 31,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.08333333333333333,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0519-207",
+          "TKT-2026-0716-268",
+          "TKT-2026-0602-217",
+          "INC-2026-0312",
+          "INC-2026-0519",
+          "TKT-2026-0812-308",
+          "PRJ-S002-002",
+          "POL-BIZ-004",
+          "POL-SEC-002",
+          "INC-2026-0812",
+          "TKT-2026-0224-091"
+        ],
+        "pool_size": 20,
+        "authorized": 31,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.08333333333333333,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0519-207",
+          "TKT-2026-0716-268",
+          "TKT-2026-0602-217",
+          "INC-2026-0312",
+          "INC-2026-0519",
+          "TKT-2026-0812-308",
+          "PRJ-S002-002",
+          "POL-BIZ-004",
+          "POL-SEC-002",
+          "INC-2026-0812",
+          "TKT-2026-0224-091"
+        ],
+        "pool_size": 20,
+        "authorized": 31,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "recall": 1.0,
+        "precision": 0.08333333333333333,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E056",
+      "category": "prompt_injection",
+      "expected_behavior": "refuse",
+      "applicable": false
+    },
+    {
+      "eval_id": "E057",
+      "category": "prompt_injection",
+      "expected_behavior": "refuse",
+      "applicable": false
+    },
+    {
+      "eval_id": "E058",
+      "category": "prompt_injection",
+      "expected_behavior": "refuse",
+      "applicable": false
+    },
+    {
+      "eval_id": "E059",
+      "category": "prompt_injection",
+      "expected_behavior": "refuse",
+      "applicable": false
+    },
+    {
+      "eval_id": "E060",
+      "category": "prompt_injection",
+      "expected_behavior": "refuse",
+      "applicable": false
+    }
+  ]
+}

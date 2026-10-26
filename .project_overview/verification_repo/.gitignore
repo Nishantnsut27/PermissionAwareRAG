@@ -1,0 +1,39 @@
+
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+tests/
+test_*.py
+*_test.py
+conftest.py
+# Keep the offline regression suite under version control.
+!evaluation/tests/
+!evaluation/tests/**
+evaluation/tests/**/__pycache__/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+
+
+.env
+
+
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Pipeline artifacts
+
+guide.md
+
+
+
+# Logs
+*.log
+.streamlit/

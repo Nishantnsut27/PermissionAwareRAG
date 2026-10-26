@@ -1,0 +1,2870 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-25T11:43:56+00:00",
+  "split": "holdout",
+  "arms": [
+    "baseline",
+    "grouped",
+    "metadata_dedup",
+    "ordering",
+    "redundancy",
+    "final"
+  ],
+  "tokenizer": "tiktoken/o200k_base (approx of Groq gpt-oss)",
+  "summary": {
+    "scored_cases": 22,
+    "baseline": {
+      "recall": 1.0,
+      "precision": 0.4583,
+      "mrr": 0.9242,
+      "mean_tokens": 3136.8182,
+      "mean_chars": 13797.5455,
+      "mean_context_docs": 4.0455,
+      "mean_placed_chunks": 5.9545,
+      "redundancy": 0.1496,
+      "aspect_coverage": 1.0
+    },
+    "grouped": {
+      "recall": 1.0,
+      "precision": 0.4583,
+      "mrr": 0.9242,
+      "mean_tokens": 3136.8182,
+      "mean_chars": 13797.5455,
+      "mean_context_docs": 4.0455,
+      "mean_placed_chunks": 5.9545,
+      "redundancy": 0.1496,
+      "aspect_coverage": 1.0
+    },
+    "metadata_dedup": {
+      "recall": 1.0,
+      "precision": 0.4583,
+      "mrr": 0.9242,
+      "mean_tokens": 3136.8182,
+      "mean_chars": 13781.5455,
+      "mean_context_docs": 4.0455,
+      "mean_placed_chunks": 5.9545,
+      "redundancy": 0.1496,
+      "aspect_coverage": 1.0
+    },
+    "ordering": {
+      "recall": 1.0,
+      "precision": 0.4583,
+      "mrr": 0.9242,
+      "mean_tokens": 3136.8182,
+      "mean_chars": 13781.5455,
+      "mean_context_docs": 4.0455,
+      "mean_placed_chunks": 5.9545,
+      "redundancy": 0.1496,
+      "aspect_coverage": 1.0
+    },
+    "redundancy": {
+      "recall": 1.0,
+      "precision": 0.4583,
+      "mrr": 0.9242,
+      "mean_tokens": 3136.8182,
+      "mean_chars": 13781.5455,
+      "mean_context_docs": 4.0455,
+      "mean_placed_chunks": 5.9545,
+      "redundancy": 0.1496,
+      "aspect_coverage": 1.0
+    },
+    "final": {
+      "recall": 1.0,
+      "precision": 0.4583,
+      "mrr": 0.9242,
+      "mean_tokens": 3140.0909,
+      "mean_chars": 13754,
+      "mean_context_docs": 4.0455,
+      "mean_placed_chunks": 6,
+      "redundancy": 0.1488,
+      "aspect_coverage": 1.0
+    },
+    "gold_documents_dropped": []
+  },
+  "rows": [
+    {
+      "eval_id": "E002",
+      "category": "authorized_factual",
+      "expected": [
+        "INC-2026-0519",
+        "TKT-2026-0519-207"
+      ],
+      "plan": {
+        "intent": "root_cause",
+        "required_aspects": [
+          "cause"
+        ],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "is_multi_part": false
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "INC-2026-0716",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15409,
+        "tokens": 3643,
+        "redundancy": 0.13043743486285106,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "INC-2026-0716",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15409,
+        "tokens": 3643,
+        "redundancy": 0.13043743486285106,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "INC-2026-0716",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15389,
+        "tokens": 3643,
+        "redundancy": 0.13043743486285106,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "INC-2026-0716",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15389,
+        "tokens": 3643,
+        "redundancy": 0.13043743486285106,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "INC-2026-0716",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15389,
+        "tokens": 3643,
+        "redundancy": 0.13043743486285106,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "INC-2026-0716",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15594,
+        "tokens": 3724,
+        "redundancy": 0.13337165692761796,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      }
+    },
+    {
+      "eval_id": "E004",
+      "category": "authorized_factual",
+      "expected": [
+        "OPS-RB-004"
+      ],
+      "plan": {
+        "intent": "policy",
+        "required_aspects": [
+          "policy_requirement"
+        ],
+        "evidence_types": [
+          "runbook"
+        ],
+        "identifiers": [],
+        "is_multi_part": false
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "context_docs": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_context_docs": 2,
+        "n_placed_chunks": 5,
+        "chars": 13926,
+        "tokens": 2992,
+        "redundancy": 0.17062198781398263,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "context_docs": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_context_docs": 2,
+        "n_placed_chunks": 5,
+        "chars": 13926,
+        "tokens": 2992,
+        "redundancy": 0.17062198781398263,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "context_docs": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_context_docs": 2,
+        "n_placed_chunks": 5,
+        "chars": 13918,
+        "tokens": 2992,
+        "redundancy": 0.17062198781398263,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "context_docs": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_context_docs": 2,
+        "n_placed_chunks": 5,
+        "chars": 13918,
+        "tokens": 2992,
+        "redundancy": 0.17062198781398263,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "context_docs": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_context_docs": 2,
+        "n_placed_chunks": 5,
+        "chars": 13918,
+        "tokens": 2992,
+        "redundancy": 0.17062198781398263,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "context_docs": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_context_docs": 2,
+        "n_placed_chunks": 5,
+        "chars": 13926,
+        "tokens": 2992,
+        "redundancy": 0.17062198781398263,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      }
+    },
+    {
+      "eval_id": "E006",
+      "category": "authorized_factual",
+      "expected": [
+        "INC-2026-0716",
+        "TKT-2026-0716-268"
+      ],
+      "plan": {
+        "intent": "impact",
+        "required_aspects": [
+          "financial_impact"
+        ],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [
+          "S002"
+        ],
+        "is_multi_part": true
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "PRJ-S001-003"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15838,
+        "tokens": 3733,
+        "redundancy": 0.1302576670877228,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "PRJ-S001-003"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15838,
+        "tokens": 3733,
+        "redundancy": 0.1302576670877228,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "PRJ-S001-003"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15818,
+        "tokens": 3733,
+        "redundancy": 0.1302576670877228,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "PRJ-S001-003"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15818,
+        "tokens": 3733,
+        "redundancy": 0.1302576670877228,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "PRJ-S001-003"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15818,
+        "tokens": 3733,
+        "redundancy": 0.1302576670877228,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "PRJ-S001-003"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15838,
+        "tokens": 3733,
+        "redundancy": 0.1302576670877228,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      }
+    },
+    {
+      "eval_id": "E008",
+      "category": "authorized_factual",
+      "expected": [
+        "PRJ-S004-003",
+        "PRJ-S004-002"
+      ],
+      "plan": {
+        "intent": "root_cause",
+        "required_aspects": [
+          "cause"
+        ],
+        "evidence_types": [
+          "support_ticket"
+        ],
+        "identifiers": [],
+        "is_multi_part": true
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "context_docs": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805"
+        ],
+        "n_context_docs": 3,
+        "n_placed_chunks": 7,
+        "chars": 15344,
+        "tokens": 3570,
+        "redundancy": 0.16523234812489726,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "context_docs": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805"
+        ],
+        "n_context_docs": 3,
+        "n_placed_chunks": 7,
+        "chars": 15344,
+        "tokens": 3570,
+        "redundancy": 0.16523234812489726,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "context_docs": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805"
+        ],
+        "n_context_docs": 3,
+        "n_placed_chunks": 7,
+        "chars": 15332,
+        "tokens": 3570,
+        "redundancy": 0.16523234812489726,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "context_docs": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805"
+        ],
+        "n_context_docs": 3,
+        "n_placed_chunks": 7,
+        "chars": 15332,
+        "tokens": 3570,
+        "redundancy": 0.16523234812489726,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "context_docs": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805"
+        ],
+        "n_context_docs": 3,
+        "n_placed_chunks": 7,
+        "chars": 15332,
+        "tokens": 3570,
+        "redundancy": 0.16523234812489726,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "context_docs": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805"
+        ],
+        "n_context_docs": 3,
+        "n_placed_chunks": 7,
+        "chars": 14630,
+        "tokens": 3386,
+        "redundancy": 0.16747838852089922,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      }
+    },
+    {
+      "eval_id": "E010",
+      "category": "authorized_factual",
+      "expected": [
+        "INC-2026-0421",
+        "TKT-2026-0421-162"
+      ],
+      "plan": {
+        "intent": "root_cause",
+        "required_aspects": [
+          "cause",
+          "containment_actions"
+        ],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [
+          "S002"
+        ],
+        "is_multi_part": true
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0421",
+          "scenario_overview",
+          "TKT-2026-0421-162",
+          "POL-SEC-001",
+          "PRJ-S003-002"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 15369,
+        "tokens": 3099,
+        "redundancy": 0.13682411244263537,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0421",
+          "scenario_overview",
+          "TKT-2026-0421-162",
+          "POL-SEC-001",
+          "PRJ-S003-002"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 15369,
+        "tokens": 3099,
+        "redundancy": 0.13682411244263537,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0421",
+          "scenario_overview",
+          "TKT-2026-0421-162",
+          "POL-SEC-001",
+          "PRJ-S003-002"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 15353,
+        "tokens": 3099,
+        "redundancy": 0.13682411244263537,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0421",
+          "scenario_overview",
+          "TKT-2026-0421-162",
+          "POL-SEC-001",
+          "PRJ-S003-002"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 15353,
+        "tokens": 3099,
+        "redundancy": 0.13682411244263537,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0421",
+          "scenario_overview",
+          "TKT-2026-0421-162",
+          "POL-SEC-001",
+          "PRJ-S003-002"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 15353,
+        "tokens": 3099,
+        "redundancy": 0.13682411244263537,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0421",
+          "scenario_overview",
+          "TKT-2026-0421-162",
+          "POL-SEC-001",
+          "PRJ-S003-002"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 15369,
+        "tokens": 3099,
+        "redundancy": 0.13682411244263537,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      }
+    },
+    {
+      "eval_id": "E012",
+      "category": "authorized_factual",
+      "expected": [
+        "INC-2026-0903",
+        "TKT-2026-0903-336"
+      ],
+      "plan": {
+        "intent": "root_cause",
+        "required_aspects": [
+          "cause",
+          "financial_impact"
+        ],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "is_multi_part": true
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15910,
+        "tokens": 3644,
+        "redundancy": 0.15096623665080522,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15910,
+        "tokens": 3644,
+        "redundancy": 0.15096623665080522,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15890,
+        "tokens": 3644,
+        "redundancy": 0.15096623665080522,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15890,
+        "tokens": 3644,
+        "redundancy": 0.15096623665080522,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15890,
+        "tokens": 3644,
+        "redundancy": 0.15096623665080522,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15910,
+        "tokens": 3644,
+        "redundancy": 0.15096623665080522,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      }
+    },
+    {
+      "eval_id": "E014",
+      "category": "multi_document",
+      "expected": [
+        "INC-2026-0716",
+        "POL-BIZ-004"
+      ],
+      "plan": {
+        "intent": "policy",
+        "required_aspects": [
+          "policy_requirement"
+        ],
+        "evidence_types": [
+          "policy"
+        ],
+        "identifiers": [
+          "S002"
+        ],
+        "is_multi_part": true
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "context_docs": [
+          "TKT-2026-0716-268",
+          "POL-BIZ-004",
+          "CALL-2026-0717-052",
+          "TKT-2026-0519-207",
+          "INC-2026-0716"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 12678,
+        "tokens": 3036,
+        "redundancy": 0.14133300347026087,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "context_docs": [
+          "TKT-2026-0716-268",
+          "POL-BIZ-004",
+          "CALL-2026-0717-052",
+          "TKT-2026-0519-207",
+          "INC-2026-0716"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 12678,
+        "tokens": 3036,
+        "redundancy": 0.14133300347026087,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "context_docs": [
+          "TKT-2026-0716-268",
+          "POL-BIZ-004",
+          "CALL-2026-0717-052",
+          "TKT-2026-0519-207",
+          "INC-2026-0716"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 12658,
+        "tokens": 3036,
+        "redundancy": 0.14133300347026087,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "context_docs": [
+          "TKT-2026-0716-268",
+          "POL-BIZ-004",
+          "CALL-2026-0717-052",
+          "TKT-2026-0519-207",
+          "INC-2026-0716"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 12658,
+        "tokens": 3036,
+        "redundancy": 0.14133300347026087,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "context_docs": [
+          "TKT-2026-0716-268",
+          "POL-BIZ-004",
+          "CALL-2026-0717-052",
+          "TKT-2026-0519-207",
+          "INC-2026-0716"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 12658,
+        "tokens": 3036,
+        "redundancy": 0.14133300347026087,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "context_docs": [
+          "TKT-2026-0716-268",
+          "POL-BIZ-004",
+          "CALL-2026-0717-052",
+          "TKT-2026-0519-207",
+          "INC-2026-0716"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 12678,
+        "tokens": 3036,
+        "redundancy": 0.14133300347026087,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      }
+    },
+    {
+      "eval_id": "E016",
+      "category": "multi_document",
+      "expected": [
+        "PRJ-S003-003",
+        "POL-BIZ-003"
+      ],
+      "plan": {
+        "intent": "explanation",
+        "required_aspects": [],
+        "evidence_types": [
+          "policy"
+        ],
+        "identifiers": [],
+        "is_multi_part": false
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "S003-ACC-001",
+          "POL-BIZ-003",
+          "PRJ-S003-001"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 15787,
+        "tokens": 3382,
+        "redundancy": 0.1501211261601407,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "S003-ACC-001",
+          "POL-BIZ-003",
+          "PRJ-S003-001"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 15787,
+        "tokens": 3382,
+        "redundancy": 0.1501211261601407,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "S003-ACC-001",
+          "POL-BIZ-003",
+          "PRJ-S003-001"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 15767,
+        "tokens": 3382,
+        "redundancy": 0.1501211261601407,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "S003-ACC-001",
+          "POL-BIZ-003",
+          "PRJ-S003-001"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 15767,
+        "tokens": 3382,
+        "redundancy": 0.1501211261601407,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "S003-ACC-001",
+          "POL-BIZ-003",
+          "PRJ-S003-001"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 15767,
+        "tokens": 3382,
+        "redundancy": 0.1501211261601407,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "S003-ACC-001",
+          "POL-BIZ-003",
+          "PRJ-S003-001"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 15787,
+        "tokens": 3382,
+        "redundancy": 0.1501211261601407,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      }
+    },
+    {
+      "eval_id": "E018",
+      "category": "multi_document",
+      "expected": [
+        "POL-FIN-002",
+        "OPS-RB-004"
+      ],
+      "plan": {
+        "intent": "policy",
+        "required_aspects": [
+          "policy_requirement"
+        ],
+        "evidence_types": [
+          "policy"
+        ],
+        "identifiers": [],
+        "is_multi_part": true
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "context_docs": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_context_docs": 2,
+        "n_placed_chunks": 4,
+        "chars": 11056,
+        "tokens": 2359,
+        "redundancy": 0.16680070827754445,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "context_docs": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_context_docs": 2,
+        "n_placed_chunks": 4,
+        "chars": 11056,
+        "tokens": 2359,
+        "redundancy": 0.16680070827754445,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "context_docs": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_context_docs": 2,
+        "n_placed_chunks": 4,
+        "chars": 11048,
+        "tokens": 2359,
+        "redundancy": 0.16680070827754445,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "context_docs": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_context_docs": 2,
+        "n_placed_chunks": 4,
+        "chars": 11048,
+        "tokens": 2359,
+        "redundancy": 0.16680070827754445,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "context_docs": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_context_docs": 2,
+        "n_placed_chunks": 4,
+        "chars": 11048,
+        "tokens": 2359,
+        "redundancy": 0.16680070827754445,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "context_docs": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_context_docs": 2,
+        "n_placed_chunks": 4,
+        "chars": 11056,
+        "tokens": 2359,
+        "redundancy": 0.16680070827754445,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      }
+    },
+    {
+      "eval_id": "E020",
+      "category": "multi_document",
+      "expected": [
+        "TKT-2026-0812-308",
+        "INC-2026-0812"
+      ],
+      "plan": {
+        "intent": "comparison",
+        "required_aspects": [
+          "financial_impact"
+        ],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [
+          "S001"
+        ],
+        "is_multi_part": true
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0812",
+          "INC-2026-0519",
+          "INC-2026-0312",
+          "TKT-2026-0812-308",
+          "TKT-2026-0716-268"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 5,
+        "chars": 8510,
+        "tokens": 2215,
+        "redundancy": 0.18613189949266884,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0812",
+          "INC-2026-0519",
+          "INC-2026-0312",
+          "TKT-2026-0812-308",
+          "TKT-2026-0716-268"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 5,
+        "chars": 8510,
+        "tokens": 2215,
+        "redundancy": 0.18613189949266884,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0812",
+          "INC-2026-0519",
+          "INC-2026-0312",
+          "TKT-2026-0812-308",
+          "TKT-2026-0716-268"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 5,
+        "chars": 8490,
+        "tokens": 2215,
+        "redundancy": 0.18613189949266884,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0812",
+          "INC-2026-0519",
+          "INC-2026-0312",
+          "TKT-2026-0812-308",
+          "TKT-2026-0716-268"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 5,
+        "chars": 8490,
+        "tokens": 2215,
+        "redundancy": 0.18613189949266884,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0812",
+          "INC-2026-0519",
+          "INC-2026-0312",
+          "TKT-2026-0812-308",
+          "TKT-2026-0716-268"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 5,
+        "chars": 8490,
+        "tokens": 2215,
+        "redundancy": 0.18613189949266884,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0812",
+          "INC-2026-0519",
+          "INC-2026-0312",
+          "TKT-2026-0812-308",
+          "TKT-2026-0716-268"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 5,
+        "chars": 8510,
+        "tokens": 2215,
+        "redundancy": 0.18613189949266884,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      }
+    },
+    {
+      "eval_id": "E022",
+      "category": "cross_seller",
+      "expected": [
+        "S001-ACC-001",
+        "S003-ACC-001"
+      ],
+      "plan": {
+        "intent": "comparison",
+        "required_aspects": [],
+        "evidence_types": [
+          "account_overview"
+        ],
+        "identifiers": [],
+        "is_multi_part": true
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "context_docs": [
+          "S001-ACC-001",
+          "S003-ACC-001",
+          "ORG-001",
+          "PRJ-S001-001"
+        ],
+        "n_context_docs": 4,
+        "n_placed_chunks": 7,
+        "chars": 15413,
+        "tokens": 3396,
+        "redundancy": 0.1340532661394326,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "context_docs": [
+          "S001-ACC-001",
+          "S003-ACC-001",
+          "ORG-001",
+          "PRJ-S001-001"
+        ],
+        "n_context_docs": 4,
+        "n_placed_chunks": 7,
+        "chars": 15413,
+        "tokens": 3396,
+        "redundancy": 0.1340532661394326,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "context_docs": [
+          "S001-ACC-001",
+          "S003-ACC-001",
+          "ORG-001",
+          "PRJ-S001-001"
+        ],
+        "n_context_docs": 4,
+        "n_placed_chunks": 7,
+        "chars": 15397,
+        "tokens": 3396,
+        "redundancy": 0.1340532661394326,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "context_docs": [
+          "S001-ACC-001",
+          "S003-ACC-001",
+          "ORG-001",
+          "PRJ-S001-001"
+        ],
+        "n_context_docs": 4,
+        "n_placed_chunks": 7,
+        "chars": 15397,
+        "tokens": 3396,
+        "redundancy": 0.1340532661394326,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "context_docs": [
+          "S001-ACC-001",
+          "S003-ACC-001",
+          "ORG-001",
+          "PRJ-S001-001"
+        ],
+        "n_context_docs": 4,
+        "n_placed_chunks": 7,
+        "chars": 15397,
+        "tokens": 3396,
+        "redundancy": 0.1340532661394326,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "context_docs": [
+          "S001-ACC-001",
+          "S003-ACC-001",
+          "ORG-001",
+          "PRJ-S001-001"
+        ],
+        "n_context_docs": 4,
+        "n_placed_chunks": 7,
+        "chars": 15413,
+        "tokens": 3396,
+        "redundancy": 0.1340532661394326,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      }
+    },
+    {
+      "eval_id": "E024",
+      "category": "cross_seller",
+      "expected": [
+        "INC-2026-0812",
+        "INC-2026-0716"
+      ],
+      "plan": {
+        "intent": "comparison",
+        "required_aspects": [],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [
+          "S001",
+          "S002"
+        ],
+        "is_multi_part": true
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "INC-2026-0812",
+          "PRJ-S002-002",
+          "TKT-2026-0812-308"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 8,
+        "chars": 15719,
+        "tokens": 3820,
+        "redundancy": 0.1512189760176937,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "INC-2026-0812",
+          "PRJ-S002-002",
+          "TKT-2026-0812-308"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 8,
+        "chars": 15719,
+        "tokens": 3820,
+        "redundancy": 0.1512189760176937,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "INC-2026-0812",
+          "PRJ-S002-002",
+          "TKT-2026-0812-308"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 8,
+        "chars": 15699,
+        "tokens": 3820,
+        "redundancy": 0.1512189760176937,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "INC-2026-0812",
+          "PRJ-S002-002",
+          "TKT-2026-0812-308"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 8,
+        "chars": 15699,
+        "tokens": 3820,
+        "redundancy": 0.1512189760176937,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "INC-2026-0812",
+          "PRJ-S002-002",
+          "TKT-2026-0812-308"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 8,
+        "chars": 15699,
+        "tokens": 3820,
+        "redundancy": 0.1512189760176937,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "INC-2026-0812",
+          "PRJ-S002-002",
+          "TKT-2026-0812-308"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 8,
+        "chars": 15719,
+        "tokens": 3820,
+        "redundancy": 0.1512189760176937,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      }
+    },
+    {
+      "eval_id": "E026",
+      "category": "cross_seller",
+      "expected": [
+        "TKT-2026-0312-114",
+        "TKT-2026-0903-336"
+      ],
+      "plan": {
+        "intent": "factual_lookup",
+        "required_aspects": [],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "is_multi_part": false
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "context_docs": [
+          "S001-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "TKT-2026-0312-114",
+          "S003-ACC-001"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 5,
+        "chars": 14780,
+        "tokens": 3372,
+        "redundancy": 0.1134674951542167,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "context_docs": [
+          "S001-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "TKT-2026-0312-114",
+          "S003-ACC-001"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 5,
+        "chars": 14780,
+        "tokens": 3372,
+        "redundancy": 0.1134674951542167,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "context_docs": [
+          "S001-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "TKT-2026-0312-114",
+          "S003-ACC-001"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 5,
+        "chars": 14760,
+        "tokens": 3372,
+        "redundancy": 0.1134674951542167,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "context_docs": [
+          "S001-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "TKT-2026-0312-114",
+          "S003-ACC-001"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 5,
+        "chars": 14760,
+        "tokens": 3372,
+        "redundancy": 0.1134674951542167,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "context_docs": [
+          "S001-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "TKT-2026-0312-114",
+          "S003-ACC-001"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 5,
+        "chars": 14760,
+        "tokens": 3372,
+        "redundancy": 0.1134674951542167,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "context_docs": [
+          "S001-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "TKT-2026-0312-114",
+          "S003-ACC-001"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 5,
+        "chars": 14780,
+        "tokens": 3372,
+        "redundancy": 0.1134674951542167,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      }
+    },
+    {
+      "eval_id": "E028",
+      "category": "follow_up",
+      "expected": [
+        "INC-2026-0519"
+      ],
+      "plan": {
+        "intent": "impact",
+        "required_aspects": [],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "is_multi_part": true
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "INC-2026-0716"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 14723,
+        "tokens": 3566,
+        "redundancy": 0.18360060269989684,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "INC-2026-0716"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 14723,
+        "tokens": 3566,
+        "redundancy": 0.18360060269989684,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "INC-2026-0716"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 14703,
+        "tokens": 3566,
+        "redundancy": 0.18360060269989684,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "INC-2026-0716"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 14703,
+        "tokens": 3566,
+        "redundancy": 0.18360060269989684,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "INC-2026-0716"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 14703,
+        "tokens": 3566,
+        "redundancy": 0.18360060269989684,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "INC-2026-0716"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 14723,
+        "tokens": 3566,
+        "redundancy": 0.18360060269989684,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      }
+    },
+    {
+      "eval_id": "E030",
+      "category": "follow_up",
+      "expected": [
+        "PRJ-S004-003"
+      ],
+      "plan": {
+        "intent": "factual_lookup",
+        "required_aspects": [],
+        "evidence_types": [
+          "decision_record"
+        ],
+        "identifiers": [],
+        "is_multi_part": true
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "context_docs": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805"
+        ],
+        "n_context_docs": 3,
+        "n_placed_chunks": 7,
+        "chars": 15556,
+        "tokens": 3571,
+        "redundancy": 0.17070725925832886,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "context_docs": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805"
+        ],
+        "n_context_docs": 3,
+        "n_placed_chunks": 7,
+        "chars": 15556,
+        "tokens": 3571,
+        "redundancy": 0.17070725925832886,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "context_docs": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805"
+        ],
+        "n_context_docs": 3,
+        "n_placed_chunks": 7,
+        "chars": 15544,
+        "tokens": 3571,
+        "redundancy": 0.17070725925832886,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "context_docs": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805"
+        ],
+        "n_context_docs": 3,
+        "n_placed_chunks": 7,
+        "chars": 15544,
+        "tokens": 3571,
+        "redundancy": 0.17070725925832886,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "context_docs": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805"
+        ],
+        "n_context_docs": 3,
+        "n_placed_chunks": 7,
+        "chars": 15544,
+        "tokens": 3571,
+        "redundancy": 0.17070725925832886,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "context_docs": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805"
+        ],
+        "n_context_docs": 3,
+        "n_placed_chunks": 7,
+        "chars": 14630,
+        "tokens": 3386,
+        "redundancy": 0.16747838852089922,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      }
+    },
+    {
+      "eval_id": "E032",
+      "category": "follow_up",
+      "expected": [
+        "INC-2026-0903"
+      ],
+      "plan": {
+        "intent": "factual_lookup",
+        "required_aspects": [],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "is_multi_part": false
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 14159,
+        "tokens": 3218,
+        "redundancy": 0.16192248520010244,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 14159,
+        "tokens": 3218,
+        "redundancy": 0.16192248520010244,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 14139,
+        "tokens": 3218,
+        "redundancy": 0.16192248520010244,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 14139,
+        "tokens": 3218,
+        "redundancy": 0.16192248520010244,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 14139,
+        "tokens": 3218,
+        "redundancy": 0.16192248520010244,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 13740,
+        "tokens": 3172,
+        "redundancy": 0.14592172664518874,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      }
+    },
+    {
+      "eval_id": "E044",
+      "category": "mixed_access",
+      "expected": [
+        "INC-2026-0519",
+        "INC-2026-0716"
+      ],
+      "plan": {
+        "intent": "factual_lookup",
+        "required_aspects": [],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "is_multi_part": true
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0519",
+          "INC-2026-0716",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "ORG-001"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 14621,
+        "tokens": 3410,
+        "redundancy": 0.10232847348405924,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0519",
+          "INC-2026-0716",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "ORG-001"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 14621,
+        "tokens": 3410,
+        "redundancy": 0.10232847348405924,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0519",
+          "INC-2026-0716",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "ORG-001"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 14601,
+        "tokens": 3410,
+        "redundancy": 0.10232847348405924,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0519",
+          "INC-2026-0716",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "ORG-001"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 14601,
+        "tokens": 3410,
+        "redundancy": 0.10232847348405924,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0519",
+          "INC-2026-0716",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "ORG-001"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 6,
+        "chars": 14601,
+        "tokens": 3410,
+        "redundancy": 0.10232847348405924,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0519",
+          "INC-2026-0716",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "ORG-001"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15537,
+        "tokens": 3816,
+        "redundancy": 0.09889677186405045,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      }
+    },
+    {
+      "eval_id": "E046",
+      "category": "mixed_access",
+      "expected": [
+        "INC-2026-0805"
+      ],
+      "plan": {
+        "intent": "explanation",
+        "required_aspects": [],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "is_multi_part": true
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0805",
+          "PRJ-S004-003",
+          "PRJ-S004-002"
+        ],
+        "n_context_docs": 3,
+        "n_placed_chunks": 7,
+        "chars": 14160,
+        "tokens": 3221,
+        "redundancy": 0.1662812979557064,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0805",
+          "PRJ-S004-003",
+          "PRJ-S004-002"
+        ],
+        "n_context_docs": 3,
+        "n_placed_chunks": 7,
+        "chars": 14160,
+        "tokens": 3221,
+        "redundancy": 0.1662812979557064,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0805",
+          "PRJ-S004-003",
+          "PRJ-S004-002"
+        ],
+        "n_context_docs": 3,
+        "n_placed_chunks": 7,
+        "chars": 14148,
+        "tokens": 3221,
+        "redundancy": 0.1662812979557064,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0805",
+          "PRJ-S004-003",
+          "PRJ-S004-002"
+        ],
+        "n_context_docs": 3,
+        "n_placed_chunks": 7,
+        "chars": 14148,
+        "tokens": 3221,
+        "redundancy": 0.1662812979557064,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0805",
+          "PRJ-S004-003",
+          "PRJ-S004-002"
+        ],
+        "n_context_docs": 3,
+        "n_placed_chunks": 7,
+        "chars": 14148,
+        "tokens": 3221,
+        "redundancy": 0.1662812979557064,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "context_docs": [
+          "INC-2026-0805",
+          "PRJ-S004-003",
+          "PRJ-S004-002"
+        ],
+        "n_context_docs": 3,
+        "n_placed_chunks": 7,
+        "chars": 14160,
+        "tokens": 3221,
+        "redundancy": 0.1662812979557064,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      }
+    },
+    {
+      "eval_id": "E048",
+      "category": "mixed_access",
+      "expected": [
+        "TKT-2026-0224-091",
+        "TKT-2026-0312-114",
+        "TKT-2026-0812-308"
+      ],
+      "plan": {
+        "intent": "factual_lookup",
+        "required_aspects": [],
+        "evidence_types": [
+          "account_overview"
+        ],
+        "identifiers": [],
+        "is_multi_part": true
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "context_docs": [
+          "TKT-2026-0812-308",
+          "TKT-2026-0224-091",
+          "TKT-2026-0312-114",
+          "ORG-001",
+          "CALL-2026-0313-018"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15847,
+        "tokens": 3739,
+        "redundancy": 0.12783040239921503,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "context_docs": [
+          "TKT-2026-0812-308",
+          "TKT-2026-0224-091",
+          "TKT-2026-0312-114",
+          "ORG-001",
+          "CALL-2026-0313-018"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15847,
+        "tokens": 3739,
+        "redundancy": 0.12783040239921503,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "context_docs": [
+          "TKT-2026-0812-308",
+          "TKT-2026-0224-091",
+          "TKT-2026-0312-114",
+          "ORG-001",
+          "CALL-2026-0313-018"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15827,
+        "tokens": 3739,
+        "redundancy": 0.12783040239921503,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "context_docs": [
+          "TKT-2026-0812-308",
+          "TKT-2026-0224-091",
+          "TKT-2026-0312-114",
+          "ORG-001",
+          "CALL-2026-0313-018"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15827,
+        "tokens": 3739,
+        "redundancy": 0.12783040239921503,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "context_docs": [
+          "TKT-2026-0812-308",
+          "TKT-2026-0224-091",
+          "TKT-2026-0312-114",
+          "ORG-001",
+          "CALL-2026-0313-018"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15827,
+        "tokens": 3739,
+        "redundancy": 0.12783040239921503,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "context_docs": [
+          "TKT-2026-0812-308",
+          "TKT-2026-0224-091",
+          "TKT-2026-0312-114",
+          "ORG-001",
+          "CALL-2026-0313-018"
+        ],
+        "n_context_docs": 5,
+        "n_placed_chunks": 7,
+        "chars": 15847,
+        "tokens": 3739,
+        "redundancy": 0.12783040239921503,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      }
+    },
+    {
+      "eval_id": "E050",
+      "category": "policy_governance",
+      "expected": [
+        "POL-SEC-002"
+      ],
+      "plan": {
+        "intent": "policy",
+        "required_aspects": [
+          "policy_requirement"
+        ],
+        "evidence_types": [
+          "policy"
+        ],
+        "identifiers": [],
+        "is_multi_part": false
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "context_docs": [
+          "POL-SEC-002",
+          "POL-IT-002"
+        ],
+        "n_context_docs": 2,
+        "n_placed_chunks": 4,
+        "chars": 10592,
+        "tokens": 2164,
+        "redundancy": 0.1671578357592309,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "context_docs": [
+          "POL-SEC-002",
+          "POL-IT-002"
+        ],
+        "n_context_docs": 2,
+        "n_placed_chunks": 4,
+        "chars": 10592,
+        "tokens": 2164,
+        "redundancy": 0.1671578357592309,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "context_docs": [
+          "POL-SEC-002",
+          "POL-IT-002"
+        ],
+        "n_context_docs": 2,
+        "n_placed_chunks": 4,
+        "chars": 10584,
+        "tokens": 2164,
+        "redundancy": 0.1671578357592309,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "context_docs": [
+          "POL-SEC-002",
+          "POL-IT-002"
+        ],
+        "n_context_docs": 2,
+        "n_placed_chunks": 4,
+        "chars": 10584,
+        "tokens": 2164,
+        "redundancy": 0.1671578357592309,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "context_docs": [
+          "POL-SEC-002",
+          "POL-IT-002"
+        ],
+        "n_context_docs": 2,
+        "n_placed_chunks": 4,
+        "chars": 10584,
+        "tokens": 2164,
+        "redundancy": 0.1671578357592309,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "context_docs": [
+          "POL-SEC-002",
+          "POL-IT-002"
+        ],
+        "n_context_docs": 2,
+        "n_placed_chunks": 4,
+        "chars": 10592,
+        "tokens": 2164,
+        "redundancy": 0.1671578357592309,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      }
+    },
+    {
+      "eval_id": "E052",
+      "category": "policy_governance",
+      "expected": [
+        "POL-SEC-001"
+      ],
+      "plan": {
+        "intent": "policy",
+        "required_aspects": [
+          "policy_requirement"
+        ],
+        "evidence_types": [
+          "runbook"
+        ],
+        "identifiers": [],
+        "is_multi_part": true
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "context_docs": [
+          "POL-SEC-001"
+        ],
+        "n_context_docs": 1,
+        "n_placed_chunks": 2,
+        "chars": 4825,
+        "tokens": 976,
+        "redundancy": 0.20155038759689922,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "context_docs": [
+          "POL-SEC-001"
+        ],
+        "n_context_docs": 1,
+        "n_placed_chunks": 2,
+        "chars": 4825,
+        "tokens": 976,
+        "redundancy": 0.20155038759689922,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "context_docs": [
+          "POL-SEC-001"
+        ],
+        "n_context_docs": 1,
+        "n_placed_chunks": 2,
+        "chars": 4821,
+        "tokens": 976,
+        "redundancy": 0.20155038759689922,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "context_docs": [
+          "POL-SEC-001"
+        ],
+        "n_context_docs": 1,
+        "n_placed_chunks": 2,
+        "chars": 4821,
+        "tokens": 976,
+        "redundancy": 0.20155038759689922,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "context_docs": [
+          "POL-SEC-001"
+        ],
+        "n_context_docs": 1,
+        "n_placed_chunks": 2,
+        "chars": 4821,
+        "tokens": 976,
+        "redundancy": 0.20155038759689922,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "context_docs": [
+          "POL-SEC-001"
+        ],
+        "n_context_docs": 1,
+        "n_placed_chunks": 2,
+        "chars": 4825,
+        "tokens": 976,
+        "redundancy": 0.20155038759689922,
+        "aspect_coverage": 1.0,
+        "dropped_documents": []
+      }
+    },
+    {
+      "eval_id": "E054",
+      "category": "ambiguous",
+      "expected": [
+        "OPS-RB-002"
+      ],
+      "plan": {
+        "intent": "procedure",
+        "required_aspects": [],
+        "evidence_types": [
+          "runbook"
+        ],
+        "identifiers": [],
+        "is_multi_part": false
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 0.3333333333333333,
+        "context_docs": [
+          "INC-2026-0716",
+          "OPS-RB-006",
+          "OPS-RB-002",
+          "INC-2026-0519"
+        ],
+        "n_context_docs": 4,
+        "n_placed_chunks": 5,
+        "chars": 13324,
+        "tokens": 2884,
+        "redundancy": 0.08301145636241072,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "grouped": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 0.3333333333333333,
+        "context_docs": [
+          "INC-2026-0716",
+          "OPS-RB-006",
+          "OPS-RB-002",
+          "INC-2026-0519"
+        ],
+        "n_context_docs": 4,
+        "n_placed_chunks": 5,
+        "chars": 13324,
+        "tokens": 2884,
+        "redundancy": 0.08301145636241072,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "metadata_dedup": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 0.3333333333333333,
+        "context_docs": [
+          "INC-2026-0716",
+          "OPS-RB-006",
+          "OPS-RB-002",
+          "INC-2026-0519"
+        ],
+        "n_context_docs": 4,
+        "n_placed_chunks": 5,
+        "chars": 13308,
+        "tokens": 2884,
+        "redundancy": 0.08301145636241072,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "ordering": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 0.3333333333333333,
+        "context_docs": [
+          "INC-2026-0716",
+          "OPS-RB-006",
+          "OPS-RB-002",
+          "INC-2026-0519"
+        ],
+        "n_context_docs": 4,
+        "n_placed_chunks": 5,
+        "chars": 13308,
+        "tokens": 2884,
+        "redundancy": 0.08301145636241072,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "redundancy": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 0.3333333333333333,
+        "context_docs": [
+          "INC-2026-0716",
+          "OPS-RB-006",
+          "OPS-RB-002",
+          "INC-2026-0519"
+        ],
+        "n_context_docs": 4,
+        "n_placed_chunks": 5,
+        "chars": 13308,
+        "tokens": 2884,
+        "redundancy": 0.08301145636241072,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      },
+      "final": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 0.3333333333333333,
+        "context_docs": [
+          "INC-2026-0716",
+          "OPS-RB-006",
+          "OPS-RB-002",
+          "INC-2026-0519"
+        ],
+        "n_context_docs": 4,
+        "n_placed_chunks": 5,
+        "chars": 13324,
+        "tokens": 2884,
+        "redundancy": 0.08301145636241072,
+        "aspect_coverage": null,
+        "dropped_documents": []
+      }
+    }
+  ]
+}

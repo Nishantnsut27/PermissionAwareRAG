@@ -1,0 +1,8487 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-24T11:33:42+00:00",
+  "candidate_pool": 20,
+  "rerank_threshold": 0.2,
+  "summary": {
+    "scored_cases": 45,
+    "weights": {
+      "total": 0.06,
+      "aspect": 0.4,
+      "event": 0.25,
+      "intent": 0.15,
+      "evidence": 0.12,
+      "seller": 0.08
+    },
+    "baseline": {
+      "recall": 0.9556,
+      "precision": 0.4156,
+      "mrr": 0.8674,
+      "mean_selected_chunks": 7.6444
+    },
+    "intent": {
+      "recall": 0.9444,
+      "precision": 0.4111,
+      "mrr": 0.8804,
+      "mean_selected_chunks": 7.7778
+    },
+    "aspects": {
+      "recall": 0.9556,
+      "precision": 0.4096,
+      "mrr": 0.8767,
+      "mean_selected_chunks": 7.8
+    },
+    "event": {
+      "recall": 0.9556,
+      "precision": 0.4119,
+      "mrr": 0.8674,
+      "mean_selected_chunks": 7.7111
+    },
+    "evidence": {
+      "recall": 0.9741,
+      "precision": 0.4285,
+      "mrr": 0.9081,
+      "mean_selected_chunks": 7.8
+    },
+    "seller": {
+      "recall": 0.9556,
+      "precision": 0.4156,
+      "mrr": 0.8785,
+      "mean_selected_chunks": 7.8889
+    },
+    "combined": {
+      "recall": 0.9556,
+      "precision": 0.4115,
+      "mrr": 0.9044,
+      "mean_selected_chunks": 7.9111
+    },
+    "combined_hints": {
+      "recall": 0.9333,
+      "precision": 0.4089,
+      "mrr": 0.8859,
+      "mean_selected_chunks": 8.0667
+    },
+    "per_query": {
+      "intent": {
+        "improved": [
+          {
+            "eval_id": "E014",
+            "category": "multi_document",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.4,
+              0.4
+            ],
+            "mrr": [
+              0.25,
+              0.5
+            ],
+            "gold_ranks": [
+              {
+                "INC-2026-0716": 4,
+                "POL-BIZ-004": 5
+              },
+              {
+                "INC-2026-0716": 5,
+                "POL-BIZ-004": 2
+              }
+            ],
+            "plan": {
+              "intent": "policy",
+              "required_aspects": [
+                "policy_requirement"
+              ],
+              "evidence_types": [
+                "policy"
+              ],
+              "identifiers": [
+                "S002"
+              ],
+              "seller_scope": [
+                "S002"
+              ]
+            }
+          },
+          {
+            "eval_id": "E053",
+            "category": "ambiguous",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.25,
+              0.25
+            ],
+            "mrr": [
+              0.5,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "INC-2026-0519": 2
+              },
+              {
+                "INC-2026-0519": 1
+              }
+            ],
+            "plan": {
+              "intent": "root_cause",
+              "required_aspects": [
+                "cause"
+              ],
+              "evidence_types": [
+                "incident_report"
+              ],
+              "identifiers": [],
+              "seller_scope": []
+            }
+          },
+          {
+            "eval_id": "E054",
+            "category": "ambiguous",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.25,
+              0.25
+            ],
+            "mrr": [
+              0.25,
+              0.3333
+            ],
+            "gold_ranks": [
+              {
+                "OPS-RB-002": 4
+              },
+              {
+                "OPS-RB-002": 3
+              }
+            ],
+            "plan": {
+              "intent": "procedure",
+              "required_aspects": [],
+              "evidence_types": [
+                "runbook"
+              ],
+              "identifiers": [],
+              "seller_scope": []
+            }
+          }
+        ],
+        "regressed": [
+          {
+            "eval_id": "E001",
+            "category": "authorized_factual",
+            "recall": [
+              1.0,
+              0.5
+            ],
+            "precision": [
+              0.4,
+              0.2
+            ],
+            "mrr": [
+              0.5,
+              0.5
+            ],
+            "gold_ranks": [
+              {
+                "TKT-2026-0312-114": 2,
+                "PRJ-S001-003": 5
+              },
+              {
+                "TKT-2026-0312-114": 2,
+                "PRJ-S001-003": null
+              }
+            ],
+            "plan": {
+              "intent": "root_cause",
+              "required_aspects": [
+                "cause",
+                "financial_impact"
+              ],
+              "evidence_types": [
+                "account_overview"
+              ],
+              "identifiers": [],
+              "seller_scope": [
+                "S001"
+              ]
+            },
+            "reason": "recall"
+          },
+          {
+            "eval_id": "E043",
+            "category": "mixed_access",
+            "recall": [
+              0.5,
+              0.5
+            ],
+            "precision": [
+              0.2,
+              0.2
+            ],
+            "mrr": [
+              0.3333,
+              0.25
+            ],
+            "gold_ranks": [
+              {
+                "TKT-2026-0312-114": 3,
+                "PRJ-S001-003": null
+              },
+              {
+                "TKT-2026-0312-114": 4,
+                "PRJ-S001-003": null
+              }
+            ],
+            "plan": {
+              "intent": "comparison",
+              "required_aspects": [],
+              "evidence_types": [
+                "account_overview"
+              ],
+              "identifiers": [],
+              "seller_scope": [
+                "S001",
+                "S002"
+              ]
+            },
+            "reason": "precision/mrr"
+          },
+          {
+            "eval_id": "E046",
+            "category": "mixed_access",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.3333,
+              0.3333
+            ],
+            "mrr": [
+              0.5,
+              0.3333
+            ],
+            "gold_ranks": [
+              {
+                "INC-2026-0805": 2
+              },
+              {
+                "INC-2026-0805": 3
+              }
+            ],
+            "plan": {
+              "intent": "explanation",
+              "required_aspects": [],
+              "evidence_types": [
+                "incident_report"
+              ],
+              "identifiers": [],
+              "seller_scope": [
+                "S003",
+                "S004"
+              ]
+            },
+            "reason": "precision/mrr"
+          }
+        ],
+        "unchanged_count": 39
+      },
+      "aspects": {
+        "improved": [
+          {
+            "eval_id": "E014",
+            "category": "multi_document",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.4,
+              0.4
+            ],
+            "mrr": [
+              0.25,
+              0.3333
+            ],
+            "gold_ranks": [
+              {
+                "INC-2026-0716": 4,
+                "POL-BIZ-004": 5
+              },
+              {
+                "INC-2026-0716": 5,
+                "POL-BIZ-004": 3
+              }
+            ],
+            "plan": {
+              "intent": "policy",
+              "required_aspects": [
+                "policy_requirement"
+              ],
+              "evidence_types": [
+                "policy"
+              ],
+              "identifiers": [
+                "S002"
+              ],
+              "seller_scope": [
+                "S002"
+              ]
+            }
+          },
+          {
+            "eval_id": "E053",
+            "category": "ambiguous",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.25,
+              0.25
+            ],
+            "mrr": [
+              0.5,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "INC-2026-0519": 2
+              },
+              {
+                "INC-2026-0519": 1
+              }
+            ],
+            "plan": {
+              "intent": "root_cause",
+              "required_aspects": [
+                "cause"
+              ],
+              "evidence_types": [
+                "incident_report"
+              ],
+              "identifiers": [],
+              "seller_scope": []
+            }
+          }
+        ],
+        "regressed": [
+          {
+            "eval_id": "E001",
+            "category": "authorized_factual",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.4,
+              0.4
+            ],
+            "mrr": [
+              0.5,
+              0.3333
+            ],
+            "gold_ranks": [
+              {
+                "TKT-2026-0312-114": 2,
+                "PRJ-S001-003": 5
+              },
+              {
+                "TKT-2026-0312-114": 3,
+                "PRJ-S001-003": 5
+              }
+            ],
+            "plan": {
+              "intent": "root_cause",
+              "required_aspects": [
+                "cause",
+                "financial_impact"
+              ],
+              "evidence_types": [
+                "account_overview"
+              ],
+              "identifiers": [],
+              "seller_scope": [
+                "S001"
+              ]
+            },
+            "reason": "precision/mrr"
+          },
+          {
+            "eval_id": "E008",
+            "category": "authorized_factual",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.6667,
+              0.5
+            ],
+            "mrr": [
+              1.0,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "PRJ-S004-003": 1,
+                "PRJ-S004-002": 2
+              },
+              {
+                "PRJ-S004-003": 1,
+                "PRJ-S004-002": 2
+              }
+            ],
+            "plan": {
+              "intent": "root_cause",
+              "required_aspects": [
+                "cause"
+              ],
+              "evidence_types": [
+                "support_ticket"
+              ],
+              "identifiers": [],
+              "seller_scope": [
+                "S004"
+              ]
+            },
+            "reason": "precision/mrr"
+          },
+          {
+            "eval_id": "E015",
+            "category": "multi_document",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.5,
+              0.4
+            ],
+            "mrr": [
+              1.0,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "POL-OPS-006": 4,
+                "PRJ-S004-003": 1
+              },
+              {
+                "POL-OPS-006": 4,
+                "PRJ-S004-003": 1
+              }
+            ],
+            "plan": {
+              "intent": "root_cause",
+              "required_aspects": [
+                "cause"
+              ],
+              "evidence_types": [
+                "decision_record"
+              ],
+              "identifiers": [
+                "S004"
+              ],
+              "seller_scope": [
+                "S004"
+              ]
+            },
+            "reason": "precision/mrr"
+          }
+        ],
+        "unchanged_count": 40
+      },
+      "event": {
+        "improved": [],
+        "regressed": [
+          {
+            "eval_id": "E008",
+            "category": "authorized_factual",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.6667,
+              0.5
+            ],
+            "mrr": [
+              1.0,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "PRJ-S004-003": 1,
+                "PRJ-S004-002": 2
+              },
+              {
+                "PRJ-S004-003": 1,
+                "PRJ-S004-002": 2
+              }
+            ],
+            "plan": {
+              "intent": "root_cause",
+              "required_aspects": [
+                "cause"
+              ],
+              "evidence_types": [
+                "support_ticket"
+              ],
+              "identifiers": [],
+              "seller_scope": [
+                "S004"
+              ]
+            },
+            "reason": "precision/mrr"
+          }
+        ],
+        "unchanged_count": 44
+      },
+      "evidence": {
+        "improved": [
+          {
+            "eval_id": "E014",
+            "category": "multi_document",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.4,
+              0.4
+            ],
+            "mrr": [
+              0.25,
+              0.5
+            ],
+            "gold_ranks": [
+              {
+                "INC-2026-0716": 4,
+                "POL-BIZ-004": 5
+              },
+              {
+                "INC-2026-0716": 5,
+                "POL-BIZ-004": 2
+              }
+            ],
+            "plan": {
+              "intent": "policy",
+              "required_aspects": [
+                "policy_requirement"
+              ],
+              "evidence_types": [
+                "policy"
+              ],
+              "identifiers": [
+                "S002"
+              ],
+              "seller_scope": [
+                "S002"
+              ]
+            }
+          },
+          {
+            "eval_id": "E021",
+            "category": "cross_seller",
+            "recall": [
+              0.5,
+              1.0
+            ],
+            "precision": [
+              0.2,
+              0.4
+            ],
+            "mrr": [
+              1.0,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "INC-2026-0312": null,
+                "INC-2026-0519": 1
+              },
+              {
+                "INC-2026-0312": 5,
+                "INC-2026-0519": 1
+              }
+            ],
+            "plan": {
+              "intent": "comparison",
+              "required_aspects": [],
+              "evidence_types": [
+                "incident_report"
+              ],
+              "identifiers": [
+                "S001",
+                "S002"
+              ],
+              "seller_scope": [
+                "S001",
+                "S002"
+              ]
+            }
+          },
+          {
+            "eval_id": "E022",
+            "category": "cross_seller",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.4,
+              0.5
+            ],
+            "mrr": [
+              1.0,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "S001-ACC-001": 1,
+                "S003-ACC-001": 3
+              },
+              {
+                "S001-ACC-001": 1,
+                "S003-ACC-001": 2
+              }
+            ],
+            "plan": {
+              "intent": "comparison",
+              "required_aspects": [],
+              "evidence_types": [
+                "account_overview"
+              ],
+              "identifiers": [],
+              "seller_scope": [
+                "S001",
+                "S003"
+              ]
+            }
+          },
+          {
+            "eval_id": "E024",
+            "category": "cross_seller",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.4,
+              0.4
+            ],
+            "mrr": [
+              0.5,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "INC-2026-0812": 3,
+                "INC-2026-0716": 2
+              },
+              {
+                "INC-2026-0812": 3,
+                "INC-2026-0716": 1
+              }
+            ],
+            "plan": {
+              "intent": "comparison",
+              "required_aspects": [],
+              "evidence_types": [
+                "incident_report"
+              ],
+              "identifiers": [
+                "S001",
+                "S002"
+              ],
+              "seller_scope": [
+                "S001",
+                "S002",
+                "ORG"
+              ]
+            }
+          },
+          {
+            "eval_id": "E025",
+            "category": "cross_seller",
+            "recall": [
+              0.3333333333333333,
+              0.6666666666666666
+            ],
+            "precision": [
+              0.2,
+              0.4
+            ],
+            "mrr": [
+              0.5,
+              0.5
+            ],
+            "gold_ranks": [
+              {
+                "INC-2026-0519": null,
+                "INC-2026-0805": 2,
+                "INC-2026-0312": null
+              },
+              {
+                "INC-2026-0519": 4,
+                "INC-2026-0805": 2,
+                "INC-2026-0312": null
+              }
+            ],
+            "plan": {
+              "intent": "factual_lookup",
+              "required_aspects": [
+                "cause"
+              ],
+              "evidence_types": [
+                "incident_report"
+              ],
+              "identifiers": [],
+              "seller_scope": [
+                "ORG"
+              ]
+            }
+          },
+          {
+            "eval_id": "E030",
+            "category": "follow_up",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.25,
+              0.3333
+            ],
+            "mrr": [
+              1.0,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "PRJ-S004-003": 1
+              },
+              {
+                "PRJ-S004-003": 1
+              }
+            ],
+            "plan": {
+              "intent": "factual_lookup",
+              "required_aspects": [],
+              "evidence_types": [
+                "decision_record"
+              ],
+              "identifiers": [],
+              "seller_scope": []
+            }
+          },
+          {
+            "eval_id": "E046",
+            "category": "mixed_access",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.3333,
+              0.3333
+            ],
+            "mrr": [
+              0.5,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "INC-2026-0805": 2
+              },
+              {
+                "INC-2026-0805": 1
+              }
+            ],
+            "plan": {
+              "intent": "explanation",
+              "required_aspects": [],
+              "evidence_types": [
+                "incident_report"
+              ],
+              "identifiers": [],
+              "seller_scope": [
+                "S003",
+                "S004"
+              ]
+            }
+          },
+          {
+            "eval_id": "E053",
+            "category": "ambiguous",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.25,
+              0.25
+            ],
+            "mrr": [
+              0.5,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "INC-2026-0519": 2
+              },
+              {
+                "INC-2026-0519": 1
+              }
+            ],
+            "plan": {
+              "intent": "root_cause",
+              "required_aspects": [
+                "cause"
+              ],
+              "evidence_types": [
+                "incident_report"
+              ],
+              "identifiers": [],
+              "seller_scope": []
+            }
+          },
+          {
+            "eval_id": "E054",
+            "category": "ambiguous",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.25,
+              0.25
+            ],
+            "mrr": [
+              0.25,
+              0.3333
+            ],
+            "gold_ranks": [
+              {
+                "OPS-RB-002": 4
+              },
+              {
+                "OPS-RB-002": 3
+              }
+            ],
+            "plan": {
+              "intent": "procedure",
+              "required_aspects": [],
+              "evidence_types": [
+                "runbook"
+              ],
+              "identifiers": [],
+              "seller_scope": []
+            }
+          }
+        ],
+        "regressed": [],
+        "unchanged_count": 36
+      },
+      "seller": {
+        "improved": [
+          {
+            "eval_id": "E024",
+            "category": "cross_seller",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.4,
+              0.4
+            ],
+            "mrr": [
+              0.5,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "INC-2026-0812": 3,
+                "INC-2026-0716": 2
+              },
+              {
+                "INC-2026-0812": 3,
+                "INC-2026-0716": 1
+              }
+            ],
+            "plan": {
+              "intent": "comparison",
+              "required_aspects": [],
+              "evidence_types": [
+                "incident_report"
+              ],
+              "identifiers": [
+                "S001",
+                "S002"
+              ],
+              "seller_scope": [
+                "S001",
+                "S002",
+                "ORG"
+              ]
+            }
+          }
+        ],
+        "regressed": [],
+        "unchanged_count": 44
+      },
+      "combined": {
+        "improved": [
+          {
+            "eval_id": "E014",
+            "category": "multi_document",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.4,
+              0.4
+            ],
+            "mrr": [
+              0.25,
+              0.3333
+            ],
+            "gold_ranks": [
+              {
+                "INC-2026-0716": 4,
+                "POL-BIZ-004": 5
+              },
+              {
+                "INC-2026-0716": 5,
+                "POL-BIZ-004": 3
+              }
+            ],
+            "plan": {
+              "intent": "policy",
+              "required_aspects": [
+                "policy_requirement"
+              ],
+              "evidence_types": [
+                "policy"
+              ],
+              "identifiers": [
+                "S002"
+              ],
+              "seller_scope": [
+                "S002"
+              ]
+            }
+          },
+          {
+            "eval_id": "E024",
+            "category": "cross_seller",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.4,
+              0.4
+            ],
+            "mrr": [
+              0.5,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "INC-2026-0812": 3,
+                "INC-2026-0716": 2
+              },
+              {
+                "INC-2026-0812": 3,
+                "INC-2026-0716": 1
+              }
+            ],
+            "plan": {
+              "intent": "comparison",
+              "required_aspects": [],
+              "evidence_types": [
+                "incident_report"
+              ],
+              "identifiers": [
+                "S001",
+                "S002"
+              ],
+              "seller_scope": [
+                "S001",
+                "S002",
+                "ORG"
+              ]
+            }
+          },
+          {
+            "eval_id": "E030",
+            "category": "follow_up",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.25,
+              0.3333
+            ],
+            "mrr": [
+              1.0,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "PRJ-S004-003": 1
+              },
+              {
+                "PRJ-S004-003": 1
+              }
+            ],
+            "plan": {
+              "intent": "factual_lookup",
+              "required_aspects": [],
+              "evidence_types": [
+                "decision_record"
+              ],
+              "identifiers": [],
+              "seller_scope": []
+            }
+          },
+          {
+            "eval_id": "E046",
+            "category": "mixed_access",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.3333,
+              0.3333
+            ],
+            "mrr": [
+              0.5,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "INC-2026-0805": 2
+              },
+              {
+                "INC-2026-0805": 1
+              }
+            ],
+            "plan": {
+              "intent": "explanation",
+              "required_aspects": [],
+              "evidence_types": [
+                "incident_report"
+              ],
+              "identifiers": [],
+              "seller_scope": [
+                "S003",
+                "S004"
+              ]
+            }
+          },
+          {
+            "eval_id": "E053",
+            "category": "ambiguous",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.25,
+              0.25
+            ],
+            "mrr": [
+              0.5,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "INC-2026-0519": 2
+              },
+              {
+                "INC-2026-0519": 1
+              }
+            ],
+            "plan": {
+              "intent": "root_cause",
+              "required_aspects": [
+                "cause"
+              ],
+              "evidence_types": [
+                "incident_report"
+              ],
+              "identifiers": [],
+              "seller_scope": []
+            }
+          },
+          {
+            "eval_id": "E054",
+            "category": "ambiguous",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.25,
+              0.25
+            ],
+            "mrr": [
+              0.25,
+              0.3333
+            ],
+            "gold_ranks": [
+              {
+                "OPS-RB-002": 4
+              },
+              {
+                "OPS-RB-002": 3
+              }
+            ],
+            "plan": {
+              "intent": "procedure",
+              "required_aspects": [],
+              "evidence_types": [
+                "runbook"
+              ],
+              "identifiers": [],
+              "seller_scope": []
+            }
+          }
+        ],
+        "regressed": [
+          {
+            "eval_id": "E008",
+            "category": "authorized_factual",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.6667,
+              0.5
+            ],
+            "mrr": [
+              1.0,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "PRJ-S004-003": 1,
+                "PRJ-S004-002": 2
+              },
+              {
+                "PRJ-S004-003": 1,
+                "PRJ-S004-002": 2
+              }
+            ],
+            "plan": {
+              "intent": "root_cause",
+              "required_aspects": [
+                "cause"
+              ],
+              "evidence_types": [
+                "support_ticket"
+              ],
+              "identifiers": [],
+              "seller_scope": [
+                "S004"
+              ]
+            },
+            "reason": "precision/mrr"
+          },
+          {
+            "eval_id": "E015",
+            "category": "multi_document",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.5,
+              0.4
+            ],
+            "mrr": [
+              1.0,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "POL-OPS-006": 4,
+                "PRJ-S004-003": 1
+              },
+              {
+                "POL-OPS-006": 4,
+                "PRJ-S004-003": 1
+              }
+            ],
+            "plan": {
+              "intent": "root_cause",
+              "required_aspects": [
+                "cause"
+              ],
+              "evidence_types": [
+                "decision_record"
+              ],
+              "identifiers": [
+                "S004"
+              ],
+              "seller_scope": [
+                "S004"
+              ]
+            },
+            "reason": "precision/mrr"
+          }
+        ],
+        "unchanged_count": 37
+      },
+      "combined_hints": {
+        "improved": [
+          {
+            "eval_id": "E014",
+            "category": "multi_document",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.4,
+              0.4
+            ],
+            "mrr": [
+              0.25,
+              0.5
+            ],
+            "gold_ranks": [
+              {
+                "INC-2026-0716": 4,
+                "POL-BIZ-004": 5
+              },
+              {
+                "INC-2026-0716": 5,
+                "POL-BIZ-004": 2
+              }
+            ],
+            "plan": {
+              "intent": "policy",
+              "required_aspects": [
+                "policy_requirement"
+              ],
+              "evidence_types": [
+                "policy"
+              ],
+              "identifiers": [
+                "S002"
+              ],
+              "seller_scope": [
+                "S002"
+              ]
+            }
+          },
+          {
+            "eval_id": "E021",
+            "category": "cross_seller",
+            "recall": [
+              0.5,
+              1.0
+            ],
+            "precision": [
+              0.2,
+              0.4
+            ],
+            "mrr": [
+              1.0,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "INC-2026-0312": null,
+                "INC-2026-0519": 1
+              },
+              {
+                "INC-2026-0312": 5,
+                "INC-2026-0519": 1
+              }
+            ],
+            "plan": {
+              "intent": "comparison",
+              "required_aspects": [],
+              "evidence_types": [
+                "incident_report"
+              ],
+              "identifiers": [
+                "S001",
+                "S002"
+              ],
+              "seller_scope": [
+                "S001",
+                "S002"
+              ]
+            }
+          },
+          {
+            "eval_id": "E022",
+            "category": "cross_seller",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.4,
+              0.5
+            ],
+            "mrr": [
+              1.0,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "S001-ACC-001": 1,
+                "S003-ACC-001": 3
+              },
+              {
+                "S001-ACC-001": 1,
+                "S003-ACC-001": 2
+              }
+            ],
+            "plan": {
+              "intent": "comparison",
+              "required_aspects": [],
+              "evidence_types": [
+                "account_overview"
+              ],
+              "identifiers": [],
+              "seller_scope": [
+                "S001",
+                "S003"
+              ]
+            }
+          },
+          {
+            "eval_id": "E024",
+            "category": "cross_seller",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.4,
+              0.4
+            ],
+            "mrr": [
+              0.5,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "INC-2026-0812": 3,
+                "INC-2026-0716": 2
+              },
+              {
+                "INC-2026-0812": 3,
+                "INC-2026-0716": 1
+              }
+            ],
+            "plan": {
+              "intent": "comparison",
+              "required_aspects": [],
+              "evidence_types": [
+                "incident_report"
+              ],
+              "identifiers": [
+                "S001",
+                "S002"
+              ],
+              "seller_scope": [
+                "S001",
+                "S002",
+                "ORG"
+              ]
+            }
+          },
+          {
+            "eval_id": "E030",
+            "category": "follow_up",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.25,
+              0.3333
+            ],
+            "mrr": [
+              1.0,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "PRJ-S004-003": 1
+              },
+              {
+                "PRJ-S004-003": 1
+              }
+            ],
+            "plan": {
+              "intent": "factual_lookup",
+              "required_aspects": [],
+              "evidence_types": [
+                "decision_record"
+              ],
+              "identifiers": [],
+              "seller_scope": []
+            }
+          },
+          {
+            "eval_id": "E046",
+            "category": "mixed_access",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.3333,
+              0.25
+            ],
+            "mrr": [
+              0.5,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "INC-2026-0805": 2
+              },
+              {
+                "INC-2026-0805": 1
+              }
+            ],
+            "plan": {
+              "intent": "explanation",
+              "required_aspects": [],
+              "evidence_types": [
+                "incident_report"
+              ],
+              "identifiers": [],
+              "seller_scope": [
+                "S003",
+                "S004"
+              ]
+            }
+          },
+          {
+            "eval_id": "E050",
+            "category": "policy_governance",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.5,
+              1.0
+            ],
+            "mrr": [
+              1.0,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "POL-SEC-002": 1
+              },
+              {
+                "POL-SEC-002": 1
+              }
+            ],
+            "plan": {
+              "intent": "policy",
+              "required_aspects": [
+                "policy_requirement"
+              ],
+              "evidence_types": [
+                "policy"
+              ],
+              "identifiers": [],
+              "seller_scope": []
+            }
+          }
+        ],
+        "regressed": [
+          {
+            "eval_id": "E015",
+            "category": "multi_document",
+            "recall": [
+              1.0,
+              0.5
+            ],
+            "precision": [
+              0.5,
+              0.25
+            ],
+            "mrr": [
+              1.0,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "POL-OPS-006": 4,
+                "PRJ-S004-003": 1
+              },
+              {
+                "POL-OPS-006": null,
+                "PRJ-S004-003": 1
+              }
+            ],
+            "plan": {
+              "intent": "root_cause",
+              "required_aspects": [
+                "cause"
+              ],
+              "evidence_types": [
+                "decision_record"
+              ],
+              "identifiers": [
+                "S004"
+              ],
+              "seller_scope": [
+                "S004"
+              ]
+            },
+            "reason": "recall"
+          },
+          {
+            "eval_id": "E026",
+            "category": "cross_seller",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.4,
+              0.4
+            ],
+            "mrr": [
+              0.5,
+              0.3333
+            ],
+            "gold_ranks": [
+              {
+                "TKT-2026-0312-114": 4,
+                "TKT-2026-0903-336": 2
+              },
+              {
+                "TKT-2026-0312-114": 4,
+                "TKT-2026-0903-336": 3
+              }
+            ],
+            "plan": {
+              "intent": "factual_lookup",
+              "required_aspects": [],
+              "evidence_types": [
+                "incident_report"
+              ],
+              "identifiers": [],
+              "seller_scope": []
+            },
+            "reason": "precision/mrr"
+          },
+          {
+            "eval_id": "E047",
+            "category": "mixed_access",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.25,
+              0.2
+            ],
+            "mrr": [
+              1.0,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "POL-BIZ-004": 1
+              },
+              {
+                "POL-BIZ-004": 1
+              }
+            ],
+            "plan": {
+              "intent": "policy",
+              "required_aspects": [
+                "policy_requirement"
+              ],
+              "evidence_types": [
+                "policy"
+              ],
+              "identifiers": [],
+              "seller_scope": []
+            },
+            "reason": "precision/mrr"
+          },
+          {
+            "eval_id": "E052",
+            "category": "policy_governance",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              1.0,
+              0.5
+            ],
+            "mrr": [
+              1.0,
+              1.0
+            ],
+            "gold_ranks": [
+              {
+                "POL-SEC-001": 1
+              },
+              {
+                "POL-SEC-001": 1
+              }
+            ],
+            "plan": {
+              "intent": "policy",
+              "required_aspects": [
+                "policy_requirement"
+              ],
+              "evidence_types": [
+                "runbook"
+              ],
+              "identifiers": [],
+              "seller_scope": []
+            },
+            "reason": "precision/mrr"
+          },
+          {
+            "eval_id": "E053",
+            "category": "ambiguous",
+            "recall": [
+              1.0,
+              1.0
+            ],
+            "precision": [
+              0.25,
+              0.2
+            ],
+            "mrr": [
+              0.5,
+              0.5
+            ],
+            "gold_ranks": [
+              {
+                "INC-2026-0519": 2
+              },
+              {
+                "INC-2026-0519": 2
+              }
+            ],
+            "plan": {
+              "intent": "root_cause",
+              "required_aspects": [
+                "cause"
+              ],
+              "evidence_types": [
+                "incident_report"
+              ],
+              "identifiers": [],
+              "seller_scope": []
+            },
+            "reason": "precision/mrr"
+          },
+          {
+            "eval_id": "E054",
+            "category": "ambiguous",
+            "recall": [
+              1.0,
+              0.0
+            ],
+            "precision": [
+              0.25,
+              0
+            ],
+            "mrr": [
+              0.25,
+              0
+            ],
+            "gold_ranks": [
+              {
+                "OPS-RB-002": 4
+              },
+              {
+                "OPS-RB-002": null
+              }
+            ],
+            "plan": {
+              "intent": "procedure",
+              "required_aspects": [],
+              "evidence_types": [
+                "runbook"
+              ],
+              "identifiers": [],
+              "seller_scope": []
+            },
+            "reason": "recall"
+          }
+        ],
+        "unchanged_count": 32
+      }
+    },
+    "recall_regressions": {
+      "intent": [
+        "E001"
+      ],
+      "aspects": [],
+      "event": [],
+      "evidence": [],
+      "seller": [],
+      "combined": [],
+      "combined_hints": [
+        "E015",
+        "E054"
+      ]
+    },
+    "cost": {
+      "jina_calls_this_run": 90,
+      "jina_calls_per_case_in_production": 1,
+      "mean_jina_latency_s": 3.177,
+      "max_query_chars": {
+        "plain": 176,
+        "hinted": 229
+      },
+      "mean_hint_added_chars": 36.5
+    }
+  },
+  "rows": [
+    {
+      "eval_id": "E001",
+      "category": "authorized_factual",
+      "expected": [
+        "TKT-2026-0312-114",
+        "PRJ-S001-003"
+      ],
+      "pool_documents": 15,
+      "hint_added_chars": 59,
+      "plan": {
+        "intent": "root_cause",
+        "required_aspects": [
+          "cause",
+          "financial_impact"
+        ],
+        "evidence_types": [
+          "account_overview"
+        ],
+        "identifiers": [],
+        "seller_scope": [
+          "S001"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 2,
+          "PRJ-S001-003": 5
+        }
+      },
+      "intent": {
+        "recall": 0.5,
+        "precision": 0.2,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "CALL-2026-0225-013"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 2,
+          "PRJ-S001-003": null
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.3333333333333333,
+        "documents": [
+          "S001-ACC-001",
+          "CALL-2026-0313-018",
+          "TKT-2026-0312-114",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 3,
+          "PRJ-S001-003": 5
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 2,
+          "PRJ-S001-003": 5
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 2,
+          "PRJ-S001-003": 5
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 2,
+          "PRJ-S001-003": 5
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 2,
+          "PRJ-S001-003": 5
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 2,
+          "PRJ-S001-003": 5
+        }
+      }
+    },
+    {
+      "eval_id": "E002",
+      "category": "authorized_factual",
+      "expected": [
+        "INC-2026-0519",
+        "TKT-2026-0519-207"
+      ],
+      "pool_documents": 9,
+      "hint_added_chars": 40,
+      "plan": {
+        "intent": "root_cause",
+        "required_aspects": [
+          "cause"
+        ],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "seller_scope": [
+          "S002"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "TKT-2026-0519-207": 3
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "TKT-2026-0519-207": 3
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "TKT-2026-0519-207": 3
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "TKT-2026-0519-207": 3
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "INC-2026-0716",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "TKT-2026-0519-207": 4
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "TKT-2026-0519-207": 3
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "TKT-2026-0519-207": 3
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "INC-2026-0716",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "TKT-2026-0519-207": 4
+        }
+      }
+    },
+    {
+      "eval_id": "E003",
+      "category": "authorized_factual",
+      "expected": [
+        "INC-2026-0812",
+        "TKT-2026-0812-308"
+      ],
+      "pool_documents": 11,
+      "hint_added_chars": 40,
+      "plan": {
+        "intent": "root_cause",
+        "required_aspects": [
+          "cause"
+        ],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "seller_scope": []
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1,
+          "TKT-2026-0812-308": 2
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1,
+          "TKT-2026-0812-308": 2
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1,
+          "TKT-2026-0812-308": 2
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1,
+          "TKT-2026-0812-308": 2
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1,
+          "TKT-2026-0812-308": 2
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1,
+          "TKT-2026-0812-308": 2
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1,
+          "TKT-2026-0812-308": 2
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1,
+          "TKT-2026-0812-308": 2
+        }
+      }
+    },
+    {
+      "eval_id": "E004",
+      "category": "authorized_factual",
+      "expected": [
+        "OPS-RB-004"
+      ],
+      "pool_documents": 11,
+      "hint_added_chars": 45,
+      "plan": {
+        "intent": "policy",
+        "required_aspects": [
+          "policy_requirement"
+        ],
+        "evidence_types": [
+          "runbook"
+        ],
+        "identifiers": [],
+        "seller_scope": []
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "OPS-RB-004": 1
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "OPS-RB-004": 1
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "OPS-RB-004": 1
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "OPS-RB-004": 1
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "OPS-RB-004": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "OPS-RB-004": 1
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "OPS-RB-004": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "OPS-RB-004": 1
+        }
+      }
+    },
+    {
+      "eval_id": "E005",
+      "category": "authorized_factual",
+      "expected": [
+        "PRJ-S001-004",
+        "TKT-2026-0224-091"
+      ],
+      "pool_documents": 12,
+      "hint_added_chars": 26,
+      "plan": {
+        "intent": "factual_lookup",
+        "required_aspects": [],
+        "evidence_types": [
+          "decision_record"
+        ],
+        "identifiers": [
+          "S001"
+        ],
+        "seller_scope": [
+          "S001",
+          "ORG"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S001-004",
+          "S001-ACC-001",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "PRJ-S001-004": 1,
+          "TKT-2026-0224-091": 4
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S001-004",
+          "S001-ACC-001",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "PRJ-S001-004": 1,
+          "TKT-2026-0224-091": 4
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S001-004",
+          "S001-ACC-001",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "PRJ-S001-004": 1,
+          "TKT-2026-0224-091": 4
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S001-004",
+          "S001-ACC-001",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "PRJ-S001-004": 1,
+          "TKT-2026-0224-091": 4
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S001-004",
+          "S001-ACC-001",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "PRJ-S001-004": 1,
+          "TKT-2026-0224-091": 4
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S001-004",
+          "S001-ACC-001",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "PRJ-S001-004": 1,
+          "TKT-2026-0224-091": 4
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S001-004",
+          "S001-ACC-001",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "PRJ-S001-004": 1,
+          "TKT-2026-0224-091": 4
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S001-004",
+          "S001-ACC-001",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "PRJ-S001-004": 1,
+          "TKT-2026-0224-091": 4
+        }
+      }
+    },
+    {
+      "eval_id": "E006",
+      "category": "authorized_factual",
+      "expected": [
+        "INC-2026-0716",
+        "TKT-2026-0716-268"
+      ],
+      "pool_documents": 13,
+      "hint_added_chars": 51,
+      "plan": {
+        "intent": "impact",
+        "required_aspects": [
+          "financial_impact"
+        ],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [
+          "S002"
+        ],
+        "seller_scope": [
+          "S002"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0716": 1,
+          "TKT-2026-0716-268": 2
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0716": 1,
+          "TKT-2026-0716-268": 2
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0716": 1,
+          "TKT-2026-0716-268": 2
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0716": 1,
+          "TKT-2026-0716-268": 2
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0716": 1,
+          "TKT-2026-0716-268": 2
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0716": 1,
+          "TKT-2026-0716-268": 2
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0716": 1,
+          "TKT-2026-0716-268": 2
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0716": 1,
+          "TKT-2026-0716-268": 2
+        }
+      }
+    },
+    {
+      "eval_id": "E007",
+      "category": "authorized_factual",
+      "expected": [
+        "INC-2026-0519",
+        "PRJ-S002-003"
+      ],
+      "pool_documents": 9,
+      "hint_added_chars": 26,
+      "plan": {
+        "intent": "factual_lookup",
+        "required_aspects": [],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "seller_scope": [
+          "S002"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "TKT-2026-0602-217",
+          "PRJ-S002-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "PRJ-S002-003": 2
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "TKT-2026-0602-217",
+          "PRJ-S002-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "PRJ-S002-003": 2
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "TKT-2026-0602-217",
+          "PRJ-S002-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "PRJ-S002-003": 2
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "TKT-2026-0602-217",
+          "PRJ-S002-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "PRJ-S002-003": 2
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "TKT-2026-0602-217",
+          "PRJ-S002-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "PRJ-S002-003": 2
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "TKT-2026-0602-217",
+          "PRJ-S002-001"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "PRJ-S002-003": 2
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "TKT-2026-0602-217",
+          "PRJ-S002-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "PRJ-S002-003": 2
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "TKT-2026-0602-217",
+          "PRJ-S002-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "PRJ-S002-003": 2
+        }
+      }
+    },
+    {
+      "eval_id": "E008",
+      "category": "authorized_factual",
+      "expected": [
+        "PRJ-S004-003",
+        "PRJ-S004-002"
+      ],
+      "pool_documents": 9,
+      "hint_added_chars": 39,
+      "plan": {
+        "intent": "root_cause",
+        "required_aspects": [
+          "cause"
+        ],
+        "evidence_types": [
+          "support_ticket"
+        ],
+        "identifiers": [],
+        "seller_scope": [
+          "S004"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "PRJ-S004-003": 1,
+          "PRJ-S004-002": 2
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "PRJ-S004-003": 1,
+          "PRJ-S004-002": 2
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "PRJ-S004-003": 1,
+          "PRJ-S004-002": 2
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "PRJ-S004-003": 1,
+          "PRJ-S004-002": 2
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "PRJ-S004-003": 1,
+          "PRJ-S004-002": 2
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "PRJ-S004-003": 1,
+          "PRJ-S004-002": 2
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "PRJ-S004-003": 1,
+          "PRJ-S004-002": 2
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "PRJ-S004-003": 1,
+          "PRJ-S004-002": 2
+        }
+      }
+    },
+    {
+      "eval_id": "E009",
+      "category": "authorized_factual",
+      "expected": [
+        "PRJ-S003-003",
+        "S003-ACC-001"
+      ],
+      "pool_documents": 12,
+      "hint_added_chars": 44,
+      "plan": {
+        "intent": "factual_lookup",
+        "required_aspects": [],
+        "evidence_types": [
+          "account_overview",
+          "decision_record"
+        ],
+        "identifiers": [],
+        "seller_scope": [
+          "S003"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "S003-ACC-001",
+          "TKT-2026-0115-054",
+          "PRJ-S003-001",
+          "CALL-2026-0116-004"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "PRJ-S003-003": 1,
+          "S003-ACC-001": 2
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "S003-ACC-001",
+          "TKT-2026-0115-054",
+          "PRJ-S003-001",
+          "CALL-2026-0116-004"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "PRJ-S003-003": 1,
+          "S003-ACC-001": 2
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "S003-ACC-001",
+          "TKT-2026-0115-054",
+          "PRJ-S003-001",
+          "CALL-2026-0116-004"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "PRJ-S003-003": 1,
+          "S003-ACC-001": 2
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "S003-ACC-001",
+          "TKT-2026-0115-054",
+          "CALL-2026-0116-004",
+          "PRJ-S003-001"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "PRJ-S003-003": 1,
+          "S003-ACC-001": 2
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "S003-ACC-001",
+          "TKT-2026-0115-054",
+          "PRJ-S003-001",
+          "CALL-2026-0116-004"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "PRJ-S003-003": 1,
+          "S003-ACC-001": 2
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "S003-ACC-001",
+          "TKT-2026-0115-054",
+          "PRJ-S003-001",
+          "CALL-2026-0116-004"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "PRJ-S003-003": 1,
+          "S003-ACC-001": 2
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "S003-ACC-001",
+          "TKT-2026-0115-054",
+          "CALL-2026-0116-004",
+          "PRJ-S003-001"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "PRJ-S003-003": 1,
+          "S003-ACC-001": 2
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "S003-ACC-001",
+          "TKT-2026-0115-054",
+          "PRJ-S003-001",
+          "CALL-2026-0116-004"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "PRJ-S003-003": 1,
+          "S003-ACC-001": 2
+        }
+      }
+    },
+    {
+      "eval_id": "E010",
+      "category": "authorized_factual",
+      "expected": [
+        "INC-2026-0421",
+        "TKT-2026-0421-162"
+      ],
+      "pool_documents": 10,
+      "hint_added_chars": 61,
+      "plan": {
+        "intent": "root_cause",
+        "required_aspects": [
+          "cause",
+          "containment_actions"
+        ],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [
+          "S002"
+        ],
+        "seller_scope": [
+          "S002"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0421",
+          "scenario_overview",
+          "TKT-2026-0421-162",
+          "POL-SEC-001",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0421": 1,
+          "TKT-2026-0421-162": 3
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0421",
+          "scenario_overview",
+          "TKT-2026-0421-162",
+          "POL-SEC-001",
+          "CALL-2026-0422-029"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0421": 1,
+          "TKT-2026-0421-162": 3
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0421",
+          "scenario_overview",
+          "POL-SEC-001",
+          "TKT-2026-0421-162",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "INC-2026-0421": 1,
+          "TKT-2026-0421-162": 4
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0421",
+          "scenario_overview",
+          "TKT-2026-0421-162",
+          "POL-SEC-001",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0421": 1,
+          "TKT-2026-0421-162": 3
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0421",
+          "scenario_overview",
+          "TKT-2026-0421-162",
+          "POL-SEC-001",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0421": 1,
+          "TKT-2026-0421-162": 3
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0421",
+          "scenario_overview",
+          "TKT-2026-0421-162",
+          "POL-SEC-001",
+          "CALL-2026-0422-029"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0421": 1,
+          "TKT-2026-0421-162": 3
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0421",
+          "scenario_overview",
+          "TKT-2026-0421-162",
+          "POL-SEC-001",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "INC-2026-0421": 1,
+          "TKT-2026-0421-162": 3
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0421",
+          "scenario_overview",
+          "TKT-2026-0421-162",
+          "POL-SEC-001",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0421": 1,
+          "TKT-2026-0421-162": 3
+        }
+      }
+    },
+    {
+      "eval_id": "E011",
+      "category": "authorized_factual",
+      "expected": [
+        "TKT-2026-0602-217"
+      ],
+      "pool_documents": 10,
+      "hint_added_chars": 40,
+      "plan": {
+        "intent": "root_cause",
+        "required_aspects": [
+          "cause"
+        ],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "seller_scope": [
+          "S002"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "TKT-2026-0602-217",
+          "PRJ-S002-003"
+        ],
+        "n_selected": 3,
+        "gold_ranks": {
+          "TKT-2026-0602-217": 1
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "TKT-2026-0602-217",
+          "PRJ-S002-003"
+        ],
+        "n_selected": 3,
+        "gold_ranks": {
+          "TKT-2026-0602-217": 1
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "TKT-2026-0602-217",
+          "PRJ-S002-003"
+        ],
+        "n_selected": 3,
+        "gold_ranks": {
+          "TKT-2026-0602-217": 1
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "TKT-2026-0602-217",
+          "PRJ-S002-003"
+        ],
+        "n_selected": 3,
+        "gold_ranks": {
+          "TKT-2026-0602-217": 1
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "TKT-2026-0602-217",
+          "PRJ-S002-003"
+        ],
+        "n_selected": 3,
+        "gold_ranks": {
+          "TKT-2026-0602-217": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "TKT-2026-0602-217",
+          "PRJ-S002-003"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "TKT-2026-0602-217": 1
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "TKT-2026-0602-217",
+          "PRJ-S002-003"
+        ],
+        "n_selected": 3,
+        "gold_ranks": {
+          "TKT-2026-0602-217": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "TKT-2026-0602-217",
+          "PRJ-S002-003"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "TKT-2026-0602-217": 1
+        }
+      }
+    },
+    {
+      "eval_id": "E012",
+      "category": "authorized_factual",
+      "expected": [
+        "INC-2026-0903",
+        "TKT-2026-0903-336"
+      ],
+      "pool_documents": 14,
+      "hint_added_chars": 58,
+      "plan": {
+        "intent": "root_cause",
+        "required_aspects": [
+          "cause",
+          "financial_impact"
+        ],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "seller_scope": [
+          "S003"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0903": 1,
+          "TKT-2026-0903-336": 3
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0903",
+          "TKT-2026-0903-336",
+          "S003-ACC-001",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0903": 1,
+          "TKT-2026-0903-336": 2
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0903": 1,
+          "TKT-2026-0903-336": 3
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0903": 1,
+          "TKT-2026-0903-336": 3
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0903": 1,
+          "TKT-2026-0903-336": 3
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0903": 1,
+          "TKT-2026-0903-336": 3
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0903": 1,
+          "TKT-2026-0903-336": 3
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0903": 1,
+          "TKT-2026-0903-336": 3
+        }
+      }
+    },
+    {
+      "eval_id": "E013",
+      "category": "multi_document",
+      "expected": [
+        "INC-2026-0312",
+        "TKT-2026-0312-114",
+        "PRJ-S001-003"
+      ],
+      "pool_documents": 13,
+      "hint_added_chars": 26,
+      "plan": {
+        "intent": "factual_lookup",
+        "required_aspects": [],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [
+          "S001"
+        ],
+        "seller_scope": [
+          "S001"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S001-003",
+          "TKT-2026-0312-114",
+          "INC-2026-0312",
+          "PRJ-S001-001",
+          "TKT-2026-0602-217"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "INC-2026-0312": 3,
+          "TKT-2026-0312-114": 2,
+          "PRJ-S001-003": 1
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S001-003",
+          "TKT-2026-0312-114",
+          "INC-2026-0312",
+          "PRJ-S001-001",
+          "TKT-2026-0602-217"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "INC-2026-0312": 3,
+          "TKT-2026-0312-114": 2,
+          "PRJ-S001-003": 1
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S001-003",
+          "TKT-2026-0312-114",
+          "INC-2026-0312",
+          "PRJ-S001-001",
+          "TKT-2026-0602-217"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "INC-2026-0312": 3,
+          "TKT-2026-0312-114": 2,
+          "PRJ-S001-003": 1
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S001-003",
+          "TKT-2026-0312-114",
+          "INC-2026-0312",
+          "PRJ-S001-001",
+          "TKT-2026-0602-217"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "INC-2026-0312": 3,
+          "TKT-2026-0312-114": 2,
+          "PRJ-S001-003": 1
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S001-003",
+          "TKT-2026-0312-114",
+          "INC-2026-0312",
+          "PRJ-S001-001",
+          "INC-2026-0812"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "INC-2026-0312": 3,
+          "TKT-2026-0312-114": 2,
+          "PRJ-S001-003": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S001-003",
+          "TKT-2026-0312-114",
+          "INC-2026-0312",
+          "PRJ-S001-001",
+          "INC-2026-0812"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0312": 3,
+          "TKT-2026-0312-114": 2,
+          "PRJ-S001-003": 1
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S001-003",
+          "TKT-2026-0312-114",
+          "INC-2026-0312",
+          "PRJ-S001-001",
+          "INC-2026-0812"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "INC-2026-0312": 3,
+          "TKT-2026-0312-114": 2,
+          "PRJ-S001-003": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S001-003",
+          "TKT-2026-0312-114",
+          "INC-2026-0312",
+          "PRJ-S001-001",
+          "INC-2026-0812"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0312": 3,
+          "TKT-2026-0312-114": 2,
+          "PRJ-S001-003": 1
+        }
+      }
+    },
+    {
+      "eval_id": "E014",
+      "category": "multi_document",
+      "expected": [
+        "INC-2026-0716",
+        "POL-BIZ-004"
+      ],
+      "pool_documents": 13,
+      "hint_added_chars": 44,
+      "plan": {
+        "intent": "policy",
+        "required_aspects": [
+          "policy_requirement"
+        ],
+        "evidence_types": [
+          "policy"
+        ],
+        "identifiers": [
+          "S002"
+        ],
+        "seller_scope": [
+          "S002"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.25,
+        "documents": [
+          "TKT-2026-0716-268",
+          "CALL-2026-0717-052",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "POL-BIZ-004"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "INC-2026-0716": 4,
+          "POL-BIZ-004": 5
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "TKT-2026-0716-268",
+          "POL-BIZ-004",
+          "CALL-2026-0717-052",
+          "TKT-2026-0519-207",
+          "INC-2026-0716"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "INC-2026-0716": 5,
+          "POL-BIZ-004": 2
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.3333333333333333,
+        "documents": [
+          "TKT-2026-0716-268",
+          "TKT-2026-0519-207",
+          "POL-BIZ-004",
+          "CALL-2026-0717-052",
+          "INC-2026-0716"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "INC-2026-0716": 5,
+          "POL-BIZ-004": 3
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.25,
+        "documents": [
+          "TKT-2026-0716-268",
+          "CALL-2026-0717-052",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "POL-BIZ-004"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "INC-2026-0716": 4,
+          "POL-BIZ-004": 5
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "TKT-2026-0716-268",
+          "POL-BIZ-004",
+          "CALL-2026-0717-052",
+          "TKT-2026-0519-207",
+          "INC-2026-0716"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "INC-2026-0716": 5,
+          "POL-BIZ-004": 2
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.25,
+        "documents": [
+          "TKT-2026-0716-268",
+          "CALL-2026-0717-052",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "POL-BIZ-004"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "INC-2026-0716": 4,
+          "POL-BIZ-004": 5
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.3333333333333333,
+        "documents": [
+          "TKT-2026-0716-268",
+          "CALL-2026-0717-052",
+          "POL-BIZ-004",
+          "TKT-2026-0519-207",
+          "INC-2026-0716"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "INC-2026-0716": 5,
+          "POL-BIZ-004": 3
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "TKT-2026-0716-268",
+          "POL-BIZ-004",
+          "TKT-2026-0519-207",
+          "CALL-2026-0717-052",
+          "INC-2026-0716"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "INC-2026-0716": 5,
+          "POL-BIZ-004": 2
+        }
+      }
+    },
+    {
+      "eval_id": "E015",
+      "category": "multi_document",
+      "expected": [
+        "POL-OPS-006",
+        "PRJ-S004-003"
+      ],
+      "pool_documents": 8,
+      "hint_added_chars": 40,
+      "plan": {
+        "intent": "root_cause",
+        "required_aspects": [
+          "cause"
+        ],
+        "evidence_types": [
+          "decision_record"
+        ],
+        "identifiers": [
+          "S004"
+        ],
+        "seller_scope": [
+          "S004"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "POL-OPS-006": 4,
+          "PRJ-S004-003": 1
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "INC-2026-0805",
+          "PRJ-S004-002",
+          "POL-OPS-006"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "POL-OPS-006": 4,
+          "PRJ-S004-003": 1
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006",
+          "OPS-RB-003"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "POL-OPS-006": 4,
+          "PRJ-S004-003": 1
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "POL-OPS-006": 4,
+          "PRJ-S004-003": 1
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "POL-OPS-006": 4,
+          "PRJ-S004-003": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "POL-OPS-006": 4,
+          "PRJ-S004-003": 1
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006",
+          "OPS-RB-003"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "POL-OPS-006": 4,
+          "PRJ-S004-003": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 0.5,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "OPS-RB-003"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "POL-OPS-006": null,
+          "PRJ-S004-003": 1
+        }
+      }
+    },
+    {
+      "eval_id": "E016",
+      "category": "multi_document",
+      "expected": [
+        "PRJ-S003-003",
+        "POL-BIZ-003"
+      ],
+      "pool_documents": 10,
+      "hint_added_chars": 17,
+      "plan": {
+        "intent": "explanation",
+        "required_aspects": [],
+        "evidence_types": [
+          "policy"
+        ],
+        "identifiers": [],
+        "seller_scope": [
+          "S003"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "S003-ACC-001",
+          "PRJ-S003-001",
+          "POL-BIZ-003"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "PRJ-S003-003": 1,
+          "POL-BIZ-003": 5
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "S003-ACC-001",
+          "PRJ-S003-001",
+          "POL-BIZ-003"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "PRJ-S003-003": 1,
+          "POL-BIZ-003": 5
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "S003-ACC-001",
+          "PRJ-S003-001",
+          "POL-BIZ-003"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "PRJ-S003-003": 1,
+          "POL-BIZ-003": 5
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "S003-ACC-001",
+          "PRJ-S003-001",
+          "POL-BIZ-003"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "PRJ-S003-003": 1,
+          "POL-BIZ-003": 5
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "S003-ACC-001",
+          "POL-BIZ-003",
+          "PRJ-S003-001"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "PRJ-S003-003": 1,
+          "POL-BIZ-003": 4
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "S003-ACC-001",
+          "PRJ-S003-001",
+          "POL-BIZ-003"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "PRJ-S003-003": 1,
+          "POL-BIZ-003": 5
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "S003-ACC-001",
+          "PRJ-S003-001",
+          "POL-BIZ-003"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "PRJ-S003-003": 1,
+          "POL-BIZ-003": 5
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "S003-ACC-001",
+          "PRJ-S003-001",
+          "POL-BIZ-003"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "PRJ-S003-003": 1,
+          "POL-BIZ-003": 5
+        }
+      }
+    },
+    {
+      "eval_id": "E017",
+      "category": "multi_document",
+      "expected": [
+        "INC-2026-0519",
+        "PRJ-S002-003"
+      ],
+      "pool_documents": 11,
+      "hint_added_chars": 26,
+      "plan": {
+        "intent": "comparison",
+        "required_aspects": [],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [
+          "S002"
+        ],
+        "seller_scope": [
+          "S002"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "INC-2026-0519": 2,
+          "PRJ-S002-003": 1
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0519": 2,
+          "PRJ-S002-003": 1
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "INC-2026-0519": 2,
+          "PRJ-S002-003": 1
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "INC-2026-0519": 2,
+          "PRJ-S002-003": 1
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "PRJ-S002-003": 2
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "PRJ-S002-003": 2
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "PRJ-S002-003": 2
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "PRJ-S002-003": 2
+        }
+      }
+    },
+    {
+      "eval_id": "E018",
+      "category": "multi_document",
+      "expected": [
+        "POL-FIN-002",
+        "OPS-RB-004"
+      ],
+      "pool_documents": 11,
+      "hint_added_chars": 44,
+      "plan": {
+        "intent": "policy",
+        "required_aspects": [
+          "policy_requirement"
+        ],
+        "evidence_types": [
+          "policy"
+        ],
+        "identifiers": [],
+        "seller_scope": []
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-FIN-002": 2,
+          "OPS-RB-004": 1
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-FIN-002": 2,
+          "OPS-RB-004": 1
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-FIN-002": 2,
+          "OPS-RB-004": 1
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-FIN-002": 2,
+          "OPS-RB-004": 1
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-FIN-002": 2,
+          "OPS-RB-004": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-FIN-002": 2,
+          "OPS-RB-004": 1
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-FIN-002": 2,
+          "OPS-RB-004": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-FIN-002": 2,
+          "OPS-RB-004": 1
+        }
+      }
+    },
+    {
+      "eval_id": "E019",
+      "category": "multi_document",
+      "expected": [
+        "INC-2026-0805",
+        "PRJ-S004-003",
+        "TKT-2026-0805-301"
+      ],
+      "pool_documents": 10,
+      "hint_added_chars": 26,
+      "plan": {
+        "intent": "explanation",
+        "required_aspects": [],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [
+          "S004"
+        ],
+        "seller_scope": [
+          "S004"
+        ]
+      },
+      "baseline": {
+        "recall": 0.6666666666666666,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "scenario_overview",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "S004-ACC-001"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "INC-2026-0805": 4,
+          "PRJ-S004-003": 1,
+          "TKT-2026-0805-301": null
+        }
+      },
+      "intent": {
+        "recall": 0.6666666666666666,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "scenario_overview",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "S004-ACC-001"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "INC-2026-0805": 4,
+          "PRJ-S004-003": 1,
+          "TKT-2026-0805-301": null
+        }
+      },
+      "aspects": {
+        "recall": 0.6666666666666666,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "scenario_overview",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "S004-ACC-001"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "INC-2026-0805": 4,
+          "PRJ-S004-003": 1,
+          "TKT-2026-0805-301": null
+        }
+      },
+      "event": {
+        "recall": 0.6666666666666666,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "scenario_overview",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "S004-ACC-001"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "INC-2026-0805": 4,
+          "PRJ-S004-003": 1,
+          "TKT-2026-0805-301": null
+        }
+      },
+      "evidence": {
+        "recall": 0.6666666666666666,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "INC-2026-0805",
+          "scenario_overview",
+          "PRJ-S004-002",
+          "S004-ACC-001"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "INC-2026-0805": 2,
+          "PRJ-S004-003": 1,
+          "TKT-2026-0805-301": null
+        }
+      },
+      "seller": {
+        "recall": 0.6666666666666666,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "scenario_overview",
+          "S004-ACC-001"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "INC-2026-0805": 3,
+          "PRJ-S004-003": 1,
+          "TKT-2026-0805-301": null
+        }
+      },
+      "combined": {
+        "recall": 0.6666666666666666,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "scenario_overview",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "S004-ACC-001"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "INC-2026-0805": 4,
+          "PRJ-S004-003": 1,
+          "TKT-2026-0805-301": null
+        }
+      },
+      "combined_hints": {
+        "recall": 0.6666666666666666,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "scenario_overview",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "S004-ACC-001"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "INC-2026-0805": 4,
+          "PRJ-S004-003": 1,
+          "TKT-2026-0805-301": null
+        }
+      }
+    },
+    {
+      "eval_id": "E020",
+      "category": "multi_document",
+      "expected": [
+        "TKT-2026-0812-308",
+        "INC-2026-0812"
+      ],
+      "pool_documents": 13,
+      "hint_added_chars": 51,
+      "plan": {
+        "intent": "comparison",
+        "required_aspects": [
+          "financial_impact"
+        ],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [
+          "S001"
+        ],
+        "seller_scope": [
+          "S001"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "INC-2026-0519",
+          "INC-2026-0312",
+          "TKT-2026-0812-308",
+          "TKT-2026-0716-268"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "TKT-2026-0812-308": 4,
+          "INC-2026-0812": 1
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "INC-2026-0519",
+          "INC-2026-0312",
+          "TKT-2026-0812-308",
+          "ORG-001"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "TKT-2026-0812-308": 4,
+          "INC-2026-0812": 1
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "INC-2026-0519",
+          "INC-2026-0312",
+          "TKT-2026-0812-308",
+          "TKT-2026-0716-268"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "TKT-2026-0812-308": 4,
+          "INC-2026-0812": 1
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "INC-2026-0519",
+          "INC-2026-0312",
+          "TKT-2026-0812-308",
+          "TKT-2026-0716-268"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "TKT-2026-0812-308": 4,
+          "INC-2026-0812": 1
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "INC-2026-0519",
+          "INC-2026-0312",
+          "TKT-2026-0812-308",
+          "TKT-2026-0716-268"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "TKT-2026-0812-308": 4,
+          "INC-2026-0812": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308",
+          "INC-2026-0312",
+          "INC-2026-0519",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "TKT-2026-0812-308": 2,
+          "INC-2026-0812": 1
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "INC-2026-0312",
+          "INC-2026-0519",
+          "TKT-2026-0812-308",
+          "TKT-2026-0716-268"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "TKT-2026-0812-308": 4,
+          "INC-2026-0812": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "INC-2026-0312",
+          "TKT-2026-0812-308",
+          "INC-2026-0519",
+          "TKT-2026-0312-114"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "TKT-2026-0812-308": 3,
+          "INC-2026-0812": 1
+        }
+      }
+    },
+    {
+      "eval_id": "E021",
+      "category": "cross_seller",
+      "expected": [
+        "INC-2026-0312",
+        "INC-2026-0519"
+      ],
+      "pool_documents": 10,
+      "hint_added_chars": 26,
+      "plan": {
+        "intent": "comparison",
+        "required_aspects": [],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [
+          "S001",
+          "S002"
+        ],
+        "seller_scope": [
+          "S001",
+          "S002"
+        ]
+      },
+      "baseline": {
+        "recall": 0.5,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "ORG-001",
+          "PRJ-S001-003",
+          "TKT-2026-0312-114"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "INC-2026-0312": null,
+          "INC-2026-0519": 1
+        }
+      },
+      "intent": {
+        "recall": 0.5,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "ORG-001",
+          "PRJ-S001-003",
+          "TKT-2026-0312-114"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "INC-2026-0312": null,
+          "INC-2026-0519": 1
+        }
+      },
+      "aspects": {
+        "recall": 0.5,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "ORG-001",
+          "PRJ-S001-003",
+          "TKT-2026-0312-114"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "INC-2026-0312": null,
+          "INC-2026-0519": 1
+        }
+      },
+      "event": {
+        "recall": 0.5,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "ORG-001",
+          "PRJ-S001-003",
+          "TKT-2026-0312-114"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "INC-2026-0312": null,
+          "INC-2026-0519": 1
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "ORG-001",
+          "PRJ-S001-003",
+          "INC-2026-0312"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0312": 5,
+          "INC-2026-0519": 1
+        }
+      },
+      "seller": {
+        "recall": 0.5,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "PRJ-S001-003",
+          "ORG-001",
+          "TKT-2026-0312-114"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0312": null,
+          "INC-2026-0519": 1
+        }
+      },
+      "combined": {
+        "recall": 0.5,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "ORG-001",
+          "PRJ-S001-003",
+          "TKT-2026-0312-114"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0312": null,
+          "INC-2026-0519": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "PRJ-S001-003",
+          "ORG-001",
+          "INC-2026-0312"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0312": 5,
+          "INC-2026-0519": 1
+        }
+      }
+    },
+    {
+      "eval_id": "E022",
+      "category": "cross_seller",
+      "expected": [
+        "S001-ACC-001",
+        "S003-ACC-001"
+      ],
+      "pool_documents": 15,
+      "hint_added_chars": 27,
+      "plan": {
+        "intent": "comparison",
+        "required_aspects": [],
+        "evidence_types": [
+          "account_overview"
+        ],
+        "identifiers": [],
+        "seller_scope": [
+          "S001",
+          "S003"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "S001-ACC-001",
+          "ORG-001",
+          "S003-ACC-001",
+          "PRJ-S001-001",
+          "PRJ-S003-001"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "S001-ACC-001": 1,
+          "S003-ACC-001": 3
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "S001-ACC-001",
+          "ORG-001",
+          "S003-ACC-001",
+          "PRJ-S001-001",
+          "PRJ-S003-001"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "S001-ACC-001": 1,
+          "S003-ACC-001": 3
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "S001-ACC-001",
+          "ORG-001",
+          "S003-ACC-001",
+          "PRJ-S001-001",
+          "PRJ-S003-001"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "S001-ACC-001": 1,
+          "S003-ACC-001": 3
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "S001-ACC-001",
+          "ORG-001",
+          "S003-ACC-001",
+          "PRJ-S001-001",
+          "PRJ-S003-001"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "S001-ACC-001": 1,
+          "S003-ACC-001": 3
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "S001-ACC-001",
+          "S003-ACC-001",
+          "ORG-001",
+          "PRJ-S001-001"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "S001-ACC-001": 1,
+          "S003-ACC-001": 2
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "S001-ACC-001",
+          "S003-ACC-001",
+          "ORG-001",
+          "PRJ-S001-001",
+          "PRJ-S003-001"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "S001-ACC-001": 1,
+          "S003-ACC-001": 2
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "S001-ACC-001",
+          "ORG-001",
+          "S003-ACC-001",
+          "PRJ-S001-001",
+          "PRJ-S003-001"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "S001-ACC-001": 1,
+          "S003-ACC-001": 3
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "S001-ACC-001",
+          "S003-ACC-001",
+          "ORG-001",
+          "PRJ-S001-001"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "S001-ACC-001": 1,
+          "S003-ACC-001": 2
+        }
+      }
+    },
+    {
+      "eval_id": "E023",
+      "category": "cross_seller",
+      "expected": [
+        "INC-2026-0805",
+        "INC-2026-0519"
+      ],
+      "pool_documents": 10,
+      "hint_added_chars": 40,
+      "plan": {
+        "intent": "comparison",
+        "required_aspects": [
+          "cause"
+        ],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "seller_scope": []
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0805",
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "OPS-RB-003",
+          "PRJ-S004-002"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "INC-2026-0805": 1,
+          "INC-2026-0519": 2
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0805",
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "OPS-RB-003",
+          "PRJ-S004-002"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "INC-2026-0805": 1,
+          "INC-2026-0519": 2
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0805",
+          "INC-2026-0519",
+          "OPS-RB-003",
+          "PRJ-S002-003",
+          "PRJ-S004-002"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "INC-2026-0805": 1,
+          "INC-2026-0519": 2
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0805",
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "OPS-RB-003",
+          "PRJ-S004-002"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "INC-2026-0805": 1,
+          "INC-2026-0519": 2
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0805",
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "OPS-RB-003",
+          "PRJ-S004-002"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "INC-2026-0805": 1,
+          "INC-2026-0519": 2
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0805",
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "OPS-RB-003",
+          "PRJ-S004-002"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "INC-2026-0805": 1,
+          "INC-2026-0519": 2
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0805",
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "OPS-RB-003",
+          "PRJ-S004-002"
+        ],
+        "n_selected": 11,
+        "gold_ranks": {
+          "INC-2026-0805": 1,
+          "INC-2026-0519": 2
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0805",
+          "INC-2026-0519",
+          "PRJ-S004-002",
+          "PRJ-S002-003",
+          "OPS-RB-003"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "INC-2026-0805": 1,
+          "INC-2026-0519": 2
+        }
+      }
+    },
+    {
+      "eval_id": "E024",
+      "category": "cross_seller",
+      "expected": [
+        "INC-2026-0812",
+        "INC-2026-0716"
+      ],
+      "pool_documents": 11,
+      "hint_added_chars": 26,
+      "plan": {
+        "intent": "comparison",
+        "required_aspects": [],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [
+          "S001",
+          "S002"
+        ],
+        "seller_scope": [
+          "S001",
+          "S002",
+          "ORG"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "TKT-2026-0716-268",
+          "INC-2026-0716",
+          "INC-2026-0812",
+          "PRJ-S002-002",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0812": 3,
+          "INC-2026-0716": 2
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "TKT-2026-0716-268",
+          "INC-2026-0716",
+          "PRJ-S002-002",
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0812": 4,
+          "INC-2026-0716": 2
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "TKT-2026-0716-268",
+          "INC-2026-0716",
+          "INC-2026-0812",
+          "PRJ-S002-002",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0812": 3,
+          "INC-2026-0716": 2
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "TKT-2026-0716-268",
+          "INC-2026-0716",
+          "INC-2026-0812",
+          "PRJ-S002-002",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0812": 3,
+          "INC-2026-0716": 2
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "INC-2026-0812",
+          "PRJ-S002-002",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0812": 3,
+          "INC-2026-0716": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "INC-2026-0812",
+          "PRJ-S002-002",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0812": 3,
+          "INC-2026-0716": 1
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "INC-2026-0812",
+          "PRJ-S002-002",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0812": 3,
+          "INC-2026-0716": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "INC-2026-0812",
+          "PRJ-S002-002",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0812": 3,
+          "INC-2026-0716": 1
+        }
+      }
+    },
+    {
+      "eval_id": "E025",
+      "category": "cross_seller",
+      "expected": [
+        "INC-2026-0519",
+        "INC-2026-0805",
+        "INC-2026-0312"
+      ],
+      "pool_documents": 14,
+      "hint_added_chars": 40,
+      "plan": {
+        "intent": "factual_lookup",
+        "required_aspects": [
+          "cause"
+        ],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "seller_scope": [
+          "ORG"
+        ]
+      },
+      "baseline": {
+        "recall": 0.3333333333333333,
+        "precision": 0.2,
+        "mrr": 0.5,
+        "documents": [
+          "scenario_overview",
+          "INC-2026-0805",
+          "PRJ-S002-002",
+          "PRJ-S002-001",
+          "CALL-2026-0904-071"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "INC-2026-0519": null,
+          "INC-2026-0805": 2,
+          "INC-2026-0312": null
+        }
+      },
+      "intent": {
+        "recall": 0.3333333333333333,
+        "precision": 0.2,
+        "mrr": 0.5,
+        "documents": [
+          "scenario_overview",
+          "INC-2026-0805",
+          "PRJ-S002-002",
+          "PRJ-S002-001",
+          "CALL-2026-0904-071"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "INC-2026-0519": null,
+          "INC-2026-0805": 2,
+          "INC-2026-0312": null
+        }
+      },
+      "aspects": {
+        "recall": 0.3333333333333333,
+        "precision": 0.2,
+        "mrr": 0.5,
+        "documents": [
+          "scenario_overview",
+          "INC-2026-0805",
+          "PRJ-S002-002",
+          "PRJ-S002-001",
+          "CALL-2026-0904-071"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0519": null,
+          "INC-2026-0805": 2,
+          "INC-2026-0312": null
+        }
+      },
+      "event": {
+        "recall": 0.3333333333333333,
+        "precision": 0.2,
+        "mrr": 0.5,
+        "documents": [
+          "scenario_overview",
+          "INC-2026-0805",
+          "PRJ-S002-002",
+          "PRJ-S002-001",
+          "CALL-2026-0904-071"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "INC-2026-0519": null,
+          "INC-2026-0805": 2,
+          "INC-2026-0312": null
+        }
+      },
+      "evidence": {
+        "recall": 0.6666666666666666,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "scenario_overview",
+          "INC-2026-0805",
+          "PRJ-S002-002",
+          "INC-2026-0519",
+          "PRJ-S002-001"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0519": 4,
+          "INC-2026-0805": 2,
+          "INC-2026-0312": null
+        }
+      },
+      "seller": {
+        "recall": 0.3333333333333333,
+        "precision": 0.2,
+        "mrr": 0.5,
+        "documents": [
+          "scenario_overview",
+          "INC-2026-0805",
+          "PRJ-S002-002",
+          "PRJ-S002-001",
+          "CALL-2026-0904-071"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "INC-2026-0519": null,
+          "INC-2026-0805": 2,
+          "INC-2026-0312": null
+        }
+      },
+      "combined": {
+        "recall": 0.3333333333333333,
+        "precision": 0.2,
+        "mrr": 0.5,
+        "documents": [
+          "scenario_overview",
+          "INC-2026-0805",
+          "PRJ-S002-002",
+          "PRJ-S002-001",
+          "CALL-2026-0904-071"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0519": null,
+          "INC-2026-0805": 2,
+          "INC-2026-0312": null
+        }
+      },
+      "combined_hints": {
+        "recall": 0.3333333333333333,
+        "precision": 0.2,
+        "mrr": 0.5,
+        "documents": [
+          "scenario_overview",
+          "INC-2026-0805",
+          "CALL-2026-0904-071",
+          "PRJ-S002-002",
+          "OPS-RB-003"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0519": null,
+          "INC-2026-0805": 2,
+          "INC-2026-0312": null
+        }
+      }
+    },
+    {
+      "eval_id": "E026",
+      "category": "cross_seller",
+      "expected": [
+        "TKT-2026-0312-114",
+        "TKT-2026-0903-336"
+      ],
+      "pool_documents": 13,
+      "hint_added_chars": 26,
+      "plan": {
+        "intent": "factual_lookup",
+        "required_aspects": [],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "seller_scope": []
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "TKT-2026-0312-114",
+          "S003-ACC-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 4,
+          "TKT-2026-0903-336": 2
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "TKT-2026-0312-114",
+          "S003-ACC-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 4,
+          "TKT-2026-0903-336": 2
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "TKT-2026-0312-114",
+          "S003-ACC-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 4,
+          "TKT-2026-0903-336": 2
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "TKT-2026-0312-114",
+          "S003-ACC-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 4,
+          "TKT-2026-0903-336": 2
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "TKT-2026-0312-114",
+          "S003-ACC-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 4,
+          "TKT-2026-0903-336": 2
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "TKT-2026-0312-114",
+          "S003-ACC-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 4,
+          "TKT-2026-0903-336": 2
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.5,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "TKT-2026-0312-114",
+          "S003-ACC-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 4,
+          "TKT-2026-0903-336": 2
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 0.3333333333333333,
+        "documents": [
+          "S001-ACC-001",
+          "CALL-2026-0904-071",
+          "TKT-2026-0903-336",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 4,
+          "TKT-2026-0903-336": 3
+        }
+      }
+    },
+    {
+      "eval_id": "E027",
+      "category": "follow_up",
+      "expected": [
+        "PRJ-S001-003"
+      ],
+      "pool_documents": 15,
+      "hint_added_chars": 68,
+      "plan": {
+        "intent": "factual_lookup",
+        "required_aspects": [
+          "financial_impact"
+        ],
+        "evidence_types": [
+          "support_ticket",
+          "account_overview"
+        ],
+        "identifiers": [],
+        "seller_scope": []
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 0.2,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "PRJ-S001-003": 5
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 0.2,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "PRJ-S001-003": 5
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 0.2,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "PRJ-S001-003": 5
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 0.2,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "PRJ-S001-003": 5
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 0.2,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "PRJ-S001-003": 5
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 0.2,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "PRJ-S001-003": 5
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 0.2,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "PRJ-S001-003": 5
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 0.2,
+        "documents": [
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "PRJ-S001-003": 5
+        }
+      }
+    },
+    {
+      "eval_id": "E028",
+      "category": "follow_up",
+      "expected": [
+        "INC-2026-0519"
+      ],
+      "pool_documents": 10,
+      "hint_added_chars": 26,
+      "plan": {
+        "intent": "impact",
+        "required_aspects": [],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "seller_scope": []
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "CALL-2026-0717-052"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 1
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "TKT-2026-0602-217"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 1
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "CALL-2026-0717-052"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 1
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "CALL-2026-0717-052"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 1
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "CALL-2026-0717-052"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "CALL-2026-0717-052"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 1
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "TKT-2026-0602-217"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "TKT-2026-0602-217"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 1
+        }
+      }
+    },
+    {
+      "eval_id": "E029",
+      "category": "follow_up",
+      "expected": [
+        "INC-2026-0812"
+      ],
+      "pool_documents": 7,
+      "hint_added_chars": 26,
+      "plan": {
+        "intent": "factual_lookup",
+        "required_aspects": [],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "seller_scope": []
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "INC-2026-0812": 1
+        }
+      }
+    },
+    {
+      "eval_id": "E030",
+      "category": "follow_up",
+      "expected": [
+        "PRJ-S004-003"
+      ],
+      "pool_documents": 9,
+      "hint_added_chars": 26,
+      "plan": {
+        "intent": "factual_lookup",
+        "required_aspects": [],
+        "evidence_types": [
+          "decision_record"
+        ],
+        "identifiers": [],
+        "seller_scope": []
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "PRJ-S004-003": 1
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "PRJ-S004-003": 1
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "PRJ-S004-003": 1
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "PRJ-S004-003": 1
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "PRJ-S004-003": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805",
+          "POL-OPS-006"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "PRJ-S004-003": 1
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "PRJ-S004-003": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S004-003",
+          "PRJ-S004-002",
+          "INC-2026-0805"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "PRJ-S004-003": 1
+        }
+      }
+    },
+    {
+      "eval_id": "E031",
+      "category": "follow_up",
+      "expected": [
+        "PRJ-S003-003"
+      ],
+      "pool_documents": 12,
+      "hint_added_chars": 44,
+      "plan": {
+        "intent": "policy",
+        "required_aspects": [
+          "policy_requirement"
+        ],
+        "evidence_types": [
+          "policy"
+        ],
+        "identifiers": [],
+        "seller_scope": []
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "S003-ACC-001",
+          "TKT-2026-0115-054",
+          "CALL-2026-0116-004",
+          "PRJ-S003-001"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "PRJ-S003-003": 1
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "S003-ACC-001",
+          "TKT-2026-0115-054",
+          "CALL-2026-0116-004",
+          "PRJ-S003-001"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "PRJ-S003-003": 1
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "S003-ACC-001",
+          "TKT-2026-0115-054",
+          "CALL-2026-0116-004",
+          "PRJ-S003-001"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "PRJ-S003-003": 1
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "S003-ACC-001",
+          "TKT-2026-0115-054",
+          "CALL-2026-0116-004",
+          "PRJ-S003-001"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "PRJ-S003-003": 1
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "S003-ACC-001",
+          "TKT-2026-0115-054",
+          "CALL-2026-0116-004",
+          "PRJ-S003-001"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "PRJ-S003-003": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "S003-ACC-001",
+          "TKT-2026-0115-054",
+          "CALL-2026-0116-004",
+          "PRJ-S003-001"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "PRJ-S003-003": 1
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "S003-ACC-001",
+          "TKT-2026-0115-054",
+          "CALL-2026-0116-004",
+          "PRJ-S003-001"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "PRJ-S003-003": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "PRJ-S003-003",
+          "S003-ACC-001",
+          "TKT-2026-0115-054",
+          "CALL-2026-0116-004",
+          "PRJ-S003-001"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "PRJ-S003-003": 1
+        }
+      }
+    },
+    {
+      "eval_id": "E032",
+      "category": "follow_up",
+      "expected": [
+        "INC-2026-0903"
+      ],
+      "pool_documents": 12,
+      "hint_added_chars": 26,
+      "plan": {
+        "intent": "factual_lookup",
+        "required_aspects": [],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "seller_scope": []
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0903": 1
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0903": 1
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0903": 1
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0903": 1
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0903": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0903": 1
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0903",
+          "S003-ACC-001",
+          "TKT-2026-0903-336",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0903": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0903",
+          "TKT-2026-0903-336",
+          "S003-ACC-001",
+          "CALL-2026-0904-071",
+          "PRJ-S003-002"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "INC-2026-0903": 1
+        }
+      }
+    },
+    {
+      "eval_id": "E043",
+      "category": "mixed_access",
+      "expected": [
+        "TKT-2026-0312-114",
+        "PRJ-S001-003"
+      ],
+      "pool_documents": 12,
+      "hint_added_chars": 27,
+      "plan": {
+        "intent": "comparison",
+        "required_aspects": [],
+        "evidence_types": [
+          "account_overview"
+        ],
+        "identifiers": [],
+        "seller_scope": [
+          "S001",
+          "S002"
+        ]
+      },
+      "baseline": {
+        "recall": 0.5,
+        "precision": 0.2,
+        "mrr": 0.3333333333333333,
+        "documents": [
+          "S001-ACC-001",
+          "PRJ-S001-002",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "ORG-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 3,
+          "PRJ-S001-003": null
+        }
+      },
+      "intent": {
+        "recall": 0.5,
+        "precision": 0.2,
+        "mrr": 0.25,
+        "documents": [
+          "S001-ACC-001",
+          "PRJ-S001-002",
+          "ORG-001",
+          "TKT-2026-0312-114",
+          "PRJ-S001-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 4,
+          "PRJ-S001-003": null
+        }
+      },
+      "aspects": {
+        "recall": 0.5,
+        "precision": 0.2,
+        "mrr": 0.3333333333333333,
+        "documents": [
+          "S001-ACC-001",
+          "PRJ-S001-002",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "ORG-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 3,
+          "PRJ-S001-003": null
+        }
+      },
+      "event": {
+        "recall": 0.5,
+        "precision": 0.2,
+        "mrr": 0.3333333333333333,
+        "documents": [
+          "S001-ACC-001",
+          "PRJ-S001-002",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "ORG-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 3,
+          "PRJ-S001-003": null
+        }
+      },
+      "evidence": {
+        "recall": 0.5,
+        "precision": 0.2,
+        "mrr": 0.3333333333333333,
+        "documents": [
+          "S001-ACC-001",
+          "PRJ-S001-002",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "ORG-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 3,
+          "PRJ-S001-003": null
+        }
+      },
+      "seller": {
+        "recall": 0.5,
+        "precision": 0.2,
+        "mrr": 0.3333333333333333,
+        "documents": [
+          "S001-ACC-001",
+          "PRJ-S001-002",
+          "TKT-2026-0312-114",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 3,
+          "PRJ-S001-003": null
+        }
+      },
+      "combined": {
+        "recall": 0.5,
+        "precision": 0.2,
+        "mrr": 0.3333333333333333,
+        "documents": [
+          "S001-ACC-001",
+          "PRJ-S001-002",
+          "TKT-2026-0312-114",
+          "ORG-001",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 3,
+          "PRJ-S001-003": null
+        }
+      },
+      "combined_hints": {
+        "recall": 0.5,
+        "precision": 0.2,
+        "mrr": 0.3333333333333333,
+        "documents": [
+          "S001-ACC-001",
+          "PRJ-S001-002",
+          "TKT-2026-0312-114",
+          "ORG-001",
+          "PRJ-S001-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "TKT-2026-0312-114": 3,
+          "PRJ-S001-003": null
+        }
+      }
+    },
+    {
+      "eval_id": "E044",
+      "category": "mixed_access",
+      "expected": [
+        "INC-2026-0519",
+        "INC-2026-0716"
+      ],
+      "pool_documents": 12,
+      "hint_added_chars": 26,
+      "plan": {
+        "intent": "factual_lookup",
+        "required_aspects": [],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "seller_scope": [
+          "S002",
+          "S004"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "INC-2026-0716",
+          "CALL-2026-0717-052",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "INC-2026-0716": 3
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "INC-2026-0716",
+          "CALL-2026-0717-052",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "INC-2026-0716": 3
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "INC-2026-0716",
+          "CALL-2026-0717-052",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "INC-2026-0716": 3
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "INC-2026-0716",
+          "CALL-2026-0717-052",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "INC-2026-0716": 3
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "INC-2026-0716",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "INC-2026-0716": 2
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "INC-2026-0716",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "INC-2026-0716": 2
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "INC-2026-0716",
+          "PRJ-S002-003",
+          "CALL-2026-0717-052",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "INC-2026-0716": 2
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "INC-2026-0716",
+          "PRJ-S002-003",
+          "ORG-001",
+          "CALL-2026-0717-052"
+        ],
+        "n_selected": 12,
+        "gold_ranks": {
+          "INC-2026-0519": 1,
+          "INC-2026-0716": 2
+        }
+      }
+    },
+    {
+      "eval_id": "E045",
+      "category": "mixed_access",
+      "expected": [
+        "INC-2026-0519",
+        "INC-2026-0716"
+      ],
+      "pool_documents": 11,
+      "hint_added_chars": 26,
+      "plan": {
+        "intent": "factual_lookup",
+        "required_aspects": [],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "seller_scope": [
+          "S002"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0716-268",
+          "ORG-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 3,
+          "INC-2026-0716": 1
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0716-268",
+          "ORG-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 3,
+          "INC-2026-0716": 1
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0716-268",
+          "ORG-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 3,
+          "INC-2026-0716": 1
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0716-268",
+          "ORG-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 3,
+          "INC-2026-0716": 1
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0716-268",
+          "ORG-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 2,
+          "INC-2026-0716": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0716-268",
+          "ORG-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 3,
+          "INC-2026-0716": 1
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0716-268",
+          "ORG-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 2,
+          "INC-2026-0716": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.4,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0716-268",
+          "POL-SEC-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0519": 3,
+          "INC-2026-0716": 1
+        }
+      }
+    },
+    {
+      "eval_id": "E046",
+      "category": "mixed_access",
+      "expected": [
+        "INC-2026-0805"
+      ],
+      "pool_documents": 9,
+      "hint_added_chars": 26,
+      "plan": {
+        "intent": "explanation",
+        "required_aspects": [],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "seller_scope": [
+          "S003",
+          "S004"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 0.5,
+        "documents": [
+          "PRJ-S004-003",
+          "INC-2026-0805",
+          "PRJ-S004-002"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "INC-2026-0805": 2
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 0.3333333333333333,
+        "documents": [
+          "PRJ-S004-002",
+          "PRJ-S004-003",
+          "INC-2026-0805"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0805": 3
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 0.5,
+        "documents": [
+          "PRJ-S004-003",
+          "INC-2026-0805",
+          "PRJ-S004-002"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "INC-2026-0805": 2
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 0.5,
+        "documents": [
+          "PRJ-S004-003",
+          "INC-2026-0805",
+          "PRJ-S004-002"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "INC-2026-0805": 2
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0805",
+          "PRJ-S004-003",
+          "PRJ-S004-002"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "INC-2026-0805": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 0.5,
+        "documents": [
+          "PRJ-S004-003",
+          "INC-2026-0805",
+          "PRJ-S004-002"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0805": 2
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0805",
+          "PRJ-S004-003",
+          "PRJ-S004-002"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0805": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0805",
+          "PRJ-S004-002",
+          "PRJ-S004-003",
+          "ORG-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "INC-2026-0805": 1
+        }
+      }
+    },
+    {
+      "eval_id": "E047",
+      "category": "mixed_access",
+      "expected": [
+        "POL-BIZ-004"
+      ],
+      "pool_documents": 14,
+      "hint_added_chars": 44,
+      "plan": {
+        "intent": "policy",
+        "required_aspects": [
+          "policy_requirement"
+        ],
+        "evidence_types": [
+          "policy"
+        ],
+        "identifiers": [],
+        "seller_scope": []
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "POL-BIZ-004",
+          "POL-SEC-001",
+          "ORG-001",
+          "POL-FIN-002"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "POL-BIZ-004": 1
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "POL-BIZ-004",
+          "POL-SEC-001",
+          "POL-FIN-002",
+          "ORG-001"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "POL-BIZ-004": 1
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "POL-BIZ-004",
+          "POL-SEC-001",
+          "POL-FIN-002",
+          "ORG-001"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "POL-BIZ-004": 1
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "POL-BIZ-004",
+          "POL-SEC-001",
+          "ORG-001",
+          "POL-FIN-002"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "POL-BIZ-004": 1
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "POL-BIZ-004",
+          "POL-SEC-001",
+          "POL-FIN-002",
+          "ORG-001"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "POL-BIZ-004": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "POL-BIZ-004",
+          "POL-SEC-001",
+          "ORG-001",
+          "POL-FIN-002"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "POL-BIZ-004": 1
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "POL-BIZ-004",
+          "POL-SEC-001",
+          "POL-FIN-002",
+          "ORG-001"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "POL-BIZ-004": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "POL-BIZ-004",
+          "POL-SEC-001",
+          "POL-FIN-002",
+          "ORG-001",
+          "POL-BIZ-003"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "POL-BIZ-004": 1
+        }
+      }
+    },
+    {
+      "eval_id": "E048",
+      "category": "mixed_access",
+      "expected": [
+        "TKT-2026-0224-091",
+        "TKT-2026-0312-114",
+        "TKT-2026-0812-308"
+      ],
+      "pool_documents": 11,
+      "hint_added_chars": 27,
+      "plan": {
+        "intent": "factual_lookup",
+        "required_aspects": [],
+        "evidence_types": [
+          "account_overview"
+        ],
+        "identifiers": [],
+        "seller_scope": [
+          "S001"
+        ]
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "documents": [
+          "TKT-2026-0812-308",
+          "TKT-2026-0224-091",
+          "TKT-2026-0312-114",
+          "ORG-001",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "TKT-2026-0224-091": 2,
+          "TKT-2026-0312-114": 3,
+          "TKT-2026-0812-308": 1
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "documents": [
+          "TKT-2026-0812-308",
+          "TKT-2026-0224-091",
+          "TKT-2026-0312-114",
+          "ORG-001",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "TKT-2026-0224-091": 2,
+          "TKT-2026-0312-114": 3,
+          "TKT-2026-0812-308": 1
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "documents": [
+          "TKT-2026-0812-308",
+          "TKT-2026-0224-091",
+          "TKT-2026-0312-114",
+          "ORG-001",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "TKT-2026-0224-091": 2,
+          "TKT-2026-0312-114": 3,
+          "TKT-2026-0812-308": 1
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "documents": [
+          "TKT-2026-0812-308",
+          "TKT-2026-0224-091",
+          "TKT-2026-0312-114",
+          "ORG-001",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "TKT-2026-0224-091": 2,
+          "TKT-2026-0312-114": 3,
+          "TKT-2026-0812-308": 1
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "documents": [
+          "TKT-2026-0812-308",
+          "TKT-2026-0224-091",
+          "TKT-2026-0312-114",
+          "ORG-001",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "TKT-2026-0224-091": 2,
+          "TKT-2026-0312-114": 3,
+          "TKT-2026-0812-308": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "documents": [
+          "TKT-2026-0812-308",
+          "TKT-2026-0224-091",
+          "TKT-2026-0312-114",
+          "ORG-001",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "TKT-2026-0224-091": 2,
+          "TKT-2026-0312-114": 3,
+          "TKT-2026-0812-308": 1
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "documents": [
+          "TKT-2026-0812-308",
+          "TKT-2026-0224-091",
+          "TKT-2026-0312-114",
+          "ORG-001",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "TKT-2026-0224-091": 2,
+          "TKT-2026-0312-114": 3,
+          "TKT-2026-0812-308": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.6,
+        "mrr": 1.0,
+        "documents": [
+          "TKT-2026-0812-308",
+          "TKT-2026-0224-091",
+          "TKT-2026-0312-114",
+          "ORG-001",
+          "CALL-2026-0313-018"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "TKT-2026-0224-091": 2,
+          "TKT-2026-0312-114": 3,
+          "TKT-2026-0812-308": 1
+        }
+      }
+    },
+    {
+      "eval_id": "E049",
+      "category": "policy_governance",
+      "expected": [
+        "POL-IT-002"
+      ],
+      "pool_documents": 7,
+      "hint_added_chars": 44,
+      "plan": {
+        "intent": "policy",
+        "required_aspects": [
+          "policy_requirement"
+        ],
+        "evidence_types": [
+          "policy"
+        ],
+        "identifiers": [],
+        "seller_scope": []
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "documents": [
+          "POL-IT-002",
+          "ORG-001",
+          "POL-SEC-002"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-IT-002": 1
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "documents": [
+          "POL-IT-002",
+          "POL-SEC-002",
+          "ORG-001"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-IT-002": 1
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "documents": [
+          "POL-IT-002",
+          "POL-SEC-002",
+          "ORG-001"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-IT-002": 1
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "documents": [
+          "POL-IT-002",
+          "ORG-001",
+          "POL-SEC-002"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-IT-002": 1
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "documents": [
+          "POL-IT-002",
+          "POL-SEC-002",
+          "ORG-001"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-IT-002": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "documents": [
+          "POL-IT-002",
+          "ORG-001",
+          "POL-SEC-002"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-IT-002": 1
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "documents": [
+          "POL-IT-002",
+          "POL-SEC-002",
+          "ORG-001"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-IT-002": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "mrr": 1.0,
+        "documents": [
+          "POL-IT-002",
+          "POL-SEC-002",
+          "ORG-001"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-IT-002": 1
+        }
+      }
+    },
+    {
+      "eval_id": "E050",
+      "category": "policy_governance",
+      "expected": [
+        "POL-SEC-002"
+      ],
+      "pool_documents": 12,
+      "hint_added_chars": 44,
+      "plan": {
+        "intent": "policy",
+        "required_aspects": [
+          "policy_requirement"
+        ],
+        "evidence_types": [
+          "policy"
+        ],
+        "identifiers": [],
+        "seller_scope": []
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "POL-SEC-002",
+          "POL-IT-002"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-SEC-002": 1
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "POL-SEC-002",
+          "POL-IT-002"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-SEC-002": 1
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "POL-SEC-002",
+          "POL-IT-002"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-SEC-002": 1
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "POL-SEC-002",
+          "POL-IT-002"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-SEC-002": 1
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "POL-SEC-002",
+          "POL-IT-002"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-SEC-002": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "POL-SEC-002",
+          "POL-IT-002"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-SEC-002": 1
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "POL-SEC-002",
+          "POL-IT-002"
+        ],
+        "n_selected": 4,
+        "gold_ranks": {
+          "POL-SEC-002": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "POL-SEC-002"
+        ],
+        "n_selected": 3,
+        "gold_ranks": {
+          "POL-SEC-002": 1
+        }
+      }
+    },
+    {
+      "eval_id": "E051",
+      "category": "policy_governance",
+      "expected": [
+        "POL-BIZ-003"
+      ],
+      "pool_documents": 13,
+      "hint_added_chars": 44,
+      "plan": {
+        "intent": "policy",
+        "required_aspects": [
+          "policy_requirement"
+        ],
+        "evidence_types": [
+          "policy"
+        ],
+        "identifiers": [],
+        "seller_scope": []
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "POL-BIZ-003",
+          "POL-FIN-002",
+          "PRJ-S001-001",
+          "PRJ-S003-003",
+          "TKT-2026-0115-054"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "POL-BIZ-003": 1
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "POL-BIZ-003",
+          "POL-FIN-002",
+          "PRJ-S003-003",
+          "PRJ-S001-001",
+          "TKT-2026-0115-054"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "POL-BIZ-003": 1
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "POL-BIZ-003",
+          "POL-FIN-002",
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "PRJ-S001-001"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "POL-BIZ-003": 1
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "POL-BIZ-003",
+          "POL-FIN-002",
+          "PRJ-S001-001",
+          "PRJ-S003-003",
+          "TKT-2026-0115-054"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "POL-BIZ-003": 1
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "POL-BIZ-003",
+          "POL-FIN-002",
+          "PRJ-S001-001",
+          "PRJ-S003-003",
+          "TKT-2026-0115-054"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "POL-BIZ-003": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "POL-BIZ-003",
+          "POL-FIN-002",
+          "PRJ-S001-001",
+          "PRJ-S003-003",
+          "TKT-2026-0115-054"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "POL-BIZ-003": 1
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "POL-BIZ-003",
+          "POL-FIN-002",
+          "PRJ-S003-003",
+          "PRJ-S001-001",
+          "TKT-2026-0115-054"
+        ],
+        "n_selected": 9,
+        "gold_ranks": {
+          "POL-BIZ-003": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "POL-BIZ-003",
+          "PRJ-S003-003",
+          "TKT-2026-0115-054",
+          "POL-FIN-002",
+          "PRJ-S001-001"
+        ],
+        "n_selected": 10,
+        "gold_ranks": {
+          "POL-BIZ-003": 1
+        }
+      }
+    },
+    {
+      "eval_id": "E052",
+      "category": "policy_governance",
+      "expected": [
+        "POL-SEC-001"
+      ],
+      "pool_documents": 12,
+      "hint_added_chars": 45,
+      "plan": {
+        "intent": "policy",
+        "required_aspects": [
+          "policy_requirement"
+        ],
+        "evidence_types": [
+          "runbook"
+        ],
+        "identifiers": [],
+        "seller_scope": []
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "POL-SEC-001"
+        ],
+        "n_selected": 2,
+        "gold_ranks": {
+          "POL-SEC-001": 1
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "POL-SEC-001"
+        ],
+        "n_selected": 2,
+        "gold_ranks": {
+          "POL-SEC-001": 1
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "POL-SEC-001"
+        ],
+        "n_selected": 2,
+        "gold_ranks": {
+          "POL-SEC-001": 1
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "POL-SEC-001"
+        ],
+        "n_selected": 2,
+        "gold_ranks": {
+          "POL-SEC-001": 1
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "POL-SEC-001"
+        ],
+        "n_selected": 2,
+        "gold_ranks": {
+          "POL-SEC-001": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "POL-SEC-001"
+        ],
+        "n_selected": 2,
+        "gold_ranks": {
+          "POL-SEC-001": 1
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0,
+        "documents": [
+          "POL-SEC-001"
+        ],
+        "n_selected": 2,
+        "gold_ranks": {
+          "POL-SEC-001": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0,
+        "documents": [
+          "POL-SEC-001",
+          "POL-IT-002"
+        ],
+        "n_selected": 3,
+        "gold_ranks": {
+          "POL-SEC-001": 1
+        }
+      }
+    },
+    {
+      "eval_id": "E053",
+      "category": "ambiguous",
+      "expected": [
+        "INC-2026-0519"
+      ],
+      "pool_documents": 13,
+      "hint_added_chars": 40,
+      "plan": {
+        "intent": "root_cause",
+        "required_aspects": [
+          "cause"
+        ],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "seller_scope": []
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 0.5,
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "INC-2026-0519": 2
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "INC-2026-0519": 1
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "INC-2026-0519": 1
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 0.5,
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "INC-2026-0519": 2
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "INC-2026-0519": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 0.5,
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "INC-2026-0519": 2
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041"
+        ],
+        "n_selected": 6,
+        "gold_ranks": {
+          "INC-2026-0519": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 0.5,
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 7,
+        "gold_ranks": {
+          "INC-2026-0519": 2
+        }
+      }
+    },
+    {
+      "eval_id": "E054",
+      "category": "ambiguous",
+      "expected": [
+        "OPS-RB-002"
+      ],
+      "pool_documents": 12,
+      "hint_added_chars": 18,
+      "plan": {
+        "intent": "procedure",
+        "required_aspects": [],
+        "evidence_types": [
+          "runbook"
+        ],
+        "identifiers": [],
+        "seller_scope": []
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 0.25,
+        "documents": [
+          "INC-2026-0716",
+          "INC-2026-0519",
+          "OPS-RB-006",
+          "OPS-RB-002"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "OPS-RB-002": 4
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 0.3333333333333333,
+        "documents": [
+          "INC-2026-0716",
+          "OPS-RB-006",
+          "OPS-RB-002",
+          "INC-2026-0519"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "OPS-RB-002": 3
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 0.25,
+        "documents": [
+          "INC-2026-0716",
+          "INC-2026-0519",
+          "OPS-RB-006",
+          "OPS-RB-002"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "OPS-RB-002": 4
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 0.25,
+        "documents": [
+          "INC-2026-0716",
+          "INC-2026-0519",
+          "OPS-RB-006",
+          "OPS-RB-002"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "OPS-RB-002": 4
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 0.3333333333333333,
+        "documents": [
+          "INC-2026-0716",
+          "OPS-RB-006",
+          "OPS-RB-002",
+          "INC-2026-0519"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "OPS-RB-002": 3
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 0.25,
+        "documents": [
+          "INC-2026-0716",
+          "INC-2026-0519",
+          "OPS-RB-006",
+          "OPS-RB-002"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "OPS-RB-002": 4
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 0.3333333333333333,
+        "documents": [
+          "INC-2026-0716",
+          "OPS-RB-006",
+          "OPS-RB-002",
+          "INC-2026-0519"
+        ],
+        "n_selected": 5,
+        "gold_ranks": {
+          "OPS-RB-002": 3
+        }
+      },
+      "combined_hints": {
+        "recall": 0.0,
+        "precision": 0.0,
+        "mrr": 0.0,
+        "documents": [
+          "INC-2026-0716"
+        ],
+        "n_selected": 1,
+        "gold_ranks": {
+          "OPS-RB-002": null
+        }
+      }
+    },
+    {
+      "eval_id": "E055",
+      "category": "ambiguous",
+      "expected": [
+        "INC-2026-0716"
+      ],
+      "pool_documents": 12,
+      "hint_added_chars": 26,
+      "plan": {
+        "intent": "explanation",
+        "required_aspects": [],
+        "evidence_types": [
+          "incident_report"
+        ],
+        "identifiers": [],
+        "seller_scope": []
+      },
+      "baseline": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-002",
+          "INC-2026-0312",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0716": 1
+        }
+      },
+      "intent": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-002",
+          "INC-2026-0312",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0716": 1
+        }
+      },
+      "aspects": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-002",
+          "INC-2026-0312",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0716": 1
+        }
+      },
+      "event": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-002",
+          "INC-2026-0312",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0716": 1
+        }
+      },
+      "evidence": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-002",
+          "INC-2026-0312",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0716": 1
+        }
+      },
+      "seller": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-002",
+          "INC-2026-0312",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0716": 1
+        }
+      },
+      "combined": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-002",
+          "INC-2026-0312",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0716": 1
+        }
+      },
+      "combined_hints": {
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0,
+        "documents": [
+          "INC-2026-0716",
+          "TKT-2026-0716-268",
+          "PRJ-S002-002",
+          "INC-2026-0312",
+          "TKT-2026-0812-308"
+        ],
+        "n_selected": 8,
+        "gold_ranks": {
+          "INC-2026-0716": 1
+        }
+      }
+    }
+  ]
+}

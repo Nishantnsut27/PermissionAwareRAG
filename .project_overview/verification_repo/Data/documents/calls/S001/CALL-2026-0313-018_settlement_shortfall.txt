@@ -1,0 +1,172 @@
+NEXORA COMMERCE PVT. LTD. - CALL TRANSCRIPT
+This is a synthetic record created for a prototype dataset. It is not a real
+conversation and does not describe real people or companies.
+
+================================================================================
+CALL RECORD
+================================================================================
+Call ID          : CALL-2026-0313-018
+Date             : 13 March 2026
+Start time       : 10:30 IST
+Duration         : 34 minutes
+Seller           : S001 - Aurelia Home Decor
+Topic            : Settlement shortfall of 12 March 2026 - status and recovery
+Related scenario : SC-001
+Related ticket   : TKT-2026-0312-114
+
+Participants
+  Ritika Bansal        Seller Operations Lead, Aurelia Home Decor
+  Suresh Iyer          Finance Controller, Aurelia Home Decor
+  Aditya Verma         Account Manager, Nexora (Business)
+  Rahul Sharma         Support Engineer, Nexora (Support)
+
+Classification   : CONFIDENTIAL
+Distribution     : Within S001 seller scope only
+================================================================================
+
+[10:30] ADITYA VERMA: Thanks both for making the time at short notice. Rahul
+is here from support. Ritika, Suresh - I want to start by saying we've
+confirmed the problem and we have an engineering owner on it. I don't yet
+have a firm credit date, and I'd rather tell you that than guess.
+
+[10:30] RITIKA BANSAL: Appreciated. Suresh is the one who found it, so I'll
+let him describe it.
+
+[10:31] SURESH IYER: I reconcile every cycle against our own order export.
+This one came up INR 4,82,000 short. I went block by block - GMV matched,
+commission matched, adjustments matched. The reversal block was nearly double.
+I checked it three times because I assumed I had made an error.
+
+[10:31] RAHUL SHARMA: You hadn't. I confirmed it yesterday. There are 1,914
+returns in the period and 3,828 reversal entries in the settlement report.
+Each return is appearing twice.
+
+[10:32] SURESH IYER: Twice with different entry IDs?
+
+[10:32] RAHUL SHARMA: Yes. Same order, same return, two ledger entry IDs.
+
+[10:32] SURESH IYER: Then it's your ledger, not our order data. Good. I mean,
+not good, but at least it's contained.
+
+[10:33] ADITYA VERMA: It is. And to be clear about responsibility - this is
+ours. You are not being asked to prove anything and you are not absorbing
+anything. The shortfall gets credited.
+
+[10:33] RITIKA BANSAL: I appreciate you saying that, but I want to be
+straight with you as well. This is the second settlement issue in six months.
+We can absorb one. We can't absorb a pattern.
+
+[10:34] ADITYA VERMA: That's fair. Let me tell you what I know. The
+engineering team's initial read is that this is a duplicate-recognition
+problem in the ledger, something that came in with a schema change. Rahul,
+correct me if I'm overstating.
+
+[10:34] RAHUL SHARMA: That's right. I don't have the technical detail yet,
+but the pattern points at the ledger writing the same reversal twice rather
+than at anything in the input data.
+
+[10:35] SURESH IYER: Can it happen again on the next cycle?
+
+[10:35] RAHUL SHARMA: I can't rule it out until the fix is deployed. What I
+can tell you is the payout for this cycle is on hold, so the incorrect figure
+will not go out.
+
+[10:36] SURESH IYER: On hold is better than wrong. How long?
+
+[10:36] RAHUL SHARMA: The fix is being developed today. If it deploys this
+afternoon we reprocess tonight and you would see the credit within 24 hours.
+
+[10:37] SURESH IYER: And if it doesn't deploy?
+
+[10:37] RAHUL SHARMA: Then I'll tell you by 18:00 today that it hasn't, and
+give you a revised date.
+
+[10:38] ADITYA VERMA: That's the commitment. Suresh, one question from me.
+When you found this, what made you check the reversal block specifically?
+
+[10:39] SURESH IYER: Because it's the only block I can't verify from my own
+data. GMV I can check against orders. Commission I can check against the
+contract. Reversals depend on your return processing, and I only see the
+total. So it's the block I watch most closely.
+
+[10:40] ADITYA VERMA: That's a really useful observation. If reversals are
+the hardest thing for you to verify, then a per-return breakdown would help.
+
+[10:40] SURESH IYER: Enormously. If I'd had line-level reversals I would
+have caught this on the first day, not the fourth.
+
+[10:41] ADITYA VERMA: Noted. I'm going to take that away. There's a project
+already running on settlement controls and I think your point belongs in it.
+
+[10:42] RITIKA BANSAL: Can I raise something else while we're all here?
+
+[10:42] ADITYA VERMA: Please.
+
+[10:43] RITIKA BANSAL: The detection. Suresh found this. Not you. We are the
+control here. I've said this before and I'll keep saying it - I don't want to
+be the mechanism that catches your accounting errors.
+
+[10:44] ADITYA VERMA: You're right, and I'm not going to defend it. There is
+no automated settlement check on our side. That's the actual gap, separate
+from the bug.
+
+[10:44] RITIKA BANSAL: Then that's what I want fixed.
+
+[10:45] ADITYA VERMA: Agreed. I'll make sure it's an action with an owner
+rather than a nice sentiment. Let me summarise where we are.
+
+[10:46] ADITYA VERMA: One - shortfall confirmed at INR 4,82,000, cause is
+ours, credit will be issued. Two - the payout is held so nothing incorrect
+goes out. Three - Rahul gives you a status by 18:00 today either way. Four -
+I'm taking forward two requests from this call: line-level reversal detail
+in the settlement report, and an automated variance check before payout.
+
+[10:47] SURESH IYER: Can I add a fifth? Please credit it as a distinct line.
+Don't net it against anything else in the next cycle. I need to be able to
+show our auditor a correction.
+
+[10:47] ADITYA VERMA: That's reasonable. Distinct line. I'll confirm it with
+operations.
+
+[10:48] SURESH IYER: Thank you.
+
+[10:48] RITIKA BANSAL: One more thing, and then I'll let you go. What
+happens if this recurs after the fix?
+
+[10:49] ADITYA VERMA: Then I'd expect us to be having a different
+conversation, and you'd be right to make it a commercial one. I'm not going
+to pretend otherwise. But I don't think that's where this lands. Let me prove
+it over the next few cycles.
+
+[10:50] RITIKA BANSAL: Fair enough. Thank you both.
+
+[10:51] RAHUL SHARMA: I'll send the status by six regardless.
+
+[10:51] SURESH IYER: Please do. And Rahul - thank you for confirming it so
+quickly yesterday. That helped.
+
+[10:52] RAHUL SHARMA: Noted. I'll send the first update as soon as I have
+the engineering read.
+
+================================================================================
+DECISIONS
+================================================================================
+1. Shortfall confirmed at INR 4,82,000. Cause accepted as platform-side.
+2. Payout for the cycle held until the corrected figure is verified.
+3. Credit to be issued as a distinct adjustment line, not netted.
+4. Support to provide a status update by 18:00 IST on 13 March either way.
+
+FOLLOW-UP ACTIONS
+================================================================================
+Owner           Action                                          Target
+Rahul Sharma    Status update to seller by 18:00 IST            2026-03-13
+Engineering     Deploy ledger fix and reprocess batch           2026-03-13
+Operations      Verify corrected payout against source          2026-03-14
+Operations      Issue credit as a distinct adjustment line      2026-03-14
+Aditya Verma    Raise line-level reversal detail as a project   2026-03-20
+                requirement
+Aditya Verma    Raise automated pre-payout variance detection   2026-03-20
+                as a project requirement
+
+RECORDING ENDS 10:52 IST
+================================================================================

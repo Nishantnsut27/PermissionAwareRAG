@@ -1,0 +1,1174 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-23T17:56:22+00:00",
+  "candidate_pool": 20,
+  "phase5_plans_source": "C:\\Users\\Nishant Raj\\OneDrive\\Desktop\\Projects\\fde\\evaluation\\runs\\query-understanding-eval.json",
+  "summary": {
+    "scored_cases": 6,
+    "baseline": {
+      "recall": 1.0,
+      "precision": 0.1827,
+      "mrr": 0.7917,
+      "mean_pool_documents": 10.3333,
+      "mean_pool_chunks": 20,
+      "mean_withheld": 1,
+      "identifier_pool_chunks": 0
+    },
+    "plan": {
+      "recall": 1.0,
+      "precision": 0.1887,
+      "mrr": 0.6111,
+      "mean_pool_documents": 10.1667,
+      "mean_pool_chunks": 20,
+      "mean_withheld": 1,
+      "identifier_pool_chunks": 0
+    },
+    "fallback": {
+      "recall": 1.0,
+      "precision": 0.1827,
+      "mrr": 0.7222,
+      "mean_pool_documents": 10.3333,
+      "mean_pool_chunks": 20,
+      "mean_withheld": 1,
+      "identifier_pool_chunks": 0
+    },
+    "aspect_only": {
+      "recall": 1.0,
+      "precision": 0.1887,
+      "mrr": 0.6111,
+      "mean_pool_documents": 10.1667,
+      "mean_pool_chunks": 20,
+      "mean_withheld": 1,
+      "identifier_pool_chunks": 0
+    },
+    "date_only": {
+      "recall": 1.0,
+      "precision": 0.1827,
+      "mrr": 0.8056,
+      "mean_pool_documents": 10.3333,
+      "mean_pool_chunks": 20,
+      "mean_withheld": 1,
+      "identifier_pool_chunks": 0
+    },
+    "aspect_date": {
+      "recall": 1.0,
+      "precision": 0.1887,
+      "mrr": 0.6111,
+      "mean_pool_documents": 10.1667,
+      "mean_pool_chunks": 20,
+      "mean_withheld": 1,
+      "identifier_pool_chunks": 0
+    },
+    "plan_recall_regressions": [],
+    "plan_recall_improvements": 0,
+    "ablation": {
+      "aspect_only": {
+        "recall": 1.0,
+        "precision": 0.1887,
+        "mrr": 0.6111,
+        "mean_pool_documents": 10.1667,
+        "mean_pool_chunks": 20,
+        "mean_withheld": 1,
+        "identifier_pool_chunks": 0
+      },
+      "date_only": {
+        "recall": 1.0,
+        "precision": 0.1827,
+        "mrr": 0.8056,
+        "mean_pool_documents": 10.3333,
+        "mean_pool_chunks": 20,
+        "mean_withheld": 1,
+        "identifier_pool_chunks": 0
+      },
+      "aspect_date": {
+        "recall": 1.0,
+        "precision": 0.1887,
+        "mrr": 0.6111,
+        "mean_pool_documents": 10.1667,
+        "mean_pool_chunks": 20,
+        "mean_withheld": 1,
+        "identifier_pool_chunks": 0
+      }
+    },
+    "ablation_recall_regressions": {
+      "aspect_only": [],
+      "date_only": [],
+      "aspect_date": []
+    }
+  },
+  "rows": [
+    {
+      "eval_id": "E001",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "TKT-2026-0312-114",
+        "PRJ-S001-003"
+      ],
+      "baseline": {
+        "documents": [
+          "S001-ACC-001",
+          "PRJ-S001-001",
+          "CALL-2026-0313-018",
+          "TKT-2026-0312-114",
+          "PRJ-S001-004",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "PRJ-S001-002",
+          "PRJ-S001-003",
+          "TKT-2026-0812-308",
+          "ORG-001",
+          "PRJ-S003-003"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "promoted_chunks": [],
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 0.25
+      },
+      "plan": {
+        "documents": [
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003",
+          "PRJ-S001-004",
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "PRJ-S001-002",
+          "TKT-2026-0812-308",
+          "ORG-001",
+          "PRJ-S003-003"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "promoted_chunks": [
+          "CALL-2026-0313-018_chunk_001",
+          "PRJ-S001-001_chunk_002",
+          "PRJ-S001-003_chunk_001",
+          "PRJ-S001-004_chunk_002"
+        ],
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 0.3333333333333333
+      },
+      "fallback": {
+        "documents": [
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003",
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "PRJ-S001-004",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "PRJ-S001-002",
+          "TKT-2026-0812-308",
+          "ORG-001",
+          "PRJ-S003-003"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 16,
+          "dense": 4
+        },
+        "promoted_chunks": [
+          "CALL-2026-0313-018_chunk_001",
+          "CALL-2026-0313-018_chunk_003",
+          "PRJ-S001-001_chunk_002",
+          "PRJ-S001-003_chunk_001"
+        ],
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 0.3333333333333333
+      },
+      "aspect_only": {
+        "documents": [
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003",
+          "PRJ-S001-004",
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "PRJ-S001-002",
+          "TKT-2026-0812-308",
+          "ORG-001",
+          "PRJ-S003-003"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "promoted_chunks": [
+          "CALL-2026-0313-018_chunk_001",
+          "PRJ-S001-001_chunk_002",
+          "PRJ-S001-003_chunk_001",
+          "PRJ-S001-004_chunk_002"
+        ],
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 0.3333333333333333
+      },
+      "date_only": {
+        "documents": [
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003",
+          "PRJ-S001-004",
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "PRJ-S001-002",
+          "TKT-2026-0812-308",
+          "ORG-001",
+          "PRJ-S003-003"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "promoted_chunks": [
+          "CALL-2026-0313-018_chunk_001",
+          "PRJ-S001-001_chunk_002",
+          "PRJ-S001-003_chunk_001",
+          "PRJ-S001-004_chunk_002"
+        ],
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 0.3333333333333333
+      },
+      "aspect_date": {
+        "documents": [
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "PRJ-S001-003",
+          "PRJ-S001-004",
+          "S001-ACC-001",
+          "TKT-2026-0312-114",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "PRJ-S001-002",
+          "TKT-2026-0812-308",
+          "ORG-001",
+          "PRJ-S003-003"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "promoted_chunks": [
+          "CALL-2026-0313-018_chunk_001",
+          "PRJ-S001-001_chunk_002",
+          "PRJ-S001-003_chunk_001",
+          "PRJ-S001-004_chunk_002"
+        ],
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 0.3333333333333333
+      }
+    },
+    {
+      "eval_id": "E002",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0519",
+        "TKT-2026-0519-207"
+      ],
+      "baseline": {
+        "documents": [
+          "PRJ-S002-003",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "CALL-2026-0520-041",
+          "INC-2026-0716",
+          "TKT-2026-0602-217",
+          "CALL-2026-0717-052",
+          "TKT-2026-0716-268",
+          "ORG-001"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "promoted_chunks": [],
+        "recall": 1.0,
+        "precision": 0.2222222222222222,
+        "mrr": 0.5
+      },
+      "plan": {
+        "documents": [
+          "CALL-2026-0520-041",
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "TKT-2026-0602-217",
+          "CALL-2026-0717-052",
+          "TKT-2026-0716-268",
+          "ORG-001"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "promoted_chunks": [
+          "CALL-2026-0520-041_chunk_001",
+          "INC-2026-0519_chunk_005",
+          "PRJ-S002-003_chunk_002",
+          "TKT-2026-0519-207_chunk_002"
+        ],
+        "recall": 1.0,
+        "precision": 0.2222222222222222,
+        "mrr": 0.5
+      },
+      "fallback": {
+        "documents": [
+          "CALL-2026-0520-041",
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "TKT-2026-0602-217",
+          "CALL-2026-0717-052",
+          "TKT-2026-0716-268",
+          "ORG-001"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "promoted_chunks": [
+          "CALL-2026-0520-041_chunk_001",
+          "INC-2026-0519_chunk_002",
+          "INC-2026-0519_chunk_005",
+          "PRJ-S002-003_chunk_001"
+        ],
+        "recall": 1.0,
+        "precision": 0.2222222222222222,
+        "mrr": 0.5
+      },
+      "aspect_only": {
+        "documents": [
+          "CALL-2026-0520-041",
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "TKT-2026-0602-217",
+          "CALL-2026-0717-052",
+          "TKT-2026-0716-268",
+          "ORG-001"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "promoted_chunks": [
+          "CALL-2026-0520-041_chunk_001",
+          "INC-2026-0519_chunk_005",
+          "PRJ-S002-003_chunk_002",
+          "TKT-2026-0519-207_chunk_002"
+        ],
+        "recall": 1.0,
+        "precision": 0.2222222222222222,
+        "mrr": 0.5
+      },
+      "date_only": {
+        "documents": [
+          "CALL-2026-0520-041",
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "TKT-2026-0602-217",
+          "CALL-2026-0717-052",
+          "TKT-2026-0716-268",
+          "ORG-001"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "promoted_chunks": [
+          "CALL-2026-0520-041_chunk_001",
+          "INC-2026-0519_chunk_005",
+          "PRJ-S002-003_chunk_002",
+          "TKT-2026-0519-207_chunk_002"
+        ],
+        "recall": 1.0,
+        "precision": 0.2222222222222222,
+        "mrr": 0.5
+      },
+      "aspect_date": {
+        "documents": [
+          "CALL-2026-0520-041",
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "INC-2026-0716",
+          "TKT-2026-0602-217",
+          "CALL-2026-0717-052",
+          "TKT-2026-0716-268",
+          "ORG-001"
+        ],
+        "pool_size": 20,
+        "authorized": 27,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "promoted_chunks": [
+          "CALL-2026-0520-041_chunk_001",
+          "INC-2026-0519_chunk_005",
+          "PRJ-S002-003_chunk_002",
+          "TKT-2026-0519-207_chunk_002"
+        ],
+        "recall": 1.0,
+        "precision": 0.2222222222222222,
+        "mrr": 0.5
+      }
+    },
+    {
+      "eval_id": "E003",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0812",
+        "TKT-2026-0812-308"
+      ],
+      "baseline": {
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308",
+          "INC-2026-0519",
+          "INC-2026-0312",
+          "INC-2026-0716",
+          "TKT-2026-0602-217",
+          "TKT-2026-0716-268",
+          "PRJ-S002-001"
+        ],
+        "pool_size": 20,
+        "authorized": 32,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "promoted_chunks": [],
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "INC-2026-0312",
+          "INC-2026-0812",
+          "TKT-2026-0812-308",
+          "INC-2026-0519",
+          "INC-2026-0716",
+          "TKT-2026-0602-217",
+          "TKT-2026-0716-268"
+        ],
+        "pool_size": 20,
+        "authorized": 32,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "promoted_chunks": [
+          "INC-2026-0312_chunk_001",
+          "INC-2026-0312_chunk_002",
+          "INC-2026-0312_chunk_003",
+          "INC-2026-0312_chunk_004"
+        ],
+        "recall": 1.0,
+        "precision": 0.2857142857142857,
+        "mrr": 0.5
+      },
+      "fallback": {
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308",
+          "INC-2026-0519",
+          "INC-2026-0312",
+          "INC-2026-0716",
+          "TKT-2026-0602-217",
+          "TKT-2026-0716-268",
+          "PRJ-S002-001"
+        ],
+        "pool_size": 20,
+        "authorized": 32,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "promoted_chunks": [],
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0
+      },
+      "aspect_only": {
+        "documents": [
+          "INC-2026-0312",
+          "INC-2026-0812",
+          "TKT-2026-0812-308",
+          "INC-2026-0519",
+          "INC-2026-0716",
+          "TKT-2026-0602-217",
+          "TKT-2026-0716-268"
+        ],
+        "pool_size": 20,
+        "authorized": 32,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "promoted_chunks": [
+          "INC-2026-0312_chunk_001",
+          "INC-2026-0312_chunk_002",
+          "INC-2026-0312_chunk_003",
+          "INC-2026-0312_chunk_004"
+        ],
+        "recall": 1.0,
+        "precision": 0.2857142857142857,
+        "mrr": 0.5
+      },
+      "date_only": {
+        "documents": [
+          "INC-2026-0812",
+          "TKT-2026-0812-308",
+          "INC-2026-0519",
+          "INC-2026-0312",
+          "INC-2026-0716",
+          "TKT-2026-0602-217",
+          "TKT-2026-0716-268",
+          "PRJ-S002-001"
+        ],
+        "pool_size": 20,
+        "authorized": 32,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "promoted_chunks": [],
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0
+      },
+      "aspect_date": {
+        "documents": [
+          "INC-2026-0312",
+          "INC-2026-0812",
+          "TKT-2026-0812-308",
+          "INC-2026-0519",
+          "INC-2026-0716",
+          "TKT-2026-0602-217",
+          "TKT-2026-0716-268"
+        ],
+        "pool_size": 20,
+        "authorized": 32,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "promoted_chunks": [
+          "INC-2026-0312_chunk_001",
+          "INC-2026-0312_chunk_002",
+          "INC-2026-0312_chunk_003",
+          "INC-2026-0312_chunk_004"
+        ],
+        "recall": 1.0,
+        "precision": 0.2857142857142857,
+        "mrr": 0.5
+      }
+    },
+    {
+      "eval_id": "E004",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "OPS-RB-004"
+      ],
+      "baseline": {
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002",
+          "OPS-RB-002",
+          "POL-SEC-001",
+          "POL-SEC-002",
+          "OPS-RB-005",
+          "OPS-RB-003",
+          "OPS-RB-001",
+          "PRJ-S004-002",
+          "POL-BIZ-004",
+          "PRJ-S004-003"
+        ],
+        "pool_size": 20,
+        "authorized": 24,
+        "withheld": 6,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "promoted_chunks": [],
+        "recall": 1.0,
+        "precision": 0.09090909090909091,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "OPS-RB-001",
+          "OPS-RB-002",
+          "OPS-RB-004",
+          "POL-FIN-002",
+          "POL-SEC-001",
+          "POL-SEC-002",
+          "OPS-RB-005",
+          "OPS-RB-003",
+          "PRJ-S004-002",
+          "POL-BIZ-004",
+          "PRJ-S004-003"
+        ],
+        "pool_size": 20,
+        "authorized": 24,
+        "withheld": 6,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "promoted_chunks": [
+          "OPS-RB-001_chunk_001",
+          "OPS-RB-002_chunk_001",
+          "OPS-RB-002_chunk_002",
+          "OPS-RB-002_chunk_003"
+        ],
+        "recall": 1.0,
+        "precision": 0.09090909090909091,
+        "mrr": 0.3333333333333333
+      },
+      "fallback": {
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002",
+          "OPS-RB-002",
+          "POL-SEC-001",
+          "POL-SEC-002",
+          "OPS-RB-005",
+          "OPS-RB-003",
+          "OPS-RB-001",
+          "PRJ-S004-002",
+          "POL-BIZ-004",
+          "PRJ-S004-003"
+        ],
+        "pool_size": 20,
+        "authorized": 24,
+        "withheld": 6,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "promoted_chunks": [],
+        "recall": 1.0,
+        "precision": 0.09090909090909091,
+        "mrr": 1.0
+      },
+      "aspect_only": {
+        "documents": [
+          "OPS-RB-001",
+          "OPS-RB-002",
+          "OPS-RB-004",
+          "POL-FIN-002",
+          "POL-SEC-001",
+          "POL-SEC-002",
+          "OPS-RB-005",
+          "OPS-RB-003",
+          "PRJ-S004-002",
+          "POL-BIZ-004",
+          "PRJ-S004-003"
+        ],
+        "pool_size": 20,
+        "authorized": 24,
+        "withheld": 6,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "promoted_chunks": [
+          "OPS-RB-001_chunk_001",
+          "OPS-RB-002_chunk_001",
+          "OPS-RB-002_chunk_002",
+          "OPS-RB-002_chunk_003"
+        ],
+        "recall": 1.0,
+        "precision": 0.09090909090909091,
+        "mrr": 0.3333333333333333
+      },
+      "date_only": {
+        "documents": [
+          "OPS-RB-004",
+          "POL-FIN-002",
+          "OPS-RB-002",
+          "POL-SEC-001",
+          "POL-SEC-002",
+          "OPS-RB-005",
+          "OPS-RB-003",
+          "OPS-RB-001",
+          "PRJ-S004-002",
+          "POL-BIZ-004",
+          "PRJ-S004-003"
+        ],
+        "pool_size": 20,
+        "authorized": 24,
+        "withheld": 6,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "promoted_chunks": [],
+        "recall": 1.0,
+        "precision": 0.09090909090909091,
+        "mrr": 1.0
+      },
+      "aspect_date": {
+        "documents": [
+          "OPS-RB-001",
+          "OPS-RB-002",
+          "OPS-RB-004",
+          "POL-FIN-002",
+          "POL-SEC-001",
+          "POL-SEC-002",
+          "OPS-RB-005",
+          "OPS-RB-003",
+          "PRJ-S004-002",
+          "POL-BIZ-004",
+          "PRJ-S004-003"
+        ],
+        "pool_size": 20,
+        "authorized": 24,
+        "withheld": 6,
+        "methods": {
+          "hybrid": 14,
+          "dense": 6
+        },
+        "promoted_chunks": [
+          "OPS-RB-001_chunk_001",
+          "OPS-RB-002_chunk_001",
+          "OPS-RB-002_chunk_002",
+          "OPS-RB-002_chunk_003"
+        ],
+        "recall": 1.0,
+        "precision": 0.09090909090909091,
+        "mrr": 0.3333333333333333
+      }
+    },
+    {
+      "eval_id": "E005",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "PRJ-S001-004",
+        "TKT-2026-0224-091"
+      ],
+      "baseline": {
+        "documents": [
+          "PRJ-S001-004",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "S001-ACC-001",
+          "POL-FIN-002",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "TKT-2026-0312-114",
+          "PRJ-S001-003",
+          "CALL-2026-0619-047",
+          "PRJ-S001-002",
+          "CALL-2026-0904-071"
+        ],
+        "pool_size": 20,
+        "authorized": 26,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "promoted_chunks": [],
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "PRJ-S001-004",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "S001-ACC-001",
+          "POL-FIN-002",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "TKT-2026-0312-114",
+          "PRJ-S001-003",
+          "CALL-2026-0619-047",
+          "PRJ-S001-002",
+          "CALL-2026-0904-071"
+        ],
+        "pool_size": 20,
+        "authorized": 26,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "promoted_chunks": [],
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "PRJ-S001-004",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "S001-ACC-001",
+          "POL-FIN-002",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "TKT-2026-0312-114",
+          "PRJ-S001-003",
+          "CALL-2026-0619-047",
+          "PRJ-S001-002",
+          "CALL-2026-0904-071"
+        ],
+        "pool_size": 20,
+        "authorized": 26,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "promoted_chunks": [],
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 1.0
+      },
+      "aspect_only": {
+        "documents": [
+          "PRJ-S001-004",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "S001-ACC-001",
+          "POL-FIN-002",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "TKT-2026-0312-114",
+          "PRJ-S001-003",
+          "CALL-2026-0619-047",
+          "PRJ-S001-002",
+          "CALL-2026-0904-071"
+        ],
+        "pool_size": 20,
+        "authorized": 26,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "promoted_chunks": [],
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 1.0
+      },
+      "date_only": {
+        "documents": [
+          "PRJ-S001-004",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "S001-ACC-001",
+          "POL-FIN-002",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "TKT-2026-0312-114",
+          "PRJ-S001-003",
+          "CALL-2026-0619-047",
+          "PRJ-S001-002",
+          "CALL-2026-0904-071"
+        ],
+        "pool_size": 20,
+        "authorized": 26,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "promoted_chunks": [],
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 1.0
+      },
+      "aspect_date": {
+        "documents": [
+          "PRJ-S001-004",
+          "CALL-2026-0225-013",
+          "TKT-2026-0224-091",
+          "S001-ACC-001",
+          "POL-FIN-002",
+          "CALL-2026-0313-018",
+          "PRJ-S001-001",
+          "TKT-2026-0312-114",
+          "PRJ-S001-003",
+          "CALL-2026-0619-047",
+          "PRJ-S001-002",
+          "CALL-2026-0904-071"
+        ],
+        "pool_size": 20,
+        "authorized": 26,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 17,
+          "dense": 3
+        },
+        "promoted_chunks": [],
+        "recall": 1.0,
+        "precision": 0.16666666666666666,
+        "mrr": 1.0
+      }
+    },
+    {
+      "eval_id": "E006",
+      "category": "authorized_factual",
+      "expected_behavior": "answer",
+      "applicable": true,
+      "expected": [
+        "INC-2026-0716",
+        "TKT-2026-0716-268"
+      ],
+      "baseline": {
+        "documents": [
+          "TKT-2026-0716-268",
+          "INC-2026-0716",
+          "CALL-2026-0717-052",
+          "TKT-2026-0602-217",
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "TKT-2026-0812-308",
+          "POL-SEC-001",
+          "CALL-2026-0225-013"
+        ],
+        "pool_size": 20,
+        "authorized": 29,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "promoted_chunks": [],
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0
+      },
+      "plan": {
+        "documents": [
+          "INC-2026-0716",
+          "PRJ-S001-003",
+          "PRJ-S002-003",
+          "TKT-2026-0716-268",
+          "CALL-2026-0717-052",
+          "TKT-2026-0602-217",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "TKT-2026-0812-308",
+          "POL-SEC-001"
+        ],
+        "pool_size": 20,
+        "authorized": 29,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "promoted_chunks": [
+          "INC-2026-0716_chunk_004",
+          "INC-2026-0716_chunk_005",
+          "PRJ-S001-003_chunk_002",
+          "PRJ-S002-003_chunk_002"
+        ],
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0
+      },
+      "fallback": {
+        "documents": [
+          "CALL-2026-0717-052",
+          "INC-2026-0716",
+          "POL-BIZ-004",
+          "TKT-2026-0716-268",
+          "TKT-2026-0602-217",
+          "INC-2026-0519",
+          "PRJ-S002-003",
+          "TKT-2026-0519-207",
+          "TKT-2026-0812-308",
+          "POL-SEC-001"
+        ],
+        "pool_size": 20,
+        "authorized": 29,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "promoted_chunks": [
+          "CALL-2026-0717-052_chunk_001",
+          "INC-2026-0716_chunk_004",
+          "INC-2026-0716_chunk_005",
+          "POL-BIZ-004_chunk_002"
+        ],
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 0.5
+      },
+      "aspect_only": {
+        "documents": [
+          "INC-2026-0716",
+          "PRJ-S001-003",
+          "PRJ-S002-003",
+          "TKT-2026-0716-268",
+          "CALL-2026-0717-052",
+          "TKT-2026-0602-217",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "TKT-2026-0812-308",
+          "POL-SEC-001"
+        ],
+        "pool_size": 20,
+        "authorized": 29,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "promoted_chunks": [
+          "INC-2026-0716_chunk_004",
+          "INC-2026-0716_chunk_005",
+          "PRJ-S001-003_chunk_002",
+          "PRJ-S002-003_chunk_002"
+        ],
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0
+      },
+      "date_only": {
+        "documents": [
+          "INC-2026-0716",
+          "PRJ-S001-003",
+          "PRJ-S002-003",
+          "TKT-2026-0716-268",
+          "CALL-2026-0717-052",
+          "TKT-2026-0602-217",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "TKT-2026-0812-308",
+          "POL-SEC-001"
+        ],
+        "pool_size": 20,
+        "authorized": 29,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "promoted_chunks": [
+          "INC-2026-0716_chunk_004",
+          "INC-2026-0716_chunk_005",
+          "PRJ-S001-003_chunk_002",
+          "PRJ-S002-003_chunk_002"
+        ],
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0
+      },
+      "aspect_date": {
+        "documents": [
+          "INC-2026-0716",
+          "PRJ-S001-003",
+          "PRJ-S002-003",
+          "TKT-2026-0716-268",
+          "CALL-2026-0717-052",
+          "TKT-2026-0602-217",
+          "INC-2026-0519",
+          "TKT-2026-0519-207",
+          "TKT-2026-0812-308",
+          "POL-SEC-001"
+        ],
+        "pool_size": 20,
+        "authorized": 29,
+        "withheld": 0,
+        "methods": {
+          "hybrid": 15,
+          "dense": 5
+        },
+        "promoted_chunks": [
+          "INC-2026-0716_chunk_004",
+          "INC-2026-0716_chunk_005",
+          "PRJ-S001-003_chunk_002",
+          "PRJ-S002-003_chunk_002"
+        ],
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 1.0
+      }
+    }
+  ]
+}

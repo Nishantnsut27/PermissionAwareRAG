@@ -1,0 +1,1558 @@
+commit 784f6cdb4cf35f7d2ee9ca3dc1eda2039670906e
+Author:     Nishant30488 <143648131+Nishant30488@users.noreply.github.com>
+AuthorDate: Fri Sep 18 09:42:27 2026 +0530
+Commit:     Nishant30488 <143648131+Nishant30488@users.noreply.github.com>
+CommitDate: Fri Sep 18 09:42:27 2026 +0530
+
+    feat: implement document ingestion and recursive chunking
+
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+index 0000000..8c36ecf
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,19 @@
++# Python
++__pycache__/
++*.py[cod]
++.venv/
++venv/
++*.egg-info/
++
++# OS / editor
++.DS_Store
++Thumbs.db
++.idea/
++.vscode/
++
++.env
++Data/Readme.md
++ingestion/Readme.md
++ingestion/reports/
++
++
+diff --git a/ingestion/run_ingestion.py b/ingestion/run_ingestion.py
+new file mode 100644
+index 0000000..29a6a5b
+--- /dev/null
++++ b/ingestion/run_ingestion.py
+@@ -0,0 +1,70 @@
++"""Entry point for the Phase 2 ingestion pipeline.
++
++Usage:
++    python run_ingestion.py
++    python run_ingestion.py --input Data
++    python run_ingestion.py --no-reset
++"""
++from __future__ import annotations
++
++import argparse
++import logging
++import sys
++from pathlib import Path
++
++from src import config
++from src.pipeline import run_ingestion
++
++
++def configure_logging(verbose: bool) -> None:
++    config.REPORTS_DIR.mkdir(parents=True, exist_ok=True)
++    level = logging.DEBUG if verbose else logging.INFO
++    handlers: list[logging.Handler] = [logging.StreamHandler(sys.stdout)]
++    handlers.append(logging.FileHandler(
++        config.LOG_FILE, encoding="utf-8"))
++    logging.basicConfig(
++        level=level,
++        format="%(asctime)s | %(levelname)-7s | %(message)s",
++        datefmt="%H:%M:%S",
++        handlers=handlers,
++        force=True,
++    )
++
++
++def parse_args() -> argparse.Namespace:
++    parser = argparse.ArgumentParser(
++        description="Phase 2 ingestion: raw PDF/TXT -> chunked corpus")
++    parser.add_argument("--input", type=Path, default=config.DEFAULT_INPUT_DIR,
++                        help="directory containing the Phase 1 dataset")
++    parser.add_argument("--no-reset", action="store_true",
++                        help="do not wipe processed output before ingestion")
++    parser.add_argument("--verbose", action="store_true",
++                        help="enable debug logging")
++    return parser.parse_args()
++
++
++def main() -> int:
++    args = parse_args()
++    configure_logging(args.verbose)
++
++    summary = run_ingestion(input_dir=args.input, reset=not args.no_reset)
++
++    documents = summary["documents"]
++    integrity = summary["integrity"]
++    print()
++    print("Ingestion complete")
++    print(f"  discovered       : {summary['discovery']['total']} "
++          f"({summary['discovery']['pdf']} PDF, {summary['discovery']['txt']} TXT)")
++    print(f"  processed        : {documents['processed']}")
++    print(f"  failed           : {documents['failed']}")
++    print(f"  validation errors: {summary['validation']['errors']}")
++    print(f"  total chunks     : {summary['chunks']['total']}")
++    print(f"  integrity        : "
++          f"{'PASS' if all(integrity.values()) else 'FAIL'}")
++    print(f"  output           : {config.CHUNKS_FILE}")
++
++    return 0 if documents["failed"] == 0 and all(integrity.values()) else 1
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())
+diff --git a/ingestion/src/__init__.py b/ingestion/src/__init__.py
+new file mode 100644
+index 0000000..35c36bd
+--- /dev/null
++++ b/ingestion/src/__init__.py
+@@ -0,0 +1 @@
++"""Phase 2 ingestion package."""
+diff --git a/ingestion/src/chunking.py b/ingestion/src/chunking.py
+new file mode 100644
+index 0000000..6b5b91c
+--- /dev/null
++++ b/ingestion/src/chunking.py
+@@ -0,0 +1,86 @@
++"""Token-aware recursive chunking with page provenance."""
++from __future__ import annotations
++
++import tiktoken
++from langchain_text_splitters import RecursiveCharacterTextSplitter
++
++from . import config
++from .models import Chunk, CleanedDocument
++
++
++class TokenChunker:
++    """Wraps a recursive splitter with an explicit token length function."""
++
++    def __init__(
++        self,
++        encoding_name: str = config.TOKENIZER_ENCODING,
++        chunk_size: int = config.CHUNK_SIZE_TOKENS,
++        chunk_overlap: int = config.CHUNK_OVERLAP_TOKENS,
++        separators: list[str] | None = None,
++    ) -> None:
++        self.encoding_name = encoding_name
++        self.chunk_size = chunk_size
++        self.chunk_overlap = chunk_overlap
++        self.encoding = tiktoken.get_encoding(encoding_name)
++        self.splitter = RecursiveCharacterTextSplitter(
++            chunk_size=chunk_size,
++            chunk_overlap=chunk_overlap,
++            length_function=self.count_tokens,
++            separators=separators or config.TEXT_SEPARATORS,
++            keep_separator=True,
++        )
++
++    def count_tokens(self, text: str) -> int:
++        return len(self.encoding.encode(text))
++
++    def split(self, text: str) -> list[str]:
++        if not text.strip():
++            return []
++        return self.splitter.split_text(text)
++
++
++def pages_covering(spans: list[tuple[int, int, int]],
++                   start: int, end: int) -> list[int]:
++    return sorted({number for number, span_start, span_end in spans
++                   if span_start < end and span_end > start})
++
++
++def chunk_document(
++    base_metadata: dict,
++    cleaned: CleanedDocument,
++    chunker: TokenChunker,
++) -> list[Chunk]:
++    pieces = chunker.split(cleaned.text)
++    chunks: list[Chunk] = []
++    cursor = 0
++
++    for index, piece in enumerate(pieces, start=1):
++        start = cleaned.text.find(piece, cursor)
++        if start == -1:
++            start = cleaned.text.find(piece)
++        if start == -1:
++            start = cursor
++        end = start + len(piece)
++        cursor = start + 1
++
++        page_numbers = pages_covering(cleaned.page_spans, start, end)
++        chunks.append(Chunk(
++            chunk_id=f"{base_metadata['document_id']}_chunk_{index:03d}",
++            text=piece,
++            document_id=base_metadata["document_id"],
++            document_type=base_metadata["document_type"],
++            seller_id=base_metadata["seller_id"],
++            department=base_metadata.get("department"),
++            classification=base_metadata["classification"],
++            created_date=base_metadata.get("created_date"),
++            owner=base_metadata.get("owner"),
++            scenario_id=base_metadata.get("scenario_id"),
++            scenario_ids=list(base_metadata.get("scenario_ids") or []),
++            source_file=base_metadata["source_file"],
++            source_format=base_metadata["source_format"],
++            page_numbers=page_numbers,
++            chunk_index=index,
++            token_count=chunker.count_tokens(piece),
++            char_count=len(piece),
++        ))
++    return chunks
+diff --git a/ingestion/src/cleaning.py b/ingestion/src/cleaning.py
+new file mode 100644
+index 0000000..9dcd6fe
+--- /dev/null
++++ b/ingestion/src/cleaning.py
+@@ -0,0 +1,111 @@
++"""Formatting normalisation.
++
++Cleaning never summarises, paraphrases or rewrites. It only fixes the
++mechanical artefacts introduced by PDF text extraction:
++    * inconsistent horizontal whitespace
++    * repeated page headers and footers
++    * lines wrapped mid-sentence
++    * runs of blank lines
++
++Where a transformation is uncertain, the original content is preserved.
++"""
++from __future__ import annotations
++
++import re
++import unicodedata
++from collections import Counter
++
++from . import config
++from .models import CleanedDocument
++
++_CONTROL = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f]")
++_SPACES = re.compile(r"[ \t\u00a0]+")
++_BLANK_RUN = re.compile(r"\n{3,}")
++_LIST_MARKER = re.compile(r"^(?:[-*\u2022]|\d+[.)])\s")
++
++
++def _normalize_line(line: str) -> str:
++    line = unicodedata.normalize("NFC", line)
++    line = _SPACES.sub(" ", line)
++    return line.strip()
++
++
++def clean_page_text(text: str) -> list[str]:
++    text = text.replace("\r\n", "\n").replace("\r", "\n")
++    text = _CONTROL.sub(" ", text)
++    return [_normalize_line(line) for line in text.split("\n")]
++
++
++def strip_repeated_lines(pages: list[list[str]]) -> list[list[str]]:
++    if len(pages) < config.CLEAN_REPEATED_LINE_MIN_PAGES:
++        return pages
++    counter: Counter[str] = Counter()
++    for lines in pages:
++        for line in set(lines):
++            if line and len(line) <= config.CLEAN_REPEATED_LINE_MAX_LEN:
++                counter[line] += 1
++
++    threshold = max(2, int(len(pages) * config.CLEAN_REPEATED_LINE_RATIO))
++    repeated = {line for line, count in counter.items() if count >= threshold}
++
++    cleaned: list[list[str]] = []
++    for lines in pages:
++        kept = [line for line in lines if line not in repeated]
++        cleaned.append(kept if any(kept) else lines)
++    return cleaned
++
++
++def dewarp_lines(lines: list[str]) -> list[str]:
++    merged: list[str] = []
++    for line in lines:
++        if not line:
++            merged.append("")
++            continue
++        if merged and merged[-1]:
++            previous = merged[-1]
++            if (len(previous) >= config.CLEAN_DEWRAP_MIN_PREV_LEN
++                    and previous[-1].islower()
++                    and line[0].islower()
++                    and not _LIST_MARKER.match(line)):
++                merged[-1] = previous + " " + line
++                continue
++        merged.append(line)
++    return merged
++
++
++def _render(lines: list[str]) -> str:
++    text = "\n".join(lines)
++    text = _BLANK_RUN.sub("\n\n", text)
++    return text.strip()
++
++
++def clean_pdf_pages(pages: list[str], dewarp: bool = True) -> list[str]:
++    split_pages = [clean_page_text(page) for page in pages]
++    split_pages = strip_repeated_lines(split_pages)
++    rendered: list[str] = []
++    for lines in split_pages:
++        if dewarp:
++            lines = dewarp_lines(lines)
++        rendered.append(_render(lines))
++    return rendered
++
++
++def clean_txt_text(text: str) -> str:
++    lines = clean_page_text(text)
++    return _render(lines)
++
++
++def build_document_text(page_texts: list[str]) -> CleanedDocument:
++    """Join pages into one logical document while keeping page offsets."""
++    full = ""
++    spans: list[tuple[int, int, int]] = []
++    for number, page_text in enumerate(page_texts, start=1):
++        if not page_text.strip():
++            continue
++        if full:
++            full += "\n\n"
++        start = len(full)
++        full += page_text
++        spans.append((number, start, len(full)))
++    return CleanedDocument(text=full, page_spans=spans,
++                           page_count=len(page_texts))
+diff --git a/ingestion/src/config.py b/ingestion/src/config.py
+new file mode 100644
+index 0000000..915cb98
+--- /dev/null
++++ b/ingestion/src/config.py
+@@ -0,0 +1,125 @@
++"""Central configuration for the Phase 2 ingestion pipeline.
++
++Everything that a maintainer might reasonably want to change lives here so the
++pipeline itself stays free of magic values.
++"""
++from __future__ import annotations
++
++from pathlib import Path
++
++PACKAGE_ROOT = Path(__file__).resolve().parents[1]
++PROJECT_ROOT = Path(__file__).resolve().parents[2]
++
++INPUT_DIR_CANDIDATES = ("Data", "data", "phase-1-data")
++DEFAULT_INPUT_DIR = next(
++    (PROJECT_ROOT / name for name in INPUT_DIR_CANDIDATES
++     if (PROJECT_ROOT / name).is_dir()),
++    PROJECT_ROOT / "Data",
++)
++
++OUTPUT_DIR = PACKAGE_ROOT
++PROCESSED_DIR = OUTPUT_DIR / "processed"
++DOCUMENTS_DIR = PROCESSED_DIR / "documents"
++CHUNKS_DIR = PROCESSED_DIR / "chunks"
++REPORTS_DIR = OUTPUT_DIR / "reports"
++
++DOCUMENTS_FILE = DOCUMENTS_DIR / "documents.jsonl"
++CHUNKS_FILE = CHUNKS_DIR / "chunks.jsonl"
++LOG_FILE = REPORTS_DIR / "ingestion.log"
++
++SUPPORTED_EXTENSIONS = {".pdf": "pdf", ".txt": "txt"}
++EXCLUDED_DIR_NAMES = {
++    "processed", "reports", "__pycache__", ".git", ".github",
++    "node_modules", ".ipynb_checkpoints", ".venv", "venv",
++}
++EXCLUDED_FILE_NAMES = {"readme.md", "readme.txt", "readme"}
++EXCLUDED_EXTENSIONS = {
++    ".py", ".json", ".jsonl", ".yaml", ".yml", ".csv", ".md", ".db",
++    ".sqlite", ".log", ".png", ".jpg", ".jpeg", ".svg", ".html",
++}
++
++SELLER_IDS = ("S001", "S002", "S003", "S004")
++ORGANIZATION_WIDE = "Organization-wide"
++VALID_SELLER_VALUES = set(SELLER_IDS) | {ORGANIZATION_WIDE}
++
++DEPARTMENTS = ("Business", "Support", "Engineering", "Operations", "IT")
++
++CLASSIFICATIONS = ("PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED")
++CLASSIFICATION_RANK = {name: rank for rank, name in enumerate(CLASSIFICATIONS)}
++
++SCENARIO_IDS = tuple(f"SC-{i:03d}" for i in range(1, 13))
++SCENARIO_PATTERN = r"SC-\d{3}"
++
++DOCUMENT_TYPES = (
++    "Organization Reference",
++    "Account Overview",
++    "Project Document",
++    "Project Status Report",
++    "Decision Record",
++    "Requirements Document",
++    "Implementation Plan",
++    "Technical Notes",
++    "Support Ticket",
++    "Incident Report",
++    "Security Incident Report",
++    "Runbook",
++    "Operational Procedure",
++    "Operational Checklist",
++    "Policy",
++    "Call Transcript",
++    "Scenario Context",
++)
++
++CATEGORY_TO_DOCUMENT_TYPE = {
++    "calls": "Call Transcript",
++    "support": "Support Ticket",
++    "policies": "Policy",
++    "sellers": "Account Overview",
++    "identity": "Organization Reference",
++    "scenario-context": "Scenario Context",
++}
++
++DOCUMENT_CATEGORIES = (
++    "projects", "support", "calls", "engineering", "operations",
++    "policies", "sellers", "identity", "scenario-context",
++)
++
++TOKENIZER_ENCODING = "cl100k_base"
++CHUNK_SIZE_TOKENS = 800
++CHUNK_OVERLAP_TOKENS = 120
++
++TEXT_SEPARATORS = [
++    "\n\n\n",
++    "\n\n",
++    "\n",
++    ". ",
++    "? ",
++    "! ",
++    "; ",
++    ", ",
++    " ",
++    "",
++]
++
++PDF_METADATA_KEYS = (
++    "Document ID",
++    "Seller ID",
++    "Department",
++    "Classification",
++    "Owner",
++    "Created Date",
++    "Version",
++    "Effective Date",
++    "Related Scenario ID",
++    "Document Type",
++)
++
++REQUIRED_FIELDS = ("document_id", "document_type", "seller_id", "classification")
++CONDITIONAL_FIELDS = ("department", "created_date", "owner", "scenario_id")
++
++CLEAN_REPEATED_LINE_MIN_PAGES = 3
++CLEAN_REPEATED_LINE_RATIO = 0.6
++CLEAN_REPEATED_LINE_MAX_LEN = 120
++CLEAN_DEWRAP_MIN_PREV_LEN = 60
++
++DATE_FORMATS = ("%Y-%m-%d", "%d %B %Y", "%d %b %Y", "%d/%m/%Y", "%B %d, %Y")
+diff --git a/ingestion/src/discovery.py b/ingestion/src/discovery.py
+new file mode 100644
+index 0000000..e460e6c
+--- /dev/null
++++ b/ingestion/src/discovery.py
+@@ -0,0 +1,56 @@
++"""Recursive discovery of supported source documents."""
++from __future__ import annotations
++
++import logging
++from pathlib import Path
++
++from . import config
++from .models import SourceFile
++
++logger = logging.getLogger(__name__)
++
++
++def _is_excluded(relative: Path) -> bool:
++    parts = set(relative.parts[:-1])
++    if parts & config.EXCLUDED_DIR_NAMES:
++        return True
++    return False
++
++
++def discover(input_dir: Path) -> tuple[list[SourceFile], list[str]]:
++    if not input_dir.is_dir():
++        raise FileNotFoundError(f"Input directory not found: {input_dir}")
++
++    found: list[SourceFile] = []
++    skipped: list[str] = []
++
++    for path in sorted(input_dir.rglob("*")):
++        if not path.is_file():
++            continue
++        relative = path.relative_to(input_dir)
++        name = path.name
++
++        if name.startswith(".") or _is_excluded(relative):
++            continue
++
++        extension = path.suffix.lower()
++        if extension in config.SUPPORTED_EXTENSIONS:
++            found.append(SourceFile(
++                path=path,
++                rel_path=relative.as_posix(),
++                extension=extension,
++                format=config.SUPPORTED_EXTENSIONS[extension],
++            ))
++            continue
++
++        if (name.lower() in config.EXCLUDED_FILE_NAMES
++                or extension in config.EXCLUDED_EXTENSIONS):
++            skipped.append(relative.as_posix())
++
++    return found, skipped
++
++
++def summarize(files: list[SourceFile]) -> dict[str, int]:
++    pdf_count = sum(1 for f in files if f.format == "pdf")
++    txt_count = sum(1 for f in files if f.format == "txt")
++    return {"pdf": pdf_count, "txt": txt_count, "total": len(files)}
+diff --git a/ingestion/src/loaders.py b/ingestion/src/loaders.py
+new file mode 100644
+index 0000000..850cfc3
+--- /dev/null
++++ b/ingestion/src/loaders.py
+@@ -0,0 +1,39 @@
++"""Document loaders.
++
++Both formats ultimately produce the same structure: a list of pages, where a
++TXT file is treated as a single page carrying its whole content. This keeps the
++downstream stages format-agnostic.
++"""
++from __future__ import annotations
++
++import logging
++from pathlib import Path
++
++from pypdf import PdfReader
++
++logger = logging.getLogger(__name__)
++
++
++def load_pdf_pages(path: Path) -> list[str]:
++    reader = PdfReader(str(path))
++    if reader.is_encrypted:
++        reader.decrypt("")
++    pages: list[str] = []
++    for index, page in enumerate(reader.pages, start=1):
++        try:
++            pages.append(page.extract_text() or "")
++        except Exception as exc:  # pragma: no cover - defensive
++            logger.warning("Page %d of %s failed to extract: %s",
++                           index, path.name, exc)
++            pages.append("")
++    return pages
++
++
++def load_txt_text(path: Path) -> str:
++    return path.read_text(encoding="utf-8", errors="replace")
++
++
++def load_pages(source) -> list[str]:
++    if source.format == "pdf":
++        return load_pdf_pages(source.path)
++    return [load_txt_text(source.path)]
+diff --git a/ingestion/src/metadata.py b/ingestion/src/metadata.py
+new file mode 100644
+index 0000000..dde2891
+--- /dev/null
++++ b/ingestion/src/metadata.py
+@@ -0,0 +1,284 @@
++"""Metadata extraction and merging.
++
++Priority order:
++    1. explicit metadata block inside the document (primary)
++    2. folder / path information (secondary)
++    3. filename-derived information (tertiary)
++
++Path and filename values are used mostly to validate the explicit metadata.
++Conflicts are never resolved silently; they are recorded on the result.
++"""
++from __future__ import annotations
++
++import re
++from datetime import datetime
++from pathlib import Path
++
++from . import config
++from .models import ExtractedMetadata, SourceFile
++
++_WS = re.compile(r"[ \t\u00a0]+")
++
++FILENAME_ID_PATTERNS = (
++    re.compile(r"^(TKT-\d{4}-\d{4}-\d{3})"),
++    re.compile(r"^(INC-\d{4}-\d{4})"),
++    re.compile(r"^(CALL-\d{4}-\d{4}-\d{3})"),
++    re.compile(r"^(OPS-RB-\d{3})"),
++    re.compile(r"^(POL-[A-Z]+-\d{3})"),
++)
++
++_CALL_ID = re.compile(r"^Call ID\s*:\s*(.+?)\s*$", re.MULTILINE)
++_PARTICIPANT = re.compile(
++    r"^\s{2,}([A-Z][A-Za-z.\-' ]+?)\s{2,}.+?Nexora \(([A-Za-z]+)\)\s*$",
++    re.MULTILINE,
++)
++_CLASS_LABEL = re.compile(
++    r"Classification\s*:\s*(PUBLIC|INTERNAL|CONFIDENTIAL|RESTRICTED)"
++)
++
++
++def normalize_whitespace(text: str) -> str:
++    return _WS.sub(" ", text.replace("\n", " ")).strip()
++
++
++def _first_match(pattern: str, text: str) -> str | None:
++    match = re.search(pattern, text, re.MULTILINE)
++    return match.group(1).strip() if match else None
++
++
++def normalize_date(raw: str | None) -> tuple[str | None, str | None]:
++    if not raw or not raw.strip():
++        return None, None
++    value = raw.strip()
++    for fmt in config.DATE_FORMATS:
++        try:
++            return datetime.strptime(value, fmt).date().isoformat(), None
++        except ValueError:
++            continue
++    return None, value
++
++
++def parse_scenarios(raw: str | None) -> list[str]:
++    if not raw:
++        return []
++    if "not scenario" in raw.lower():
++        return []
++    return sorted(set(re.findall(config.SCENARIO_PATTERN, raw)))
++
++
++def summarize_classification(text: str) -> str | None:
++    ranks = [config.CLASSIFICATION_RANK[value]
++             for value in _CLASS_LABEL.findall(text)]
++    if not ranks:
++        return None
++    return config.CLASSIFICATIONS[max(ranks)]
++
++
++def _match_document_type(raw: str | None) -> str | None:
++    if not raw:
++        return None
++    candidate = raw.strip()
++    for known in sorted(config.DOCUMENT_TYPES, key=len, reverse=True):
++        if candidate.lower().startswith(known.lower()):
++            return known
++    return None
++
++
++def extract_pdf_metadata(page_one_text: str) -> dict[str, str]:
++    text = normalize_whitespace(page_one_text)
++    positions: list[tuple[str, int, int]] = []
++    cursor = 0
++    for key in config.PDF_METADATA_KEYS:
++        index = text.find(key, cursor)
++        if index == -1:
++            continue
++        positions.append((key, index, index + len(key)))
++        cursor = index + len(key)
++
++    values: dict[str, str] = {}
++    for order, (key, _, end) in enumerate(positions):
++        if key == "Document Type":
++            match = re.search(
++                r"Document Type\s+(.+?)(?=\s\d+\.\s|\sTicket Header"
++                r"|\sAccount Snapshot|$)",
++                text,
++            )
++            values[key] = match.group(1).strip() if match else ""
++            continue
++        next_start = positions[order + 1][1] if order + 1 < len(positions) else len(text)
++        values[key] = text[end:next_start].strip()
++    return values
++
++
++def extract_call_metadata(text: str) -> dict[str, object]:
++    seller_raw = _first_match(r"^Seller\s*:\s*(.+?)\s*$", text)
++    seller_match = re.search(r"(S00\d)", seller_raw) if seller_raw else None
++
++    owner = None
++    department = None
++    departments: list[str] = []
++    for match in _PARTICIPANT.finditer(text):
++        name = match.group(1).strip()
++        dept = match.group(2).strip()
++        departments.append(dept)
++        if department is None:
++            owner, department = name, dept
++
++    return {
++        "document_id": _first_match(r"^Call ID\s*:\s*(.+?)\s*$", text),
++        "created_date": _first_match(r"^Date\s*:\s*(.+?)\s*$", text),
++        "seller_id": seller_match.group(1) if seller_match else None,
++        "scenario": _first_match(r"^Related scenario\s*:\s*(.+?)\s*$", text),
++        "classification": _first_match(
++            r"^Classification\s*:\s*(.+?)\s*$", text),
++        "owner": owner,
++        "department": department,
++        "departments": sorted(set(departments)),
++    }
++
++
++def derive_path_metadata(rel_path: str) -> dict[str, object]:
++    parts = Path(rel_path).parts
++    seller = next((part for part in parts if part in config.SELLER_IDS), None)
++
++    if "documents" in parts:
++        index = parts.index("documents")
++        category = parts[index + 1] if index + 1 < len(parts) else None
++    elif parts:
++        category = parts[0]
++    else:
++        category = None
++
++    return {
++        "seller_id": seller or config.ORGANIZATION_WIDE,
++        "seller_folder": seller,
++        "category": category,
++        "document_type": config.CATEGORY_TO_DOCUMENT_TYPE.get(category or ""),
++    }
++
++
++def derive_filename_document_id(filename: str) -> tuple[str, bool]:
++    stem = Path(filename).stem
++    for pattern in FILENAME_ID_PATTERNS:
++        match = pattern.match(stem)
++        if match:
++            return match.group(1), True
++    return stem, False
++
++
++def _looks_like_call(text: str) -> bool:
++    return bool(_CALL_ID.search(text))
++
++
++def build_metadata(source: SourceFile, pages: list[str]) -> ExtractedMetadata:
++    values: dict[str, object] = {}
++    provenance: dict[str, str] = {}
++    conflicts: list[str] = []
++
++    path_md = derive_path_metadata(source.rel_path)
++    path_seller = path_md["seller_folder"]
++    file_id, file_id_is_real = derive_filename_document_id(source.path.name)
++
++    explicit_seller: str | None = None
++    explicit_id: str | None = None
++    extra: dict[str, object] = {}
++    pdf_raw: dict[str, str] = {}
++
++    if source.format == "pdf":
++        pdf_raw = extract_pdf_metadata(pages[0] if pages else "")
++        raw = pdf_raw
++        explicit_id = (raw.get("Document ID") or "").strip() or None
++        explicit_seller = (raw.get("Seller ID") or "").strip() or None
++        values["document_id"] = explicit_id
++        values["document_type"] = _match_document_type(raw.get("Document Type"))
++        values["seller_id"] = explicit_seller
++        values["department"] = (raw.get("Department") or "").strip() or None
++        values["classification"] = (raw.get("Classification") or "").strip() or None
++        values["owner"] = (raw.get("Owner") or "").strip() or None
++        for field in ("document_id", "document_type", "seller_id",
++                      "department", "classification", "owner"):
++            if values.get(field):
++                provenance[field] = "explicit"
++        created_iso, unparsed = normalize_date(raw.get("Created Date"))
++        values["created_date"] = created_iso
++        if created_iso:
++            provenance["created_date"] = "explicit"
++        if unparsed:
++            extra["unparsed_created_date"] = unparsed
++        if raw.get("Version"):
++            extra["version"] = raw["Version"].strip()
++        if raw.get("Effective Date"):
++            eff_iso, _ = normalize_date(raw["Effective Date"])
++            extra["effective_date"] = eff_iso or raw["Effective Date"].strip()
++    elif _looks_like_call(pages[0] if pages else ""):
++        text = pages[0] if pages else ""
++        call = extract_call_metadata(text)
++        explicit_id = call.get("document_id")
++        explicit_seller = call.get("seller_id")
++        values["document_id"] = explicit_id
++        values["seller_id"] = explicit_seller
++        values["classification"] = call.get("classification")
++        values["owner"] = call.get("owner")
++        values["department"] = call.get("department")
++        for field in ("document_id", "seller_id", "classification"):
++            if values.get(field):
++                provenance[field] = "explicit"
++        for field in ("owner", "department"):
++            if values.get(field):
++                provenance[field] = "participants"
++        created_iso, unparsed = normalize_date(call.get("created_date"))
++        values["created_date"] = created_iso
++        if created_iso:
++            provenance["created_date"] = "explicit"
++        if unparsed:
++            extra["unparsed_created_date"] = unparsed
++        if call.get("departments"):
++            extra["departments_present"] = call["departments"]
++    else:
++        text = pages[0] if pages else ""
++        values["document_id"] = file_id
++        values["document_type"] = path_md.get("document_type")
++        values["seller_id"] = path_md["seller_id"]
++        values["classification"] = summarize_classification(text)
++        values["department"] = None
++        values["owner"] = None
++        values["created_date"] = None
++        provenance["document_id"] = "filename"
++        if values.get("document_type"):
++            provenance["document_type"] = "path"
++        provenance["seller_id"] = "path"
++        if values.get("classification"):
++            provenance["classification"] = "content"
++
++    scenario_raw = None
++    if source.format == "pdf":
++        scenario_raw = pdf_raw.get("Related Scenario ID")
++    else:
++        scenario_raw = _first_match(r"^Related scenario\s*:\s*(.+?)\s*$",
++                                    pages[0] if pages else "")
++    scenario_ids = parse_scenarios(scenario_raw)
++    values["scenario_ids"] = scenario_ids
++    values["scenario_id"] = ", ".join(scenario_ids) if scenario_ids else None
++    if scenario_ids:
++        provenance["scenario_id"] = "explicit"
++
++    if not values.get("document_type"):
++        values["document_type"] = path_md.get("document_type")
++        if values.get("document_type"):
++            provenance["document_type"] = "path"
++    if not values.get("seller_id"):
++        values["seller_id"] = path_md["seller_id"]
++        provenance["seller_id"] = "path"
++
++    if explicit_id and file_id_is_real and explicit_id != file_id:
++        conflicts.append(
++            f"document_id mismatch: explicit '{explicit_id}' vs "
++            f"filename '{file_id}' ({source.rel_path})")
++    if explicit_seller and path_seller and explicit_seller != path_seller:
++        conflicts.append(
++            f"seller_id mismatch: explicit '{explicit_seller}' vs "
++            f"path '{path_seller}' ({source.rel_path})")
++
++    values["extra_metadata"] = extra
++    return ExtractedMetadata(values=values, provenance=provenance,
++                             conflicts=conflicts)
+diff --git a/ingestion/src/models.py b/ingestion/src/models.py
+new file mode 100644
+index 0000000..62e0572
+--- /dev/null
++++ b/ingestion/src/models.py
+@@ -0,0 +1,131 @@
++"""Internal representations shared across the ingestion stages."""
++from __future__ import annotations
++
++from dataclasses import dataclass, field
++from pathlib import Path
++
++
++@dataclass(frozen=True)
++class SourceFile:
++    path: Path
++    rel_path: str
++    extension: str
++    format: str
++
++
++@dataclass
++class ExtractedMetadata:
++    values: dict[str, object]
++    provenance: dict[str, str] = field(default_factory=dict)
++    conflicts: list[str] = field(default_factory=list)
++
++
++@dataclass
++class ValidationIssue:
++    severity: str
++    code: str
++    message: str
++    source_file: str
++    document_id: str | None = None
++    field: str | None = None
++
++    def to_dict(self) -> dict:
++        return {
++            "severity": self.severity,
++            "code": self.code,
++            "message": self.message,
++            "document_id": self.document_id,
++            "source_file": self.source_file,
++            "field": self.field,
++        }
++
++
++@dataclass
++class CleanedDocument:
++    text: str
++    page_spans: list[tuple[int, int, int]]
++    page_count: int
++
++
++@dataclass
++class Chunk:
++    chunk_id: str
++    text: str
++    document_id: str
++    document_type: str
++    seller_id: str
++    department: str | None
++    classification: str
++    created_date: str | None
++    owner: str | None
++    scenario_id: str | None
++    scenario_ids: list[str]
++    source_file: str
++    source_format: str
++    page_numbers: list[int]
++    chunk_index: int
++    token_count: int
++    char_count: int
++
++    def to_dict(self) -> dict:
++        return {
++            "chunk_id": self.chunk_id,
++            "text": self.text,
++            "document_id": self.document_id,
++            "document_type": self.document_type,
++            "seller_id": self.seller_id,
++            "department": self.department,
++            "classification": self.classification,
++            "created_date": self.created_date,
++            "owner": self.owner,
++            "scenario_id": self.scenario_id,
++            "scenario_ids": self.scenario_ids,
++            "source_file": self.source_file,
++            "source_format": self.source_format,
++            "page_numbers": self.page_numbers,
++            "chunk_index": self.chunk_index,
++            "token_count": self.token_count,
++            "char_count": self.char_count,
++        }
++
++
++@dataclass
++class ProcessedDocument:
++    document_id: str
++    document_type: str
++    seller_id: str
++    department: str | None
++    classification: str
++    created_date: str | None
++    owner: str | None
++    scenario_id: str | None
++    scenario_ids: list[str]
++    source_file: str
++    source_format: str
++    page_count: int
++    char_count: int
++    token_count: int
++    chunk_count: int
++    metadata_provenance: dict[str, str]
++    extra_metadata: dict[str, object] = field(default_factory=dict)
++
++    def to_dict(self) -> dict:
++        return {
++            "document_id": self.document_id,
++            "document_type": self.document_type,
++            "seller_id": self.seller_id,
++            "department": self.department,
++            "classification": self.classification,
++            "created_date": self.created_date,
++            "owner": self.owner,
++            "scenario_id": self.scenario_id,
++            "scenario_ids": self.scenario_ids,
++            "source_file": self.source_file,
++            "source_format": self.source_format,
++            "page_count": self.page_count,
++            "char_count": self.char_count,
++            "token_count": self.token_count,
++            "chunk_count": self.chunk_count,
++            "metadata_provenance": self.metadata_provenance,
++            "extra_metadata": self.extra_metadata,
++        }
+diff --git a/ingestion/src/pipeline.py b/ingestion/src/pipeline.py
+new file mode 100644
+index 0000000..2962c7a
+--- /dev/null
++++ b/ingestion/src/pipeline.py
+@@ -0,0 +1,244 @@
++"""Pipeline orchestration.
++
++The pipeline answers only "what does this document belong to?". It never
++filters content by user, department or classification. Every security-relevant
++field is preserved so a later authorisation layer can make that decision.
++"""
++from __future__ import annotations
++
++import hashlib
++import logging
++import time
++from pathlib import Path
++
++from . import chunking, cleaning, config, discovery, loaders, metadata
++from . import reporting, validation
++from .models import ProcessedDocument, SourceFile
++
++logger = logging.getLogger(__name__)
++
++
++def _hash_sources(files: list[SourceFile]) -> dict[str, str]:
++    digests: dict[str, str] = {}
++    for source in files:
++        digest = hashlib.sha256(source.path.read_bytes()).hexdigest()
++        digests[source.rel_path] = digest
++    return digests
++
++
++def reset_output() -> None:
++    """Clean-rebuild strategy: previous processed output is removed first."""
++    for path in (config.PROCESSED_DIR, config.REPORTS_DIR):
++        if path.exists():
++            for child in sorted(path.rglob("*"), reverse=True):
++                if child.is_file():
++                    if child == config.LOG_FILE:
++                        continue
++                    child.unlink()
++                elif child.is_dir():
++                    child.rmdir()
++            try:
++                path.rmdir()
++            except OSError:
++                pass
++    config.DOCUMENTS_DIR.mkdir(parents=True, exist_ok=True)
++    config.CHUNKS_DIR.mkdir(parents=True, exist_ok=True)
++    config.REPORTS_DIR.mkdir(parents=True, exist_ok=True)
++
++
++def _clean_document(source: SourceFile, pages: list[str]):
++    if source.format == "pdf":
++        cleaned_pages = cleaning.clean_pdf_pages(pages)
++        return cleaning.build_document_text(cleaned_pages)
++    text = cleaning.clean_txt_text(pages[0] if pages else "")
++    return cleaning.CleanedDocument(text=text, page_spans=[], page_count=1)
++
++
++def _integrity_checks(
++    processed: list[ProcessedDocument],
++    chunks: list,
++    discovery_summary: dict,
++    failed: list[dict],
++    sources_unchanged: bool,
++) -> dict:
++    source_map = {doc.document_id: doc for doc in processed}
++
++    def chunk_doc(chunk) -> ProcessedDocument | None:
++        return source_map.get(chunk.document_id)
++
++    all_chunks = chunks
++    pdf_chunks = [c for c in all_chunks if c.source_format == "pdf"]
++
++    seen_ids: set[str] = set()
++    duplicate_ids = False
++    seen_text: set[tuple[str, str]] = set()
++    duplicate_text = False
++    for chunk in all_chunks:
++        if chunk.chunk_id in seen_ids:
++            duplicate_ids = True
++        seen_ids.add(chunk.chunk_id)
++        key = (chunk.document_id, chunk.text)
++        if key in seen_text:
++            duplicate_text = True
++        seen_text.add(key)
++
++    checks = {
++        "chunks_generated": len(all_chunks) > 0,
++        "expected_documents_match": (
++            len(processed) + len(failed) == discovery_summary["total"]),
++        "all_chunks_have_text": all(c.text.strip() for c in all_chunks),
++        "chunk_ids_unique": not duplicate_ids,
++        "all_chunks_have_document_id": all(c.document_id for c in all_chunks),
++        "all_chunks_have_source": all(c.source_file for c in all_chunks),
++        "all_chunks_have_classification": all(
++            c.classification in config.CLASSIFICATIONS for c in all_chunks),
++        "seller_metadata_preserved": all(
++            c.seller_id in config.VALID_SELLER_VALUES for c in all_chunks),
++        "department_metadata_preserved": all(
++            (chunk_doc(c) is None) or (chunk_doc(c).department is None)
++            or bool(c.department) for c in all_chunks),
++        "scenario_metadata_preserved": all(
++            (not c.scenario_ids) or (chunk_doc(c) is not None
++                                     and c.scenario_ids
++                                     == chunk_doc(c).scenario_ids)
++            for c in all_chunks),
++        "pdf_page_provenance_present": all(c.page_numbers for c in pdf_chunks),
++        "no_duplicate_chunks": not duplicate_text,
++        "chunk_sizes_within_target": all(
++            c.token_count <= config.CHUNK_SIZE_TOKENS for c in all_chunks),
++        "overlap_configured": (
++            0 < config.CHUNK_OVERLAP_TOKENS < config.CHUNK_SIZE_TOKENS),
++        "source_files_unchanged": sources_unchanged,
++    }
++    return checks
++
++
++def run_ingestion(
++    input_dir: Path | None = None,
++    reset: bool = True,
++) -> dict:
++    started = time.perf_counter()
++    input_dir = Path(input_dir) if input_dir else config.DEFAULT_INPUT_DIR
++
++    logger.info("Discovery: scanning %s", input_dir)
++    files, skipped = discovery.discover(input_dir)
++    discovery_summary = discovery.summarize(files)
++    logger.info("Discovery: %d PDF, %d TXT, %d total (%d skipped)",
++                discovery_summary["pdf"], discovery_summary["txt"],
++                discovery_summary["total"], len(skipped))
++
++    expected_total = discovery_summary["total"]
++    if expected_total != 63:
++        logger.warning(
++            "Discovered %d documents; the Phase 1 dataset is expected to "
++            "contain 63 (52 PDF + 11 TXT)", expected_total)
++
++    hashes_before = _hash_sources(files)
++    if reset:
++        reset_output()
++
++    chunker = chunking.TokenChunker()
++    logger.info("Chunking: %s, size=%d tokens, overlap=%d tokens",
++                type(chunker.splitter).__name__, chunker.chunk_size,
++                chunker.chunk_overlap)
++
++    processed: list[ProcessedDocument] = []
++    chunks: list = []
++    failed: list[dict] = []
++    issues: list[dict] = []
++
++    for position, source in enumerate(files, start=1):
++        try:
++            pages = loaders.load_pages(source)
++            extracted = metadata.build_metadata(source, pages)
++            doc_issues = validation.validate(source, extracted)
++            issues.extend(issue.to_dict() for issue in doc_issues)
++
++            if validation.has_errors(doc_issues):
++                failed.append({
++                    "source_file": source.rel_path,
++                    "document_id": extracted.values.get("document_id"),
++                    "errors": [issue.to_dict() for issue in doc_issues
++                               if issue.severity == "ERROR"],
++                })
++                logger.warning("Failed [%d/%d]: %s", position, len(files),
++                               source.rel_path)
++                continue
++
++            cleaned = _clean_document(source, pages)
++            base_metadata = dict(extracted.values)
++            base_metadata.update({
++                "source_file": source.rel_path,
++                "source_format": source.format,
++            })
++            document_chunks = chunking.chunk_document(
++                base_metadata, cleaned, chunker)
++
++            token_count = sum(chunk.token_count for chunk in document_chunks)
++            processed.append(ProcessedDocument(
++                document_id=base_metadata["document_id"],
++                document_type=base_metadata["document_type"],
++                seller_id=base_metadata["seller_id"],
++                department=base_metadata.get("department"),
++                classification=base_metadata["classification"],
++                created_date=base_metadata.get("created_date"),
++                owner=base_metadata.get("owner"),
++                scenario_id=base_metadata.get("scenario_id"),
++                scenario_ids=list(base_metadata.get("scenario_ids") or []),
++                source_file=source.rel_path,
++                source_format=source.format,
++                page_count=cleaned.page_count,
++                char_count=len(cleaned.text),
++                token_count=token_count,
++                chunk_count=len(document_chunks),
++                metadata_provenance=extracted.provenance,
++                extra_metadata=base_metadata.get("extra_metadata", {}),
++            ))
++            chunks.extend(document_chunks)
++            logger.info("Processed [%d/%d]: %s -> %d chunks",
++                        position, len(files), source.rel_path,
++                        len(document_chunks))
++        except Exception as exc:  # noqa: BLE001 - one bad file must not stop the run
++            logger.exception("Error processing %s", source.rel_path)
++            failed.append({
++                "source_file": source.rel_path,
++                "document_id": None,
++                "errors": [{"severity": "ERROR", "code": "LOAD_FAILURE",
++                            "message": str(exc),
++                            "source_file": source.rel_path}],
++            })
++
++    hashes_after = _hash_sources(files)
++    sources_unchanged = hashes_before == hashes_after
++
++    integrity = _integrity_checks(processed, chunks, discovery_summary,
++                                  failed, sources_unchanged)
++    if not all(integrity.values()):
++        failed_checks = [name for name, ok in integrity.items() if not ok]
++        logger.warning("Integrity checks failed: %s", ", ".join(failed_checks))
++
++    chunk_dicts = [chunk.to_dict() for chunk in chunks]
++    document_dicts = [doc.to_dict() for doc in processed]
++    reporting.write_jsonl(config.DOCUMENTS_FILE, document_dicts)
++    reporting.write_jsonl(config.CHUNKS_FILE, chunk_dicts)
++    logger.info("Output: %d documents, %d chunks written",
++                len(document_dicts), len(chunk_dicts))
++
++    duration = time.perf_counter() - started
++    summary = reporting.build_summary(
++        discovery=discovery_summary,
++        processed=document_dicts,
++        failed=failed,
++        chunks=chunk_dicts,
++        issues=issues,
++        integrity=integrity,
++        duration_seconds=duration,
++        input_dir=input_dir,
++        output_dir=config.OUTPUT_DIR,
++    )
++    summary["skipped_files"] = skipped
++    reporting.write_summary(summary)
++    reporting.write_validation_errors(summary, failed)
++    logger.info("Reports written to %s (%.2fs)", config.REPORTS_DIR, duration)
++
++    return summary
+diff --git a/ingestion/src/reporting.py b/ingestion/src/reporting.py
+new file mode 100644
+index 0000000..baf3f67
+--- /dev/null
++++ b/ingestion/src/reporting.py
+@@ -0,0 +1,181 @@
++"""Ingestion reporting.
++
++Every figure in the report is computed from the corpus that was actually
++produced in this run. Nothing is estimated or hardcoded.
++"""
++from __future__ import annotations
++
++import json
++from collections import Counter
++from pathlib import Path
++
++from . import config
++
++
++def _distribution(values: list[str]) -> dict[str, int]:
++    return dict(sorted(Counter(values).items()))
++
++
++def build_summary(
++    discovery: dict,
++    processed: list[dict],
++    failed: list[dict],
++    chunks: list[dict],
++    issues: list[dict],
++    integrity: dict,
++    duration_seconds: float,
++    input_dir: Path,
++    output_dir: Path,
++) -> dict:
++    token_sizes = [chunk["token_count"] for chunk in chunks] or [0]
++
++    by_document_type = Counter()
++    for chunk in chunks:
++        by_document_type[chunk["document_type"]] += 1
++
++    projects = sum(1 for chunk in chunks
++                   if "/projects/" in chunk["source_file"])
++    calls = sum(1 for chunk in chunks if "/calls/" in chunk["source_file"])
++    engineering = sum(1 for chunk in chunks
++                      if "/engineering/" in chunk["source_file"])
++    operations = sum(1 for chunk in chunks
++                     if "/operations/" in chunk["source_file"])
++    policies = sum(1 for chunk in chunks if "/policies/" in chunk["source_file"])
++    support = sum(1 for chunk in chunks if "/support/" in chunk["source_file"])
++
++    error_count = sum(1 for issue in issues if issue["severity"] == "ERROR")
++    warning_count = sum(1 for issue in issues if issue["severity"] == "WARNING")
++
++    return {
++        "input_dir": str(input_dir),
++        "output_dir": str(output_dir),
++        "discovery": discovery,
++        "documents": {
++            "processed": len(processed),
++            "failed": len(failed),
++            "failed_documents": failed,
++        },
++        "validation": {
++            "errors": error_count,
++            "warnings": warning_count,
++            "issues": issues,
++        },
++        "chunks": {
++            "total": len(chunks),
++            "by_document_type": dict(sorted(by_document_type.items())),
++            "by_category": {
++                "projects": projects,
++                "support": support,
++                "calls": calls,
++                "engineering": engineering,
++                "operations": operations,
++                "policies": policies,
++            },
++            "by_seller": _distribution([c["seller_id"] for c in chunks]),
++            "by_classification": _distribution(
++                [c["classification"] for c in chunks]),
++            "by_department": _distribution(
++                [c["department"] or "Unknown" for c in chunks]),
++            "token_stats": {
++                "average": round(sum(token_sizes) / len(token_sizes), 1),
++                "minimum": min(token_sizes),
++                "maximum": max(token_sizes),
++            },
++        },
++        "chunking": {
++            "strategy": "RecursiveCharacterTextSplitter",
++            "token_aware": True,
++            "tokenizer": config.TOKENIZER_ENCODING,
++            "chunk_size_tokens": config.CHUNK_SIZE_TOKENS,
++            "chunk_overlap_tokens": config.CHUNK_OVERLAP_TOKENS,
++            "separators": config.TEXT_SEPARATORS,
++        },
++        "integrity": integrity,
++        "duration_seconds": round(duration_seconds, 2),
++    }
++
++
++def write_summary(summary: dict) -> None:
++    config.REPORTS_DIR.mkdir(parents=True, exist_ok=True)
++    json_path = config.REPORTS_DIR / "ingestion_summary.json"
++    txt_path = config.REPORTS_DIR / "ingestion_summary.txt"
++
++    json_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
++
++    discovery = summary["discovery"]
++    documents = summary["documents"]
++    chunks = summary["chunks"]
++    lines = [
++        "=" * 62,
++        "PHASE 2 INGESTION SUMMARY",
++        "=" * 62,
++        "",
++        "DOCUMENTS DISCOVERED",
++        f"  PDF files discovered      : {discovery['pdf']}",
++        f"  TXT files discovered      : {discovery['txt']}",
++        f"  Total documents           : {discovery['total']}",
++        "",
++        "PROCESSING",
++        f"  Successfully processed    : {documents['processed']}",
++        f"  Failed                    : {documents['failed']}",
++        f"  Validation errors         : {summary['validation']['errors']}",
++        f"  Validation warnings       : {summary['validation']['warnings']}",
++        "",
++        "CHUNKS",
++        f"  Total chunks              : {chunks['total']}",
++        f"  Average chunk tokens      : {chunks['token_stats']['average']}",
++        f"  Minimum chunk tokens      : {chunks['token_stats']['minimum']}",
++        f"  Maximum chunk tokens      : {chunks['token_stats']['maximum']}",
++        "",
++        "CHUNKS BY DOCUMENT TYPE",
++    ]
++    for name, count in chunks["by_document_type"].items():
++        lines.append(f"  {name:<28}: {count}")
++    lines.extend(["", "CHUNKS BY CATEGORY"])
++    for name, count in chunks["by_category"].items():
++        lines.append(f"  {name:<28}: {count}")
++    lines.extend(["", "CHUNKS BY SELLER"])
++    for name, count in chunks["by_seller"].items():
++        lines.append(f"  {name:<28}: {count}")
++    lines.extend(["", "CHUNKS BY CLASSIFICATION"])
++    for name, count in chunks["by_classification"].items():
++        lines.append(f"  {name:<28}: {count}")
++    lines.extend([
++        "",
++        "CHUNKING CONFIGURATION",
++        f"  Splitter                  : {summary['chunking']['strategy']}",
++        f"  Tokenizer                 : {summary['chunking']['tokenizer']}",
++        f"  Target chunk size         : {summary['chunking']['chunk_size_tokens']} tokens",
++        f"  Overlap                   : {summary['chunking']['chunk_overlap_tokens']} tokens",
++        "",
++        "INTEGRITY CHECKS",
++    ])
++    for name, result in summary["integrity"].items():
++        if isinstance(result, bool):
++            lines.append(f"  {name:<34}: {'PASS' if result else 'FAIL'}")
++    lines.extend([
++        "",
++        f"Duration                    : {summary['duration_seconds']} s",
++        "=" * 62,
++    ])
++    txt_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
++
++
++def write_validation_errors(summary: dict, failed: list[dict]) -> None:
++    config.REPORTS_DIR.mkdir(parents=True, exist_ok=True)
++    payload = {
++        "errors": [i for i in summary["validation"]["issues"]
++                   if i["severity"] == "ERROR"],
++        "warnings": [i for i in summary["validation"]["issues"]
++                     if i["severity"] == "WARNING"],
++        "failed_documents": failed,
++    }
++    path = config.REPORTS_DIR / "validation_errors.json"
++    path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
++
++
++def write_jsonl(path: Path, records: list[dict]) -> None:
++    path.parent.mkdir(parents=True, exist_ok=True)
++    with path.open("w", encoding="utf-8") as handle:
++        for record in records:
++            handle.write(json.dumps(record, ensure_ascii=False) + "\n")
+diff --git a/ingestion/src/validation.py b/ingestion/src/validation.py
+new file mode 100644
+index 0000000..3595f68
+--- /dev/null
++++ b/ingestion/src/validation.py
+@@ -0,0 +1,113 @@
++"""Metadata validation.
++
++Validation is split into two severities:
++    ERROR   -> the document is rejected and excluded from the processed corpus
++    WARNING -> the document is processed, but the gap is recorded
++
++The pipeline never resolves conflicts by silently choosing a value; conflicts
++produced during metadata merging are converted into ERROR issues here.
++"""
++from __future__ import annotations
++
++from . import config
++from .models import ExtractedMetadata, SourceFile, ValidationIssue
++
++
++def _issue(severity, code, message, source, doc_id=None, field=None):
++    return ValidationIssue(severity=severity, code=code, message=message,
++                           source_file=source.rel_path,
++                           document_id=doc_id, field=field)
++
++
++def validate(source: SourceFile, metadata: ExtractedMetadata
++             ) -> list[ValidationIssue]:
++    values = metadata.values
++    issues: list[ValidationIssue] = []
++    doc_id = values.get("document_id")
++
++    for conflict in metadata.conflicts:
++        issues.append(_issue("ERROR", "METADATA_CONFLICT", conflict, source,
++                             doc_id))
++
++    if not doc_id:
++        issues.append(_issue("ERROR", "DOCUMENT_ID_MISSING",
++                             "No document_id could be determined", source,
++                             doc_id, "document_id"))
++
++    document_type = values.get("document_type")
++    if not document_type:
++        issues.append(_issue("ERROR", "DOCUMENT_TYPE_MISSING",
++                             "No document_type could be determined", source,
++                             doc_id, "document_type"))
++    elif document_type not in config.DOCUMENT_TYPES:
++        issues.append(_issue("WARNING", "DOCUMENT_TYPE_UNKNOWN",
++                             f"document_type '{document_type}' is not in the "
++                             "known Phase 1 vocabulary", source, doc_id,
++                             "document_type"))
++
++    seller_id = values.get("seller_id")
++    if not seller_id:
++        issues.append(_issue("ERROR", "SELLER_ID_MISSING",
++                             "No seller_id could be determined", source,
++                             doc_id, "seller_id"))
++    elif seller_id not in config.VALID_SELLER_VALUES:
++        issues.append(_issue("ERROR", "SELLER_ID_INVALID",
++                             f"seller_id '{seller_id}' is not valid", source,
++                             doc_id, "seller_id"))
++
++    department = values.get("department")
++    if not department:
++        issues.append(_issue("WARNING", "DEPARTMENT_MISSING",
++                             "department is not present in the source", source,
++                             doc_id, "department"))
++    elif department not in config.DEPARTMENTS:
++        issues.append(_issue("ERROR", "DEPARTMENT_INVALID",
++                             f"department '{department}' is not in the "
++                             "defined department vocabulary", source, doc_id,
++                             "department"))
++
++    classification = values.get("classification")
++    if not classification:
++        issues.append(_issue("ERROR", "CLASSIFICATION_MISSING",
++                             "No classification could be determined", source,
++                             doc_id, "classification"))
++    elif classification not in config.CLASSIFICATIONS:
++        issues.append(_issue("ERROR", "CLASSIFICATION_INVALID",
++                             f"classification '{classification}' is not valid",
++                             source, doc_id, "classification"))
++
++    created_date = values.get("created_date")
++    if not created_date:
++        if values.get("extra_metadata", {}).get("unparsed_created_date"):
++            issues.append(_issue(
++                "ERROR", "DATE_INVALID",
++                "created_date could not be parsed: "
++                f"'{values['extra_metadata']['unparsed_created_date']}'",
++                source, doc_id, "created_date"))
++        else:
++            issues.append(_issue("WARNING", "CREATED_DATE_MISSING",
++                                 "created_date is not present in the source",
++                                 source, doc_id, "created_date"))
++
++    scenario_ids = values.get("scenario_ids") or []
++    for scenario in scenario_ids:
++        if scenario not in config.SCENARIO_IDS:
++            issues.append(_issue("ERROR", "SCENARIO_ID_INVALID",
++                                 f"scenario_id '{scenario}' is not a valid "
++                                 "Phase 1 scenario", source, doc_id,
++                                 "scenario_id"))
++    if not scenario_ids:
++        issues.append(_issue("WARNING", "SCENARIO_ID_ABSENT",
++                             "document is not linked to a scenario", source,
++                             doc_id, "scenario_id"))
++
++    if not values.get("owner"):
++        issues.append(_issue("WARNING", "OWNER_MISSING",
++                             "owner is not present in the source", source,
++                             doc_id, "owner"))
++
++    return issues
++
++
++def has_errors(issues: list[ValidationIssue]) -> bool:
++    return any(issue.severity == "ERROR" for issue in issues)
+diff --git a/requirements.txt b/requirements.txt
+new file mode 100644
+index 0000000..3ed0300
+--- /dev/null
++++ b/requirements.txt
+@@ -0,0 +1,6 @@
++pypdf==6.19.0
++
++langchain-core==1.6.3
++langchain-text-splitters==1.1.2
++
++tiktoken==0.14.0

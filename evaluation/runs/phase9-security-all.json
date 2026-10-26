@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-25T11:52:41+00:00",
+  "cases": 45,
+  "placed_chunks_rechecked": 267,
+  "subset_violations": 0,
+  "permission_engine_violations": 0,
+  "forbidden_sources_selected": 0,
+  "unauthorized_retrieval_rate": 0.0,
+  "violation_details": {
+    "subset": [],
+    "authorization": [],
+    "forbidden": []
+  }
+}

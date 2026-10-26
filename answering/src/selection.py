@@ -33,7 +33,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from . import config
+from . import config, evidence_selection
 
 Scored = tuple[object, "float | None"]
 
@@ -57,6 +57,9 @@ class SelectionStats:
     rerank_applied: bool = True
     rerank_attempts: int = 0
     rerank_error: str | None = None
+    # Phase 8: populated when evidence-aware selection ran instead of the
+    # score-ordered breadth/depth path below.
+    evidence: dict | None = None
 
     def to_dict(self) -> dict:
         return {
@@ -76,6 +79,7 @@ class SelectionStats:
             "rerank_applied": self.rerank_applied,
             "rerank_attempts": self.rerank_attempts,
             "rerank_error": self.rerank_error,
+            "evidence": self.evidence,
         }
 
 
@@ -117,15 +121,43 @@ def _reading_key(pair: Scored) -> tuple:
     return (index, str(getattr(chunk, "chunk_id", "")))
 
 
+def _grouped(selected: list[Scored]):
+    """Selected pairs grouped by document, preserving first-seen order.
+
+    Evidence selection returns its pairs document-by-document already, in
+    Phase 7 relevance order (it decides the SET greedily but emits it in score
+    order, leaving context ordering to Phase 9); this only re-establishes the
+    grouping so each document's passages can be put back into reading order
+    without disturbing that document order.
+    """
+    order: list[str] = []
+    groups: dict[str, list[Scored]] = {}
+    for pair in selected:
+        document_id = _document_id(pair[0])
+        if document_id not in groups:
+            groups[document_id] = []
+            order.append(document_id)
+        groups[document_id].append(pair)
+    return [(document_id, groups[document_id]) for document_id in order]
+
+
 def select(items: list[Scored],
            cfg: config.AnsweringConfig | None = None,
            outcome: object | None = None,
+           plan: object | None = None,
+           weights: object | None = None,
            ) -> tuple[list[Scored], SelectionStats]:
     """Pick the passages that go into the context.
 
     `items` must be ordered best-first, as `reranker.rerank` returns them.
     `outcome` is the originating `RerankOutcome`, recorded so a context built
     from unranked fusion order is never mistaken for a ranked one.
+
+    When a QueryPlan is supplied and Phase 8 is enabled, the breadth/depth
+    decision is made by evidence coverage (`evidence_selection`) instead of by
+    score order alone. Without a plan - JEV down, feature disabled, or an
+    unscored reranker outage - this falls through to the original score-ordered
+    path unchanged, so a planning failure can never become a selection failure.
 
     Returns (selected, stats) where `selected` is grouped by document, the
     documents ordered by aggregate relevance and the passages inside each
@@ -145,6 +177,28 @@ def select(items: list[Scored],
     stats.best_score = max(scores) if scores else None
     floor = (stats.best_score * cfg.rerank_relative_threshold
              if stats.scored and cfg.rerank_relative_threshold > 0 else None)
+
+    # Phase 8. Requires real scores: with the reranker degraded to fusion order
+    # there is no relevance to trade coverage against, and the safe behaviour is
+    # the existing one (keep breadth, skip every relative cut).
+    if (plan is not None and stats.scored
+            and config.EVIDENCE_SELECTION_ENABLED):
+        selected, evidence_stats = evidence_selection.select_evidence(
+            items, plan, cfg, floor, weights)
+        if selected:
+            stats.evidence = evidence_stats.to_dict()
+            stats.considered_documents = evidence_stats.considered_documents
+            stats.selected_documents = evidence_stats.selected_documents
+            stats.dropped_by_document_cap = max(
+                0, evidence_stats.considered_documents
+                - evidence_stats.selected_documents)
+            ordered: list[Scored] = []
+            for _group_id, group in _grouped(selected):
+                ordered.extend(sorted(group, key=_reading_key))
+            stats.selected_chunks = len(ordered)
+            chosen = [s for _, s in ordered if s is not None]
+            stats.weakest_selected_score = min(chosen) if chosen else None
+            return ordered, stats
 
     # 1. Group every candidate into its document, tracking the best passage.
     #    First-seen order (already best-first) is the score-free tie-break.

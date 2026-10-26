@@ -1,0 +1,905 @@
+commit 2c93fbcb363278b695e97d60da4c95a4c14de8f2
+Author:     Nishant30488 <143648131+Nishant30488@users.noreply.github.com>
+AuthorDate: Fri Sep 18 13:57:05 2026 +0530
+Commit:     Nishant30488 <143648131+Nishant30488@users.noreply.github.com>
+CommitDate: Fri Sep 18 13:57:05 2026 +0530
+
+    feat: add Jina embeddings and Qdrant vector indexing
+
+diff --git a/.gitignore b/.gitignore
+index 8c36ecf..6778e2c 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -14,6 +14,8 @@ Thumbs.db
+ .env
+ Data/Readme.md
+ ingestion/Readme.md
++indexing/Readme.md
+ ingestion/reports/
++indexing/reports/
+ 
+ 
+diff --git a/indexing/pipeline.py b/indexing/pipeline.py
+new file mode 100644
+index 0000000..56985dc
+--- /dev/null
++++ b/indexing/pipeline.py
+@@ -0,0 +1,84 @@
++"""Pipeline entry point: index the corpus and run retrieval sanity checks."""
++from __future__ import annotations
++
++import argparse
++import json
++import sys
++from pathlib import Path
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
++
++from src import config  # noqa: E402
++from src.indexing import run_indexing  # noqa: E402
++from src.retrieval import retrieve  # noqa: E402
++
++
++def run_sanity(top_k: int = 5) -> list[dict]:
++    outcomes: list[dict] = []
++    for label, query in config.SANITY_QUERIES:
++        try:
++            results = retrieve(query, top_k=top_k)
++            outcomes.append({
++                "label": label,
++                "query": query,
++                "status": "ok" if results else "no_results",
++                "results": [
++                    {
++                        "rank": i + 1,
++                        "method": r.retrieval_method,
++                        "score": round(r.score, 4),
++                        "chunk_id": r.chunk_id,
++                        "document_id": r.document_id,
++                        "seller_id": r.metadata.get("seller_id"),
++                        "department": r.metadata.get("department"),
++                        "classification": r.metadata.get("classification"),
++                        "document_type": r.metadata.get("document_type"),
++                        "source_file": r.metadata.get("source_file"),
++                        "page_numbers": r.metadata.get("page_numbers"),
++                        "snippet": r.text[:200].replace("\n", " "),
++                    }
++                    for i, r in enumerate(results)
++                ],
++            })
++        except Exception as exc:
++            outcomes.append({"label": label, "query": query,
++                             "status": f"error: {exc}", "results": []})
++    with open(config.SANITY_REPORT_FILE, "w", encoding="utf-8") as fh:
++        json.dump(outcomes, fh, indent=2)
++    return outcomes
++
++
++def print_sanity(outcomes: list[dict]) -> None:
++    for case in outcomes:
++        print(f"\n[{case['label']}] {case['query'][:80]} -> {case['status']}")
++        for r in case["results"][:5]:
++            print(f"  {r['rank']}. ({r['method']}, {r['score']}) "
++                  f"{r['chunk_id']} doc={r['document_id']} "
++                  f"seller={r['seller_id']} dept={r['department']} "
++                  f"class={r['classification']}")
++
++
++def main() -> int:
++    parser = argparse.ArgumentParser(description="Phase 3 indexing + retrieval")
++    parser.add_argument("--skip-index", action="store_true",
++                        help="skip indexing, only run sanity queries")
++    parser.add_argument("--top-k", type=int, default=5)
++    args = parser.parse_args()
++
++    if not args.skip_index:
++        stats = run_indexing()
++        print("Indexing complete")
++        for key in ("chunks_received", "chunks_embedded", "embedding_failures",
++                    "qdrant_points_indexed", "qdrant_points_failed",
++                    "collection_name", "embedding_model",
++                    "vector_dimensionality", "elapsed_s"):
++            print(f"  {key}: {stats[key]}")
++    outcomes = run_sanity(top_k=args.top_k)
++    print_sanity(outcomes)
++    print(f"\nReports: {config.INDEXING_REPORT_FILE}, {config.SANITY_REPORT_FILE}")
++    failed = [c for c in outcomes if c["status"] != "ok"]
++    return 1 if failed else 0
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())
+diff --git a/indexing/src/__init__.py b/indexing/src/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/indexing/src/config.py b/indexing/src/config.py
+new file mode 100644
+index 0000000..3df8c17
+--- /dev/null
++++ b/indexing/src/config.py
+@@ -0,0 +1,81 @@
++"""Central configuration for Phase 3 indexing and retrieval."""
++from __future__ import annotations
++
++import os
++from dataclasses import dataclass
++from pathlib import Path
++
++from dotenv import load_dotenv
++
++PACKAGE_ROOT = Path(__file__).resolve().parents[1]
++PROJECT_ROOT = Path(__file__).resolve().parents[2]
++
++load_dotenv(PROJECT_ROOT / ".env")
++
++JINA_API_KEY = os.getenv("JINA_API_KEY", "")
++JINA_EMBEDDING_MODEL = os.getenv("JINA_EMBEDDING_MODEL", "jina-embeddings-v4")
++JINA_API_URL = os.getenv("JINA_API_URL", "https://api.jina.ai/v1/embeddings")
++
++QDRANT_URL = os.getenv("QDRANT_URL", "")
++QDRANT_API_KEY = os.getenv("QDRANT_API_KEY", "")
++QDRANT_COLLECTION_NAME = os.getenv(
++    "QDRANT_COLLECTION_NAME", "enterprise_knowledge")
++
++PHASE2_CHUNKS_FILE = PROJECT_ROOT / "ingestion" / "processed" / "chunks" / "chunks.jsonl"
++
++REPORTS_DIR = PACKAGE_ROOT / "reports"
++INDEXING_REPORT_FILE = REPORTS_DIR / "indexing_report.json"
++SANITY_REPORT_FILE = REPORTS_DIR / "sanity_checks.json"
++VOCAB_FILE = REPORTS_DIR / "sparse_vocab.json"
++
++REQUIRED_ENV_VARS = ("JINA_API_KEY", "QDRANT_URL", "QDRANT_API_KEY")
++
++
++def validate_env() -> None:
++    missing = [name for name in REQUIRED_ENV_VARS if not os.getenv(name)]
++    if missing:
++        raise RuntimeError(
++            "Missing required environment variables: "
++            + ", ".join(missing)
++            + ". Check .env at the repository root."
++        )
++    if not PHASE2_CHUNKS_FILE.is_file():
++        raise RuntimeError(
++            f"Phase 2 chunk corpus not found: {PHASE2_CHUNKS_FILE}. "
++            "Run the Phase 2 ingestion pipeline first."
++        )
++
++
++@dataclass(frozen=True)
++class RetrievalConfig:
++    dense_top_k: int = 20
++    sparse_top_k: int = 20
++    final_top_k: int = 10
++    rrf_k: int = 60
++    dense_vector_name: str = "dense"
++    sparse_vector_name: str = "text"
++    embed_batch_size: int = 32
++    embed_timeout_s: int = 60
++    embed_max_retries: int = 3
++
++
++DEFAULT_RETRIEVAL = RetrievalConfig()
++
++PAYLOAD_KEYWORD_FIELDS = (
++    "seller_id",
++    "department",
++    "classification",
++    "document_type",
++    "scenario_id",
++)
++
++SANITY_QUERIES = (
++    ("seller information", "What is the account overview for seller S001 Aurelia Home Decor?"),
++    ("support issue", "GST rate applied incorrectly on decorative lighting invoices support ticket"),
++    ("engineering incident", "engineering incident database failover INC-008"),
++    ("policy question", "What does policy POL-FIN-002 say about settlement adjustments?"),
++    ("operations procedure", "operations runbook procedure OPS-RB-004 deployment rollback steps"),
++    ("call transcript", "call transcript discussion about credit notes for incorrect tax invoices"),
++    ("cross-document terminology", "settlement adjustment credit note reconciliation"),
++    ("exact document identifier", "OPS-RB-004"),
++)
+diff --git a/indexing/src/embeddings.py b/indexing/src/embeddings.py
+new file mode 100644
+index 0000000..e524a57
+--- /dev/null
++++ b/indexing/src/embeddings.py
+@@ -0,0 +1,107 @@
++"""Jina Embeddings API client with batching, validation and retries."""
++from __future__ import annotations
++
++import numbers
++import time
++
++import requests
++
++from . import config
++
++
++class EmbeddingError(RuntimeError):
++    pass
++
++
++def _headers() -> dict[str, str]:
++    return {
++        "Authorization": f"Bearer {config.JINA_API_KEY}",
++        "Content-Type": "application/json",
++    }
++
++
++def _post_batch(texts: list[str], task: str, timeout_s: int) -> list[list[float]]:
++    response = requests.post(
++        config.JINA_API_URL,
++        headers=_headers(),
++        json={
++            "model": config.JINA_EMBEDDING_MODEL,
++            "task": task,
++            "input": texts,
++        },
++        timeout=timeout_s,
++    )
++    if response.status_code != 200:
++        raise EmbeddingError(
++            f"Jina API error {response.status_code}: {response.text[:300]}")
++    body = response.json()
++    items = body.get("data") if isinstance(body, dict) else None
++    if not items:
++        raise EmbeddingError(f"Jina response missing 'data': {str(body)[:300]}")
++    ordered = sorted(items, key=lambda d: d.get("index", 0))
++    vectors = [d.get("embedding") for d in ordered]
++    if len(vectors) != len(texts):
++        raise EmbeddingError(
++            f"Jina returned {len(vectors)} embeddings for {len(texts)} inputs")
++    return vectors
++
++
++def validate_embeddings(vectors: list[list[float]]) -> int:
++    if not vectors:
++        raise EmbeddingError("No embeddings returned")
++    dim = None
++    for i, vec in enumerate(vectors):
++        if not isinstance(vec, list) or not vec:
++            raise EmbeddingError(f"Embedding {i} is missing or empty")
++        if not all(isinstance(v, numbers.Real) for v in vec):
++            raise EmbeddingError(f"Embedding {i} contains non-numeric values")
++        if dim is None:
++            dim = len(vec)
++        elif len(vec) != dim:
++            raise EmbeddingError(
++                f"Inconsistent embedding dimension: {len(vec)} != {dim}")
++    assert dim is not None
++    return dim
++
++
++def embed_texts(
++    texts: list[str],
++    task: str = "retrieval.passage",
++    batch_size: int | None = None,
++    timeout_s: int | None = None,
++    max_retries: int | None = None,
++) -> tuple[list[list[float] | None], list[int]]:
++    """Embed texts in batches. Returns (vectors aligned with input, failed_indexes)."""
++    cfg = config.DEFAULT_RETRIEVAL
++    batch_size = batch_size or cfg.embed_batch_size
++    timeout_s = timeout_s or cfg.embed_timeout_s
++    max_retries = cfg.embed_max_retries if max_retries is None else max_retries
++
++    vectors: list[list[float] | None] = [None] * len(texts)
++    failed: list[int] = []
++    for start in range(0, len(texts), batch_size):
++        batch = texts[start:start + batch_size]
++        last_error: Exception | None = None
++        for attempt in range(max_retries + 1):
++            try:
++                result = _post_batch(batch, task, timeout_s)
++                validate_embeddings(result)
++                for offset, vec in enumerate(result):
++                    vectors[start + offset] = vec
++                last_error = None
++                break
++            except (EmbeddingError, requests.RequestException) as exc:
++                last_error = exc
++                time.sleep(2 ** attempt)
++        if last_error is not None:
++            failed.extend(range(start, start + len(batch)))
++    ok = [v for v in vectors if v is not None]
++    assert len(ok) + len(failed) == len(texts)
++    return vectors, failed
++
++
++def embed_query(text: str) -> list[float]:
++    vectors, failed = embed_texts([text], task="retrieval.query")
++    if failed or not vectors or vectors[0] is None:
++        raise EmbeddingError("Failed to embed query")
++    return vectors[0]
+diff --git a/indexing/src/hybrid_search.py b/indexing/src/hybrid_search.py
+new file mode 100644
+index 0000000..17dbf61
+--- /dev/null
++++ b/indexing/src/hybrid_search.py
+@@ -0,0 +1,31 @@
++"""Reciprocal Rank Fusion over dense and sparse rankings."""
++from __future__ import annotations
++
++from .models import RetrievalResult
++
++
++def reciprocal_rank_fusion(
++    dense: list[RetrievalResult],
++    sparse: list[RetrievalResult],
++    rrf_k: int = 60,
++) -> list[RetrievalResult]:
++    fused: dict[str, RetrievalResult] = {}
++    rrf_scores: dict[str, float] = {}
++    for rank, item in enumerate(dense, start=1):
++        fused.setdefault(item.chunk_id, item)
++        rrf_scores[item.chunk_id] = (
++            rrf_scores.get(item.chunk_id, 0.0) + 1.0 / (rrf_k + rank))
++    for rank, item in enumerate(sparse, start=1):
++        if item.chunk_id in fused:
++            existing = fused[item.chunk_id]
++            existing.retrieval_method = "hybrid"
++        else:
++            item.retrieval_method = "hybrid"
++            fused[item.chunk_id] = item
++        rrf_scores[item.chunk_id] = (
++            rrf_scores.get(item.chunk_id, 0.0) + 1.0 / (rrf_k + rank))
++    ranked = sorted(fused.values(),
++                    key=lambda r: rrf_scores[r.chunk_id], reverse=True)
++    for item in ranked:
++        item.score = rrf_scores[item.chunk_id]
++    return ranked
+diff --git a/indexing/src/indexing.py b/indexing/src/indexing.py
+new file mode 100644
+index 0000000..f76e3ab
+--- /dev/null
++++ b/indexing/src/indexing.py
+@@ -0,0 +1,99 @@
++"""Indexing orchestration: Phase 2 chunks -> Jina -> Qdrant."""
++from __future__ import annotations
++
++import json
++import time
++
++from . import config
++from .embeddings import embed_texts
++from .models import Chunk
++from .qdrant_store import (
++    connect,
++    ensure_collection,
++    ensure_payload_indexes,
++    upsert_points,
++)
++from .sparse_search import SparseEncoder
++
++
++def load_chunks() -> list[Chunk]:
++    chunks: list[Chunk] = []
++    seen: set[str] = set()
++    with open(config.PHASE2_CHUNKS_FILE, encoding="utf-8") as fh:
++        for line_no, line in enumerate(fh, start=1):
++            if not line.strip():
++                continue
++            try:
++                raw = json.loads(line)
++            except json.JSONDecodeError as exc:
++                raise RuntimeError(
++                    f"Malformed chunk at line {line_no}: {exc}") from exc
++            text = (raw.get("text") or "").strip()
++            chunk_id = raw.get("chunk_id")
++            if not chunk_id or not text:
++                raise RuntimeError(
++                    f"Chunk at line {line_no} missing chunk_id or text")
++            if chunk_id in seen:
++                raise RuntimeError(f"Duplicate chunk_id: {chunk_id}")
++            seen.add(chunk_id)
++            chunks.append(Chunk.from_dict(raw))
++    if not chunks:
++        raise RuntimeError("Phase 2 corpus contains no chunks")
++    return chunks
++
++
++def run_indexing() -> dict:
++    config.validate_env()
++    started = time.time()
++    chunks = load_chunks()
++    received = len(chunks)
++
++    texts = [c.text for c in chunks]
++    vectors, failed_indexes = embed_texts(texts)
++    failed_chunk_ids = [chunks[i].chunk_id for i in failed_indexes]
++    embedded = [v for v in vectors if v is not None]
++    if not embedded:
++        raise RuntimeError("All embedding requests failed; aborting indexing")
++    dim = len(embedded[0])
++
++    encoder = SparseEncoder().fit(texts)
++    encoder.save()
++
++    client = connect()
++    collection = ensure_collection(client, dim)
++    ensure_payload_indexes(client)
++
++    items = []
++    for chunk, vector in zip(chunks, vectors):
++        if vector is None:
++            continue
++        sparse = encoder.encode(chunk.text)
++        items.append((chunk, vector,
++                      {"indices": sparse.indices, "values": sparse.values}))
++    indexed, failed_points = upsert_points(client, items)
++
++    stats = {
++        "chunks_received": received,
++        "chunks_embedded": len(embedded),
++        "embedding_failures": len(failed_indexes),
++        "failed_chunk_ids": failed_chunk_ids,
++        "qdrant_points_indexed": indexed,
++        "qdrant_points_failed": failed_points,
++        "collection_name": collection,
++        "embedding_model": config.JINA_EMBEDDING_MODEL,
++        "vector_dimensionality": dim,
++        "dense_config": {"vector_name": config.DEFAULT_RETRIEVAL.dense_vector_name,
++                         "distance": "Cosine"},
++        "sparse_config": {"vector_name": config.DEFAULT_RETRIEVAL.sparse_vector_name,
++                          "method": "BM25", "k1": 1.2, "b": 0.75},
++        "hybrid_config": {"fusion": "RRF",
++                          "rrf_k": config.DEFAULT_RETRIEVAL.rrf_k,
++                          "dense_top_k": config.DEFAULT_RETRIEVAL.dense_top_k,
++                          "sparse_top_k": config.DEFAULT_RETRIEVAL.sparse_top_k,
++                          "final_top_k": config.DEFAULT_RETRIEVAL.final_top_k},
++        "elapsed_s": round(time.time() - started, 1),
++    }
++    config.REPORTS_DIR.mkdir(parents=True, exist_ok=True)
++    with open(config.INDEXING_REPORT_FILE, "w", encoding="utf-8") as fh:
++        json.dump(stats, fh, indent=2)
++    return stats
+diff --git a/indexing/src/models.py b/indexing/src/models.py
+new file mode 100644
+index 0000000..da7587c
+--- /dev/null
++++ b/indexing/src/models.py
+@@ -0,0 +1,56 @@
++"""Shared data shapes for Phase 3."""
++from __future__ import annotations
++
++from dataclasses import asdict, dataclass, field
++
++
++@dataclass
++class Chunk:
++    chunk_id: str
++    text: str
++    document_id: str
++    document_type: str | None = None
++    seller_id: str | None = None
++    department: str | None = None
++    classification: str | None = None
++    scenario_id: str | None = None
++    source_file: str | None = None
++    page_numbers: list[int] = field(default_factory=list)
++    extra: dict = field(default_factory=dict)
++
++    @classmethod
++    def from_dict(cls, raw: dict) -> "Chunk":
++        known = set(cls.__dataclass_fields__) - {"extra"}
++        init = {k: raw.get(k) for k in known if k != "page_numbers"}
++        init["page_numbers"] = list(raw.get("page_numbers") or [])
++        extra = {k: v for k, v in raw.items() if k not in known}
++        return cls(extra=extra, **init)  # type: ignore[arg-type]
++
++    def payload(self) -> dict:
++        data: dict = {
++            "chunk_id": self.chunk_id,
++            "document_id": self.document_id,
++            "document_type": self.document_type,
++            "seller_id": self.seller_id,
++            "department": self.department,
++            "classification": self.classification,
++            "scenario_id": self.scenario_id,
++            "source_file": self.source_file,
++            "page_numbers": self.page_numbers,
++            "text": self.text,
++        }
++        data.update(self.extra)
++        return {k: v for k, v in data.items() if v is not None}
++
++
++@dataclass
++class RetrievalResult:
++    chunk_id: str
++    document_id: str | None
++    text: str
++    score: float
++    retrieval_method: str
++    metadata: dict
++
++    def to_dict(self) -> dict:
++        return asdict(self)
+diff --git a/indexing/src/qdrant_store.py b/indexing/src/qdrant_store.py
+new file mode 100644
+index 0000000..447a454
+--- /dev/null
++++ b/indexing/src/qdrant_store.py
+@@ -0,0 +1,133 @@
++"""Qdrant collection management, upserts and filtered vector search."""
++from __future__ import annotations
++
++import uuid
++
++from qdrant_client import QdrantClient
++from qdrant_client.models import (
++    Distance,
++    FieldCondition,
++    Filter,
++    KeywordIndexParams,
++    MatchAny,
++    MatchValue,
++    PointStruct,
++    SparseVectorParams,
++    VectorParams,
++)
++
++from . import config
++from .models import Chunk
++
++
++class CollectionMismatchError(RuntimeError):
++    pass
++
++
++def connect() -> QdrantClient:
++    try:
++        client = QdrantClient(
++            url=config.QDRANT_URL, api_key=config.QDRANT_API_KEY, timeout=60)
++        client.get_collections()
++        return client
++    except Exception as exc:
++        raise RuntimeError(f"Cannot reach Qdrant Cloud: {exc}") from exc
++
++
++def point_id_for(chunk_id: str) -> str:
++    return str(uuid.uuid5(uuid.NAMESPACE_DNS, chunk_id))
++
++
++def ensure_collection(client: QdrantClient, vector_size: int) -> str:
++    name = config.QDRANT_COLLECTION_NAME
++    if client.collection_exists(name):
++        info = client.get_collection(name)
++        params = info.config.params
++        dense = (params.vectors or {}).get(config.DEFAULT_RETRIEVAL.dense_vector_name)
++        size = getattr(dense, "size", None)
++        has_sparse = (
++            config.DEFAULT_RETRIEVAL.sparse_vector_name
++            in (params.sparse_vectors or {})
++        )
++        problems = []
++        if size != vector_size:
++            problems.append(
++                f"existing dense size {size} != embedding size {vector_size}")
++        if not has_sparse:
++            problems.append("existing collection has no sparse slot "
++                            f"'{config.DEFAULT_RETRIEVAL.sparse_vector_name}'")
++        if problems:
++            raise CollectionMismatchError(
++                f"Qdrant collection '{name}' is incompatible: "
++                + "; ".join(problems)
++                + ". Delete it explicitly if a rebuild is intended.")
++        return name
++    client.create_collection(
++        collection_name=name,
++        vectors_config={
++            config.DEFAULT_RETRIEVAL.dense_vector_name: VectorParams(
++                size=vector_size, distance=Distance.COSINE)
++        },
++        sparse_vectors_config={
++            config.DEFAULT_RETRIEVAL.sparse_vector_name: SparseVectorParams()
++        },
++    )
++    return name
++
++
++def ensure_payload_indexes(client: QdrantClient) -> None:
++    for field_name in config.PAYLOAD_KEYWORD_FIELDS:
++        client.create_payload_index(
++            collection_name=config.QDRANT_COLLECTION_NAME,
++            field_name=field_name,
++            field_schema=KeywordIndexParams(type="keyword"),
++            wait=True,
++        )
++
++
++def build_filter(filters: dict | None) -> Filter | None:
++    # Keep authorization outside Phase 3; filters are only retrieval capabilities.
++    if not filters:
++        return None
++    conditions = []
++    for key, value in filters.items():
++        if value is None:
++            continue
++        if isinstance(value, list):
++            conditions.append(FieldCondition(
++                key=key, match=MatchAny(any=[str(v) for v in value])))
++        else:
++            conditions.append(FieldCondition(
++                key=key, match=MatchValue(value=str(value))))
++    return Filter(must=conditions) if conditions else None
++
++
++def upsert_points(
++    client: QdrantClient,
++    items: list[tuple[Chunk, list[float], dict]],
++) -> tuple[int, int]:
++    ok, failed = 0, 0
++    batch: list[PointStruct] = []
++    for chunk, dense, sparse in items:
++        try:
++            batch.append(PointStruct(
++                id=point_id_for(chunk.chunk_id),
++                vector={
++                    config.DEFAULT_RETRIEVAL.dense_vector_name: dense,
++                    config.DEFAULT_RETRIEVAL.sparse_vector_name: sparse,
++                },
++                payload=chunk.payload(),
++            ))
++        except Exception:
++            failed += 1
++    for i in range(0, len(batch), 100):
++        try:
++            client.upsert(
++                collection_name=config.QDRANT_COLLECTION_NAME,
++                points=batch[i:i + 100],
++                wait=True,
++            )
++            ok += len(batch[i:i + 100])
++        except Exception:
++            failed += len(batch[i:i + 100])
++    return ok, failed
+diff --git a/indexing/src/retrieval.py b/indexing/src/retrieval.py
+new file mode 100644
+index 0000000..9e5b91e
+--- /dev/null
++++ b/indexing/src/retrieval.py
+@@ -0,0 +1,75 @@
++"""Retrieval interface: dense, sparse and hybrid search over Qdrant."""
++from __future__ import annotations
++
++from qdrant_client.models import SparseVector
++
++from . import config
++from .embeddings import embed_query
++from .hybrid_search import reciprocal_rank_fusion
++from .models import RetrievalResult
++from .qdrant_store import build_filter, connect
++from .sparse_search import SparseEncoder
++
++METADATA_KEYS = (
++    "seller_id", "department", "classification", "document_type",
++    "scenario_id", "source_file", "page_numbers",
++)
++
++
++def _to_result(point, method: str) -> RetrievalResult:
++    payload = point.payload or {}
++    metadata = {k: payload.get(k) for k in METADATA_KEYS}
++    metadata.update({k: v for k, v in payload.items()
++                     if k not in ("text",) and k not in metadata})
++    return RetrievalResult(
++        chunk_id=payload.get("chunk_id", str(point.id)),
++        document_id=payload.get("document_id"),
++        text=payload.get("text", ""),
++        score=float(point.score or 0.0),
++        retrieval_method=method,
++        metadata={k: v for k, v in metadata.items() if v is not None},
++    )
++
++
++def dense_search(query: str, top_k: int,
++                 filters: dict | None = None) -> list[RetrievalResult]:
++    client = connect()
++    vector = embed_query(query)
++    points = client.query_points(
++        collection_name=config.QDRANT_COLLECTION_NAME,
++        query=vector,
++        using=config.DEFAULT_RETRIEVAL.dense_vector_name,
++        query_filter=build_filter(filters),
++        limit=top_k,
++        with_payload=True,
++    ).points
++    return [_to_result(p, "dense") for p in points]
++
++
++def sparse_search(query: str, top_k: int,
++                  filters: dict | None = None) -> list[RetrievalResult]:
++    client = connect()
++    encoder = SparseEncoder.load()
++    sparse = encoder.encode(query)
++    points = client.query_points(
++        collection_name=config.QDRANT_COLLECTION_NAME,
++        query=SparseVector(indices=sparse.indices, values=sparse.values),
++        using=config.DEFAULT_RETRIEVAL.sparse_vector_name,
++        query_filter=build_filter(filters),
++        limit=top_k,
++        with_payload=True,
++    ).points
++    return [_to_result(p, "sparse") for p in points]
++
++
++def retrieve(query: str, top_k: int = 10,
++             filters: dict | None = None,
++             method: str = "hybrid") -> list[RetrievalResult]:
++    cfg = config.DEFAULT_RETRIEVAL
++    if method == "dense":
++        return dense_search(query, top_k, filters)[:top_k]
++    if method == "sparse":
++        return sparse_search(query, top_k, filters)[:top_k]
++    dense = dense_search(query, cfg.dense_top_k, filters)
++    sparse = sparse_search(query, cfg.sparse_top_k, filters)
++    return reciprocal_rank_fusion(dense, sparse, cfg.rrf_k)[:top_k]
+diff --git a/indexing/src/sparse_search.py b/indexing/src/sparse_search.py
+new file mode 100644
+index 0000000..68ce260
+--- /dev/null
++++ b/indexing/src/sparse_search.py
+@@ -0,0 +1,87 @@
++"""Local BM25 sparse vectors stored in Qdrant's sparse index.
++
++Enterprise text is full of exact identifiers (INC-008, ST-1042, S001) that
++dense embeddings can miss, so each chunk also gets a BM25-weighted sparse
++vector under the collection's sparse slot. The vocabulary/IDF statistics are
++built from the Phase 2 corpus and persisted so queries encode identically.
++"""
++from __future__ import annotations
++
++import json
++import math
++import re
++
++from qdrant_client.models import SparseVector
++
++from . import config
++
++TOKEN_PATTERN = re.compile(r"[a-z0-9]+(?:[-_][a-z0-9]+)*")
++
++K1 = 1.2
++B = 0.75
++
++
++def tokenize(text: str) -> list[str]:
++    return TOKEN_PATTERN.findall(text.lower())
++
++
++class SparseEncoder:
++    def __init__(self) -> None:
++        self.vocab: dict[str, int] = {}
++        self.idf: dict[str, float] = {}
++        self.avgdl: float = 0.0
++
++    def fit(self, texts: list[str]) -> "SparseEncoder":
++        doc_freq: dict[str, int] = {}
++        total_len = 0
++        for text in texts:
++            tokens = tokenize(text)
++            total_len += len(tokens)
++            for token in set(tokens):
++                doc_freq[token] = doc_freq.get(token, 0) + 1
++        n = max(len(texts), 1)
++        self.vocab = {t: i for i, t in enumerate(sorted(doc_freq))}
++        self.idf = {
++            t: math.log(1 + (n - df + 0.5) / (df + 0.5))
++            for t, df in doc_freq.items()
++        }
++        self.avgdl = total_len / n if n else 0.0
++        return self
++
++    def encode(self, text: str) -> SparseVector:
++        tokens = tokenize(text)
++        if not tokens or not self.vocab:
++            return SparseVector(indices=[], values=[])
++        tf: dict[str, int] = {}
++        for token in tokens:
++            if token in self.vocab:
++                tf[token] = tf.get(token, 0) + 1
++        dl = len(tokens)
++        pairs: list[tuple[int, float]] = []
++        for token, freq in tf.items():
++            norm = freq * (K1 + 1) / (
++                freq + K1 * (1 - B + B * dl / max(self.avgdl, 1e-6)))
++            pairs.append((self.vocab[token], self.idf[token] * norm))
++        pairs.sort()
++        return SparseVector(
++            indices=[i for i, _ in pairs],
++            values=[float(v) for _, v in pairs],
++        )
++
++    def save(self) -> None:
++        config.REPORTS_DIR.mkdir(parents=True, exist_ok=True)
++        with open(config.VOCAB_FILE, "w", encoding="utf-8") as fh:
++            json.dump(
++                {"vocab": self.vocab, "idf": self.idf, "avgdl": self.avgdl},
++                fh,
++            )
++
++    @classmethod
++    def load(cls) -> "SparseEncoder":
++        with open(config.VOCAB_FILE, encoding="utf-8") as fh:
++            raw = json.load(fh)
++        enc = cls()
++        enc.vocab = {k: int(v) for k, v in raw["vocab"].items()}
++        enc.idf = {k: float(v) for k, v in raw["idf"].items()}
++        enc.avgdl = float(raw["avgdl"])
++        return enc
+diff --git a/indexing/tests/test_phase3.py b/indexing/tests/test_phase3.py
+new file mode 100644
+index 0000000..e7b6d9d
+--- /dev/null
++++ b/indexing/tests/test_phase3.py
+@@ -0,0 +1,55 @@
++"""Offline unit checks: RRF fusion, sparse encoder, filter builder."""
++import sys
++from pathlib import Path
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
++
++from src.hybrid_search import reciprocal_rank_fusion  # noqa: E402
++from src.models import RetrievalResult  # noqa: E402
++from src.qdrant_store import build_filter  # noqa: E402
++from src.sparse_search import SparseEncoder, tokenize  # noqa: E402
++
++
++def make_result(chunk_id: str, score: float, method: str) -> RetrievalResult:
++    return RetrievalResult(chunk_id=chunk_id, document_id="D1", text="t",
++                           score=score, retrieval_method=method, metadata={})
++
++
++def test_tokenizer_keeps_identifiers() -> None:
++    tokens = tokenize("Incident INC-008 for seller S001 ticket ST-1042")
++    assert "inc-008" in tokens, tokens
++    assert "st-1042" in tokens, tokens
++    assert "s001" in tokens, tokens
++
++
++def test_sparse_encoder_exact_match() -> None:
++    enc = SparseEncoder().fit(["incident INC-008 database failover",
++                               "unrelated policy text here"])
++    vec = enc.encode("INC-008")
++    assert vec.indices, "query with a known identifier must encode non-empty"
++
++
++def test_rrf_merges_duplicates() -> None:
++    dense = [make_result("A", 0.9, "dense"), make_result("B", 0.8, "dense")]
++    sparse = [make_result("B", 2.0, "sparse"), make_result("C", 1.0, "sparse")]
++    fused = reciprocal_rank_fusion(dense, sparse)
++    ids = [r.chunk_id for r in fused]
++    assert sorted(ids) == ["A", "B", "C"], ids
++    assert next(r for r in fused if r.chunk_id == "B").retrieval_method == "hybrid"
++    assert fused[0].chunk_id == "B"
++
++
++def test_build_filter_none() -> None:
++    assert build_filter(None) is None
++    assert build_filter({}) is None
++    filt = build_filter({"seller_id": "S001",
++                         "classification": ["CONFIDENTIAL", "INTERNAL"]})
++    assert filt is not None and len(filt.must) == 2
++
++
++if __name__ == "__main__":
++    test_tokenizer_keeps_identifiers()
++    test_sparse_encoder_exact_match()
++    test_rrf_merges_duplicates()
++    test_build_filter_none()
++    print("All Phase 3 unit checks passed.")
+diff --git a/requirements.txt b/requirements.txt
+index 3ed0300..cf0fcf3 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -4,3 +4,8 @@ langchain-core==1.6.3
+ langchain-text-splitters==1.1.2
+ 
+ tiktoken==0.14.0
++
++qdrant-client==1.19.1
++requests==2.34.2
++python-dotenv==1.2.3
++numpy==2.5.3

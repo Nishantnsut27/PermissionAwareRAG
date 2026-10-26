@@ -1,0 +1,970 @@
+commit 6cd0a925c1a8a9e5ae943d181bebad43dcf9f262
+Author:     Nishantnsut27 <143648131+Nishantnsut27@users.noreply.github.com>
+AuthorDate: Wed Sep 23 19:05:35 2026 +0530
+Commit:     Nishantnsut27 <143648131+Nishantnsut27@users.noreply.github.com>
+CommitDate: Wed Sep 23 19:05:35 2026 +0530
+
+    Evalution Matrix
+
+diff --git a/.gitignore b/.gitignore
+index f187ddf..e8163d4 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -19,8 +19,6 @@ htmlcov/
+ .tox/
+ 
+ 
+-README.md
+-
+ 
+ .env
+ 
+@@ -35,7 +33,7 @@ Thumbs.db
+ evaluation/tests/
+ 
+ guide.md
+-sofar.md
++
+ 
+ 
+ # Logs
+diff --git a/answering/src/config.py b/answering/src/config.py
+index 2d542a2..aa976cd 100644
+--- a/answering/src/config.py
++++ b/answering/src/config.py
+@@ -50,6 +50,15 @@ JINA_RERANK_MODEL = os.getenv(
+     "JINA_RERANK_MODEL", "jina-reranker-v2-base-multilingual")
+ RERANK_TIMEOUT_S = _int("RERANK_TIMEOUT_S", 30)
+ RERANK_ENABLED = os.getenv("RERANK_ENABLED", "true").strip().lower() != "false"
++# Must be >= the largest indexed chunk or the reranker scores a truncated
++# passage. Ingestion caps chunks at 800 tokens (~4.4k chars observed).
++RERANK_MAX_DOC_CHARS = _int("RERANK_MAX_DOC_CHARS", 4800)
++# A full candidate pool at that width is ~24k tokens per call, and Jina meters
++# tokens per minute. Falling back to fusion order on a rate limit would quietly
++# ship an unranked context, so transient failures are retried instead.
++RERANK_MAX_RETRIES = _int("RERANK_MAX_RETRIES", 4)
++RERANK_BACKOFF_S = _float("RERANK_BACKOFF_S", 5.0)
++RERANK_MAX_BACKOFF_S = _float("RERANK_MAX_BACKOFF_S", 60.0)
+ 
+ API_HOST = os.getenv("API_HOST", "127.0.0.1")
+ API_PORT = _int("API_PORT", 8000)
+@@ -67,9 +76,30 @@ class AnsweringConfig:
+     # Jina rerank relevance is 0..1; clearly irrelevant passages score <0.05
+     # while on-topic ones score >0.5, so 0.20 separates them with margin.
+     rerank_threshold: float = _float("RERANK_SCORE_THRESHOLD", 0.20)
++    # Absolute floors cannot tell "weak but best available" from "weak noise
++    # next to a clear winner". This keeps a passage only if it scores within a
++    # fraction of the strongest passage for THIS query, so the context narrows
++    # when the evidence is decisive and stays wide when it genuinely is not.
++    rerank_relative_threshold: float = _float("RERANK_RELATIVE_THRESHOLD", 0.40)
++    # Retrieval metrics and the reader both count DOCUMENTS, not chunks. These
++    # two bound breadth and depth separately, so the budget can buy several
++    # passages from one document instead of one passage from several.
++    #
++    # Tuned on the golden set against cached reranker scores: with the reranker
++    # query and truncation fixed, this recall-first point reaches recall 0.96 /
++    # MRR 0.86 at efficiency 0.95. Precision is intentionally not maximised - in
++    # a permission-aware RAG the reader can ignore an extra authorized document
++    # but can never recover one that was never shown, and groundedness is
++    # already ~0.96. Narrow max_documents toward 3 (with rel ~0.55) to trade
++    # recall for a higher precision number.
++    max_documents: int = _int("ANSWER_MAX_DOCUMENTS", 5)
++    max_chunks_per_document: int = _int("ANSWER_MAX_CHUNKS_PER_DOCUMENT", 3)
++    # Additional chunks from a document corroborate it without being allowed to
++    # outweigh a single decisively better passage elsewhere.
++    document_support_weight: float = _float("ANSWER_DOC_SUPPORT_WEIGHT", 0.25)
+     max_history_turns: int = _int("MAX_HISTORY_TURNS", 6)
+     max_history_chars: int = _int("MAX_HISTORY_CHARS", 1500)
+-    max_context_chars: int = _int("MAX_CONTEXT_CHARS", 12000)
++    max_context_chars: int = _int("MAX_CONTEXT_CHARS", 16000)
+     max_query_chars: int = _int("MAX_QUERY_CHARS", 1000)
+ 
+ 
+diff --git a/answering/src/context.py b/answering/src/context.py
+index 4d0bef3..5a22387 100644
+--- a/answering/src/context.py
++++ b/answering/src/context.py
+@@ -48,6 +48,25 @@ def _label(document_id: str, document_type: str | None) -> str:
+     return f"{document_type} {document_id}" if document_type else document_id
+ 
+ 
++def _header(document_id: str, entry: dict) -> str:
++    lines = [f"Document: {_label(document_id, entry['document_type'])}"]
++    if entry["seller_id"]:
++        lines.append(f"Seller: {entry['seller_id']}")
++    if entry["department"]:
++        lines.append(f"Department: {entry['department']}")
++    return "\n".join(lines)
++
++
++def _reading_key(pair: tuple) -> tuple:
++    """Render a document's passages in the order the document reads."""
++    chunk, _ = pair
++    metadata = getattr(chunk, "metadata", None) or {}
++    index = metadata.get("chunk_index")
++    if not isinstance(index, int):
++        index = 0
++    return (index, str(getattr(chunk, "chunk_id", "")))
++
++
+ def build(scored_chunks: list[tuple[object, float | None]],
+           cfg: config.AnsweringConfig | None = None) -> tuple[str, list[Source]]:
+     """Group authorized chunks by document into a bounded context block.
+@@ -55,6 +74,18 @@ def build(scored_chunks: list[tuple[object, float | None]],
+     Returns (context_text, sources). Only chunks that actually fit inside the
+     character budget are cited, so the source list never overstates what the
+     model was shown.
++
++    Document order and passage order are taken as given. `selection.select`
++    already ranked documents by aggregate relevance and restored each
++    document's passages to reading order; re-sorting here by best-chunk score
++    would discard that and split a document's prose into score-ordered
++    fragments.
++
++    The budget is spent breadth-first: every selected document gets its
++    strongest passage before any document gets a second one. Packing
++    depth-first instead let the leading documents consume the whole budget and
++    silently dropped the tail, which discarded the breadth `select` had just
++    decided on and cost recall on multi-document questions.
+     """
+     cfg = cfg or config.DEFAULT_ANSWERING
+     grouped: dict[str, dict] = {}
+@@ -65,67 +96,71 @@ def build(scored_chunks: list[tuple[object, float | None]],
+             "document_type": metadata.get("document_type"),
+             "seller_id": metadata.get("seller_id"),
+             "department": metadata.get("department"),
+-            "pages": [],
+             "chunks": [],
+             "best": score,
+         })
+-        for page in metadata.get("page_numbers") or []:
+-            if isinstance(page, int) and page not in entry["pages"]:
+-                entry["pages"].append(page)
+         entry["chunks"].append((chunk, score))
+         if score is not None and (entry["best"] is None or score > entry["best"]):
+             entry["best"] = score
+ 
+-    order = sorted(
+-        grouped.items(),
+-        key=lambda kv: (kv[1]["best"] is None, -(kv[1]["best"] or 0.0)),
+-    )
+-
+-    blocks: list[str] = []
+-    sources: list[Source] = []
++    order = list(grouped.items())
++    headers = {document_id: _header(document_id, entry)
++               for document_id, entry in order}
++
++    # Strongest passage first *within* a document decides what is offered in
++    # each round; reading order is restored at render time.
++    pending = {
++        document_id: sorted(entry["chunks"],
++                            key=lambda pair: (pair[1] is None, -(pair[1] or 0.0)))
++        for document_id, entry in order
++    }
++    allocated: dict[str, list] = {document_id: [] for document_id, _ in order}
+     used = 0
+-    for document_id, entry in order:
+-        label = _label(document_id, entry["document_type"])
+-        header = [f"Document: {label}"]
+-        if entry["seller_id"]:
+-            header.append(f"Seller: {entry['seller_id']}")
+-        if entry["department"]:
+-            header.append(f"Department: {entry['department']}")
+-        if entry["pages"]:
+-            header.append("Page: " + ", ".join(str(p) for p in sorted(entry["pages"])))
+-
+-        included_chunks: list[str] = []
+-        included_ids: list[str] = []
+-        header_text = "\n".join(header)
+-        block_len = len(header_text)
+-        for chunk, _ in entry["chunks"]:
++    rounds = max((len(v) for v in pending.values()), default=0)
++    for depth in range(rounds):
++        for document_id, _ in order:
++            queue = pending[document_id]
++            if depth >= len(queue):
++                continue
++            chunk, score = queue[depth]
+             text = (chunk.text or "").strip()
+             if not text:
+                 continue
+             cost = len(text) + 2
+-            over = (used + block_len + cost + len(SEPARATOR)
+-                    > cfg.max_context_chars)
+-            if over and (blocks or included_chunks):
+-                break
+-            included_chunks.append(text)
+-            included_ids.append(chunk.chunk_id)
+-            block_len += cost
+-        if not included_chunks:
+-            continue
++            if not allocated[document_id]:
++                # First passage also pays for this document's header block.
++                cost += len(headers[document_id]) + 2 + len(SEPARATOR)
++            if used + cost > cfg.max_context_chars and (used or allocated[document_id]):
++                continue
++            allocated[document_id].append((chunk, score))
++            used += cost
+ 
+-        blocks.append(header_text + "\n\n" + "\n\n".join(included_chunks))
++    blocks: list[str] = []
++    sources: list[Source] = []
++    for document_id, entry in order:
++        chosen = allocated[document_id]
++        if not chosen:
++            continue
++        pages: list[int] = []
++        for chunk, _ in chosen:
++            for page in (chunk.metadata or {}).get("page_numbers") or []:
++                if isinstance(page, int) and page not in pages:
++                    pages.append(page)
++        chosen = sorted(chosen, key=_reading_key)
++        header_text = headers[document_id]
++        if pages:
++            header_text += "\nPage: " + ", ".join(str(p) for p in sorted(pages))
++        blocks.append(header_text + "\n\n"
++                      + "\n\n".join((c.text or "").strip() for c, _ in chosen))
+         sources.append(Source(
+             document_id=document_id,
+             document_type=entry["document_type"],
+-            label=label,
++            label=_label(document_id, entry["document_type"]),
+             seller_id=entry["seller_id"],
+             department=entry["department"],
+-            pages=sorted(entry["pages"]),
+-            chunk_ids=included_ids,
++            pages=sorted(pages),
++            chunk_ids=[c.chunk_id for c, _ in chosen],
+             relevance=entry["best"],
+         ))
+-        used += block_len + len(SEPARATOR)
+-        if used >= cfg.max_context_chars:
+-            break
+ 
+     return SEPARATOR.join(blocks), sources
+diff --git a/answering/src/reranker.py b/answering/src/reranker.py
+index fadf77f..db312e1 100644
+--- a/answering/src/reranker.py
++++ b/answering/src/reranker.py
+@@ -4,10 +4,17 @@ Security note: this runs AFTER the authorization re-check, so only already
+ authorized passages are ever sent to the reranker. The reranker orders and
+ filters by relevance; it can never grant access to a passage, and a reranker
+ failure degrades relevance quality without weakening authorization.
++
++Availability note: falling back to fusion order is a real quality loss, not a
++neutral default - an unranked context is what the document-aware selection
++stage is protecting against. A rate limit is transient, so it is retried with
++backoff rather than treated as a permanent failure. Only a genuinely
++unrecoverable response degrades to fusion order.
+ """
+ from __future__ import annotations
+ 
+ import logging
++import time
+ from dataclasses import dataclass
+ 
+ import requests
+@@ -16,7 +23,26 @@ from . import config
+ 
+ logger = logging.getLogger(__name__)
+ 
+-MAX_DOC_CHARS = 2000
++# The reranker must see the whole passage it is scoring. Ingestion emits
++# 800-token chunks (avg ~2.4k chars, max ~4.4k), so a 2k window hid the back
++# half of roughly two thirds of the corpus: evidence past the cut could not
++# influence a chunk's score, and the document holding it was dropped despite
++# having been retrieved correctly. Keep this >= the largest indexed chunk.
++MAX_DOC_CHARS = config.RERANK_MAX_DOC_CHARS
++MAX_QUERY_CHARS = 2000
++
++# Retried: the provider is busy or briefly unreachable, and the request is
++# unchanged on a second attempt. 5xx is included because it is not a statement
++# about the request itself.
++RETRYABLE_STATUS = frozenset({408, 429, 500, 502, 503, 504})
++
++
++class _Retryable(RuntimeError):
++    """A transient rerank failure worth another attempt."""
++
++    def __init__(self, message: str, wait: float | None = None) -> None:
++        super().__init__(message)
++        self.wait = wait
+ 
+ 
+ @dataclass
+@@ -24,6 +50,7 @@ class RerankOutcome:
+     items: list[tuple[object, float | None]]
+     applied: bool
+     error: str | None = None
++    attempts: int = 0
+ 
+ 
+ def _headers() -> dict[str, str]:
+@@ -33,6 +60,40 @@ def _headers() -> dict[str, str]:
+     }
+ 
+ 
++def _retry_after(response) -> float | None:
++    """Honour an explicit Retry-After before falling back to backoff."""
++    try:
++        value = float((response.headers or {}).get("Retry-After", ""))
++    except (TypeError, ValueError):
++        return None
++    return value if 0 <= value <= config.RERANK_MAX_BACKOFF_S else None
++
++
++def _request(query: str, documents: list[str]) -> list[dict]:
++    response = requests.post(
++        config.JINA_RERANK_URL,
++        headers=_headers(),
++        json={
++            "model": config.JINA_RERANK_MODEL,
++            "query": query[:MAX_QUERY_CHARS],
++            "documents": documents,
++            "top_n": len(documents),
++        },
++        timeout=config.RERANK_TIMEOUT_S,
++    )
++    if response.status_code in RETRYABLE_STATUS:
++        raise _Retryable(
++            f"Jina rerank error {response.status_code}: {response.text[:200]}",
++            _retry_after(response))
++    if response.status_code != 200:
++        raise RuntimeError(
++            f"Jina rerank error {response.status_code}: {response.text[:200]}")
++    results = response.json().get("results")
++    if not results:
++        raise RuntimeError("Jina rerank returned no results")
++    return results
++
++
+ def rerank(query: str, chunks: list, threshold: float | None = None) -> RerankOutcome:
+     """Order authorized chunks by relevance and drop those below threshold.
+ 
+@@ -44,29 +105,35 @@ def rerank(query: str, chunks: list, threshold: float | None = None) -> RerankOu
+         return RerankOutcome([(c, None) for c in chunks], False, "disabled")
+ 
+     documents = [(c.text or "")[:MAX_DOC_CHARS] for c in chunks]
+-    try:
+-        response = requests.post(
+-            config.JINA_RERANK_URL,
+-            headers=_headers(),
+-            json={
+-                "model": config.JINA_RERANK_MODEL,
+-                "query": query[:MAX_DOC_CHARS],
+-                "documents": documents,
+-                "top_n": len(documents),
+-            },
+-            timeout=config.RERANK_TIMEOUT_S,
+-        )
+-        if response.status_code != 200:
+-            raise RuntimeError(
+-                f"Jina rerank error {response.status_code}: "
+-                f"{response.text[:200]}")
+-        results = response.json().get("results")
+-        if not results:
+-            raise RuntimeError("Jina rerank returned no results")
+-    except (requests.RequestException, RuntimeError, ValueError) as exc:
+-        logger.warning("Reranking unavailable, falling back to fusion order: %s",
+-                       exc)
+-        return RerankOutcome([(c, None) for c in chunks], False, str(exc)[:200])
++    attempts = 0
++    results = None
++    last_error: Exception | None = None
++    for attempt in range(config.RERANK_MAX_RETRIES + 1):
++        attempts = attempt + 1
++        try:
++            results = _request(query, documents)
++            last_error = None
++            break
++        except _Retryable as exc:
++            last_error = exc
++            if attempt >= config.RERANK_MAX_RETRIES:
++                break
++            wait = getattr(exc, "wait", None)
++            if wait is None:
++                wait = min(config.RERANK_BACKOFF_S * (2 ** attempt),
++                           config.RERANK_MAX_BACKOFF_S)
++            logger.warning("Rerank rate limited, retrying in %.1fs (%d/%d): %s",
++                           wait, attempt + 1, config.RERANK_MAX_RETRIES, exc)
++            time.sleep(wait)
++        except (requests.RequestException, RuntimeError, ValueError) as exc:
++            last_error = exc
++            break
++
++    if results is None:
++        logger.warning("Reranking unavailable after %d attempt(s), falling back "
++                       "to fusion order: %s", attempts, last_error)
++        return RerankOutcome([(c, None) for c in chunks], False,
++                             str(last_error)[:200], attempts)
+ 
+     scored: list[tuple[object, float | None]] = []
+     for item in results:
+@@ -75,9 +142,10 @@ def rerank(query: str, chunks: list, threshold: float | None = None) -> RerankOu
+             continue
+         scored.append((chunks[index], float(item.get("relevance_score", 0.0))))
+     if not scored:
+-        return RerankOutcome([(c, None) for c in chunks], False, "no usable scores")
++        return RerankOutcome([(c, None) for c in chunks], False,
++                             "no usable scores", attempts)
+ 
+     scored.sort(key=lambda pair: pair[1], reverse=True)
+     if threshold is not None:
+         scored = [pair for pair in scored if pair[1] >= threshold]
+-    return RerankOutcome(items=scored, applied=True)
++    return RerankOutcome(items=scored, applied=True, attempts=attempts)
+diff --git a/answering/src/selection.py b/answering/src/selection.py
+new file mode 100644
+index 0000000..0f5e26c
+--- /dev/null
++++ b/answering/src/selection.py
+@@ -0,0 +1,213 @@
++"""Document-aware selection of reranked chunks.
++
++Why this stage exists
++---------------------
++Reranking returns a flat, score-ordered list of chunks. Taking the top N of
++that list spends a *chunk* budget, but everything downstream counts
++*documents*: the citation list, the reader's attention, and Recall/Precision@K
++in Phase 7 all operate on distinct document ids. Because the corpus has no
++single-chunk documents (every document is 2-8 chunks), a flat top-N almost
++always resolved to N different documents contributing one passage each. That is
++the worst of both trades - it maximises the number of documents the model must
++reconcile while minimising the evidence it gets from any one of them.
++
++This module converts the flat list into an explicit breadth/depth decision:
++
++  1. Relative pruning. An absolute floor cannot distinguish "weak but the best
++     thing available" from "weak noise sitting next to a clear winner". Both
++     chunks and documents are therefore also cut relative to the strongest
++     score for the current query, so the context narrows when the evidence is
++     decisive and stays wide when it genuinely is not.
++  2. Document scoring. A document is ranked by its best passage plus a damped
++     contribution from its other surviving passages, so corroboration counts
++     without letting several mediocre passages outrank one decisive passage.
++  3. Bounded depth. Within a kept document several passages are allowed, and
++     they are restored to reading order so the model sees the document as prose
++     rather than as score-ordered fragments.
++
++Security note: this stage only ever removes chunks and only ever reorders
++chunks it was given. It cannot introduce a passage, and it runs before the
++final authorization gate in `service._prepare`, so it can never widen access.
++"""
++from __future__ import annotations
++
++from dataclasses import dataclass, field
++
++from . import config
++
++Scored = tuple[object, "float | None"]
++
++
++@dataclass
++class SelectionStats:
++    """What the selector did, for logging and evaluation diagnostics."""
++    considered_chunks: int = 0
++    considered_documents: int = 0
++    selected_chunks: int = 0
++    selected_documents: int = 0
++    dropped_by_relative_cut: int = 0
++    dropped_by_document_cap: int = 0
++    dropped_by_depth_cap: int = 0
++    best_score: float | None = None
++    weakest_selected_score: float | None = None
++    scored: bool = True
++    # Provenance of the scores this stage acted on. Without these a run whose
++    # reranker was rate limited is indistinguishable from a healthy one, and
++    # every relative cut below was skipped.
++    rerank_applied: bool = True
++    rerank_attempts: int = 0
++    rerank_error: str | None = None
++
++    def to_dict(self) -> dict:
++        return {
++            "considered_chunks": self.considered_chunks,
++            "considered_documents": self.considered_documents,
++            "selected_chunks": self.selected_chunks,
++            "selected_documents": self.selected_documents,
++            "dropped_by_relative_cut": self.dropped_by_relative_cut,
++            "dropped_by_document_cap": self.dropped_by_document_cap,
++            "dropped_by_depth_cap": self.dropped_by_depth_cap,
++            "best_score": (None if self.best_score is None
++                           else round(self.best_score, 4)),
++            "weakest_selected_score": (
++                None if self.weakest_selected_score is None
++                else round(self.weakest_selected_score, 4)),
++            "scored": self.scored,
++            "rerank_applied": self.rerank_applied,
++            "rerank_attempts": self.rerank_attempts,
++            "rerank_error": self.rerank_error,
++        }
++
++
++@dataclass
++class _Document:
++    document_id: str
++    chunks: list[Scored] = field(default_factory=list)
++    best: float | None = None
++    order: int = 0
++
++    def score(self, support_weight: float) -> float | None:
++        """Best passage plus a damped sum of the remaining passages.
++
++        Returns None when the reranker did not run, in which case fusion order
++        is the only available signal and must be preserved.
++        """
++        values = sorted((s for _, s in self.chunks if s is not None),
++                        reverse=True)
++        if not values:
++            return None
++        return values[0] + support_weight * sum(values[1:])
++
++
++def _document_id(chunk) -> str:
++    metadata = getattr(chunk, "metadata", None) or {}
++    return getattr(chunk, "document_id", None) or metadata.get(
++        "document_id") or "unknown"
++
++
++def _reading_key(pair: Scored) -> tuple:
++    """Order passages within a document as the document reads."""
++    chunk, _ = pair
++    metadata = getattr(chunk, "metadata", None) or {}
++    index = getattr(chunk, "chunk_index", None)
++    if index is None:
++        index = metadata.get("chunk_index")
++    if not isinstance(index, int):
++        index = 0
++    return (index, str(getattr(chunk, "chunk_id", "")))
++
++
++def select(items: list[Scored],
++           cfg: config.AnsweringConfig | None = None,
++           outcome: object | None = None,
++           ) -> tuple[list[Scored], SelectionStats]:
++    """Pick the passages that go into the context.
++
++    `items` must be ordered best-first, as `reranker.rerank` returns them.
++    `outcome` is the originating `RerankOutcome`, recorded so a context built
++    from unranked fusion order is never mistaken for a ranked one.
++
++    Returns (selected, stats) where `selected` is grouped by document, the
++    documents ordered by aggregate relevance and the passages inside each
++    document ordered for reading.
++    """
++    cfg = cfg or config.DEFAULT_ANSWERING
++    stats = SelectionStats(considered_chunks=len(items))
++    if outcome is not None:
++        stats.rerank_applied = bool(getattr(outcome, "applied", True))
++        stats.rerank_attempts = int(getattr(outcome, "attempts", 0) or 0)
++        stats.rerank_error = getattr(outcome, "error", None)
++    if not items:
++        return [], stats
++
++    scores = [s for _, s in items if s is not None]
++    stats.scored = bool(scores)
++    stats.best_score = max(scores) if scores else None
++    floor = (stats.best_score * cfg.rerank_relative_threshold
++             if stats.scored and cfg.rerank_relative_threshold > 0 else None)
++
++    # 1. Group every candidate into its document, tracking the best passage.
++    #    First-seen order (already best-first) is the score-free tie-break.
++    documents: dict[str, _Document] = {}
++    for chunk, score in items:
++        document_id = _document_id(chunk)
++        entry = documents.get(document_id)
++        if entry is None:
++            entry = _Document(document_id=document_id, order=len(documents))
++            documents[document_id] = entry
++        entry.chunks.append((chunk, score))
++        if score is not None and (entry.best is None or score > entry.best):
++            entry.best = score
++    stats.considered_documents = len(documents)
++
++    ranked = sorted(
++        documents.values(),
++        key=lambda d: (d.score(cfg.document_support_weight) is None,
++                       -(d.score(cfg.document_support_weight) or 0.0),
++                       d.order),
++    )
++
++    # 2. Breadth. A document enters on the strength of its BEST passage relative
++    #    to the best passage overall. The support weight orders documents but is
++    #    kept out of this test: otherwise the top document's extra passages
++    #    inflate the floor and evict a genuinely relevant single-passage
++    #    document scoring just under the cluster. Skipped without scores, so a
++    #    reranker outage degrades relevance, never recall.
++    if floor is not None:
++        surviving = [d for d in ranked if d.best is None or d.best >= floor]
++        if surviving:
++            stats.dropped_by_relative_cut = len(ranked) - len(surviving)
++            ranked = surviving
++
++    # 3. Hard breadth cap as a backstop on a flat score distribution.
++    if cfg.max_documents > 0 and len(ranked) > cfg.max_documents:
++        stats.dropped_by_document_cap = len(ranked) - cfg.max_documents
++        ranked = ranked[:cfg.max_documents]
++
++    # 4. Depth. Within a kept document, pack its strongest passages up to the
++    #    cap, but never pad with a passage weaker than the same relative floor:
++    #    a document earning a slot on one strong passage should not drag in its
++    #    unrelated tail. Passages are then restored to reading order.
++    selected: list[Scored] = []
++    for document in ranked:
++        passages = sorted(
++            document.chunks,
++            key=lambda pair: (pair[1] is None, -(pair[1] or 0.0)),
++        )
++        keep: list[Scored] = []
++        for chunk, score in passages:
++            if len(keep) >= cfg.max_chunks_per_document > 0:
++                stats.dropped_by_depth_cap += 1
++                continue
++            # The first passage always stays; it is why the document was kept.
++            if keep and floor is not None and score is not None and score < floor:
++                stats.dropped_by_depth_cap += 1
++                continue
++            keep.append((chunk, score))
++        selected.extend(sorted(keep, key=_reading_key))
++
++    stats.selected_chunks = len(selected)
++    stats.selected_documents = len(ranked)
++    chosen = [s for _, s in selected if s is not None]
++    stats.weakest_selected_score = min(chosen) if chosen else None
++    return selected, stats
+diff --git a/answering/src/service.py b/answering/src/service.py
+index 60de54c..5e917ae 100644
+--- a/answering/src/service.py
++++ b/answering/src/service.py
+@@ -10,7 +10,7 @@ import logging
+ import sys
+ import time
+ import uuid
+-from dataclasses import dataclass, field
++from dataclasses import dataclass, field, replace
+ from pathlib import Path
+ 
+ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+@@ -21,7 +21,8 @@ from access_control.src.retrieval import authorized_retrieve
+ from access_control.src.users import USERS, User, get_user
+ from indexing.src.embeddings import EmbeddingError
+ 
+-from . import config, context, conversation, llm, prompts, reranker
++from . import (config, context, conversation, llm, prompts, reranker,
++               selection)
+ 
+ logger = logging.getLogger(__name__)
+ 
+@@ -67,6 +68,9 @@ class AnswerResponse:
+     selected: int = 0
+     withheld: int = 0
+     reranked: bool = False
++    # Counts and score bounds only, never passage text: safe to return and the
++    # fastest way to tell "nothing relevant existed" from "the selector cut it".
++    selection: dict = field(default_factory=dict)
+     effective_sellers: list[str] = field(default_factory=list)
+     latency_ms: int = 0
+     model: str | None = None
+@@ -93,6 +97,7 @@ class AnswerResponse:
+                 "selected": self.selected,
+                 "withheld": self.withheld,
+                 "reranked": self.reranked,
++                "selection": self.selection,
+                 "latency_ms": self.latency_ms,
+                 "model": self.model,
+             },
+@@ -253,9 +258,15 @@ def _prepare(user_id, query, conversation_history, seller_filter, top_k,
+         return None, _refusal(request_id, user, question, started, sellers,
+                               **stats)
+ 
+-    outcome = reranker.rerank(question, authorized_chunks,
++    outcome = reranker.rerank(search_text, authorized_chunks,
+                               threshold=cfg.rerank_threshold)
+-    selected = [(chunk, score) for chunk, score in outcome.items][:top_k]
++    # Breadth and depth are decided together, on documents rather than on a
++    # flat chunk list. `top_k` bounds documents, matching what `sources`
++    # reports and what Phase 7 measures.
++    selected, selection_stats = selection.select(
++        outcome.items, replace(cfg, max_documents=min(top_k, cfg.max_documents)),
++        outcome)
++    stats["selection"] = selection_stats.to_dict()
+ 
+     # Final gate. Reranking reorders authorized material and must never be able
+     # to reintroduce anything unauthorized.
+diff --git a/app.py b/app.py
+index ede5c18..2ee3ac1 100644
+--- a/app.py
++++ b/app.py
+@@ -832,9 +832,24 @@ def _eval_summary(base_url: str, report: str | None = None) -> dict | None:
+         return None
+ 
+ 
++def _latest_report_id(payload: dict | None) -> str | None:
++    """The most recent saved run. `available_reports` is sorted newest-first."""
++    reports = (payload or {}).get("available_reports") or []
++    return reports[0].get("report_id") if reports else None
++
++
+ def _evaluation_sidebar(base_url: str) -> None:
+     st.markdown('<div class="sec">Evaluation</div>', unsafe_allow_html=True)
+-    payload = _eval_summary(base_url)
++    # Follow the run the operator pinned on the evaluation screen; otherwise show
++    # the most recent run. The API defaults an unspecified report to the static
++    # results.json snapshot, which is why the sidebar previously showed stale
++    # numbers while the main panel was on a newer run.
++    selected = st.session_state.get("evaluation_report")
++    payload = _eval_summary(base_url, selected)
++    if payload is not None and not selected:
++        latest = _latest_report_id(payload)
++        if latest and latest != payload.get("report_id"):
++            payload = _eval_summary(base_url, latest) or payload
+     if payload is None:
+         st.markdown('<div class="evempty">Evaluation data is unavailable '
+                     'while the service is unreachable.</div>',
+@@ -873,6 +888,9 @@ def _evaluation_sidebar(base_url: str) -> None:
+             + _metric_rows([
+                 ("Recall@K", _pct(retrieval.get("recall_at_k"))),
+                 ("Precision@K", _pct(retrieval.get("precision_at_k"))),
++                ("Precision ceiling", _pct(retrieval.get("precision_ceiling"))),
++                ("Precision efficiency",
++                 _pct(retrieval.get("precision_efficiency"))),
+                 ("MRR", _num(retrieval.get("mrr"))),
+             ])
+             + '<div class="evhead">Generation</div>'
+@@ -889,6 +907,16 @@ def _evaluation_sidebar(base_url: str) -> None:
+                  _pct(security.get("prompt_injection_blocked"))),
+             ]), unsafe_allow_html=True)
+         st.caption(f"Last evaluation: {payload.get('generated_at') or 'n/a'}")
++        if retrieval.get("precision_ceiling") is not None:
++            # Precision@K divides by the documents actually shown, and K is not
++            # fixed. Stating the ceiling keeps a wide context from reading as a
++            # retrieval defect.
++            st.caption(
++                f"Precision@K divides by documents shown "
++                f"({_num(retrieval.get('mean_documents_shown'))} avg) against "
++                f"{_num(retrieval.get('mean_documents_expected'))} expected, so "
++                f"{_pct(retrieval.get('precision_ceiling'))} is the attainable "
++                f"maximum; efficiency is the share of it achieved.")
+         if dataset_total:
+             st.caption(f"Coverage: {total} results recorded from {selected} selected "
+                        f"of {dataset_total} golden cases.")
+@@ -916,6 +944,10 @@ def _matrix_frame(matrix: list[dict]) -> pd.DataFrame:
+         "actual_behavior": "Actual",
+         "recall_at_k": "Recall@K",
+         "precision_at_k": "Precision@K",
++        "precision_ceiling": "Max P@K",
++        "precision_efficiency": "P efficiency",
++        "documents_shown": "Docs shown",
++        "documents_expected": "Docs expected",
+         "mrr": "MRR",
+         "groundedness": "Groundedness",
+         "relevancy": "Relevancy",
+@@ -1011,6 +1043,38 @@ def _render_case_detail(results: list[dict], eval_id: str) -> None:
+     if security.get("leaked_evidence"):
+         st.error("Leak evidence: " + " | ".join(security["leaked_evidence"]))
+ 
++    # A miss that was present in the candidate pool was retrieved correctly and
++    # then discarded by ranking or the context budget. That is a selection
++    # defect, and it is fixed very differently from a retrieval defect.
++    missed = (case.get("retrieval") or {}).get("missed") or []
++    recoverable = [d for d in missed if d in (case.get("candidate_sources") or [])]
++    if missed:
++        if recoverable:
++            st.warning(
++                "Retrieved but not selected: " + ", ".join(recoverable)
++                + ". These documents reached the authorized candidate pool and "
++                  "were dropped by ranking or the context budget, not missed by "
++                  "search.")
++        unreachable = [d for d in missed if d not in recoverable]
++        if unreachable:
++            st.error(
++                "Never retrieved: " + ", ".join(unreachable)
++                + ". Search did not surface these at all.")
++
++    stats = case.get("stats") or {}
++    selection = stats.get("selection") or {}
++    if selection:
++        st.caption(
++            f"Selection: {selection.get('considered_chunks', 0)} passages over "
++            f"{selection.get('considered_documents', 0)} documents considered; "
++            f"kept {selection.get('selected_chunks', 0)} over "
++            f"{selection.get('selected_documents', 0)}. Dropped "
++            f"{selection.get('dropped_by_relative_cut', 0)} below the relative "
++            f"cut, {selection.get('dropped_by_document_cap', 0)} to the document "
++            f"cap, {selection.get('dropped_by_depth_cap', 0)} to the per-document "
++            f"depth cap. Top score {selection.get('best_score')}, weakest kept "
++            f"{selection.get('weakest_selected_score')}.")
++
+     generation = case.get("generation") or {}
+     if generation.get("judge_notes"):
+         st.caption(f"Judge: {generation['judge_notes']}")
+@@ -1118,7 +1182,8 @@ def _evaluation_screen(user: dict, base_url: str) -> None:
+         f'<div class="kpi"><div class="l">Recall@K</div>'
+         f'<div class="v">{_pct(retrieval.get("recall_at_k"))}</div>'
+         f'<div class="s">precision '
+-        f'{_pct(retrieval.get("precision_at_k"))} &middot; MRR '
++        f'{_pct(retrieval.get("precision_at_k"))} of '
++        f'{_pct(retrieval.get("precision_ceiling"))} attainable &middot; MRR '
+         f'{_num(retrieval.get("mrr"))}</div></div>', unsafe_allow_html=True)
+     cards[2].markdown(
+         f'<div class="kpi"><div class="l">Groundedness</div>'
+@@ -1151,6 +1216,17 @@ def _evaluation_screen(user: dict, base_url: str) -> None:
+         f"generation {generation.get('scored_cases', 0)}; "
+         f"security {security.get('scored_cases', 0)}. "
+         "Metrics use only measured cases; N/A means unmeasured or not applicable.")
++    if retrieval.get("precision_ceiling") is not None:
++        st.caption(
++            f"Precision@K divides by the number of documents placed in the "
++            f"context, which is not a fixed K: "
++            f"{_num(retrieval.get('mean_documents_shown'))} documents shown on "
++            f"average against {_num(retrieval.get('mean_documents_expected'))} "
++            f"expected. Perfect retrieval therefore tops out at "
++            f"{_pct(retrieval.get('precision_ceiling'))}, of which "
++            f"{_pct(retrieval.get('precision_efficiency'))} was achieved. A low "
++            "precision with a high efficiency means the context was wider than "
++            "the question required, not that the wrong documents were retrieved.")
+     if not payload.get("reports_enabled"):
+         st.info("Case answers span multiple identities. Detailed reports are disabled "
+                 "by default; see guide.md for trusted local operator access.")
+@@ -1191,12 +1267,26 @@ def _evaluation_screen(user: dict, base_url: str) -> None:
+         column_config={
+             "Recall@K": st.column_config.ProgressColumn(format="%.2f", min_value=0, max_value=1),
+             "Precision@K": st.column_config.ProgressColumn(format="%.2f", min_value=0, max_value=1),
++            "Max P@K": st.column_config.NumberColumn(
++                format="%.2f",
++                help="Highest Precision@K attainable on this case, because K is "
++                     "the number of documents shown rather than a fixed value."),
++            "P efficiency": st.column_config.ProgressColumn(
++                format="%.2f", min_value=0, max_value=1,
++                help="Precision@K divided by its ceiling. 1.00 means every "
++                     "document that could have been relevant was."),
++            "Docs shown": st.column_config.NumberColumn(format="%d"),
++            "Docs expected": st.column_config.NumberColumn(format="%d"),
+             "MRR": st.column_config.NumberColumn(format="%.2f"),
+             "Groundedness": st.column_config.ProgressColumn(format="%.2f", min_value=0, max_value=1),
+             "Relevancy": st.column_config.NumberColumn(format="%.2f"),
+             "Correctness": st.column_config.NumberColumn(format="%.2f"),
+         },
+     )
++    st.caption(
++        "A case with low Precision@K but high P efficiency retrieved correctly "
++        "into a context wider than the question needed. A case with low "
++        "efficiency retrieved the wrong documents.")
+ 
+     by_category = summary.get("by_category") or {}
+     if by_category:
+diff --git a/evaluation/metrics.py b/evaluation/metrics.py
+index 686d21d..ab34b54 100644
+--- a/evaluation/metrics.py
++++ b/evaluation/metrics.py
+@@ -39,6 +39,14 @@ class RetrievalMetrics:
+     recall_at_k: float | None = None
+     precision_at_k: float | None = None
+     mrr: float | None = None
++    # Precision@K here divides by the number of documents actually shown, and K
++    # is not fixed. When the context holds more documents than the case has
++    # expected sources, perfect retrieval still cannot score 1.0. These two
++    # separate "we showed irrelevant documents" from "we showed more documents
++    # than the question needed"; without them a breadth choice reads as a
++    # retrieval defect. They are diagnostics and never replace precision_at_k.
++    precision_ceiling: float | None = None
++    precision_efficiency: float | None = None
+     expected: list[str] = field(default_factory=list)
+     retrieved: list[str] = field(default_factory=list)
+     relevant_retrieved: list[str] = field(default_factory=list)
+@@ -47,7 +55,8 @@ class RetrievalMetrics:
+ 
+     def to_dict(self) -> dict:
+         data = asdict(self)
+-        for key in ("recall_at_k", "precision_at_k", "mrr"):
++        for key in ("recall_at_k", "precision_at_k", "mrr",
++                    "precision_ceiling", "precision_efficiency"):
+             data[key] = _round(data[key])
+         return data
+ 
+@@ -113,6 +122,18 @@ def precision_at_k(expected: list[str], retrieved: list[str]) -> float | None:
+     return hits / len(retrieved)
+ 
+ 
++def precision_ceiling(expected: list[str], retrieved: list[str]) -> float | None:
++    """Highest Precision@K a perfect retriever could score on this case.
++
++    A case with one expected source shown in a two-document context is capped
++    at 0.5 no matter how good retrieval is, because K is the number of
++    documents shown rather than a fixed constant.
++    """
++    if not expected or not retrieved:
++        return None
++    return min(len(set(expected)), len(retrieved)) / len(retrieved)
++
++
+ def mean_reciprocal_rank(expected: list[str],
+                          retrieved: list[str]) -> float | None:
+     """Reciprocal rank of the first relevant document in the ranked list."""
+@@ -135,11 +156,17 @@ def score_retrieval(expected: list[str], retrieved: list[str],
+         return RetrievalMetrics(k=len(retrieved), expected=expected,
+                                 retrieved=retrieved, applicable=False)
+     found = [d for d in retrieved if d in set(expected)]
++    precision = precision_at_k(expected, retrieved)
++    ceiling = precision_ceiling(expected, retrieved)
++    efficiency = (None if precision is None or not ceiling
++                  else precision / ceiling)
+     return RetrievalMetrics(
+         k=len(retrieved),
+         recall_at_k=recall_at_k(expected, retrieved),
+-        precision_at_k=precision_at_k(expected, retrieved),
++        precision_at_k=precision,
+         mrr=mean_reciprocal_rank(expected, retrieved),
++        precision_ceiling=ceiling,
++        precision_efficiency=efficiency,
+         expected=expected,
+         retrieved=retrieved,
+         relevant_retrieved=found,
+@@ -229,6 +256,9 @@ def aggregate(results: list[dict]) -> dict:
+         return sum(1 for r in scored
+                    if r.get(group) and r[group].get(key) is not None)
+ 
++    def mean_of(values: list) -> float | None:
++        return round(sum(values) / len(values), 4) if values else None
++
+     retrieval_security_rows = [r for r in scored if r.get("security")]
+     security_rows = [r for r in retrieval_security_rows
+                      if r["security"].get("passed") is not None]
+@@ -262,6 +292,19 @@ def aggregate(results: list[dict]) -> dict:
+             "recall_at_k": mean(("retrieval", "recall_at_k")),
+             "precision_at_k": mean(("retrieval", "precision_at_k")),
+             "mrr": mean(("retrieval", "mrr")),
++            # Diagnostics, not headline scores. `precision_ceiling` is the best
++            # Precision@K attainable given how many documents were shown, and
++            # `precision_efficiency` is the share of that which was achieved.
++            # A low precision with a high efficiency means the context was
++            # wider than the question needed, not that retrieval was wrong.
++            "precision_ceiling": mean(("retrieval", "precision_ceiling")),
++            "precision_efficiency": mean(("retrieval", "precision_efficiency")),
++            "mean_documents_shown": mean_of(
++                [len(r["retrieval"]["retrieved"]) for r in scored
++                 if r.get("retrieval") and r["retrieval"].get("applicable")]),
++            "mean_documents_expected": mean_of(
++                [len(r["retrieval"]["expected"]) for r in scored
++                 if r.get("retrieval") and r["retrieval"].get("applicable")]),
+             "scored_cases": counted(("retrieval", "recall_at_k")),
+         },
+         "generation": {
+diff --git a/evaluation/runner.py b/evaluation/runner.py
+index 4491ebc..5191cda 100644
+--- a/evaluation/runner.py
++++ b/evaluation/runner.py
+@@ -112,6 +112,12 @@ def _matrix_row(result: dict) -> dict:
+            ("eval_id", "user", "category", "expected_behavior", "actual_behavior", "status")},
+         "recall_at_k": retrieval.get("recall_at_k"),
+         "precision_at_k": retrieval.get("precision_at_k"), "mrr": retrieval.get("mrr"),
++        # Carried so a reviewer can tell a wide context apart from a wrong one
++        # without opening the raw result rows.
++        "precision_ceiling": retrieval.get("precision_ceiling"),
++        "precision_efficiency": retrieval.get("precision_efficiency"),
++        "documents_shown": len(retrieval.get("retrieved") or []) or None,
++        "documents_expected": len(retrieval.get("expected") or []) or None,
+         "groundedness": generation.get("groundedness"),
+         "relevancy": generation.get("answer_relevancy"),
+         "correctness": generation.get("answer_correctness"),

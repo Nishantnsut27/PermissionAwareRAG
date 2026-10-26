@@ -1,0 +1,9 @@
+{
+  "tests": 343,
+  "failures": 12,
+  "errors": 2,
+  "skipped": 0,
+  "successful": false,
+  "network": "blocked",
+  "execution": "isolated source mirror; no .env copied"
+}

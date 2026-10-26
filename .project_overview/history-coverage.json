@@ -1,0 +1,62 @@
+[
+  {
+    "commit": "7bfeb993b7eba22e314245761c0cadb74c853f5d",
+    "python_patch_lines": 0
+  },
+  {
+    "commit": "784f6cdb4cf35f7d2ee9ca3dc1eda2039670906e",
+    "python_patch_lines": 1558
+  },
+  {
+    "commit": "2c93fbcb363278b695e97d60da4c95a4c14de8f2",
+    "python_patch_lines": 905
+  },
+  {
+    "commit": "e96ff73e7c77517fb82685224ef94e8f9f70a6cf",
+    "python_patch_lines": 1612
+  },
+  {
+    "commit": "f77341ec952742e27e08687a6ca5e28115ca1820",
+    "python_patch_lines": 2027
+  },
+  {
+    "commit": "7ca7b3d71c3048931578d8a146e5eb548b422615",
+    "python_patch_lines": 2392
+  },
+  {
+    "commit": "85352747b98c61b7da311bd059171ec9b32623dd",
+    "python_patch_lines": 24
+  },
+  {
+    "commit": "a552c9dec735edbeb98843cb8e8b6c5cbe42dc6a",
+    "python_patch_lines": 3485
+  },
+  {
+    "commit": "4110970acb42041ad32c77716bca3f3d57e8706f",
+    "python_patch_lines": 23
+  },
+  {
+    "commit": "e3f6d220b3530c9b777a0a170f0e806e1a59a9cb",
+    "python_patch_lines": 21
+  },
+  {
+    "commit": "8efc5998c478539f974bcd386cdc63d14e20777c",
+    "python_patch_lines": 43
+  },
+  {
+    "commit": "872b3f6a592cfd198a74e2993abeabaa1886aa89",
+    "python_patch_lines": 0
+  },
+  {
+    "commit": "9d3e0af7523fc5cdf7acc4a55f00507f776fd0cd",
+    "python_patch_lines": 0
+  },
+  {
+    "commit": "0b48ff61304541a21746a28751422cb5794d5c05",
+    "python_patch_lines": 0
+  },
+  {
+    "commit": "6cd0a925c1a8a9e5ae943d181bebad43dcf9f262",
+    "python_patch_lines": 970
+  }
+]

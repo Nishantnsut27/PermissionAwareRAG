@@ -1,0 +1,203 @@
+{
+  "input_dir": "C:\\Users\\Nishant Raj\\OneDrive\\Desktop\\Projects\\fde\\Data",
+  "output_dir": "C:\\Users\\Nishant Raj\\OneDrive\\Desktop\\Projects\\fde\\ingestion",
+  "discovery": {
+    "pdf": 52,
+    "txt": 11,
+    "total": 63
+  },
+  "documents": {
+    "processed": 63,
+    "failed": 0,
+    "failed_documents": []
+  },
+  "validation": {
+    "errors": 0,
+    "warnings": 11,
+    "issues": [
+      {
+        "severity": "WARNING",
+        "code": "SCENARIO_ID_ABSENT",
+        "message": "document is not linked to a scenario",
+        "document_id": "POL-IT-002",
+        "source_file": "documents/policies/organization-wide/POL-IT-002_data_retention_policy.pdf",
+        "field": "scenario_id"
+      },
+      {
+        "severity": "WARNING",
+        "code": "SCENARIO_ID_ABSENT",
+        "message": "document is not linked to a scenario",
+        "document_id": "PRJ-S001-002",
+        "source_file": "documents/projects/S001/integration_project_plan.pdf",
+        "field": "scenario_id"
+      },
+      {
+        "severity": "WARNING",
+        "code": "SCENARIO_ID_ABSENT",
+        "message": "document is not linked to a scenario",
+        "document_id": "PRJ-S001-001",
+        "source_file": "documents/projects/S001/seller_onboarding_summary.pdf",
+        "field": "scenario_id"
+      },
+      {
+        "severity": "WARNING",
+        "code": "SCENARIO_ID_ABSENT",
+        "message": "document is not linked to a scenario",
+        "document_id": "PRJ-S002-001",
+        "source_file": "documents/projects/S002/integration_requirements.pdf",
+        "field": "scenario_id"
+      },
+      {
+        "severity": "WARNING",
+        "code": "SCENARIO_ID_ABSENT",
+        "message": "document is not linked to a scenario",
+        "document_id": "PRJ-S003-001",
+        "source_file": "documents/projects/S003/onboarding_project_plan.pdf",
+        "field": "scenario_id"
+      },
+      {
+        "severity": "WARNING",
+        "code": "SCENARIO_ID_ABSENT",
+        "message": "document is not linked to a scenario",
+        "document_id": "PRJ-S004-001",
+        "source_file": "documents/projects/S004/dropship_onboarding_project.pdf",
+        "field": "scenario_id"
+      },
+      {
+        "severity": "WARNING",
+        "code": "SCENARIO_ID_ABSENT",
+        "message": "document is not linked to a scenario",
+        "document_id": "ORG-001",
+        "source_file": "identity/organization_and_users.pdf",
+        "field": "scenario_id"
+      },
+      {
+        "severity": "WARNING",
+        "code": "DEPARTMENT_MISSING",
+        "message": "department is not present in the source",
+        "document_id": "scenario_overview",
+        "source_file": "scenario-context/scenario_overview.txt",
+        "field": "department"
+      },
+      {
+        "severity": "WARNING",
+        "code": "CREATED_DATE_MISSING",
+        "message": "created_date is not present in the source",
+        "document_id": "scenario_overview",
+        "source_file": "scenario-context/scenario_overview.txt",
+        "field": "created_date"
+      },
+      {
+        "severity": "WARNING",
+        "code": "SCENARIO_ID_ABSENT",
+        "message": "document is not linked to a scenario",
+        "document_id": "scenario_overview",
+        "source_file": "scenario-context/scenario_overview.txt",
+        "field": "scenario_id"
+      },
+      {
+        "severity": "WARNING",
+        "code": "OWNER_MISSING",
+        "message": "owner is not present in the source",
+        "document_id": "scenario_overview",
+        "source_file": "scenario-context/scenario_overview.txt",
+        "field": "owner"
+      }
+    ]
+  },
+  "chunks": {
+    "total": 209,
+    "by_document_type": {
+      "Account Overview": 12,
+      "Call Transcript": 37,
+      "Decision Record": 8,
+      "Implementation Plan": 3,
+      "Incident Report": 35,
+      "Operational Checklist": 3,
+      "Operational Procedure": 11,
+      "Organization Reference": 5,
+      "Policy": 26,
+      "Project Document": 10,
+      "Project Status Report": 8,
+      "Requirements Document": 3,
+      "Runbook": 7,
+      "Scenario Context": 8,
+      "Security Incident Report": 6,
+      "Support Ticket": 24,
+      "Technical Notes": 3
+    },
+    "by_category": {
+      "projects": 35,
+      "support": 24,
+      "calls": 37,
+      "engineering": 41,
+      "operations": 21,
+      "policies": 26
+    },
+    "by_seller": {
+      "Organization-wide": 60,
+      "S001": 35,
+      "S002": 48,
+      "S003": 37,
+      "S004": 29
+    },
+    "by_classification": {
+      "CONFIDENTIAL": 131,
+      "INTERNAL": 47,
+      "RESTRICTED": 31
+    },
+    "by_department": {
+      "Business": 26,
+      "Engineering": 61,
+      "IT": 21,
+      "Operations": 69,
+      "Support": 24,
+      "Unknown": 8
+    },
+    "token_stats": {
+      "average": 542.9,
+      "minimum": 75,
+      "maximum": 798
+    }
+  },
+  "chunking": {
+    "strategy": "RecursiveCharacterTextSplitter",
+    "token_aware": true,
+    "tokenizer": "cl100k_base",
+    "chunk_size_tokens": 800,
+    "chunk_overlap_tokens": 120,
+    "separators": [
+      "\n\n\n",
+      "\n\n",
+      "\n",
+      ". ",
+      "? ",
+      "! ",
+      "; ",
+      ", ",
+      " ",
+      ""
+    ]
+  },
+  "integrity": {
+    "chunks_generated": true,
+    "expected_documents_match": true,
+    "all_chunks_have_text": true,
+    "chunk_ids_unique": true,
+    "all_chunks_have_document_id": true,
+    "all_chunks_have_source": true,
+    "all_chunks_have_classification": true,
+    "seller_metadata_preserved": true,
+    "department_metadata_preserved": true,
+    "scenario_metadata_preserved": true,
+    "pdf_page_provenance_present": true,
+    "no_duplicate_chunks": true,
+    "chunk_sizes_within_target": true,
+    "overlap_configured": true,
+    "source_files_unchanged": true
+  },
+  "duration_seconds": 15.19,
+  "skipped_files": [
+    "README.md"
+  ]
+}
