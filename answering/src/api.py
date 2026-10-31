@@ -3,16 +3,16 @@
 Deliberately stdlib-only: the pipeline lives in `service.py` and is framework
 agnostic, so swapping in FastAPI later is a transport change, not a rewrite.
 
-Protected routes authenticate through configured OIDC token introspection and
-derive the user from a server-owned subject map. Separate `/demo/*` routes can
-accept a caller-selected `user_id` only when explicit local demo mode is on;
-they are always loopback-only and are not authentication.
+The backend validates a sample password at `/demo/login`, then binds requests
+to a short-lived server session.
 
 `POST /query`        buffered JSON answer
 `POST /query/stream` Server-Sent Events: meta -> delta* -> done
 `GET  /evaluation`        stored evaluation summary
 `GET  /evaluation/matrix` stored evaluation matrix and per-case results
-`/demo/*`             loopback-only selectable-identity demo
+`GET /demo/users`     demo persona directory
+`POST /demo/login`    demo password validation and session issuance
+`/demo/query/*`       session-bound demo requests
 
 The evaluation endpoints are read-only. A run is a paced, quota-heavy batch
 job executed from the command line (`python -m evaluation.runner`); serving it
@@ -21,8 +21,10 @@ from an HTTP request would let a page load burn the API budget.
 from __future__ import annotations
 
 import json
+import hmac
 import ipaddress
 import logging
+import secrets
 import socket
 import threading
 import time
@@ -40,6 +42,67 @@ MAX_BODY_BYTES = 64 * 1024
 _budget_lock = threading.Lock()
 _principal_budgets: dict[str, deque[list[float | int]]] = {}
 MAX_BUDGET_PRINCIPALS = 10000
+DEMO_SESSION_TTL_S = 60 * 60
+MAX_DEMO_SESSIONS = 10000
+_demo_session_lock = threading.Lock()
+_demo_sessions: dict[str, tuple[str, float]] = {}
+_demo_login_budget_lock = threading.Lock()
+_demo_login_budgets: dict[str, deque[float]] = {}
+
+
+def _demo_password(user) -> str:
+    first_name = str(user.name or "").strip().split()
+    return f"{first_name[0].casefold()}@login" if first_name else ""
+
+
+def _charge_demo_login(client_ip: str) -> bool:
+    """Limit login attempts per peer without trusting forwarded headers."""
+    now = time.monotonic()
+    with _demo_login_budget_lock:
+        budget = _demo_login_budgets.get(client_ip)
+        if budget is None:
+            if len(_demo_login_budgets) >= MAX_BUDGET_PRINCIPALS:
+                for peer, entries in list(_demo_login_budgets.items()):
+                    while entries and entries[0] <= now - 60:
+                        entries.popleft()
+                    if not entries:
+                        del _demo_login_budgets[peer]
+                if len(_demo_login_budgets) >= MAX_BUDGET_PRINCIPALS:
+                    return False
+            budget = _demo_login_budgets.setdefault(client_ip, deque())
+        while budget and budget[0] <= now - 60:
+            budget.popleft()
+        if len(budget) >= config.API_REQUESTS_PER_MINUTE:
+            return False
+        budget.append(now)
+        return True
+
+
+def _issue_demo_session(user_id: str) -> tuple[str, int] | None:
+    now = time.time()
+    with _demo_session_lock:
+        expired = [token for token, (_, expires) in _demo_sessions.items()
+                   if expires <= now]
+        for token in expired:
+            del _demo_sessions[token]
+        if len(_demo_sessions) >= MAX_DEMO_SESSIONS:
+            return None
+        token = secrets.token_urlsafe(32)
+        _demo_sessions[token] = (user_id, now + DEMO_SESSION_TTL_S)
+    return token, DEMO_SESSION_TTL_S
+
+
+def _resolve_demo_session(token: str) -> str | None:
+    now = time.time()
+    with _demo_session_lock:
+        session = _demo_sessions.get(token)
+        if session is None:
+            return None
+        user_id, expires = session
+        if expires <= now:
+            del _demo_sessions[token]
+            return None
+        return user_id
 
 
 def _reserved_tokens(payload: dict) -> int:
@@ -61,7 +124,7 @@ def _reserved_tokens(payload: dict) -> int:
 
 
 def _charge_budget(principal, payload: dict):
-    # subject is issued/verified by the configured identity provider; the JSON
+    # The subject is resolved from a server-issued demo session; the JSON
     # user_id is deliberately not consulted here.
     key = principal.subject
     tokens = _reserved_tokens(payload)
@@ -95,7 +158,9 @@ def _reconcile_budget(principal, reservation, usage: dict | None) -> None:
 
 
 def _validate_payload(payload: dict, demo: bool) -> bool:
-    allowed = {"query", "conversation", "seller_filter", "top_k", "user_id"}
+    allowed = {"query", "conversation", "seller_filter", "top_k"}
+    if not demo:
+        allowed.add("user_id")
     if set(payload) - allowed:
         return False
     if demo and "user_id" in payload and not isinstance(payload["user_id"], str):
@@ -267,8 +332,8 @@ class Handler(BaseHTTPRequestHandler):
             config.validate_env()
         except RuntimeError as exc:
             problems.append(str(exc))
-        if not (identity.configured() or config.API_DEMO_MODE):
-            problems.append("no identity provider or explicit local demo mode")
+        if not config.API_DEMO_MODE:
+            problems.append("demo login is disabled")
         try:
             from indexing.src import config as index_config
             from indexing.src.retrieval import active_revision
@@ -376,16 +441,10 @@ class Handler(BaseHTTPRequestHandler):
                              "message": "The request could not be completed."})
 
     def _authenticate(self):
-        try:
-            return identity.authenticate(self.headers.get("Authorization"))
-        except identity.AuthenticationError as exc:
+        if not self._demo_request():
             self._discard_rejected_body()
-            self._send(401, {"error": "unauthorized", "message": str(exc)})
-        except identity.IdentityProviderUnavailable:
-            self._discard_rejected_body()
-            self._send(503, {"error": "identity_provider_unavailable",
-                             "message": "Authenticated identity is not configured."})
-        return None
+            return None
+        return self._demo_principal()
 
     def _discard_rejected_body(self) -> None:
         if self.command != "POST":
@@ -410,6 +469,8 @@ class Handler(BaseHTTPRequestHandler):
         if not config.API_DEMO_MODE:
             self._send(404, {"error": "not_found"})
             return False
+        if config.API_PUBLIC_DEMO_MODE:
+            return True
         try:
             if not ipaddress.ip_address(self.client_address[0]).is_loopback:
                 raise ValueError("non-loopback peer")
@@ -419,19 +480,82 @@ class Handler(BaseHTTPRequestHandler):
             return False
         return True
 
+    def _demo_principal(self):
+        authorization = self.headers.get("Authorization", "")
+        scheme, _, token = authorization.partition(" ")
+        user_id = (_resolve_demo_session(token.strip())
+                   if scheme.casefold() == "bearer" and token.strip() else None)
+        if user_id is None:
+            self._discard_rejected_body()
+            self._send(401, {"error": "demo_login_required",
+                             "message": "Select an account and sign in to the demo."})
+            return None
+        try:
+            user = service.get_demo_user(user_id)
+        except service.AnsweringError:
+            self._discard_rejected_body()
+            self._send(401, {"error": "demo_session_invalid",
+                             "message": "The demo session is invalid. Sign in again."})
+            return None
+        subject = ("demo:public" if config.API_PUBLIC_DEMO_MODE
+                   else f"demo:{user_id}")
+        return identity.Principal(user, subject)
+
+    def _handle_demo_login(self) -> None:
+        payload = self._read_json_body()
+        if payload is None:
+            return
+        if set(payload) != {"user_id", "password"}:
+            self._send(400, {"error": "invalid_request",
+                             "message": "A demo account and password are required."})
+            return
+        try:
+            user = service.get_demo_user(payload.get("user_id"))
+        except service.AnsweringError:
+            user = None
+        supplied = payload.get("password")
+        supplied = supplied.strip().casefold() if isinstance(supplied, str) else ""
+        expected = _demo_password(user) if user else ""
+        if (not expected or not hmac.compare_digest(
+                supplied.encode("utf-8"), expected.encode("utf-8"))):
+            self._send(401, {"error": "invalid_demo_credentials",
+                             "message": "The account or demo password is incorrect."})
+            return
+        session = _issue_demo_session(user.user_id)
+        if session is None:
+            self._send(503, {"error": "demo_session_capacity",
+                             "message": "The demo is busy. Please try again later."})
+            return
+        token, expires_in = session
+        profile = next((row for row in service.list_users()
+                        if row["user_id"] == user.user_id), None)
+        self._send(200, {"access_token": token, "token_type": "Bearer",
+                         "expires_in": expires_in, "user": profile})
+
     def do_POST(self) -> None:
         route = self.path.rstrip("/")
         demo = route in {"/demo/query", "/demo/query/stream"}
-        if route in {"/query", "/demo/query"}:
-            principal = None if demo else self._authenticate()
-            if (not demo and principal is None) or (demo and not self._demo_request()):
+        if route == "/demo/login":
+            if not self._demo_request():
                 return
-            self._handle_query(principal, demo)
+            if not _charge_demo_login(str(self.client_address[0])):
+                self._discard_rejected_body()
+                self._send(429, {"error": "rate_limited", "message":
+                                 "Too many demo login attempts. Please try again later."})
+                return
+            self._handle_demo_login()
+        elif route in {"/query", "/demo/query"}:
+            if demo and not self._demo_request():
+                return
+            principal = self._demo_principal() if demo else self._authenticate()
+            if principal is not None:
+                self._handle_query(principal, demo)
         elif route in {"/query/stream", "/demo/query/stream"}:
-            principal = None if demo else self._authenticate()
-            if (not demo and principal is None) or (demo and not self._demo_request()):
+            if demo and not self._demo_request():
                 return
-            self._handle_query_stream(principal, demo)
+            principal = self._demo_principal() if demo else self._authenticate()
+            if principal is not None:
+                self._handle_query_stream(principal, demo)
         elif route == "/evaluation/run":
             # The UI and API never start quota-consuming evaluation jobs.
             self.close_connection = True
@@ -448,13 +572,7 @@ class Handler(BaseHTTPRequestHandler):
             self._send(400, {"error": "invalid_request",
                              "message": "Request fields do not match the supported schema."})
             return
-        try:
-            budget_principal = (identity.Principal(
-                service.get_demo_user(payload.get("user_id")),
-                f"demo:{payload.get('user_id')}") if demo else principal)
-        except Exception as exc:
-            self._reject(exc)
-            return
+        budget_principal = principal
         reservation = _charge_budget(budget_principal, payload)
         if not reservation:
             self._send(429, {"error": "rate_limited", "message":
@@ -485,14 +603,7 @@ class Handler(BaseHTTPRequestHandler):
             self._send(400, {"error": "invalid_request",
                              "message": "Request fields do not match the supported schema."})
             return
-        try:
-            resolved = (service.get_demo_user(payload.get("user_id"))
-                        if demo else None)
-            service_principal = (identity.Principal(
-                resolved, f"demo:{payload.get('user_id')}") if demo else principal)
-        except Exception as exc:
-            self._reject(exc)
-            return
+        service_principal = principal
         reservation = _charge_budget(service_principal, payload)
         if not reservation:
             self._send(429, {"error": "rate_limited", "message":
@@ -555,17 +666,18 @@ def serve(host: str | None = None, port: int | None = None) -> None:
     config.validate_settings()
     host = host or config.API_HOST
     port = port or config.API_PORT
-    # Demo routes remain loopback only. With no provider, all routes remain
-    # loopback only and protected endpoints fail closed.
+    if config.API_PUBLIC_DEMO_MODE and not config.API_DEMO_MODE:
+        raise RuntimeError("Public demo mode requires API_DEMO_MODE=true.")
+    # Public demo mode is an explicit opt-in for synthetic-data deployments.
     try:
         loopback = ipaddress.ip_address(host).is_loopback
     except ValueError:
         loopback = host.lower() == "localhost"
-    if config.API_DEMO_MODE and not loopback:
+    if config.API_DEMO_MODE and not config.API_PUBLIC_DEMO_MODE and not loopback:
         raise RuntimeError("Demo mode may bind only to a loopback address.")
-    if not identity.configured() and not loopback:
+    if not config.API_DEMO_MODE and not loopback:
         raise RuntimeError(
-            "No OIDC identity provider is configured; API must bind to loopback.")
+            "Demo login is disabled; API must bind to loopback.")
     httpd = BoundedHTTPServer((host, port), Handler)
     logger.info("Phase 5 API listening on http://%s:%d", host, port)
     try:

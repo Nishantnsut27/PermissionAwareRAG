@@ -255,10 +255,10 @@ class RequestAndProviderTests(unittest.TestCase):
 
     def test_budgets_key_on_verified_subject_not_body_user_id(self):
         api._principal_budgets.clear()
-        principal_a = SimpleNamespace(subject="oidc:regular-user")
+        principal_a = SimpleNamespace(subject="api:regular-user")
         payload = {"query": "x", "user_id": "U-005"}
         self.assertTrue(api._charge_budget(principal_a, payload))
-        self.assertEqual(list(api._principal_budgets), ["oidc:regular-user"])
+        self.assertEqual(list(api._principal_budgets), ["api:regular-user"])
         self.assertNotIn("U-005", api._principal_budgets)
 
     def test_deadline_is_propagated_as_remaining_timeout(self):

@@ -6,7 +6,6 @@ These fixtures exercise the contracts and failure boundaries, not model quality.
 from __future__ import annotations
 
 import json
-import os
 import unittest
 from contextlib import ExitStack
 from dataclasses import replace
@@ -296,22 +295,6 @@ class PortfolioTests(unittest.TestCase):
         model.assert_called_once()
         self.partitions.assert_not_called()
         self.global_retrieve.assert_not_called()
-
-    def test_introspection_claim_attributes_do_not_override_server_directory(self):
-        claims = {"active": True, "exp": 5000, "iss": "https://id.example",
-                  "aud": "rag-api", "sub": "verified-sub", "user_id": "U-005",
-                  "role": "Platform Administrator", "department": "IT",
-                  "clearance_level": "RESTRICTED", "seller_scope": ["*"]}
-        response = Mock()
-        response.json.return_value = claims
-        with patch.dict(os.environ, {
-            "OIDC_INTROSPECTION_URL": "https://id.example/introspect",
-            "OIDC_CLIENT_ID": "offline", "OIDC_CLIENT_SECRET": "offline",
-            "OIDC_ISSUER": "https://id.example", "OIDC_AUDIENCE": "rag-api",
-            "OIDC_SUBJECT_MAP": json.dumps({"verified-sub": "U-002"})}):
-            self.principal = identity.authenticate("Bearer test", post=lambda *a, **k: response, now=100)
-        self.assertEqual(self.principal.user, get_user("U-002"))
-        self.assert_scoped(self.answer(), ["S001", "S002"])
 
     def test_narrowing_never_expands_or_substitutes_a_seller(self):
         response = self.answer(seller_filter=["S001", "S004"])

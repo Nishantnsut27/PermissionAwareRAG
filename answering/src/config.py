@@ -51,6 +51,11 @@ RERANK_ENABLED = os.getenv("RERANK_ENABLED", "true").strip().lower() != "false"
 API_HOST = os.getenv("API_HOST", "127.0.0.1")
 API_PORT = _int("API_PORT", 8000)
 API_DEMO_MODE = os.getenv("API_DEMO_MODE", "false").strip().lower() == "true"
+# Public persona switching follows the already explicit demo switch unless an
+# operator overrides it.
+API_PUBLIC_DEMO_MODE = os.getenv(
+    "API_PUBLIC_DEMO_MODE", "true" if API_DEMO_MODE else "false"
+).strip().lower() == "true"
 API_MAX_CONCURRENT_REQUESTS = _int("API_MAX_CONCURRENT_REQUESTS", 8)
 API_BODY_TIMEOUT_S = _float("API_BODY_TIMEOUT_S", 5.0)
 API_HEADER_TIMEOUT_S = _float("API_HEADER_TIMEOUT_S", 5.0)

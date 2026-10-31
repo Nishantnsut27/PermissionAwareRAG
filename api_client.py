@@ -66,6 +66,20 @@ def health(base_url: str = DEFAULT_BASE_URL, timeout: int = 5) -> bool:
         return False
 
 
+def readiness(base_url: str = DEFAULT_BASE_URL, timeout: int = 10) -> dict:
+    try:
+        response = requests.get(_url(base_url, "/ready"), timeout=timeout)
+    except requests.RequestException:
+        return {"reachable": False, "ready": False,
+                "problems": ["API cannot be reached."]}
+    try:
+        payload = response.json()
+    except ValueError:
+        payload = {}
+    return {"reachable": True, "ready": response.status_code == 200,
+            "problems": payload.get("problems", [])}
+
+
 def list_users(token: str, base_url: str = DEFAULT_BASE_URL,
                timeout: int = 10) -> list[dict]:
     try:
@@ -84,11 +98,27 @@ def list_demo_users(base_url: str = DEFAULT_BASE_URL, timeout: int = 10) -> list
     try:
         response = requests.get(_url(base_url, "/demo/users"), timeout=timeout)
     except requests.RequestException as exc:
-        raise ApiError(f"Cannot reach the local demo service at {base_url}.") from exc
+        raise ApiError(f"Cannot reach the demo service at {base_url}.") from exc
     if response.status_code != 200:
-        raise ApiError("The local demo identity directory is unavailable.",
+        raise ApiError("The demo identity directory is unavailable. Enable the backend demo mode for this deployment.",
                        response.status_code)
     return response.json().get("users", [])
+
+
+def demo_login(user_id: str, password: str,
+               base_url: str = DEFAULT_BASE_URL, timeout: int = 10) -> dict:
+    try:
+        response = requests.post(
+            _url(base_url, "/demo/login"),
+            json={"user_id": user_id, "password": password}, timeout=timeout)
+    except requests.RequestException as exc:
+        raise ApiError("Cannot reach the demo login service.") from exc
+    if response.status_code != 200:
+        raise ApiError(_message_from(response), response.status_code)
+    result = response.json()
+    if not result.get("access_token") or not isinstance(result.get("user"), dict):
+        raise ApiError("The demo login response was invalid.")
+    return result
 
 
 def _body(query: str, conversation, seller_filter, top_k) -> dict:
@@ -146,16 +176,16 @@ def ask_stream(query: str, conversation=None, seller_filter=None, top_k=None,
         yield from _stream_events(response)
 
 
-def ask_demo_stream(user_id: str, query: str, conversation=None,
+def ask_demo_stream(access_token: str, query: str, conversation=None,
                     seller_filter=None, top_k=None,
                     base_url: str = DEFAULT_BASE_URL, timeout: int = 180):
-    """Explicit local demo call; user_id has no meaning on protected routes."""
+    """Ask using the server-issued demo persona session."""
     try:
         response = requests.post(
             _url(base_url, "/demo/query/stream"),
-            json={**_body(query, conversation, seller_filter, top_k),
-                  "user_id": user_id}, stream=True,
-            headers={"Accept": "text/event-stream"}, timeout=timeout)
+            json=_body(query, conversation, seller_filter, top_k), stream=True,
+            headers={"Accept": "text/event-stream",
+                     "Authorization": f"Bearer {access_token}"}, timeout=timeout)
     except requests.Timeout as exc:
         raise ApiError("The assistant took too long to respond.") from exc
     except requests.RequestException as exc:

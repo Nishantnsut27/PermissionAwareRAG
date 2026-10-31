@@ -73,6 +73,26 @@ class CanonicalCompletionTests(unittest.TestCase):
             with self.subTest(expected=expected):
                 self.assertEqual(self._stream(events)["outcome"], expected)
 
+    def test_new_user_action_clears_demo_session_and_returns_to_login(self):
+        state = SimpleNamespace(
+            user={"user_id": "U-001"}, demo_access_token="session-token",
+            demo_login_version=1, view="chat", seller_choice=2,
+            messages=[{"role": "assistant", "content": "old answer"}],
+            pending="old question", active_question="old question",
+            active_history=[{"role": "user", "content": "old question"}],
+            seller_select="S001 - Aurelia Home Decor")
+        state.pop = lambda key, default=None: vars(state).pop(key, default)
+        with patch.object(app.st, "session_state", state):
+            app._sign_out()
+        self.assertIsNone(state.user)
+        self.assertIsNone(state.demo_access_token)
+        self.assertEqual(state.messages, [])
+        self.assertIsNone(state.pending)
+        self.assertIsNone(state.active_question)
+        self.assertIsNone(state.active_history)
+        self.assertEqual(state.seller_choice, 0)
+        self.assertFalse(hasattr(state, "seller_select"))
+
     def test_completion_labels_name_the_canonical_state(self):
         self.assertIn("interrupted", app._completion_label("interrupted"))
         self.assertIn("Partial answer", app._completion_label("partial"))
