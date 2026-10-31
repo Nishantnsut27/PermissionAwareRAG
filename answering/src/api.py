@@ -442,6 +442,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def _authenticate(self):
         if not self._demo_request():
+            self._discard_rejected_body()
             return None
         return self._demo_principal()
 

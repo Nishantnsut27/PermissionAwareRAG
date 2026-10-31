@@ -188,10 +188,13 @@ class ApiBoundaryTests(unittest.TestCase):
               patch.object(config, "API_PUBLIC_DEMO_MODE", True),
               patch.object(service, "answer_query", return_value=result) as answer):
             with api_server() as base:
+                unicode_password = requests.post(base + "/demo/login", json={
+                    "user_id": "U-001", "password": "áditya@login"})
                 invalid = requests.post(base + "/demo/login", json={
                     "user_id": "U-001", "password": "wrong"})
                 login = requests.post(base + "/demo/login", json={
                     "user_id": "U-001", "password": "aditya@login"})
+                self.assertEqual(unicode_password.status_code, 401)
                 self.assertEqual(invalid.status_code, 401)
                 self.assertEqual(login.status_code, 200)
                 token = login.json()["access_token"]
@@ -205,6 +208,23 @@ class ApiBoundaryTests(unittest.TestCase):
         principal = answer.call_args.kwargs["principal"]
         self.assertEqual(principal.user.user_id, "U-001")
         self.assertEqual(principal.subject, "demo:public")
+
+    def test_demo_login_rate_limit_is_per_peer(self):
+        api._demo_login_budgets.clear()
+        with patch.object(config, "API_REQUESTS_PER_MINUTE", 1):
+            self.assertTrue(api._charge_demo_login("203.0.113.8"))
+            self.assertFalse(api._charge_demo_login("203.0.113.8"))
+            self.assertTrue(api._charge_demo_login("203.0.113.9"))
+
+    def test_full_demo_session_store_keeps_existing_sessions(self):
+        api._demo_sessions.clear()
+        api._demo_sessions["existing"] = ("U-001", api.time.time() + 60)
+        try:
+            with patch.object(api, "MAX_DEMO_SESSIONS", 1):
+                self.assertIsNone(api._issue_demo_session("U-002"))
+            self.assertEqual(api._demo_sessions["existing"][0], "U-001")
+        finally:
+            api._demo_sessions.clear()
 
     def test_public_demo_mode_can_bind_remotely_only_with_demo_mode(self):
         fake_server = type("FakeServer", (), {
