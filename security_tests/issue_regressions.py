@@ -18,9 +18,10 @@ from answering.src import api, config, context, llm, service
 from answering.src.deadline import DeadlineExceeded, request_deadline
 from answering.src.http_deadline import session
 from evaluation import dataset, evaluator, metrics, runner
-from indexing.src import config as index_config, retrieval
+from indexing.src import config as index_config, indexing, retrieval
+from ingestion.src import metadata as ingestion_metadata
 from ingestion.src.chunking import chunk_document
-from ingestion.src.models import CleanedDocument
+from ingestion.src.models import CleanedDocument, SourceFile
 
 
 @contextmanager
@@ -340,6 +341,78 @@ class ProvenanceTests(unittest.TestCase):
                        "Fact [EV-0123456789ab] and [EV-invalid\nNext line"):
             with self.subTest(answer=answer), self.assertRaises(service.AnswerUnavailableError):
                 service._finalize(prepared, answer, "model")
+
+
+class RefusalOutcomeTests(unittest.TestCase):
+    def prepared(self):
+        return SimpleNamespace(
+            request_id="refusal-test", user=SimpleNamespace(user_id="U-001"),
+            question="q", messages=[], answer="", sources=[], sellers=[], stats={},
+            reranked=False, started=time.time(), context="",
+            candidate_document_ids=[], security_trace={}, coverage_sellers=[],
+            portfolio_only=False)
+
+    def test_prompt_refusal_is_refusal_for_buffered_and_streaming_answers(self):
+        from answering.src import prompts
+        prepared = self.prepared()
+        with (patch.object(service, "_prepare", return_value=(prepared, None)),
+              patch.object(service.llm, "generate", return_value=(
+                  prompts.REFUSAL_TEXT, {"model": "test", "finish_reason": "stop",
+                                         "prompt_tokens": 20, "completion_tokens": 10}))):
+            response = service.answer_query(SimpleNamespace(), "q")
+        self.assertEqual(response.outcome, "refusal")
+        self.assertFalse(response.answered)
+
+        prepared = self.prepared()
+        def stream_result():
+            yield prompts.REFUSAL_TEXT
+            return {"model": "test", "finish_reason": "stop",
+                    "prompt_tokens": 20, "completion_tokens": 10}
+        with (patch.object(service, "_prepare", return_value=(prepared, None)),
+              patch.object(service.llm, "stream", return_value=stream_result())):
+            events = list(service.answer_query_stream(SimpleNamespace(), "q"))
+        done = events[-1]
+        self.assertEqual(done["type"], "done")
+        self.assertEqual(done["outcome"], "refusal")
+        self.assertFalse(done["answered"])
+        self.assertEqual(done["_token_usage"]["total_tokens"], 30)
+
+
+class BudgetAccountingTests(unittest.TestCase):
+    def test_budget_reserves_context_and_intent_then_reconciles_provider_usage(self):
+        principal = SimpleNamespace(subject="budget-regression")
+        api._principal_budgets.pop(principal.subject, None)
+        before = api._reserved_tokens({"query": "x"})
+        reservation = api._charge_budget(principal, {"query": "x"})
+        self.assertGreaterEqual(before, config.DEFAULT_ANSWERING.max_context_tokens
+                                + config.GROQ_MAX_TOKENS + 256)
+        self.assertEqual(reservation[1], before)
+        api._reconcile_budget(principal, reservation,
+                              {"reported": True, "total_tokens": 321})
+        self.assertEqual(reservation[1], 321)
+        api._principal_budgets.pop(principal.subject, None)
+
+
+class IngestionHeaderTests(unittest.TestCase):
+    def test_classification_and_seller_header_case_differences_are_not_conflicts(self):
+        source = SourceFile(Path("CASE-001.md"), "S001/CASE-001.md", ".md", "markdown")
+        pages = [
+            "Seller ID: S001\nClassification: CONFIDENTIAL",
+            "Seller ID: s001\nClassification: Confidential",
+        ]
+        extracted = ingestion_metadata.build_metadata(source, pages)
+        self.assertEqual(extracted.conflicts, [])
+
+
+class IndexCorpusSnapshotTests(unittest.TestCase):
+    def test_active_pointer_change_rejects_index_publication(self):
+        with temporary_workspace() as folder:
+            pointer = Path(folder) / "active.json"
+            pointer.write_text(json.dumps({"revision": "A"}), encoding="utf-8")
+            snapshot = {"revision": "A"}
+            pointer.write_text(json.dumps({"revision": "B"}), encoding="utf-8")
+            with self.assertRaises(indexing.IndexingError):
+                indexing._assert_active_corpus_unchanged(pointer, snapshot)
 
 
 class RevisionBindingTests(unittest.TestCase):

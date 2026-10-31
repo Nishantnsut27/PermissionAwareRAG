@@ -201,12 +201,14 @@ def build_metadata(source: SourceFile, pages: list[str]) -> ExtractedMetadata:
     # can legitimately discuss several classification levels.
     all_source_text = "\n".join("\n".join(page.splitlines()[:12])
                                for page in pages)
-    classification_labels = set(_CLASS_LABEL.findall(all_source_text))
+    classification_labels = {value.strip().casefold()
+                             for value in _CLASS_LABEL.findall(all_source_text)}
     if len(classification_labels) > 1:
         conflicts.append("conflicting classification labels across document pages: "
                          + ", ".join(sorted(classification_labels)))
-    seller_labels = set(re.findall(r"(?im)^\s*Seller ID\s*:\s*(S\d{3}|Organization-wide)\s*$",
-                                  all_source_text))
+    seller_labels = {value.strip().casefold() for value in re.findall(
+        r"(?im)^\s*Seller ID\s*:\s*(S\d{3}|Organization-wide)\s*$",
+        all_source_text)}
     if len(seller_labels) > 1:
         conflicts.append("conflicting seller scope labels across document pages: "
                          + ", ".join(sorted(seller_labels)))

@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import json
 
+REFUSAL_TEXT = "I couldn't find enough information in the sources available for this request."
+
 SYSTEM_PROMPT = """You are the Nexora Commerce enterprise knowledge assistant.
 
 You answer questions using ONLY the passages supplied in the CONTEXT block.
@@ -16,8 +18,7 @@ You answer questions using ONLY the passages supplied in the CONTEXT block.
 GROUNDING RULES
 1. Use only facts stated in the CONTEXT. Never invent enterprise facts such as
    amounts, dates, seller names, ticket IDs, incident IDs or people.
-2. If the CONTEXT does not contain enough information, say: "I couldn't find
-   enough information in the sources available for this request." Do not
+2. If the CONTEXT does not contain enough information, say: """ + REFUSAL_TEXT + """ Do not
    imply that the complete knowledge base lacks the information. Do not guess
    or fill gaps from general knowledge.
 3. Quote figures and identifiers exactly as they appear in the CONTEXT.

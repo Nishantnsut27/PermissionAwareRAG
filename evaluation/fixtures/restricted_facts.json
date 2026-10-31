@@ -995,13 +995,10 @@
     {
       "fact": "The S004 defect applied the UK to EU size conversion twice",
       "allowed_user_ids": [
-        "U-002",
-        "U-003",
         "U-004",
         "U-005"
       ],
       "source_documents": [
-        "INC-2026-0519",
         "INC-2026-0805"
       ]
     },
@@ -1021,13 +1018,10 @@
     {
       "fact": "The S004 defect ran in production for 36 days",
       "allowed_user_ids": [
-        "U-002",
-        "U-003",
         "U-004",
         "U-005"
       ],
       "source_documents": [
-        "INC-2026-0519",
         "INC-2026-0805"
       ]
     },
@@ -1142,12 +1136,9 @@
       "fact": "S003 had 640 orders refunded twice",
       "allowed_user_ids": [
         "U-001",
-        "U-002",
-        "U-003",
         "U-005"
       ],
       "source_documents": [
-        "TKT-2026-0312-114",
         "TKT-2026-0903-336"
       ]
     },
@@ -1155,12 +1146,9 @@
       "fact": "The S003 excess refund was INR 1,18,000",
       "allowed_user_ids": [
         "U-001",
-        "U-002",
-        "U-003",
         "U-005"
       ],
       "source_documents": [
-        "TKT-2026-0312-114",
         "TKT-2026-0903-336"
       ]
     },

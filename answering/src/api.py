@@ -38,22 +38,33 @@ logger = logging.getLogger(__name__)
 
 MAX_BODY_BYTES = 64 * 1024
 _budget_lock = threading.Lock()
-_principal_budgets: dict[str, deque[tuple[float, int]]] = {}
+_principal_budgets: dict[str, deque[list[float | int]]] = {}
 MAX_BUDGET_PRINCIPALS = 10000
 
 
-def _charge_budget(principal, payload: dict) -> bool:
+def _reserved_tokens(payload: dict) -> int:
+    query = payload.get("query") if isinstance(payload.get("query"), str) else ""
+    conversation = payload.get("conversation")
+    history_chars = (sum(len(row.get("content", "")) for row in conversation
+                         if isinstance(row, dict)
+                         and isinstance(row.get("content"), str))
+                     if isinstance(conversation, list) else 0)
+    input_chars = min(len(query), config.DEFAULT_ANSWERING.max_query_chars)
+    input_chars += min(history_chars, config.DEFAULT_ANSWERING.max_history_chars)
+    # Context is already bounded in tokens by the context builder. Reserve it
+    # in full, plus both system prompts, bounded user/history text, framing,
+    # and the maximum output of the answer and intent calls.
+    answer_prompt = (config.DEFAULT_ANSWERING.max_context_tokens
+                     + (len(service.prompts.SYSTEM_PROMPT) + input_chars + 2048 + 2) // 3)
+    intent_prompt = (len(service.answer_scope._INTENT_SYSTEM) + input_chars + 512 + 2) // 3
+    return answer_prompt + intent_prompt + config.GROQ_MAX_TOKENS + 256
+
+
+def _charge_budget(principal, payload: dict):
     # subject is issued/verified by the configured identity provider; the JSON
     # user_id is deliberately not consulted here.
     key = principal.subject
-    query = payload.get("query")
-    conversation = payload.get("conversation")
-    estimate = (len(query) if isinstance(query, str) else 0)
-    if isinstance(conversation, list):
-        estimate += sum(len(row.get("content", "")) for row in conversation
-                        if isinstance(row, dict)
-                        and isinstance(row.get("content"), str))
-    tokens = estimate // 4 + config.GROQ_MAX_TOKENS
+    tokens = _reserved_tokens(payload)
     now = time.monotonic()
     with _budget_lock:
         if key not in _principal_budgets and len(_principal_budgets) >= MAX_BUDGET_PRINCIPALS:
@@ -66,8 +77,21 @@ def _charge_budget(principal, payload: dict) -> bool:
         if (len(budget) >= config.API_REQUESTS_PER_MINUTE
                 or sum(item[1] for item in budget) + tokens > config.API_TOKENS_PER_MINUTE):
             return False
-        budget.append((now, tokens))
-        return True
+        reservation = [now, tokens]
+        budget.append(reservation)
+        return reservation
+
+
+def _reconcile_budget(principal, reservation, usage: dict | None) -> None:
+    if not reservation or not isinstance(usage, dict) or not usage.get("reported"):
+        return
+    actual = usage.get("total_tokens")
+    if isinstance(actual, bool) or not isinstance(actual, int) or actual < 0:
+        return
+    key = principal.subject
+    with _budget_lock:
+        if any(item is reservation for item in _principal_budgets.get(key, ())):
+            reservation[1] = actual
 
 
 def _validate_payload(payload: dict, demo: bool) -> bool:
@@ -431,7 +455,8 @@ class Handler(BaseHTTPRequestHandler):
         except Exception as exc:
             self._reject(exc)
             return
-        if not _charge_budget(budget_principal, payload):
+        reservation = _charge_budget(budget_principal, payload)
+        if not reservation:
             self._send(429, {"error": "rate_limited", "message":
                              "The per-principal request or token budget is exhausted."})
             return
@@ -447,6 +472,9 @@ class Handler(BaseHTTPRequestHandler):
         except Exception as exc:
             self._reject(exc)
             return
+        _reconcile_budget(budget_principal, reservation,
+                          response.security_trace.get(
+                              "model_usage", {"reported": True, "total_tokens": 0}))
         self._send(200, response.to_dict())
 
     def _handle_query_stream(self, principal=None, demo: bool = False) -> None:
@@ -465,7 +493,8 @@ class Handler(BaseHTTPRequestHandler):
         except Exception as exc:
             self._reject(exc)
             return
-        if not _charge_budget(service_principal, payload):
+        reservation = _charge_budget(service_principal, payload)
+        if not reservation:
             self._send(429, {"error": "rate_limited", "message":
                              "The per-principal request or token budget is exhausted."})
             return
@@ -494,8 +523,16 @@ class Handler(BaseHTTPRequestHandler):
 
         self._open_event_stream()
         try:
+            if first.get("type") == "done":
+                _reconcile_budget(service_principal, reservation,
+                                  first.pop("_token_usage",
+                                            {"reported": True, "total_tokens": 0}))
             self._emit(first)
             for event in events:
+                if event.get("type") == "done":
+                    _reconcile_budget(service_principal, reservation,
+                                      event.pop("_token_usage",
+                                                {"reported": True, "total_tokens": 0}))
                 self._emit(event)
         except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
             logger.info("client disconnected during stream")

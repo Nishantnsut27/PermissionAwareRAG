@@ -154,6 +154,11 @@ def _refusal(request_id: str, user: User, query: str, started: float,
              security_trace=None, missing_sellers=None,
              **stats) -> AnswerResponse:
     check_deadline()
+    trace = dict(security_trace or {})
+    if "intent_usage" in trace:
+        rows = trace.get("intent_usage") or []
+        trace["model_usage"] = (_usage_summary(*rows) if rows else
+                                {"reported": True, "total_tokens": 0})
     return AnswerResponse(
         request_id=request_id,
         user_id=user.user_id,
@@ -164,7 +169,7 @@ def _refusal(request_id: str, user: User, query: str, started: float,
         effective_sellers=sellers,
         latency_ms=int((time.time() - started) * 1000),
         candidate_document_ids=list(candidate_document_ids or []),
-        security_trace=dict(security_trace or {}),
+        security_trace=trace,
         **stats,
     )
 
@@ -250,6 +255,7 @@ def _prepare(principal, query, conversation_history, seller_filter, top_k,
                               or not 1 <= top_k <= cfg.candidate_pool):
         raise ValueError("top_k must be an integer in the configured range")
     turns = conversation.parse_history(conversation_history, cfg)
+    intent_usage = []
     top_k = cfg.top_k if top_k is None else top_k
     if seller_filter is not None:
         if (not isinstance(seller_filter, list) or len(seller_filter) > 4
@@ -272,11 +278,12 @@ def _prepare(principal, query, conversation_history, seller_filter, top_k,
 
     intent_started = time.monotonic()
     try:
-        portfolio_only = answer_scope.is_portfolio(question, turns)
+        portfolio_only = answer_scope.is_portfolio(question, turns, intent_usage)
     except answer_scope.IntentUnavailableError as exc:
         raise AnswerUnavailableError(str(exc)) from exc
     if portfolio_only and not sellers:
-        return None, _refusal(request_id, user, question, started, sellers)
+        return None, _refusal(request_id, user, question, started, sellers,
+                              security_trace={"intent_usage": intent_usage})
     # Conversation can resolve the topic, never the account inventory. Remove
     # assistant assertions and prior questions naming excluded sellers before
     # retrieval/generation; use the current principal on every follow-up.
@@ -303,7 +310,8 @@ def _prepare(principal, query, conversation_history, seller_filter, top_k,
                 requested_sellers=seller_filter,
             )
     except ScopeDeniedError:
-        return None, _refusal(request_id, user, question, started, [])
+        return None, _refusal(request_id, user, question, started, [],
+                              security_trace={"intent_usage": intent_usage})
     except IdentityError as exc:
         raise InvalidUserError(str(exc)) from exc
     except EmbeddingError as exc:
@@ -317,6 +325,7 @@ def _prepare(principal, query, conversation_history, seller_filter, top_k,
 
     authorized_chunks = access.chunks
     stage_trace = dict(access.stage_trace)
+    stage_trace["intent_usage"] = intent_usage
     stage_trace["answer_scope"] = "portfolio" if portfolio_only else "document_policy"
     if portfolio_only:
         stage_trace["portfolio_passage_dropped"] = [
@@ -437,11 +446,31 @@ _EVIDENCE_REF = re.compile(r"\[(EV-[0-9a-f]{12})\]")
 
 def _is_refusal(text: str) -> bool:
     lowered = " ".join(text.casefold().split())
-    return (lowered == config.REFUSAL_ANSWER.casefold()
+    return (lowered == prompts.REFUSAL_TEXT.casefold()
+            or lowered == config.REFUSAL_ANSWER.casefold()
             or lowered.startswith(("i cannot answer", "i can't answer",
                                    "i do not have enough information",
                                    "i don't have enough information",
                                    "i couldn't find sufficient information")))
+
+
+def _usage_summary(*usage_rows: dict | None) -> dict:
+    total = 0
+    reported = False
+    for row in usage_rows:
+        if not isinstance(row, dict):
+            continue
+        value = row.get("total_tokens")
+        if isinstance(value, int) and not isinstance(value, bool) and value >= 0:
+            total += value
+            reported = True
+            continue
+        for key in ("prompt_tokens", "completion_tokens"):
+            value = row.get(key)
+            if isinstance(value, int) and not isinstance(value, bool) and value >= 0:
+                total += value
+                reported = True
+    return {"reported": reported, "total_tokens": total}
 
 
 def _coverage_note(prepared: _Prepared) -> str:
@@ -493,6 +522,8 @@ def _finalize(prepared: _Prepared, answer_text: str,
         "usage": {key: value for key, value in (usage or {}).items()
                   if key in {"prompt_tokens", "completion_tokens", "total_tokens"}},
     }
+    prepared.security_trace["model_usage"] = _usage_summary(
+        *(prepared.security_trace.get("intent_usage") or []), usage or {})
     prepared.security_trace["retry_counts"] = retry_snapshot()
     prepared.security_trace.setdefault("stage_latency_ms", {})["total"] = int(
         (time.time() - prepared.started) * 1000)
@@ -661,4 +692,5 @@ def answer_query_stream(principal, query, conversation_history=None,
             yield {"type": "delta", "text": note}
         if prepared.sources:
             yield {"type": "delta", "text": _sources_block(prepared.sources)}
-    yield {"type": "done", **response.to_dict()}
+    yield {"type": "done", **response.to_dict(),
+           "_token_usage": response.security_trace.get("model_usage")}

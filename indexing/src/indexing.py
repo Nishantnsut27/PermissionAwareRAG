@@ -31,14 +31,34 @@ def finalize_revision(client, collection: str, stats: dict,
     publish_alias(client, collection, stats, expected_ids, payload_hashes)
 
 
-def load_chunks() -> list[Chunk]:
-    corpus_revision = None
+def _corpus_snapshot():
+    from ingestion.src import config as ingestion_config
     active_path = config.PROJECT_ROOT / "ingestion" / "processed" / "active.json"
-    if active_path.is_file():
-        pointer = json.loads(active_path.read_text(encoding="utf-8"))
-        corpus_revision = pointer.get("revision")
-    chunk_path = (config.PROJECT_ROOT / "ingestion" / "processed" / "revisions"
-                  / corpus_revision / "chunks.jsonl") if corpus_revision else config.PHASE2_CHUNKS_FILE
+    pointer = (json.loads(active_path.read_text(encoding="utf-8"))
+               if active_path.is_file() else None)
+    revision = pointer.get("revision") if pointer else None
+    revision_dir = ingestion_config.REVISIONS_DIR / revision if revision else None
+    return active_path, pointer, (
+        revision_dir / "chunks.jsonl" if revision_dir else config.PHASE2_CHUNKS_FILE), (
+        revision_dir / "documents.jsonl" if revision_dir else ingestion_config.DOCUMENTS_FILE)
+
+
+def _read_active_pointer(path):
+    return json.loads(path.read_text(encoding="utf-8")) if path.is_file() else None
+
+
+def _assert_active_corpus_unchanged(active_path, corpus_pointer):
+    try:
+        current_pointer = _read_active_pointer(active_path)
+    except (OSError, ValueError) as exc:
+        raise IndexingError("Active corpus changed during index build") from exc
+    if current_pointer != corpus_pointer:
+        raise IndexingError("Active corpus changed during index build")
+
+
+def load_chunks(chunk_path=None) -> list[Chunk]:
+    if chunk_path is None:
+        _, _, chunk_path, _ = _corpus_snapshot()
     chunks: list[Chunk] = []
     seen: set[str] = set()
     with open(chunk_path, encoding="utf-8") as fh:
@@ -67,7 +87,8 @@ def load_chunks() -> list[Chunk]:
 def run_indexing() -> dict:
     config.validate_env()
     started = time.time()
-    chunks = load_chunks()
+    active_path, corpus_pointer, chunk_path, docs_path = _corpus_snapshot()
+    chunks = load_chunks(chunk_path)
     received = len(chunks)
 
     texts = [c.text for c in chunks]
@@ -134,14 +155,6 @@ def run_indexing() -> dict:
         ids = expected_point_ids(chunks)
         if len(ids) != received:
             raise IndexingError("Chunk IDs do not map to unique Qdrant point IDs")
-        from ingestion.src import config as ingestion_config
-        active_corpus = ingestion_config.PROCESSED_DIR / "active.json"
-        if active_corpus.is_file():
-            corpus_pointer = json.loads(active_corpus.read_text(encoding="utf-8"))
-            docs_path = (ingestion_config.REVISIONS_DIR
-                         / corpus_pointer["revision"] / "documents.jsonl")
-        else:
-            docs_path = ingestion_config.DOCUMENTS_FILE
         try:
             docs = [json.loads(line) for line in docs_path.read_text(encoding="utf-8").splitlines()
                     if line.strip()]
@@ -179,7 +192,7 @@ def run_indexing() -> dict:
                or not c.document_type for c in chunks):
             raise IndexingError("ACL metadata validation failed; revision not published")
         stats["document_count"] = len(docs)
-        stats["corpus_revision"] = corpus_pointer.get("revision") if active_corpus.is_file() else None
+        stats["corpus_revision"] = corpus_pointer.get("revision") if corpus_pointer else None
         if len({row.get("document_id") for row in docs}) != len(docs):
             raise IndexingError("Source corpus has duplicate document IDs")
         stats["chunk_count"] = received
@@ -192,6 +205,7 @@ def run_indexing() -> dict:
                        separators=(",", ":")).encode()).hexdigest()
         stats["revision"] = collection
         # Exact point-count/ID validation precedes the atomic alias change.
+        _assert_active_corpus_unchanged(active_path, corpus_pointer)
         finalize_revision(client, collection, stats, ids, payload_hashes)
     config.REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     with open(config.INDEXING_REPORT_FILE, "w", encoding="utf-8") as fh:
