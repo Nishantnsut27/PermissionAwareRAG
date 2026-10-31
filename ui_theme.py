@@ -82,14 +82,19 @@ CSS = """
   [data-testid="stTextInput"] [data-baseweb="input"] {
     background:var(--card)!important; color:var(--fg)!important;
     border-color:var(--border)!important; border-radius:9px; }
-  [data-testid="stSelectbox"] input, [data-testid="stTextInput"] input {
-    color:var(--fg)!important; caret-color:var(--primary); }
+  [data-testid="stSelectbox"] [data-baseweb="select"] *,
+  [data-testid="stSelectbox"] input,
+  [data-testid="stTextInput"] input {
+    color:var(--fg)!important; -webkit-text-fill-color:var(--fg)!important;
+    caret-color:var(--primary); }
   [data-testid="stTextInput"] input::placeholder { color:var(--muted-fg)!important; }
   [data-testid="stTextInput"] [data-baseweb="input"] {
     min-height:3rem; }
   [data-testid="stSelectbox"] svg, [data-testid="stTextInput"] button { color:var(--muted-fg)!important; }
   [role="listbox"], [role="option"], [data-baseweb="popover"] > div {
     background:var(--card)!important; color:var(--fg)!important; }
+  [role="listbox"] *, [role="option"] * {
+    color:var(--fg)!important; -webkit-text-fill-color:var(--fg)!important; }
   [role="option"][aria-selected="true"] { background:var(--accent-soft)!important; }
   [data-testid="stSlider"] { color:var(--fg); }
   [data-testid="stSliderTickBar"] { color:var(--muted-fg)!important; }
@@ -191,7 +196,11 @@ CSS = """
   [data-testid="stChatInputSubmitButton"] { background:var(--primary)!important; color:var(--primary-fg)!important; border-radius:10px; }
   [data-testid="stChatInputSubmitButton"]:disabled { opacity:.4; }
   [data-testid="stExpander"] { border:1px solid var(--border); border-radius:10px; background:var(--card); }
-  [data-testid="stExpander"] summary { color:var(--fg)!important; }
+  [data-testid="stExpander"] summary,
+  [data-testid="stExpander"] summary *,
+  [data-testid="stExpander"] [data-testid="stText"],
+  [data-testid="stExpander"] [data-testid="stText"] * {
+    color:var(--fg)!important; -webkit-text-fill-color:var(--fg)!important; }
   [data-testid="stExpander"] summary p { font-size:.83rem; }
   [data-testid="stExpander"] [data-testid="stText"] { white-space:pre-wrap; overflow-wrap:anywhere; }
   [data-testid="stExpander"] [data-testid="stText"] pre { font-family:inherit; color:var(--fg); font-size:.8rem; white-space:pre-wrap; }
