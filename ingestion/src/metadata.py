@@ -11,6 +11,8 @@ Conflicts are never resolved silently; they are recorded on the result.
 from __future__ import annotations
 
 import re
+import json
+from functools import lru_cache
 from datetime import datetime
 from pathlib import Path
 
@@ -33,7 +35,8 @@ _PARTICIPANT = re.compile(
     re.MULTILINE,
 )
 _CLASS_LABEL = re.compile(
-    r"Classification\s*:\s*(PUBLIC|INTERNAL|CONFIDENTIAL|RESTRICTED)"
+    r"^\s*Classification\s*:\s*(PUBLIC|INTERNAL|CONFIDENTIAL|RESTRICTED)\b",
+    re.IGNORECASE | re.MULTILINE,
 )
 
 
@@ -66,8 +69,18 @@ def parse_scenarios(raw: str | None) -> list[str]:
     return sorted(set(re.findall(config.SCENARIO_PATTERN, raw)))
 
 
+@lru_cache(maxsize=1)
+def _reviewed_acl_rows() -> dict[str, dict]:
+    """Read the checked-in ACL fixture as the trusted source of scope grants."""
+    try:
+        raw = json.loads(config.TRUSTED_ACL_FIXTURE.read_text(encoding="utf-8"))
+        return {row["document_id"]: row for row in raw["documents"]}
+    except (OSError, ValueError, KeyError, TypeError):
+        return {}
+
+
 def summarize_classification(text: str) -> str | None:
-    ranks = [config.CLASSIFICATION_RANK[value]
+    ranks = [config.CLASSIFICATION_RANK[value.upper()]
              for value in _CLASS_LABEL.findall(text)]
     if not ranks:
         return None
@@ -150,7 +163,7 @@ def derive_path_metadata(rel_path: str) -> dict[str, object]:
         category = None
 
     return {
-        "seller_id": seller or config.ORGANIZATION_WIDE,
+        "seller_id": seller,
         "seller_folder": seller,
         "category": category,
         "document_type": config.CATEGORY_TO_DOCUMENT_TYPE.get(category or ""),
@@ -183,6 +196,20 @@ def build_metadata(source: SourceFile, pages: list[str]) -> ExtractedMetadata:
     explicit_id: str | None = None
     extra: dict[str, object] = {}
     pdf_raw: dict[str, str] = {}
+
+    # Only repeated header metadata is a classification conflict; body text
+    # can legitimately discuss several classification levels.
+    all_source_text = "\n".join("\n".join(page.splitlines()[:12])
+                               for page in pages)
+    classification_labels = set(_CLASS_LABEL.findall(all_source_text))
+    if len(classification_labels) > 1:
+        conflicts.append("conflicting classification labels across document pages: "
+                         + ", ".join(sorted(classification_labels)))
+    seller_labels = set(re.findall(r"(?im)^\s*Seller ID\s*:\s*(S\d{3}|Organization-wide)\s*$",
+                                  all_source_text))
+    if len(seller_labels) > 1:
+        conflicts.append("conflicting seller scope labels across document pages: "
+                         + ", ".join(sorted(seller_labels)))
 
     if source.format == "pdf":
         pdf_raw = extract_pdf_metadata(pages[0] if pages else "")
@@ -246,7 +273,6 @@ def build_metadata(source: SourceFile, pages: list[str]) -> ExtractedMetadata:
         provenance["document_id"] = "filename"
         if values.get("document_type"):
             provenance["document_type"] = "path"
-        provenance["seller_id"] = "path"
         if values.get("classification"):
             provenance["classification"] = "content"
 
@@ -268,7 +294,21 @@ def build_metadata(source: SourceFile, pages: list[str]) -> ExtractedMetadata:
             provenance["document_type"] = "path"
     if not values.get("seller_id"):
         values["seller_id"] = path_md["seller_id"]
-        provenance["seller_id"] = "path"
+    reviewed_acl = _reviewed_acl_rows().get(str(values.get("document_id")))
+    if not values.get("seller_id") and reviewed_acl:
+        values["seller_id"] = reviewed_acl.get("seller_id")
+        provenance["seller_id"] = "reviewed_acl_fixture"
+    elif values.get("seller_id") == config.ORGANIZATION_WIDE:
+        if not reviewed_acl or reviewed_acl.get("seller_id") != config.ORGANIZATION_WIDE:
+            conflicts.append(
+                "organization-wide scope is not granted by the reviewed ACL fixture")
+        else:
+            provenance["seller_id"] = "reviewed_acl_fixture"
+    elif values.get("seller_id") and reviewed_acl:
+        if values["seller_id"] != reviewed_acl.get("seller_id"):
+            conflicts.append(
+                f"seller_id '{values['seller_id']}' conflicts with the reviewed "
+                f"ACL fixture value '{reviewed_acl.get('seller_id')}'")
 
     if explicit_id and file_id_is_real and explicit_id != file_id:
         conflicts.append(

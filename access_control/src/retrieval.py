@@ -11,11 +11,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from indexing.src.retrieval import (
     RetrievalResult,
     retrieve as phase3_retrieve,
+    retrieve_partitioned,
 )
 
 from .audit import log_request
 from .engine import PermissionEngine
-from .policy import IdentityError
+from .policy import IdentityError, ScopeDeniedError
 from .users import User, get_user
 
 REFUSAL_MESSAGE = (
@@ -42,6 +43,7 @@ class AccessResponse:
     chunks: list[RetrievalResult] = field(default_factory=list)
     withheld_count: int = 0
     refused: bool = False
+    stage_trace: dict = field(default_factory=dict)
 
     def build_llm_context(self) -> str:
         """The only sanctioned way to hand retrieved text to an LLM."""
@@ -95,7 +97,81 @@ def authorized_retrieve(user: User | str, query: str, top_k: int = 5,
         chunks=selected,
         withheld_count=len(denied),
         refused=not selected,
+        stage_trace={
+            "index_revision": next((chunk.metadata.get("_index_revision")
+                                     for chunk in candidates
+                                     if chunk.metadata.get("_index_revision")), None),
+            "policy_version": "permission-engine-v1",
+            "raw_retrieval_candidates": [_chunk_ref(chunk) for chunk in candidates],
+            "postfilter_allowed_candidates": [_chunk_ref(chunk) for chunk in allowed],
+            "postfilter_denied_candidates": [_chunk_ref(chunk) for chunk in denied],
+        },
     )
     log_request(identity.user_id, request_id, len(candidates), len(selected),
                 len(denied), response.refused)
+    return response
+
+
+def _chunk_ref(chunk) -> dict:
+    return {
+        "chunk_id": getattr(chunk, "chunk_id", None),
+        "document_id": (getattr(chunk, "document_id", None)
+                        or (getattr(chunk, "metadata", None) or {}).get("document_id")),
+    }
+
+
+def authorized_retrieve_balanced(user: User, query: str, sellers: list[str],
+                                candidate_limit: int, request_id: str) -> AccessResponse:
+    """Seller-only partitions; no caller-supplied value can grant a seller.
+
+    Candidate quotas sum to the answering pool (and never exceed the existing
+    raw candidate ceiling). Organization material cannot consume seller slots.
+    """
+    identity = _resolve(user)
+    _engine.get_authorized_scope(identity)  # validate identity before partitioning
+    authorized_sellers = _engine.effective_seller_scope(identity)
+    if (not sellers or len(set(sellers)) != len(sellers)
+            or any(seller not in authorized_sellers for seller in sellers)):
+        raise ScopeDeniedError("balanced sellers are outside the authorized scope")
+    if not isinstance(query, str) or not query.strip():
+        raise ValueError("query must be a non-empty string")
+    if (type(candidate_limit) is not int
+            or not 1 <= candidate_limit <= MAX_CANDIDATES):
+        raise ValueError("invalid balanced candidate limit")
+    quotas = {seller: candidate_limit // len(sellers) + (index < candidate_limit % len(sellers))
+              for index, seller in enumerate(sellers)}
+    partitions = {
+        seller: ({"must": [_engine.get_authorized_scope(identity, [seller]),
+                           {"seller_id": {"value": seller}}]}, limit)
+        for seller, limit in quotas.items()}
+    retrieved, revision = retrieve_partitioned(query, partitions)
+    raw, allowed, denied, scope_dropped = [], [], [], []
+    for seller, limit in quotas.items():
+        candidates = retrieved.get(seller, [])[:limit]
+        raw.extend(candidates)
+        checked, rejected = _engine.authorize_chunks(identity, candidates, request_id)
+        denied.extend(rejected)
+        for chunk in checked:
+            if chunk.metadata.get("seller_id") != seller:
+                scope_dropped.append(chunk)
+            else:
+                allowed.append(chunk)
+    # RRF scores use the same query and rank constant in every partition.
+    # Keep the candidate trace ranked across partitions, rather than grouped
+    # by seller, so fixed-K evaluation does not merely inspect the first shard.
+    raw.sort(key=lambda chunk: chunk.score, reverse=True)
+    allowed.sort(key=lambda chunk: chunk.score, reverse=True)
+    response = AccessResponse(
+        identity.user_id, query, request_id, chunks=allowed,
+        withheld_count=len(denied) + len(scope_dropped), refused=not allowed,
+        stage_trace={
+            "index_revision": revision, "policy_version": "permission-engine-v1",
+            "retrieval_path": "seller_balanced", "seller_candidate_quotas": quotas,
+            "raw_retrieval_candidates": [_chunk_ref(chunk) for chunk in raw],
+            "postfilter_allowed_candidates": [_chunk_ref(chunk) for chunk in allowed],
+            "postfilter_denied_candidates": [_chunk_ref(chunk) for chunk in denied],
+            "partition_scope_dropped": [_chunk_ref(chunk) for chunk in scope_dropped],
+        })
+    log_request(identity.user_id, request_id, len(raw), len(allowed),
+                response.withheld_count, response.refused)
     return response

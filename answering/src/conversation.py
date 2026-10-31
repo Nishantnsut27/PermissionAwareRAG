@@ -28,15 +28,21 @@ def parse_history(raw, cfg: config.AnsweringConfig | None = None) -> list[Turn]:
         return []
     if not isinstance(raw, (list, tuple)):
         raise ValueError("conversation must be a list of {role, content} objects")
+    if len(raw) > cfg.max_history_turns * 4:
+        raise ValueError("conversation contains too many turns")
 
     turns: list[Turn] = []
     for entry in raw:
         if not isinstance(entry, dict):
-            continue
+            raise ValueError("conversation entries must be objects")
+        if set(entry) != {"role", "content"}:
+            raise ValueError("conversation entries must contain only role and content")
         role = str(entry.get("role", "")).strip().lower()
         content = entry.get("content")
         if role not in VALID_ROLES or not isinstance(content, str):
-            continue
+            raise ValueError("conversation roles/content are invalid")
+        if len(content) > cfg.max_history_chars * 4:
+            raise ValueError("conversation entry exceeds the configured limit")
         content = content.strip()
         if content:
             turns.append(Turn(role, content[:cfg.max_history_chars]))

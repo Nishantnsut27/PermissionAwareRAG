@@ -7,10 +7,20 @@ import time
 import requests
 
 from . import config
+from answering.src.deadline import record_retry, remaining_timeout
+from answering.src.http_deadline import provider_deadline, session
+
+HTTP = session()
 
 
 class EmbeddingError(RuntimeError):
     pass
+
+
+class EmbeddingHTTPError(EmbeddingError):
+    def __init__(self, status_code: int, message: str):
+        super().__init__(message)
+        self.retryable = status_code == 429 or status_code == 408 or status_code >= 500
 
 
 def _headers() -> dict[str, str]:
@@ -24,7 +34,12 @@ def _headers() -> dict[str, str]:
 
 
 def _post_batch(texts: list[str], task: str, timeout_s: int) -> list[list[float]]:
-    response = requests.post(
+    with provider_deadline(timeout_s):
+        return _post_batch_body(texts, task, timeout_s)
+
+
+def _post_batch_body(texts: list[str], task: str, timeout_s: int) -> list[list[float]]:
+    response = HTTP.post(
         config.JINA_API_URL,
         headers=_headers(),
         json={
@@ -32,12 +47,17 @@ def _post_batch(texts: list[str], task: str, timeout_s: int) -> list[list[float]
             "task": task,
             "input": texts,
         },
-        timeout=timeout_s,
+        timeout=remaining_timeout(timeout_s),
     )
-    if response.status_code != 200:
-        raise EmbeddingError(
-            f"Jina API error {response.status_code}: {response.text[:300]}")
-    body = response.json()
+    try:
+        if response.status_code != 200:
+            raise EmbeddingHTTPError(response.status_code,
+                f"Jina API error {response.status_code}: {response.text[:300]}")
+        body = response.json()
+    finally:
+        close = getattr(response, "close", None)
+        if close:
+            close()
     items = body.get("data") if isinstance(body, dict) else None
     if not items:
         raise EmbeddingError(f"Jina response missing 'data': {str(body)[:300]}")
@@ -103,8 +123,13 @@ def embed_texts(
                 break
             except (EmbeddingError, requests.RequestException) as exc:
                 last_error = exc
-                if attempt < max_retries:
-                    time.sleep(2 ** attempt)
+                if attempt < max_retries and (
+                        isinstance(exc, requests.RequestException)
+                        or getattr(exc, "retryable", False)):
+                    record_retry("embedding")
+                    time.sleep(remaining_timeout(2 ** attempt))
+                else:
+                    break
         if last_error is not None:
             failed.extend(range(start, start + len(batch)))
     ok = [v for v in vectors if v is not None]

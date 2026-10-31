@@ -8,16 +8,19 @@ from qdrant_client.models import (
     Distance,
     FieldCondition,
     Filter,
+    IsEmptyCondition,
     KeywordIndexParams,
     MatchAny,
     MatchValue,
     PointStruct,
+    PayloadField,
     SparseVectorParams,
     VectorParams,
 )
 
 from . import config
 from .models import Chunk
+from answering.src.deadline import DeadlineExceeded, remaining_timeout
 
 
 class CollectionMismatchError(RuntimeError):
@@ -26,6 +29,13 @@ class CollectionMismatchError(RuntimeError):
 
 class FilterError(ValueError):
     pass
+
+
+def _qdrant_timeout(seconds: int) -> int:
+    remaining = remaining_timeout(float(seconds))
+    if remaining < 1:
+        raise DeadlineExceeded("request deadline is too close for Qdrant")
+    return min(seconds, int(remaining))
 
 
 _client: QdrantClient | None = None
@@ -37,7 +47,8 @@ def connect() -> QdrantClient:
         return _client
     try:
         client = QdrantClient(
-            url=config.QDRANT_URL, api_key=config.QDRANT_API_KEY, timeout=60)
+            url=config.QDRANT_URL, api_key=config.QDRANT_API_KEY,
+            timeout=_qdrant_timeout(60))
         client.get_collections()
     except Exception as exc:
         raise RuntimeError(f"Cannot reach Qdrant Cloud: {exc}") from exc
@@ -54,8 +65,9 @@ def point_id_for(chunk_id: str) -> str:
     return str(uuid.uuid5(uuid.NAMESPACE_DNS, chunk_id))
 
 
-def ensure_collection(client: QdrantClient, vector_size: int) -> str:
-    name = config.QDRANT_COLLECTION_NAME
+def ensure_collection(client: QdrantClient, vector_size: int,
+                      collection_name: str | None = None) -> str:
+    name = collection_name or config.QDRANT_COLLECTION_NAME
     if client.collection_exists(name):
         info = client.get_collection(name)
         params = info.config.params
@@ -98,11 +110,13 @@ def ensure_collection(client: QdrantClient, vector_size: int) -> str:
     return name
 
 
-def ensure_payload_indexes(client: QdrantClient) -> None:
+def ensure_payload_indexes(client: QdrantClient,
+                           collection_name: str | None = None) -> None:
+    name = collection_name or config.QDRANT_COLLECTION_NAME
     for field_name in config.PAYLOAD_KEYWORD_FIELDS:
         try:
             client.create_payload_index(
-                collection_name=config.QDRANT_COLLECTION_NAME,
+                collection_name=name,
                 field_name=field_name,
                 field_schema=KeywordIndexParams(type="keyword"),
                 wait=True,
@@ -110,7 +124,7 @@ def ensure_payload_indexes(client: QdrantClient) -> None:
         except Exception as exc:
             raise RuntimeError(
                 f"Cannot create payload index '{field_name}' on "
-                f"'{config.QDRANT_COLLECTION_NAME}': {exc}") from exc
+                f"'{name}': {exc}") from exc
 
 
 def _match_any_condition(key: str, values) -> FieldCondition:
@@ -120,6 +134,38 @@ def _match_any_condition(key: str, values) -> FieldCondition:
             f"Filter '{key}' has an empty allow-list. Dropping it would widen "
             "the query, so it is rejected instead.")
     return FieldCondition(key=key, match=MatchAny(any=options))
+
+
+def _compile_condition(condition):
+    if not isinstance(condition, dict) or not condition:
+        raise FilterError("Nested filter conditions must be non-empty objects")
+    operators = {"must", "should", "must_not"}
+    if set(condition) <= operators:
+        compiled = {}
+        for operator in operators:
+            if operator not in condition:
+                continue
+            rows = condition[operator]
+            if not isinstance(rows, list) or not rows:
+                raise FilterError(f"Nested '{operator}' must be a non-empty list")
+            compiled[operator] = [_compile_condition(row) for row in rows]
+        return Filter(**compiled)
+    if len(condition) != 1:
+        raise FilterError("A field condition must name exactly one field")
+    key, value = next(iter(condition.items()))
+    if not isinstance(key, str) or not key or value is None:
+        raise FilterError("Filter field names and values must be valid")
+    if isinstance(value, dict):
+        if set(value) == {"any"}:
+            return _match_any_condition(key, value["any"])
+        if set(value) == {"value"}:
+            return FieldCondition(key=key, match=MatchValue(value=str(value["value"])))
+        if set(value) == {"missing"} and value["missing"] is True:
+            return IsEmptyCondition(is_empty=PayloadField(key=key))
+        raise FilterError(f"Filter '{key}' must use exactly 'any' or 'value'")
+    if isinstance(value, (list, tuple, set, frozenset)):
+        return _match_any_condition(key, value)
+    return FieldCondition(key=key, match=MatchValue(value=str(value)))
 
 
 def build_filter(filters: dict | None) -> Filter | None:
@@ -137,27 +183,21 @@ def build_filter(filters: dict | None) -> Filter | None:
             f"filters must be a dict, got {type(filters).__name__}")
     if not filters:
         return None
-    conditions = []
-    for key, value in filters.items():
-        if value is None:
-            raise FilterError(f"Filter '{key}' is None; omit the key instead.")
-        if isinstance(value, dict):
-            if "any" not in value:
-                raise FilterError(
-                    f"Filter '{key}' dict must contain an 'any' allow-list.")
-            conditions.append(_match_any_condition(key, value["any"]))
-        elif isinstance(value, (list, tuple, set, frozenset)):
-            conditions.append(_match_any_condition(key, value))
-        else:
-            conditions.append(FieldCondition(
-                key=key, match=MatchValue(value=str(value))))
-    return Filter(must=conditions)
+    operators = {"must", "should", "must_not"}
+    if not (set(filters) & operators):
+        return Filter(must=[_compile_condition({key: value})
+                            for key, value in filters.items()])
+    if not set(filters) <= operators:
+        raise FilterError("Composite filters cannot mix operators and fields")
+    return _compile_condition(filters)
 
 
 def upsert_points(
     client: QdrantClient,
     items: list[tuple[Chunk, list[float], dict]],
     batch_size: int = 100,
+    sparse_revision: str | None = None,
+    collection_name: str | None = None,
 ) -> tuple[int, int, list[str]]:
     """Upsert points; returns (indexed, failed, errors).
 
@@ -171,7 +211,9 @@ def upsert_points(
                 config.DEFAULT_RETRIEVAL.dense_vector_name: dense,
                 config.DEFAULT_RETRIEVAL.sparse_vector_name: sparse,
             },
-            payload=chunk.payload(),
+            payload={**chunk.payload(),
+                     **({"_sparse_revision": sparse_revision}
+                        if sparse_revision else {})},
         )
         for chunk, dense, sparse in items
     ]
@@ -181,7 +223,7 @@ def upsert_points(
         window = points[i:i + batch_size]
         try:
             client.upsert(
-                collection_name=config.QDRANT_COLLECTION_NAME,
+                collection_name=collection_name or config.QDRANT_COLLECTION_NAME,
                 points=window,
                 wait=True,
             )

@@ -1,0 +1,1011 @@
+{
+  "schema_version": 1,
+  "title": "Independently reviewed document authorization fixture",
+  "policy_note": "Static expected decisions from the approved role, clearance, seller-scope, and restricted organization department rules. This fixture is not generated from PermissionEngine at test/runtime.",
+  "users": {
+    "U-001": {
+      "role": "Account Manager",
+      "department": "Business",
+      "clearance": "CONFIDENTIAL",
+      "sellers": [
+        "S001",
+        "S003"
+      ]
+    },
+    "U-002": {
+      "role": "Support Engineer",
+      "department": "Support",
+      "clearance": "CONFIDENTIAL",
+      "sellers": [
+        "S001",
+        "S002"
+      ]
+    },
+    "U-003": {
+      "role": "Software Engineer",
+      "department": "Engineering",
+      "clearance": "CONFIDENTIAL",
+      "sellers": [
+        "S001",
+        "S002"
+      ]
+    },
+    "U-004": {
+      "role": "System Engineer",
+      "department": "Operations",
+      "clearance": "RESTRICTED",
+      "sellers": [
+        "S002",
+        "S004"
+      ]
+    },
+    "U-005": {
+      "role": "Platform Administrator",
+      "department": "IT",
+      "clearance": "RESTRICTED",
+      "sellers": [
+        "S001",
+        "S002",
+        "S003",
+        "S004"
+      ],
+      "organization_wide": true
+    }
+  },
+  "document_count": 63,
+  "documents": [
+    {
+      "document_id": "CALL-2026-0225-013",
+      "document_type": "Call Transcript",
+      "seller_id": "S001",
+      "department": "Business",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-005"
+      ],
+      "created_date": "2026-02-25",
+      "scenario_id": "SC-004"
+    },
+    {
+      "document_id": "CALL-2026-0313-018",
+      "document_type": "Call Transcript",
+      "seller_id": "S001",
+      "department": "Business",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-005"
+      ],
+      "created_date": "2026-03-13",
+      "scenario_id": "SC-001"
+    },
+    {
+      "document_id": "CALL-2026-0422-029",
+      "document_type": "Call Transcript",
+      "seller_id": "S002",
+      "department": "IT",
+      "classification": "RESTRICTED",
+      "allowed_user_ids": [
+        "U-005"
+      ],
+      "created_date": "2026-04-22",
+      "scenario_id": "SC-008"
+    },
+    {
+      "document_id": "CALL-2026-0520-041",
+      "document_type": "Call Transcript",
+      "seller_id": "S002",
+      "department": "Operations",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-002",
+        "U-005"
+      ],
+      "created_date": "2026-05-20",
+      "scenario_id": "SC-002"
+    },
+    {
+      "document_id": "CALL-2026-0717-052",
+      "document_type": "Call Transcript",
+      "seller_id": "S002",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-002",
+        "U-005"
+      ],
+      "created_date": "2026-07-17",
+      "scenario_id": "SC-003"
+    },
+    {
+      "document_id": "CALL-2026-0116-004",
+      "document_type": "Call Transcript",
+      "seller_id": "S003",
+      "department": "Business",
+      "classification": "INTERNAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "created_date": "2026-01-16",
+      "scenario_id": "SC-009"
+    },
+    {
+      "document_id": "CALL-2026-0619-047",
+      "document_type": "Call Transcript",
+      "seller_id": "S003",
+      "department": "Operations",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "created_date": "2026-06-19",
+      "scenario_id": "SC-005"
+    },
+    {
+      "document_id": "CALL-2026-0904-071",
+      "document_type": "Call Transcript",
+      "seller_id": "S003",
+      "department": "Operations",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "created_date": "2026-09-04",
+      "scenario_id": "SC-007"
+    },
+    {
+      "document_id": "CALL-2026-0806-063",
+      "document_type": "Call Transcript",
+      "seller_id": "S004",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-005"
+      ],
+      "created_date": "2026-08-06",
+      "scenario_id": "SC-006"
+    },
+    {
+      "document_id": "CALL-2026-0909-074",
+      "document_type": "Call Transcript",
+      "seller_id": "S004",
+      "department": "Operations",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-005"
+      ],
+      "created_date": "2026-09-09",
+      "scenario_id": "SC-012"
+    },
+    {
+      "document_id": "INC-2026-0312",
+      "document_type": "Incident Report",
+      "seller_id": "S001",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "created_date": "2026-03-16",
+      "scenario_id": "SC-001"
+    },
+    {
+      "document_id": "INC-2026-0812",
+      "document_type": "Incident Report",
+      "seller_id": "S001",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "created_date": "2026-08-14",
+      "scenario_id": "SC-010"
+    },
+    {
+      "document_id": "INC-2026-0421",
+      "document_type": "Security Incident Report",
+      "seller_id": "S002",
+      "department": "Engineering",
+      "classification": "RESTRICTED",
+      "allowed_user_ids": [
+        "U-005"
+      ],
+      "created_date": "2026-04-25",
+      "scenario_id": "SC-008"
+    },
+    {
+      "document_id": "INC-2026-0519",
+      "document_type": "Incident Report",
+      "seller_id": "S002",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "created_date": "2026-05-22",
+      "scenario_id": "SC-002"
+    },
+    {
+      "document_id": "INC-2026-0716",
+      "document_type": "Incident Report",
+      "seller_id": "S002",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "created_date": "2026-07-18",
+      "scenario_id": "SC-003"
+    },
+    {
+      "document_id": "INC-2026-0618",
+      "document_type": "Incident Report",
+      "seller_id": "S003",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-005"
+      ],
+      "created_date": "2026-06-20",
+      "scenario_id": "SC-005"
+    },
+    {
+      "document_id": "INC-2026-0903",
+      "document_type": "Incident Report",
+      "seller_id": "S003",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-005"
+      ],
+      "created_date": "2026-09-06",
+      "scenario_id": "SC-007"
+    },
+    {
+      "document_id": "INC-2026-0805",
+      "document_type": "Incident Report",
+      "seller_id": "S004",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "created_date": "2026-08-22",
+      "scenario_id": "SC-006"
+    },
+    {
+      "document_id": "OPS-RB-001",
+      "document_type": "Runbook",
+      "seller_id": "Organization-wide",
+      "department": "Operations",
+      "classification": "INTERNAL",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "created_date": "2025-04-18",
+      "scenario_id": "SC-009"
+    },
+    {
+      "document_id": "OPS-RB-002",
+      "document_type": "Operational Procedure",
+      "seller_id": "Organization-wide",
+      "department": "Operations",
+      "classification": "INTERNAL",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "created_date": "2025-07-09",
+      "scenario_id": "SC-002, SC-005, SC-006, SC-011"
+    },
+    {
+      "document_id": "OPS-RB-003",
+      "document_type": "Operational Procedure",
+      "seller_id": "Organization-wide",
+      "department": "Operations",
+      "classification": "INTERNAL",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "created_date": "2025-09-02",
+      "scenario_id": "SC-003, SC-008, SC-012"
+    },
+    {
+      "document_id": "OPS-RB-004",
+      "document_type": "Runbook",
+      "seller_id": "Organization-wide",
+      "department": "Operations",
+      "classification": "INTERNAL",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "created_date": "2025-11-12",
+      "scenario_id": "SC-001, SC-004, SC-007"
+    },
+    {
+      "document_id": "OPS-RB-005",
+      "document_type": "Operational Procedure",
+      "seller_id": "Organization-wide",
+      "department": "Operations",
+      "classification": "INTERNAL",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "created_date": "2026-01-29",
+      "scenario_id": "SC-010"
+    },
+    {
+      "document_id": "OPS-RB-006",
+      "document_type": "Operational Checklist",
+      "seller_id": "Organization-wide",
+      "department": "Operations",
+      "classification": "INTERNAL",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "created_date": "2026-08-14",
+      "scenario_id": "SC-003, SC-010"
+    },
+    {
+      "document_id": "POL-BIZ-003",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "department": "Business",
+      "classification": "INTERNAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "created_date": "2026-07-24",
+      "scenario_id": "SC-009"
+    },
+    {
+      "document_id": "POL-BIZ-004",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "department": "Business",
+      "classification": "INTERNAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "created_date": "2026-09-22",
+      "scenario_id": "SC-003, SC-005, SC-006, SC-010"
+    },
+    {
+      "document_id": "POL-FIN-002",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "department": "Operations",
+      "classification": "INTERNAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "created_date": "2026-04-01",
+      "scenario_id": "SC-001, SC-004, SC-007, SC-011"
+    },
+    {
+      "document_id": "POL-IT-001",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "department": "IT",
+      "classification": "RESTRICTED",
+      "allowed_user_ids": [
+        "U-005"
+      ],
+      "created_date": "2026-09-14",
+      "scenario_id": "SC-002, SC-008"
+    },
+    {
+      "document_id": "POL-IT-002",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "department": "IT",
+      "classification": "INTERNAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "created_date": "2026-03-02",
+      "scenario_id": null
+    },
+    {
+      "document_id": "POL-OPS-006",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "department": "Operations",
+      "classification": "RESTRICTED",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "created_date": "2026-10-16",
+      "scenario_id": "SC-006, SC-012"
+    },
+    {
+      "document_id": "POL-SEC-001",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "department": "IT",
+      "classification": "INTERNAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "created_date": "2026-04-30",
+      "scenario_id": "SC-008"
+    },
+    {
+      "document_id": "POL-SEC-002",
+      "document_type": "Policy",
+      "seller_id": "Organization-wide",
+      "department": "IT",
+      "classification": "INTERNAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "created_date": "2026-06-12",
+      "scenario_id": "SC-008"
+    },
+    {
+      "document_id": "PRJ-S001-004",
+      "document_type": "Decision Record",
+      "seller_id": "S001",
+      "department": "Business",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "created_date": "2026-03-02",
+      "scenario_id": "SC-004"
+    },
+    {
+      "document_id": "PRJ-S001-002",
+      "document_type": "Project Document",
+      "seller_id": "S001",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-003",
+        "U-005"
+      ],
+      "created_date": "2023-06-19",
+      "scenario_id": null
+    },
+    {
+      "document_id": "PRJ-S001-001",
+      "document_type": "Project Document",
+      "seller_id": "S001",
+      "department": "Operations",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-003",
+        "U-005"
+      ],
+      "created_date": "2023-03-06",
+      "scenario_id": null
+    },
+    {
+      "document_id": "PRJ-S001-003",
+      "document_type": "Project Status Report",
+      "seller_id": "S001",
+      "department": "Operations",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "created_date": "2026-09-01",
+      "scenario_id": "SC-001"
+    },
+    {
+      "document_id": "PRJ-S002-002",
+      "document_type": "Implementation Plan",
+      "seller_id": "S002",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-003",
+        "U-005"
+      ],
+      "created_date": "2026-07-28",
+      "scenario_id": "SC-003, SC-011"
+    },
+    {
+      "document_id": "PRJ-S002-001",
+      "document_type": "Requirements Document",
+      "seller_id": "S002",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-003",
+        "U-005"
+      ],
+      "created_date": "2024-10-08",
+      "scenario_id": null
+    },
+    {
+      "document_id": "PRJ-S002-003",
+      "document_type": "Project Status Report",
+      "seller_id": "S002",
+      "department": "Operations",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "created_date": "2026-06-30",
+      "scenario_id": "SC-002"
+    },
+    {
+      "document_id": "PRJ-S003-003",
+      "document_type": "Decision Record",
+      "seller_id": "S003",
+      "department": "Business",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "created_date": "2026-01-20",
+      "scenario_id": "SC-009"
+    },
+    {
+      "document_id": "PRJ-S003-001",
+      "document_type": "Project Document",
+      "seller_id": "S003",
+      "department": "Operations",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "created_date": "2025-08-25",
+      "scenario_id": null
+    },
+    {
+      "document_id": "PRJ-S003-002",
+      "document_type": "Technical Notes",
+      "seller_id": "S003",
+      "department": "Engineering",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-005"
+      ],
+      "created_date": "2026-09-22",
+      "scenario_id": "SC-005, SC-007"
+    },
+    {
+      "document_id": "PRJ-S004-003",
+      "document_type": "Decision Record",
+      "seller_id": "S004",
+      "department": "Operations",
+      "classification": "RESTRICTED",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "created_date": "2026-09-10",
+      "scenario_id": "SC-006, SC-012"
+    },
+    {
+      "document_id": "PRJ-S004-002",
+      "document_type": "Project Status Report",
+      "seller_id": "S004",
+      "department": "Operations",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "created_date": "2026-09-28",
+      "scenario_id": "SC-006, SC-012"
+    },
+    {
+      "document_id": "PRJ-S004-001",
+      "document_type": "Project Document",
+      "seller_id": "S004",
+      "department": "Operations",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-005"
+      ],
+      "created_date": "2025-10-06",
+      "scenario_id": null
+    },
+    {
+      "document_id": "TKT-2026-0224-091",
+      "document_type": "Support Ticket",
+      "seller_id": "S001",
+      "department": "Support",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "created_date": "2026-02-24",
+      "scenario_id": "SC-004"
+    },
+    {
+      "document_id": "TKT-2026-0312-114",
+      "document_type": "Support Ticket",
+      "seller_id": "S001",
+      "department": "Support",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "created_date": "2026-03-12",
+      "scenario_id": "SC-001"
+    },
+    {
+      "document_id": "TKT-2026-0812-308",
+      "document_type": "Support Ticket",
+      "seller_id": "S001",
+      "department": "Support",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "created_date": "2026-08-12",
+      "scenario_id": "SC-010"
+    },
+    {
+      "document_id": "TKT-2026-0421-162",
+      "document_type": "Support Ticket",
+      "seller_id": "S002",
+      "department": "Support",
+      "classification": "RESTRICTED",
+      "allowed_user_ids": [
+        "U-005"
+      ],
+      "created_date": "2026-04-21",
+      "scenario_id": "SC-008"
+    },
+    {
+      "document_id": "TKT-2026-0519-207",
+      "document_type": "Support Ticket",
+      "seller_id": "S002",
+      "department": "Support",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "created_date": "2026-05-19",
+      "scenario_id": "SC-002"
+    },
+    {
+      "document_id": "TKT-2026-0602-217",
+      "document_type": "Support Ticket",
+      "seller_id": "S002",
+      "department": "Support",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "created_date": "2026-06-02",
+      "scenario_id": "SC-011"
+    },
+    {
+      "document_id": "TKT-2026-0716-268",
+      "document_type": "Support Ticket",
+      "seller_id": "S002",
+      "department": "Support",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "created_date": "2026-07-16",
+      "scenario_id": "SC-003"
+    },
+    {
+      "document_id": "TKT-2026-0115-054",
+      "document_type": "Support Ticket",
+      "seller_id": "S003",
+      "department": "Support",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "created_date": "2026-01-15",
+      "scenario_id": "SC-009"
+    },
+    {
+      "document_id": "TKT-2026-0618-233",
+      "document_type": "Support Ticket",
+      "seller_id": "S003",
+      "department": "Support",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "created_date": "2026-06-18",
+      "scenario_id": "SC-005"
+    },
+    {
+      "document_id": "TKT-2026-0903-336",
+      "document_type": "Support Ticket",
+      "seller_id": "S003",
+      "department": "Support",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "created_date": "2026-09-03",
+      "scenario_id": "SC-007"
+    },
+    {
+      "document_id": "TKT-2026-0805-301",
+      "document_type": "Support Ticket",
+      "seller_id": "S004",
+      "department": "Support",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-005"
+      ],
+      "created_date": "2026-08-05",
+      "scenario_id": "SC-006"
+    },
+    {
+      "document_id": "TKT-2026-0908-341",
+      "document_type": "Support Ticket",
+      "seller_id": "S004",
+      "department": "Support",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-005"
+      ],
+      "created_date": "2026-09-08",
+      "scenario_id": "SC-012"
+    },
+    {
+      "document_id": "ORG-001",
+      "document_type": "Organization Reference",
+      "seller_id": "Organization-wide",
+      "department": "IT",
+      "classification": "INTERNAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "created_date": "2025-10-06",
+      "scenario_id": null
+    },
+    {
+      "document_id": "scenario_overview",
+      "document_type": "Scenario Context",
+      "seller_id": "Organization-wide",
+      "department": null,
+      "classification": "RESTRICTED",
+      "allowed_user_ids": [
+        "U-005"
+      ],
+      "created_date": null,
+      "scenario_id": null
+    },
+    {
+      "document_id": "S001-ACC-001",
+      "document_type": "Account Overview",
+      "seller_id": "S001",
+      "department": "Business",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "created_date": "2026-09-14",
+      "scenario_id": "SC-001, SC-004, SC-010"
+    },
+    {
+      "document_id": "S002-ACC-001",
+      "document_type": "Account Overview",
+      "seller_id": "S002",
+      "department": "Operations",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-005"
+      ],
+      "created_date": "2026-09-14",
+      "scenario_id": "SC-002, SC-003, SC-008, SC-011"
+    },
+    {
+      "document_id": "S003-ACC-001",
+      "document_type": "Account Overview",
+      "seller_id": "S003",
+      "department": "Business",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "created_date": "2026-09-14",
+      "scenario_id": "SC-005, SC-007, SC-009"
+    },
+    {
+      "document_id": "S004-ACC-001",
+      "document_type": "Account Overview",
+      "seller_id": "S004",
+      "department": "Operations",
+      "classification": "CONFIDENTIAL",
+      "allowed_user_ids": [
+        "U-005"
+      ],
+      "created_date": "2026-09-14",
+      "scenario_id": "SC-006, SC-012"
+    }
+  ],
+  "malformed_payloads": [
+    {
+      "case": "missing seller_id",
+      "metadata": {
+        "document_type": "Policy",
+        "classification": "INTERNAL",
+        "department": "Business"
+      },
+      "allowed_user_ids": []
+    },
+    {
+      "case": "unknown seller_id",
+      "metadata": {
+        "document_id": "DOC-UNKNOWN-SELLER",
+        "document_type": "Policy",
+        "seller_id": "S999",
+        "classification": "INTERNAL",
+        "department": "Business"
+      },
+      "allowed_user_ids": []
+    },
+    {
+      "case": "unknown classification",
+      "metadata": {
+        "document_id": "DOC-UNKNOWN-CLASS",
+        "document_type": "Policy",
+        "seller_id": "Organization-wide",
+        "classification": "TOP_SECRET",
+        "department": "Business"
+      },
+      "allowed_user_ids": []
+    },
+    {
+      "case": "missing classification",
+      "metadata": {
+        "document_id": "DOC-MISSING-CLASS",
+        "document_type": "Policy",
+        "seller_id": "Organization-wide",
+        "department": "Business"
+      },
+      "allowed_user_ids": []
+    },
+    {
+      "case": "unknown document type",
+      "metadata": {
+        "document_id": "DOC-UNKNOWN-TYPE",
+        "document_type": "Mystery",
+        "seller_id": "S001",
+        "classification": "INTERNAL",
+        "department": "Business"
+      },
+      "allowed_user_ids": []
+    },
+    {
+      "case": "restricted organization missing department",
+      "metadata": {
+        "document_id": "DOC-ORG-NO-DEPT",
+        "document_type": "Policy",
+        "seller_id": "Organization-wide",
+        "classification": "RESTRICTED"
+      },
+      "allowed_user_ids": [
+        "U-005"
+      ]
+    },
+    {
+      "case": "restricted organization department mismatch",
+      "metadata": {
+        "document_id": "DOC-ORG-WRONG-DEPT",
+        "document_type": "Policy",
+        "seller_id": "Organization-wide",
+        "classification": "RESTRICTED",
+        "department": "Engineering"
+      },
+      "allowed_user_ids": [
+        "U-005"
+      ]
+    },
+    {
+      "case": "non-object metadata",
+      "metadata": null,
+      "allowed_user_ids": []
+    },
+    {
+      "case": "unhashable metadata fields",
+      "metadata": {
+        "document_id": "DOC-BAD-TYPES",
+        "document_type": [],
+        "seller_id": {},
+        "classification": []
+      },
+      "allowed_user_ids": []
+    },
+    {
+      "case": "unknown department",
+      "metadata": {
+        "document_id": "DOC-UNKNOWN-DEPT",
+        "document_type": "Policy",
+        "seller_id": "Organization-wide",
+        "classification": "RESTRICTED",
+        "department": "Legal"
+      },
+      "allowed_user_ids": []
+    }
+  ]
+}

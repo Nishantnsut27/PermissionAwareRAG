@@ -1,13 +1,4 @@
-"""Golden dataset loading, plus the authorization facts derived from Phase 4.
-
-The JSON file is the immutable test specification. It deliberately does not
-restate who may read what: that is derived here by running every Phase 2
-document through the real `PermissionEngine`, so the expected-access model in
-the evaluation can never drift away from the model the system enforces.
-
-`validate` then checks the specification against those derived facts, which
-catches a badly written test case before it is reported as a system failure.
-"""
+"""Golden dataset and independently reviewed expected authorization facts."""
 from __future__ import annotations
 
 import json
@@ -17,7 +8,6 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from access_control.src.engine import PermissionEngine
 from access_control.src.users import USERS, User, get_user
 
 PACKAGE_ROOT = Path(__file__).resolve().parent
@@ -26,6 +16,8 @@ GOLDEN_DATASET_FILE = PACKAGE_ROOT / "golden_dataset.json"
 RESULTS_FILE = PACKAGE_ROOT / "results.json"
 DOCUMENTS_FILE = (PROJECT_ROOT / "ingestion" / "processed" / "documents"
                   / "documents.jsonl")
+ACCESS_MATRIX_FILE = (PROJECT_ROOT / "access_control" / "fixtures"
+                      / "expected_access_matrix.json")
 
 CATEGORIES = (
     "authorized_factual",
@@ -114,37 +106,77 @@ class GoldenDataset:
 
 
 class PermissionCatalog:
-    """Per-user authorized / denied document sets, derived from Phase 4."""
+    """Per-user expected decisions from the reviewed static access fixture."""
 
     def __init__(self, documents: list[dict] | None = None) -> None:
+        load_current_catalog = documents is None
         self.documents = documents if documents is not None else load_documents()
         self.by_document_id = {d["document_id"]: d for d in self.documents}
-        self._engine = PermissionEngine()
-        self._authorized: dict[str, frozenset[str]] = {}
+        matrix = json.loads(ACCESS_MATRIX_FILE.read_text(encoding="utf-8"))
+        self.matrix_users = matrix["users"]
+        self.matrix_rows = {row["document_id"]: row for row in matrix["documents"]}
+        self.matrix = {doc_id: frozenset(row["allowed_user_ids"])
+                       for doc_id, row in self.matrix_rows.items()}
+        self.malformed_payloads = matrix["malformed_payloads"]
+        if load_current_catalog:
+            if (len(self.by_document_id) != matrix.get("document_count")
+                    or set(self.by_document_id) != set(self.matrix_rows)):
+                raise DatasetError("Reviewed authorization fixture does not match current document IDs")
+            for document_id, document in self.by_document_id.items():
+                expected = self.matrix_rows[document_id]
+                for key in METADATA_FIELDS:
+                    if document.get(key) != expected.get(key):
+                        raise DatasetError(
+                            f"Reviewed authorization fixture metadata differs for {document_id}:{key}")
+            for user_id, profile in self.matrix_users.items():
+                user = get_user(user_id)
+                if (user.role != profile["role"]
+                        or user.department != profile["department"]
+                        or user.clearance_level != profile["clearance"]
+                        or (user.has_organization_wide_scope()
+                            != profile.get("organization_wide", False))
+                        or (not user.has_organization_wide_scope()
+                            and sorted(user.seller_scope)
+                            != sorted(profile["sellers"]))):
+                    raise DatasetError(
+                        f"Reviewed authorization fixture identity differs for {user_id}")
+        self._authorized = {
+            user_id: frozenset(document_id for document_id, users
+                               in self.matrix.items()
+                               if user_id in users and document_id in self.by_document_id)
+            for user_id in self.matrix_users
+        }
+        fact_policy_path = PACKAGE_ROOT / "fixtures" / "fact_visibility.json"
+        self.fact_visibility = json.loads(fact_policy_path.read_text(encoding="utf-8"))
+        self.fact_fixture = json.loads((PACKAGE_ROOT / "fixtures" /
+                                      "restricted_facts.json").read_text(encoding="utf-8"))
+
+    def restricted_facts(self, user_id: str) -> list[dict]:
+        return [row for row in self.fact_fixture["facts"]
+                if user_id not in row["allowed_user_ids"]]
 
     def authorized_documents(self, user_id: str) -> frozenset[str]:
-        cached = self._authorized.get(user_id)
-        if cached is not None:
-            return cached
-        user = get_user(user_id)
-        allowed = frozenset(
-            document["document_id"] for document in self.documents
-            if self._engine.can_access(user, document).allow)
-        self._authorized[user_id] = allowed
-        return allowed
+        if user_id not in self.matrix_users:
+            return frozenset()
+        return self._authorized[user_id]
 
     def denied_documents(self, user_id: str) -> frozenset[str]:
         return frozenset(self.by_document_id) - self.authorized_documents(user_id)
 
     def seller_scope(self, user_id: str) -> list[str]:
-        return self._engine.effective_seller_scope(get_user(user_id)) or []
+        profile = self.matrix_users.get(user_id) or {}
+        return sorted(profile.get("sellers", []))
 
     def denial_reason(self, user_id: str, document_id: str) -> str | None:
         document = self.by_document_id.get(document_id)
         if document is None:
             return "unknown_document"
-        decision = self._engine.can_access(get_user(user_id), document)
-        return None if decision.allow else decision.reason
+        if user_id in self.matrix.get(document_id, frozenset()):
+            return None
+        return "not_allowed_by_reviewed_matrix"
+
+    def leakage_policy_status(self, eval_id: str) -> str:
+        return self.fact_visibility.get("case_status", {}).get(eval_id, "reviewed")
 
     def identity(self, user_id: str) -> dict:
         user = get_user(user_id)

@@ -18,7 +18,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from answering.src import service
+from answering.src import identity, service
+from access_control.src.users import get_user
 from indexing.src.embeddings import EmbeddingError
 
 from . import judge, metrics
@@ -50,6 +51,9 @@ class CaseResult:
     status: str = ERROR
     answer: str = ""
     answered: bool = False
+    outcome: str = ""
+    finish_reason: str | None = None
+    context_metrics: dict | None = None
     retrieved_sources: list[str] = field(default_factory=list)
     candidate_sources: list[str] = field(default_factory=list)
     expected_sources: list[str] = field(default_factory=list)
@@ -63,6 +67,8 @@ class CaseResult:
     latency_ms: int = 0
     stats: dict = field(default_factory=dict)
     leakage_review: dict | None = None
+    security_trace: dict = field(default_factory=dict)
+    attempts: list[dict] = field(default_factory=list)
     expected_answer: str = ""
     expected_facts: list[str] = field(default_factory=list)
     conversation_from: str | None = None
@@ -79,6 +85,9 @@ class CaseResult:
             "status": self.status,
             "answer": self.answer,
             "answered": self.answered,
+            "outcome": self.outcome,
+            "finish_reason": self.finish_reason,
+            "context_metrics": self.context_metrics,
             "retrieved_sources": self.retrieved_sources,
             "candidate_sources": self.candidate_sources,
             "expected_sources": self.expected_sources,
@@ -92,6 +101,8 @@ class CaseResult:
             "latency_ms": self.latency_ms,
             "stats": self.stats,
             "leakage_review": self.leakage_review,
+            "security_trace": self.security_trace,
+            "attempts": self.attempts,
             "expected_answer": self.expected_answer,
             "expected_facts": self.expected_facts,
             "conversation_from": self.conversation_from,
@@ -101,7 +112,8 @@ class CaseResult:
 def _restricted_subject(case: EvalCase, catalog: PermissionCatalog) -> str:
     """Plain description of what this identity must not learn about."""
     parts = []
-    for document_id in case.forbidden_sources:
+    for document_id in sorted(catalog.denied_documents(case.user_id)
+                              | set(case.forbidden_sources)):
         document = catalog.by_document_id.get(document_id) or {}
         descriptor = " ".join(str(v) for v in (
             document.get("document_type"), document_id) if v)
@@ -112,12 +124,17 @@ def _restricted_subject(case: EvalCase, catalog: PermissionCatalog) -> str:
     if case.notes:
         parts.append(case.notes)
     if not parts:
-        parts.append("any document outside this identity's authorized scope")
+        parts.append("any enterprise fact outside this identity's authorized scope")
+    facts = catalog.restricted_facts(case.user_id)
+    parts.append("Independent restricted fact examples (review paraphrases too): "
+                 + "; ".join(row["fact"] for row in facts))
+    parts.append("A fact also explicitly authorized by another source is permitted. "
+                 "Seller names alone and descriptions of assigned scope are permitted.")
     return "; ".join(parts)
 
 
 def _needs_leakage_check(case: EvalCase) -> bool:
-    return bool(case.forbidden_sources) or case.expected_behavior == "refuse"
+    return True
 
 
 def run_case(case: EvalCase, catalog: PermissionCatalog,
@@ -137,46 +154,80 @@ def run_case(case: EvalCase, catalog: PermissionCatalog,
 
     try:
         response = service.answer_query(
-            user_id=case.user_id,
+            principal=identity.Principal(get_user(case.user_id), "local-evaluation"),
             query=case.question,
             conversation_history=conversation_history or None,
             top_k=CASE_TOP_K,
         )
     except (service.AnsweringError, EmbeddingError) as exc:
         result.status = ERROR
+        result.outcome = "error"
         result.error = f"{type(exc).__name__}: {exc}"
         return result
     except Exception as exc:
         result.status = ERROR
+        result.outcome = "error"
         result.error = f"{type(exc).__name__}: {exc}"
         logger.exception("case %s failed before scoring", case.eval_id)
         return result
 
     result.request_id = response.request_id
     result.answered = response.answered
+    result.outcome = response.outcome
+    result.finish_reason = response.security_trace.get("generation", {}).get("finish_reason")
     result.answer = response.answer
     result.latency_ms = response.latency_ms
-    result.actual_behavior = "answer" if response.answered else "refuse"
+    result.actual_behavior = {"answer": "answer", "refusal": "refuse"}.get(
+        response.outcome, response.outcome)
     result.retrieved_sources = [s["document_id"] for s in response.sources]
     result.candidate_sources = list(response.candidate_document_ids)
     result.stats = response.to_dict().get("stats", {})
+    result.security_trace = dict(response.security_trace)
+    result.security_trace["answer_restricted_facts"] = []
+    leakage_policy_status = catalog.leakage_policy_status(case.eval_id)
+    result.security_trace["leakage_policy_status"] = leakage_policy_status
 
     # Record deterministic evidence before any judge request can fail.
-    needs_judge = response.answered and _needs_leakage_check(case)
-    result.security = metrics.score_security(
-        expected_behavior=case.expected_behavior,
-        actual_behavior=result.actual_behavior,
-        denied_documents=catalog.denied_documents(case.user_id),
-        forbidden_documents=list(case.forbidden_sources),
-        context_documents=result.retrieved_sources,
-        candidate_documents=result.candidate_sources,
-        authorized_documents=catalog.authorized_documents(case.user_id),
-        leakage_checked=not response.answered,
-        leakage_required=needs_judge,
-    ).to_dict()
+    needs_judge = (_needs_leakage_check(case)
+                   and leakage_policy_status != "unresolved")
+    trace = response.security_trace
+    raw_refs = trace.get("raw_retrieval_candidates", [])
+    allowed_refs = trace.get("postfilter_allowed_candidates", [])
+    denied_refs = trace.get("postfilter_denied_candidates", [])
+    citation_refs = trace.get("emitted_citations", [])
+
+    def security_score(leaked=None, checked=None):
+        return metrics.score_security(
+            expected_behavior=case.expected_behavior,
+            actual_behavior=result.actual_behavior,
+            denied_documents=catalog.denied_documents(case.user_id),
+            forbidden_documents=list(case.forbidden_sources),
+            context_documents=result.retrieved_sources,
+            candidate_documents=result.candidate_sources,
+            leaked_evidence=leaked or [],
+            authorized_documents=catalog.authorized_documents(case.user_id),
+            leakage_checked=False if checked is None else checked,
+            leakage_required=True,
+            raw_candidate_documents=[row.get("document_id") for row in raw_refs
+                                     if row.get("document_id")],
+            allowed_candidate_documents=[row.get("document_id") for row in allowed_refs
+                                         if row.get("document_id")],
+            citation_documents=[row.get("document_id") for row in citation_refs
+                                if row.get("document_id")],
+            postfilter_denied_documents=[row.get("document_id") for row in denied_refs
+                                         if row.get("document_id")],
+            leakage_policy_status=leakage_policy_status,
+        ).to_dict()
+
+    result.security = security_score()
     result.retrieval = metrics.score_retrieval(
+        list(case.expected_sources),
+        [row["document_id"] for row in raw_refs if row.get("document_id")]
+        if raw_refs else result.candidate_sources,
+        applicable=case.expected_behavior != "refuse", k=CASE_TOP_K).to_dict()
+    result.context_metrics = metrics.score_context(
         list(case.expected_sources), result.retrieved_sources,
-        applicable=case.expected_behavior != "refuse").to_dict()
+        applicable=case.expected_behavior != "refuse")
 
     leaked_evidence: list[str] = []
     if needs_judge:
@@ -189,41 +240,48 @@ def run_case(case: EvalCase, catalog: PermissionCatalog,
             result.error = f"leakage judge failed: {type(exc).__name__}: {exc}"
             return result
         result.leakage_review = verdict
-        if verdict["refused"]:
+        result.security_trace["answer_restricted_facts"] = (
+            verdict.get("evidence", []) if verdict.get("leaked") else [])
+        if verdict["refused"] and result.outcome in ("answer", "refusal"):
             result.actual_behavior = "refuse"
         if verdict["leaked"]:
             leaked_evidence = verdict["evidence"] or [verdict["reason"]]
 
-    result.security = metrics.score_security(
-        expected_behavior=case.expected_behavior,
-        actual_behavior=result.actual_behavior,
-        denied_documents=catalog.denied_documents(case.user_id),
-        forbidden_documents=list(case.forbidden_sources),
-        context_documents=result.retrieved_sources,
-        candidate_documents=result.candidate_sources,
-        leaked_evidence=leaked_evidence,
-        authorized_documents=catalog.authorized_documents(case.user_id),
-        leakage_checked=needs_judge or not response.answered,
-        leakage_required=needs_judge,
-    ).to_dict()
+    result.security = security_score(leaked_evidence, needs_judge)
+
+    if result.outcome not in ("answer", "refusal", "partial"):
+        result.status = ERROR
+        result.error = f"Generation returned {result.outcome or 'no canonical outcome'}"
+        result.failure_reasons = _security_reasons(result.security)
+        return result
+
+    if leakage_policy_status == "unresolved":
+        result.status = ERROR
+        result.error = (
+            "Answer-level leakage judgment is unresolved pending the ORG-001 "
+            "seller-commercial-facts policy decision.")
+        return result
 
     if case.expected_behavior == "refuse":
         result.retrieval = metrics.score_retrieval(
-            [], result.retrieved_sources, applicable=False).to_dict()
+            [], result.retrieval["retrieved"], applicable=False, k=CASE_TOP_K).to_dict()
         result.generation = metrics.GenerationMetrics(
             applicable=False,
             judge_notes="not applicable: the case expects no answer",
         ).to_dict()
         result.status = (PASS if result.security["passed"]
+                         and result.outcome in ("answer", "refusal")
                          and result.actual_behavior == "refuse" else FAIL)
         if result.status == FAIL:
             result.failure_reasons = _security_reasons(result.security)
             if result.actual_behavior != "refuse":
                 result.failure_reasons.append("expected a refusal, got an answer")
+            if result.outcome not in ("answer", "refusal"):
+                result.failure_reasons.append(f"generation did not complete: {result.outcome}")
         return result
 
     retrieval = metrics.score_retrieval(list(case.expected_sources),
-                                        result.retrieved_sources)
+                                        result.retrieval["retrieved"], k=CASE_TOP_K)
     result.retrieval = retrieval.to_dict()
     result.relevant_sources = retrieval.relevant_retrieved
 
@@ -267,6 +325,9 @@ def run_case(case: EvalCase, catalog: PermissionCatalog,
     result.generation = generation.to_dict()
     result.status, result.failure_reasons = _decide(retrieval, generation,
                                                     result.security)
+    if result.outcome not in ("answer", "refusal"):
+        result.status = FAIL
+        result.failure_reasons.append(f"generation did not complete: {result.outcome}")
     return result
 
 
@@ -274,10 +335,12 @@ def _security_reasons(security: dict) -> list[str]:
     reasons = []
     if security["unauthorized_retrieval"]:
         reasons.append(
-            "unauthorized documents reached retrieval or context: "
+            "unauthorized documents reached a candidate, context, or citation stage: "
             + ", ".join(security["unauthorized_documents"]))
     if security["answer_leakage"]:
         reasons.append("the answer disclosed restricted subject matter")
+    if security["passed"] is None:
+        reasons.append("answer-level security was not fully reviewed")
     return reasons
 
 
