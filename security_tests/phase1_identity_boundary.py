@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import json
-import os
 import threading
 import unittest
 from contextlib import contextmanager
@@ -12,24 +10,6 @@ import requests
 
 from answering.src import api, config, identity, service
 from access_control.src.users import get_user
-
-
-class FakeResponse:
-    def __init__(self, claims):
-        self.claims = claims
-
-    def raise_for_status(self):
-        return None
-
-    def json(self):
-        return self.claims
-
-
-def claims(**updates):
-    value = {"active": True, "exp": 5000, "iss": "https://id.example",
-             "aud": "rag-api", "sub": "person-1"}
-    value.update(updates)
-    return value
 
 
 @contextmanager
@@ -45,40 +25,6 @@ def api_server():
         thread.join(timeout=2)
 
 
-class IdentityProviderTests(unittest.TestCase):
-    def setUp(self):
-        self.env = patch.dict(os.environ, {
-            "OIDC_INTROSPECTION_URL": "https://id.example/introspect",
-            "OIDC_CLIENT_ID": "rag", "OIDC_CLIENT_SECRET": "test-only",
-            "OIDC_ISSUER": "https://id.example", "OIDC_AUDIENCE": "rag-api",
-            "OIDC_SUBJECT_MAP": json.dumps({"person-1": "U-001"}),
-        })
-        self.env.start()
-
-    def tearDown(self):
-        self.env.stop()
-
-    def authenticate_claims(self, value):
-        return identity.authenticate(
-            "Bearer test-token", post=lambda *a, **k: FakeResponse(value), now=100)
-
-    def test_missing_credential_is_rejected(self):
-        with self.assertRaises(identity.AuthenticationError):
-            identity.authenticate(None)
-
-    def test_invalid_credential_is_rejected(self):
-        with self.assertRaises(identity.AuthenticationError):
-            self.authenticate_claims(claims(active=False))
-
-    def test_expired_credential_is_rejected(self):
-        with self.assertRaises(identity.AuthenticationError):
-            self.authenticate_claims(claims(exp=99))
-
-    def test_wrong_audience_is_rejected(self):
-        with self.assertRaises(identity.AuthenticationError):
-            self.authenticate_claims(claims(aud="other-api"))
-
-
 class ApiBoundaryTests(unittest.TestCase):
     def setUp(self):
         self.demo = patch.object(config, "API_DEMO_MODE", False)
@@ -92,18 +38,15 @@ class ApiBoundaryTests(unittest.TestCase):
             return identity.Principal(get_user("U-001"), "normal-sub")
         if token == "Bearer admin":
             return identity.Principal(get_user("U-005"), "admin-sub")
-        raise identity.AuthenticationError("invalid credential")
+        raise RuntimeError("invalid test credential")
 
-    def test_anonymous_protected_query_fails_closed_without_provider(self):
-        with patch.dict(os.environ, {k: "" for k in (
-                "OIDC_INTROSPECTION_URL", "OIDC_CLIENT_ID", "OIDC_CLIENT_SECRET",
-                "OIDC_ISSUER", "OIDC_AUDIENCE", "OIDC_SUBJECT_MAP")}):
-            with api_server() as base:
-                response = requests.post(base + "/query", json={"query": "hello"})
-                users = requests.get(base + "/users")
-        self.assertEqual(response.status_code, 503)
-        self.assertEqual(response.json()["error"], "identity_provider_unavailable")
-        self.assertEqual(users.status_code, 503)
+    def test_anonymous_query_and_directory_fail_closed(self):
+        with api_server() as base:
+            response = requests.post(base + "/query", json={"query": "hello"})
+            users = requests.get(base + "/users")
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json()["error"], "not_found")
+        self.assertEqual(users.status_code, 404)
 
     def test_normal_principal_wins_over_body_admin_id(self):
         result = service.AnswerResponse("id", "U-001", "q", "a", True)
@@ -134,8 +77,8 @@ class ApiBoundaryTests(unittest.TestCase):
         self.assertIn('"user_id": "U-001"', sse_response.text)
 
     def test_invalid_credential_is_rejected_for_sse_and_users(self):
-        with patch.object(identity, "authenticate", side_effect=identity.AuthenticationError(
-                "invalid credential")):
+        with (patch.object(config, "API_DEMO_MODE", True),
+              patch.object(config, "API_PUBLIC_DEMO_MODE", True)):
             with api_server() as base:
                 query = requests.post(base + "/query/stream", json={"query": "q"},
                                       headers={"Authorization": "Bearer invalid"})
@@ -181,12 +124,10 @@ class ApiBoundaryTests(unittest.TestCase):
             "summary": staticmethod(lambda _: {"run_id": "r"}),
         })
         with patch.object(config, "EVALUATION_REPORTS_ENABLED", True), \
-             patch.object(identity, "authenticate", side_effect=identity.AuthenticationError(
-                 "missing")), \
              patch.object(api, "_evaluation", return_value=(None, reports)):
             with api_server() as base:
                 response = requests.get(base + "/evaluation/matrix")
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 404)
         self.assertNotIn("S004-SECRET", response.text)
 
     def test_public_report_summary_contains_no_case_details(self):
@@ -207,14 +148,78 @@ class ApiBoundaryTests(unittest.TestCase):
         self.assertNotIn("answer", response.text)
         self.assertNotIn("evidence", response.text)
 
-    def test_api_refuses_remote_bind_without_provider(self):
-        with patch.object(identity, "configured", return_value=False):
+    def test_api_refuses_remote_bind_without_demo_login(self):
+        with patch.object(config, "API_DEMO_MODE", False), \
+             patch.object(config, "API_PUBLIC_DEMO_MODE", False):
             with self.assertRaises(RuntimeError):
                 api.serve("0.0.0.0", 8000)
 
     def test_demo_mode_always_refuses_remote_bind(self):
         with patch.object(config, "API_DEMO_MODE", True), \
-             patch.object(identity, "configured", return_value=True):
+             patch.object(config, "API_PUBLIC_DEMO_MODE", False):
+            with self.assertRaises(RuntimeError):
+                api.serve("0.0.0.0", 8000)
+
+    def test_remote_demo_requests_require_explicit_public_mode(self):
+        handler = type("FakeHandler", (), {})()
+        handler.client_address = ("203.0.113.8", 12345)
+        handler._send = lambda status, payload: setattr(handler, "sent", (status, payload))
+        with patch.object(config, "API_DEMO_MODE", True), \
+             patch.object(config, "API_PUBLIC_DEMO_MODE", False):
+            self.assertFalse(api.Handler._demo_request(handler))
+            self.assertEqual(handler.sent[0], 403)
+        with patch.object(config, "API_DEMO_MODE", True), \
+             patch.object(config, "API_PUBLIC_DEMO_MODE", True):
+            self.assertTrue(api.Handler._demo_request(handler))
+
+    def test_public_demo_directory_is_served_by_backend(self):
+        users = [{"user_id": "U-001", "name": "Sample Account", "role": "Account Manager"}]
+        with (patch.object(config, "API_DEMO_MODE", True),
+              patch.object(config, "API_PUBLIC_DEMO_MODE", True),
+              patch.object(service, "list_users", return_value=users)):
+            with api_server() as base:
+                response = requests.get(base + "/demo/users")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["users"], users)
+
+    def test_demo_login_issues_a_session_and_queries_use_its_server_identity(self):
+        result = service.AnswerResponse("id", "U-001", "q", "answer", True)
+        with (patch.object(config, "API_DEMO_MODE", True),
+              patch.object(config, "API_PUBLIC_DEMO_MODE", True),
+              patch.object(service, "answer_query", return_value=result) as answer):
+            with api_server() as base:
+                invalid = requests.post(base + "/demo/login", json={
+                    "user_id": "U-001", "password": "wrong"})
+                login = requests.post(base + "/demo/login", json={
+                    "user_id": "U-001", "password": "aditya@login"})
+                self.assertEqual(invalid.status_code, 401)
+                self.assertEqual(login.status_code, 200)
+                token = login.json()["access_token"]
+                switched = requests.post(base + "/demo/query", json={
+                    "query": "q", "user_id": "U-005"},
+                    headers={"Authorization": f"Bearer {token}"})
+                response = requests.post(base + "/demo/query", json={"query": "q"},
+                    headers={"Authorization": f"Bearer {token}"})
+        self.assertEqual(switched.status_code, 400)
+        self.assertEqual(response.status_code, 200)
+        principal = answer.call_args.kwargs["principal"]
+        self.assertEqual(principal.user.user_id, "U-001")
+        self.assertEqual(principal.subject, "demo:public")
+
+    def test_public_demo_mode_can_bind_remotely_only_with_demo_mode(self):
+        fake_server = type("FakeServer", (), {
+            "serve_forever": lambda self: (_ for _ in ()).throw(KeyboardInterrupt()),
+            "server_close": lambda self: None,
+        })()
+        with (patch.object(config, "validate_settings"),
+              patch.object(config, "API_DEMO_MODE", True),
+              patch.object(config, "API_PUBLIC_DEMO_MODE", True),
+              patch.object(api, "BoundedHTTPServer", return_value=fake_server) as server):
+            api.serve("0.0.0.0", 8000)
+        server.assert_called_once_with(("0.0.0.0", 8000), api.Handler)
+
+        with (patch.object(config, "API_DEMO_MODE", False),
+              patch.object(config, "API_PUBLIC_DEMO_MODE", True)):
             with self.assertRaises(RuntimeError):
                 api.serve("0.0.0.0", 8000)
 

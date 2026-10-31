@@ -164,6 +164,7 @@ CSS = """
   .dot-row { display:flex; align-items:center; gap:.4rem; font-size:.73rem; color:var(--muted-fg); }
   .dot { width:6px; height:6px; border-radius:50%; display:inline-block; }
   .dot-ok { background:var(--success); } .dot-bad { background:var(--destructive); }
+  .dot-warn { background:#d97706; }
   [class*="st-key-ex_"] button { min-height:6.2rem; text-align:left; justify-content:flex-start;
     padding:1.15rem; border-radius:12px; background:var(--card); }
   [class*="st-key-ex_"] button p { font-size:.85rem; line-height:1.55; font-weight:400; }

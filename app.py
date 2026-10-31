@@ -7,7 +7,6 @@ returns. The UI is not the security boundary.
 from __future__ import annotations
 
 import html
-import hmac
 import json
 import math
 import os
@@ -24,7 +23,7 @@ PAGE_TITLE = "Enterprise Knowledge AI"
 PAGE_ICON = str(Path(__file__).parent / "images" / "knowledge-mark.png")
 MAX_UI_TURNS = 6
 MAX_QUESTION_CHARS = 1000
-DEMO_LOGIN_VERSION = 1
+DEMO_LOGIN_VERSION = 2
 
 SELLER_LABELS = {
     "S001": "Aurelia Home Decor",
@@ -156,6 +155,7 @@ def _base_url() -> str:
 def _init_state() -> None:
     st.session_state.setdefault("messages", [])
     st.session_state.setdefault("user", None)
+    st.session_state.setdefault("demo_access_token", None)
     st.session_state.setdefault("pending", None)
     st.session_state.setdefault("active_question", None)
     st.session_state.setdefault("active_history", None)
@@ -166,6 +166,7 @@ def _init_state() -> None:
     if st.session_state.get("demo_login_version") != DEMO_LOGIN_VERSION:
         # Require existing demo sessions to pass through the new login screen.
         st.session_state.user = None
+        st.session_state.demo_access_token = None
         st.session_state.messages = []
         st.session_state.demo_login_version = DEMO_LOGIN_VERSION
 
@@ -206,6 +207,7 @@ def _reset_conversation() -> None:
 
 def _sign_out() -> None:
     st.session_state.user = None
+    st.session_state.demo_access_token = None
     st.session_state.demo_login_version = DEMO_LOGIN_VERSION
     st.session_state.view = "chat"
     st.session_state.seller_choice = 0
@@ -253,25 +255,14 @@ def _load_users(base_url: str) -> list[dict]:
     except api_client.ApiError as exc:
         st.error(str(exc))
         st.caption("Start the service with `python answering/serve.py`")
-        st.caption("For a local synthetic-data demo, set `API_DEMO_MODE=true`. "
+        st.caption("For a deployed synthetic-data demo, enable "
+                   "`API_DEMO_MODE=true` on the API (public demo follows this setting unless disabled). "
                    "The selector is not authentication.")
         st.stop()
     if not users:
         st.error("No selectable identities were returned.")
         st.stop()
     return users
-
-
-def _demo_password(user: dict) -> str:
-    """Public password pattern for the explicitly loopback-only demo."""
-    first_name = str(user.get("name") or "").strip().split()
-    return f"{first_name[0].casefold()}@login" if first_name else ""
-
-
-def _valid_demo_password(user: dict, password: str) -> bool:
-    expected = _demo_password(user)
-    supplied = str(password or "").strip().casefold()
-    return bool(expected) and hmac.compare_digest(expected, supplied)
 
 
 def _login_sidebar(base_url: str) -> None:
@@ -284,7 +275,7 @@ def _login_sidebar(base_url: str) -> None:
                     unsafe_allow_html=True)
         st.markdown(
             '<div class="ucard"><div class="rl">1. Choose your account</div>'
-            '<div class="dp">Select a sample account and enter its demo password.</div></div>',
+            '<div class="dp">Select a sample identity; the backend applies its permissions.</div></div>',
             unsafe_allow_html=True)
         st.markdown(
             '<div class="ucard"><div class="rl">2. Ask a question</div>'
@@ -298,9 +289,17 @@ def _login_sidebar(base_url: str) -> None:
         st.write("")
         st.markdown('<div class="sec">Service status</div>',
                     unsafe_allow_html=True)
-        if api_client.health(base_url):
+        status = api_client.readiness(base_url)
+        if status["ready"]:
             st.markdown('<div class="dot-row"><span class="dot dot-ok"></span>'
-                        'API online</div>', unsafe_allow_html=True)
+                        'Backend and knowledge index ready</div>',
+                        unsafe_allow_html=True)
+        elif status["reachable"]:
+            st.markdown('<div class="dot-row"><span class="dot dot-warn"></span>'
+                        'Backend online; knowledge index not ready</div>',
+                        unsafe_allow_html=True)
+            if status["problems"]:
+                st.caption(" · ".join(map(str, status["problems"])))
         else:
             st.markdown('<div class="dot-row"><span class="dot dot-bad"></span>'
                         'API unreachable</div>', unsafe_allow_html=True)
@@ -309,8 +308,8 @@ def _login_sidebar(base_url: str) -> None:
         st.divider()
         _theme_toggle("theme_toggle_login")
         st.markdown(
-            '<div class="guard">Local demo accounts use sample identities '
-            'and published passwords.</div>',
+            '<div class="guard">The backend applies each sample identity’s '
+            'permissions after checking its demo password. Use synthetic data only.</div>',
             unsafe_allow_html=True)
 
 
@@ -327,32 +326,42 @@ def _login_screen(base_url: str) -> None:
     with center_column:
         with st.container(border=True):
             st.markdown(
-                '<div class="login-kicker">Local demo access</div>'
-                '<div class="login-title">Welcome back</div>'
-                '<div class="login-copy">Select your sample account and enter '
-                'the demo password.</div>', unsafe_allow_html=True)
+                '<div class="login-kicker">Demo identity</div>'
+                '<div class="login-title">Explore a sample account</div>'
+                '<div class="login-copy">Select a sample identity. The backend '
+                'will apply its permissions to your questions.</div>',
+                unsafe_allow_html=True)
             with st.form("demo_login_form", clear_on_submit=False):
                 selected_id = st.selectbox(
                     "Demo account", list(user_by_id),
                     format_func=lambda user_id: (
                         f"{user_by_id[user_id]['name']} · "
                         f"{user_by_id[user_id]['role']}"))
-                password = st.text_input("Password", type="password",
-                                         placeholder="firstname@login")
+                password = st.text_input(
+                    "Demo password", type="password",
+                    placeholder="firstname@login")
+                st.caption("Password example: aditya@login. Use the selected account's first name.")
                 submitted = st.form_submit_button(
                     "Continue", type="primary", use_container_width=True)
+            with st.expander("Demo IDs and password examples"):
+                for user in users:
+                    first_name = str(user.get("name") or "").split()
+                    password_example = (f"{first_name[0].casefold()}@login"
+                                        if first_name else "")
+                    st.text(f"{user['user_id']} · {user['name']} · {password_example}")
             if submitted:
-                selected_user = user_by_id[selected_id]
-                if _valid_demo_password(selected_user, password):
-                    st.session_state.user = selected_user
+                try:
+                    session = api_client.demo_login(
+                        selected_id, password, base_url=base_url)
+                except api_client.ApiError as exc:
+                    st.error(str(exc))
+                else:
+                    st.session_state.user = session["user"]
+                    st.session_state.demo_access_token = session["access_token"]
                     st.session_state.seller_choice = 0
                     st.session_state.pop("seller_select", None)
                     _reset_conversation()
                     st.rerun()
-                st.error("That demo password does not match the selected account.")
-            with st.expander("Show demo passwords"):
-                for user in users:
-                    st.text(f"{user['name']}  ·  {_demo_password(user)}")
 
 
 def _sidebar(user: dict, base_url: str) -> None:
@@ -399,7 +408,7 @@ def _sidebar(user: dict, base_url: str) -> None:
             _reset_conversation()
             st.session_state.view = "chat"
             st.rerun()
-        if st.button("Switch user", key="switch_user",
+        if st.button("New User", key="switch_user",
                          use_container_width=True):
                 _sign_out()
                 st.rerun()
@@ -875,8 +884,9 @@ def _completion_label(outcome: str | None) -> str:
 
 
 def _stream_answer(user: dict, base_url: str, question: str,
-                   seller_filter: list[str] | None, history: list[dict]) -> dict:
-    events = api_client.ask_demo_stream(user["user_id"], question,
+                   seller_filter: list[str] | None, history: list[dict],
+                   access_token: str | None = None) -> dict:
+    events = api_client.ask_demo_stream(access_token or "", question,
                                    conversation=history,
                                    seller_filter=seller_filter,
                                    base_url=base_url)
@@ -997,10 +1007,16 @@ def _chat_screen(user: dict, base_url: str) -> None:
     with st.chat_message("assistant", avatar=AVATARS.get("assistant")):
         stage = st.status("Working on your request...", state="running")
         try:
-            result = _stream_answer(user, base_url, question, seller_filter, history)
+            result = _stream_answer(
+                user, base_url, question, seller_filter, history,
+                st.session_state.demo_access_token)
         except api_client.ApiError as exc:
             stage.update(label="Service error", state="error")
             st.error(str(exc))
+            if exc.status == 401:
+                st.session_state.user = None
+                st.session_state.demo_access_token = None
+                _reset_conversation()
             st.session_state.messages.append({
                 "role": "assistant", "content": "", "failed": True,
                 "outcome": "error"})
