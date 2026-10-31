@@ -1,0 +1,23 @@
+name: offline-regression
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - run: python -m pip install -r requirements.lock
+      - run: python -B scripts/run_offline_suite.py security_tests.phase1_identity_boundary
+      - run: python -B scripts/run_offline_suite.py security_tests.phase2_authorization_evaluation
+      - run: python -B scripts/run_offline_suite.py security_tests.phase3_answer_quality
+      - run: python -B scripts/run_offline_suite.py security_tests.phase4_reliability
+      - run: python -B scripts/run_offline_suite.py security_tests.phase5_source_inspection
+      - run: python -B scripts/run_offline_suite.py security_tests.issue_regressions
+      - run: python -B scripts/run_offline_suite.py security_tests.seller_balanced_retrieval
+      - run: python -B scripts/run_offline_suite.py security_tests.portfolio_answer_scope

@@ -22,6 +22,7 @@ PROCESSED_DIR = OUTPUT_DIR / "processed"
 DOCUMENTS_DIR = PROCESSED_DIR / "documents"
 CHUNKS_DIR = PROCESSED_DIR / "chunks"
 REPORTS_DIR = OUTPUT_DIR / "reports"
+REVISIONS_DIR = PROCESSED_DIR / "revisions"
 
 DOCUMENTS_FILE = DOCUMENTS_DIR / "documents.jsonl"
 CHUNKS_FILE = CHUNKS_DIR / "chunks.jsonl"
@@ -41,6 +42,12 @@ EXCLUDED_EXTENSIONS = {
 SELLER_IDS = ("S001", "S002", "S003", "S004")
 ORGANIZATION_WIDE = "Organization-wide"
 VALID_SELLER_VALUES = set(SELLER_IDS) | {ORGANIZATION_WIDE}
+# A scope decision must come from a seller folder or the reviewed ACL fixture.
+TRUSTED_ACL_FIXTURE = PROJECT_ROOT / "access_control" / "fixtures" / "expected_access_matrix.json"
+MAX_FILE_BYTES = 50 * 1024 * 1024
+MAX_PDF_PAGES = 500
+MAX_PAGE_CHARS = 1_000_000
+MAX_DOCUMENT_CHARS = 10_000_000
 
 DEPARTMENTS = ("Business", "Support", "Engineering", "Operations", "IT")
 

@@ -31,10 +31,13 @@ Thumbs.db
 .vscode/
 
 # Pipeline artifacts
+ingestion/processed/revisions/
+indexing/revisions/
 
 evaluation/tests/
 
 guide.md
+issue.md
 sofar.md
 
 

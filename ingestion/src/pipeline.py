@@ -7,15 +7,66 @@ field is preserved so a later authorisation layer can make that decision.
 from __future__ import annotations
 
 import hashlib
+import json
 import logging
+import os
+import tempfile
+import uuid
 import time
 from pathlib import Path
 
 from . import chunking, cleaning, config, discovery, loaders, metadata
-from . import reporting, validation
+from . import reporting, validation, visibility
 from .models import ProcessedDocument, SourceFile
 
 logger = logging.getLogger(__name__)
+
+
+def _publish_corpus_revision(documents: list[dict], chunks: list[dict]) -> dict:
+    """Persist immutable corpus artifacts and atomically advance local pointer."""
+    docs_data = "".join(json.dumps(row, sort_keys=True, ensure_ascii=False) + "\n"
+                        for row in documents).encode("utf-8")
+    chunks_data = "".join(json.dumps(row, sort_keys=True, ensure_ascii=False) + "\n"
+                          for row in chunks).encode("utf-8")
+    corpus_hash = hashlib.sha256(docs_data + b"\0" + chunks_data).hexdigest()
+    revision = f"corpus-{corpus_hash[:20]}-{uuid.uuid4().hex[:8]}"
+    target = config.REVISIONS_DIR / revision
+    target.mkdir(parents=True, exist_ok=True)
+    doc_path, chunk_path = target / "documents.jsonl", target / "chunks.jsonl"
+    for path, data in ((doc_path, docs_data), (chunk_path, chunks_data)):
+        if path.exists() and hashlib.sha256(path.read_bytes()).hexdigest() != hashlib.sha256(data).hexdigest():
+            raise RuntimeError("immutable corpus revision content mismatch")
+        if not path.exists():
+            path.write_bytes(data)
+    manifest = {
+        "schema_version": 1, "revision": revision,
+        "document_count": len(documents), "chunk_count": len(chunks),
+        "documents_sha256": hashlib.sha256(docs_data).hexdigest(),
+        "chunks_sha256": hashlib.sha256(chunks_data).hexdigest(),
+        "complete": True,
+    }
+    manifest_path = target / "manifest.json"
+    fd, manifest_tmp = tempfile.mkstemp(prefix=".manifest-", dir=target)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as fh:
+            json.dump(manifest, fh, sort_keys=True, indent=2)
+            fh.flush()
+            os.fsync(fh.fileno())
+        os.replace(manifest_tmp, manifest_path)
+    finally:
+        if os.path.exists(manifest_tmp):
+            os.unlink(manifest_tmp)
+    fd, tmp = tempfile.mkstemp(prefix=".active-", dir=config.PROCESSED_DIR)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as fh:
+            json.dump({"revision": revision, "manifest_schema": 1}, fh)
+            fh.flush()
+            os.fsync(fh.fileno())
+        os.replace(tmp, config.PROCESSED_DIR / "active.json")
+    finally:
+        if os.path.exists(tmp):
+            os.unlink(tmp)
+    return manifest
 
 
 def _hash_sources(files: list[SourceFile]) -> dict[str, str]:
@@ -27,20 +78,7 @@ def _hash_sources(files: list[SourceFile]) -> dict[str, str]:
 
 
 def reset_output() -> None:
-    """Clean-rebuild strategy: previous processed output is removed first."""
-    for path in (config.PROCESSED_DIR, config.REPORTS_DIR):
-        if path.exists():
-            for child in sorted(path.rglob("*"), reverse=True):
-                if child.is_file():
-                    if child == config.LOG_FILE:
-                        continue
-                    child.unlink()
-                elif child.is_dir():
-                    child.rmdir()
-            try:
-                path.rmdir()
-            except OSError:
-                pass
+    """Compatibility hook; never deletes prior artifacts."""
     config.DOCUMENTS_DIR.mkdir(parents=True, exist_ok=True)
     config.CHUNKS_DIR.mkdir(parents=True, exist_ok=True)
     config.REPORTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -151,6 +189,8 @@ def run_ingestion(
         try:
             pages = loaders.load_pages(source)
             extracted = metadata.build_metadata(source, pages)
+            pages = visibility.apply_content_visibility(
+                str(extracted.values.get("document_id") or ""), pages)
             doc_issues = validation.validate(source, extracted)
             issues.extend(issue.to_dict() for issue in doc_issues)
 
@@ -200,10 +240,14 @@ def run_ingestion(
                         len(document_chunks))
         except Exception as exc:  # one bad file must not stop the run
             logger.exception("Error processing %s", source.rel_path)
+            code = ("PARTIAL_EXTRACTION" if isinstance(
+                exc, loaders.PartialExtractionError) else "LOAD_FAILURE")
             failed.append({
                 "source_file": source.rel_path,
                 "document_id": None,
-                "errors": [{"severity": "ERROR", "code": "LOAD_FAILURE",
+                "extraction_status": ("partial" if isinstance(
+                    exc, loaders.PartialExtractionError) else "failed"),
+                "errors": [{"severity": "ERROR", "code": code,
                             "message": str(exc),
                             "source_file": source.rel_path}],
             })
@@ -219,10 +263,16 @@ def run_ingestion(
 
     chunk_dicts = [chunk.to_dict() for chunk in chunks]
     document_dicts = [doc.to_dict() for doc in processed]
-    reporting.write_jsonl(config.DOCUMENTS_FILE, document_dicts)
-    reporting.write_jsonl(config.CHUNKS_FILE, chunk_dicts)
-    logger.info("Output: %d documents, %d chunks written",
-                len(document_dicts), len(chunk_dicts))
+    corpus_manifest = None
+    if not failed and sources_unchanged and all(integrity.values()):
+        corpus_manifest = _publish_corpus_revision(document_dicts, chunk_dicts)
+        # Keep legacy readers pointed at the last fully validated corpus too.
+        reporting.write_jsonl(config.DOCUMENTS_FILE, document_dicts)
+        reporting.write_jsonl(config.CHUNKS_FILE, chunk_dicts)
+        logger.info("Output: %d documents, %d chunks written",
+                    len(document_dicts), len(chunk_dicts))
+    else:
+        logger.error("Corpus revision was not published; previous artifacts remain active")
 
     duration = time.perf_counter() - started
     summary = reporting.build_summary(
@@ -237,6 +287,7 @@ def run_ingestion(
         output_dir=config.OUTPUT_DIR,
     )
     summary["skipped_files"] = skipped
+    summary["corpus_revision"] = (corpus_manifest or {}).get("revision")
     reporting.write_summary(summary)
     reporting.write_validation_errors(summary, failed)
     logger.info("Reports written to %s (%.2fs)", config.REPORTS_DIR, duration)

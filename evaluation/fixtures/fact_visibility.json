@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "decisions": {
+    "org_001_seller_commercial_facts": {
+      "status": "seller_restricted",
+      "scope": "Seller-identifying commercial and financial facts embedded in ORG-001 organization-wide reference content.",
+      "decision": "Restrict those facts to users authorized for the named seller. Do not treat their appearance in ORG-001 as making them organization-wide.",
+      "decision_basis": "ORG-001 page 4 says material naming a specific seller with commercial or financial detail is at least CONFIDENTIAL and readable only within seller scope.",
+      "decision_date": "2026-10-31",
+      "corpus_or_golden_changes_allowed": true
+    }
+  },
+  "case_status": {
+    "E035": "seller_restricted"
+  },
+  "notes": "The user's seller-restricted decision is implemented by ingestion visibility projection: the ORG-001 page-5 commercial section is omitted from shared chunks, and seller-scoped account records retain the facts. The 2026-10-31 read-only review verified corpus corpus-584718318df8d652ff66-5ed2d2e1 and collection enterprise_knowledge__r_9d180aecc5e11fd7ac7e_db6b6fe9 (220 points and all 315 access pairs). E035's golden refusal remains unchanged; no fresh generated-answer E035 benchmark is claimed. OIDC deployment is outside the user's chosen scope."
+}

@@ -24,11 +24,15 @@ QDRANT_COLLECTION_NAME = os.getenv(
 PHASE2_CHUNKS_FILE = PROJECT_ROOT / "ingestion" / "processed" / "chunks" / "chunks.jsonl"
 
 REPORTS_DIR = PACKAGE_ROOT / "reports"
+REVISIONS_DIR = PACKAGE_ROOT / "revisions"
+REVOCATIONS_FILE = REVISIONS_DIR / "revoked_documents.json"
 INDEXING_REPORT_FILE = REPORTS_DIR / "indexing_report.json"
 SANITY_REPORT_FILE = REPORTS_DIR / "sanity_checks.json"
 VOCAB_FILE = REPORTS_DIR / "sparse_vocab.json"
 
 REQUIRED_ENV_VARS = ("JINA_API_KEY", "QDRANT_URL", "QDRANT_API_KEY")
+
+INDEX_MANIFEST_SCHEMA = 1
 
 
 def validate_env() -> None:
@@ -62,11 +66,15 @@ class RetrievalConfig:
 DEFAULT_RETRIEVAL = RetrievalConfig()
 
 PAYLOAD_KEYWORD_FIELDS = (
+    "document_id",
     "seller_id",
     "department",
     "classification",
     "document_type",
     "scenario_id",
+    # Sparse queries pin candidate points to the vocabulary revision stored
+    # with this immutable index. Qdrant requires an index for this filter.
+    "_sparse_revision",
 )
 
 SANITY_QUERIES = (

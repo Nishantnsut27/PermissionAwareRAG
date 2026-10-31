@@ -9,7 +9,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from answering.src import config, service
+from answering.src import config, identity, service
+from access_control.src.users import get_user
 
 # LLM answers contain characters the default Windows console codepage cannot
 # encode; force UTF-8 so printing an answer never raises.
@@ -40,7 +41,8 @@ def main() -> int:
 
     try:
         response = service.answer_query(
-            user_id=args.user_id, query=args.query,
+            principal=identity.Principal(get_user(args.user_id), "local-cli"),
+            query=args.query,
             seller_filter=args.sellers, top_k=args.top_k)
     except service.AnsweringError as exc:
         print(f"{exc.client_message}", file=sys.stderr)

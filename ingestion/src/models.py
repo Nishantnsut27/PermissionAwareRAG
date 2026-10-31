@@ -45,6 +45,7 @@ class CleanedDocument:
     text: str
     page_spans: list[tuple[int, int, int]]
     page_count: int
+    section_spans: list[tuple[str, int, int]] = field(default_factory=list)
 
 
 @dataclass
@@ -66,6 +67,11 @@ class Chunk:
     chunk_index: int
     token_count: int
     char_count: int
+    text_start: int = 0
+    text_end: int = 0
+    metadata_version: int = 1
+    section_spans: list[dict] = field(default_factory=list)
+    page_spans: list[dict] = field(default_factory=list)
 
     def to_dict(self) -> dict:
         return {
@@ -86,6 +92,11 @@ class Chunk:
             "chunk_index": self.chunk_index,
             "token_count": self.token_count,
             "char_count": self.char_count,
+            "text_start": self.text_start,
+            "text_end": self.text_end,
+            "metadata_version": self.metadata_version,
+            "section_spans": self.section_spans,
+            "page_spans": self.page_spans,
         }
 
 
@@ -108,6 +119,8 @@ class ProcessedDocument:
     chunk_count: int
     metadata_provenance: dict[str, str]
     extra_metadata: dict[str, object] = field(default_factory=dict)
+    metadata_version: int = 1
+    extraction_status: str = "complete"
 
     def to_dict(self) -> dict:
         return {
@@ -128,4 +141,6 @@ class ProcessedDocument:
             "chunk_count": self.chunk_count,
             "metadata_provenance": self.metadata_provenance,
             "extra_metadata": self.extra_metadata,
+            "metadata_version": self.metadata_version,
+            "extraction_status": self.extraction_status,
         }

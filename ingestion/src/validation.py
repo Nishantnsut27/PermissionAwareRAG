@@ -40,7 +40,7 @@ def validate(source: SourceFile, metadata: ExtractedMetadata
                              "No document_type could be determined", source,
                              doc_id, "document_type"))
     elif document_type not in config.DOCUMENT_TYPES:
-        issues.append(_issue("WARNING", "DOCUMENT_TYPE_UNKNOWN",
+        issues.append(_issue("ERROR", "DOCUMENT_TYPE_UNKNOWN",
                              f"document_type '{document_type}' is not in the "
                              "known Phase 1 vocabulary", source, doc_id,
                              "document_type"))

@@ -8,7 +8,7 @@ A permission-aware enterprise knowledge assistant that combines retrieval-augmen
 
 [Streamlit application](https://permissionawarerag.streamlit.app/)
 
-The current demo uses a prototype identity selector. Identity, role, clearance, and seller scope are resolved on the server and are not accepted from the client as authorization claims.
+The current demo identity selector is not a login or authentication. It is available only through explicitly enabled, loopback-only `/demo/*` routes; anyone on that machine can select any listed persona, including Admin. Protected API routes require an OIDC provider configured for token introspection and a server maintained subject to identity map. Without that provider the API fails closed and must stay on loopback. Do not use demo mode for private or production data.
 
 ---
 
@@ -154,7 +154,7 @@ Current dataset:
 - 63 documents
 - 52 PDF files
 - 11 TXT files
-- 209 generated chunks
+- 220 generated chunks in the published visibility-projected revision
 - 0 failed documents
 - 0 validation errors
 
@@ -190,7 +190,7 @@ Each chunk is indexed in Qdrant with both dense and sparse representations.
 - Reciprocal Rank Fusion
 - Final retrieval pool before authorization-aware answering
 
-The current indexed corpus contains 209 Qdrant points.
+The published index contains 220 Qdrant points. The 2026-10-31 read-only verification recorded corpus `corpus-584718318df8d652ff66-5ed2d2e1` and collection `enterprise_knowledge__r_9d180aecc5e11fd7ac7e_db6b6fe9`; these identify the verified artifacts, rather than a new publication in this change.
 
 ### 3. Permission-Aware Retrieval
 
@@ -198,9 +198,10 @@ The permission engine converts the identity into a Qdrant filter containing:
 
 - Allowed classifications
 - Allowed document types
-- Authorized seller IDs
+- An explicit seller-scoped branch
+- An explicit organization-wide branch, with department matching for restricted organization documents
 
-Rules that require comparing multiple metadata fields, such as organization-wide restricted documents and department matching, are enforced by the authorization engine after retrieval.
+The Qdrant prefilter represents these alternatives as boolean branches. Independent permission checks still run after retrieval and again before context construction. Malformed or unknown authorization metadata is denied, and request-supplied filters never grant access.
 
 The system deliberately fails closed. An invalid identity, invalid scope, or unusable authorization filter does not silently turn into an unrestricted search.
 
@@ -235,9 +236,87 @@ A final authorization gate runs after reranking so that ranking can never reintr
 
 ### 6. Context Construction and Citations
 
+Personal-portfolio questions ("my sellers", "my accounts", "my portfolio", and
+multilingual equivalents/paraphrases) always use the current authenticated
+principal's server-derived seller scope and per-seller evidence retrieval,
+regardless of `MULTI_SELLER_RETRIEVAL`. Request identity attributes and conversation
+claims cannot supply or expand this inventory. Follow-ups resolve only their
+topic from bounded prior user questions and recompute scope for the current
+principal. Assistant history is omitted from portfolio generation.
+
+Direct personal-language cues are resolved locally; other wording uses a strict
+multilingual intent classification through the existing model adapter. The
+classifier returns only `portfolio` or `other`, never identity attributes or
+sellers. Invalid, truncated, refused or unavailable classification fails before
+retrieval. This extra stage shares the API request deadline, adds a bounded model
+request for questions without direct personal cues, and has not been evaluated
+with a live provider.
+
+Portfolio evidence requires seller-scoped provenance. Shared organization-wide
+chunks are conservatively omitted from portfolio context; whole seller passages
+mentioning a known account outside the effective scope are also omitted without
+rewriting corpus text, ACLs or citation offsets. Seller ID/name aliases are
+server-owned in `answering/src/answer_scope.py`, including Unicode and spacing
+normalization. Generated headings, tables, text and source inventory are checked
+for excluded seller references. Accounts without included evidence get an
+application-generated unavailable note, including when all evidence is absent.
+Portfolio streams hold model text until this validation completes.
+
+Explicit organization-wide questions follow existing document permissions and
+policy. The prior ORG-001 commercial-fact restriction remains unchanged. Whether
+other shared seller facts should become portfolio evidence requires reviewed,
+trusted seller attribution at a passage/fact boundary; shared readability alone
+does not establish that attribution. This change publishes no corpus or index.
+The conservative omission can reduce portfolio evidence coverage. The alias
+guard does not establish semantic grounding or recognize every possible
+translated/invented alias; multilingual classifier accuracy and answer quality
+require a comparable evaluation before any improvement is claimed.
+
+For explicit multi-account questions without personal-portfolio intent, opt in
+with `MULTI_SELLER_RETRIEVAL=seller_balanced`
+(restart the API after changing configuration). The default `global` retains the
+existing hybrid baseline. Routing uses only the current question and the
+server-resolved principal's scope, intersected with any requested seller filter;
+request identity fields, UI state, and conversation claims cannot add sellers.
+Single-account and ambiguous questions retain the global path.
+
+The balanced path searches seller-only partitions under the existing permission
+policy, sharing one query embedding and resolved immutable index revision. It
+divides the existing dense, sparse, and answering candidate limits across sellers,
+shares one aggregate retrieval deadline, reranks each seller separately under one
+reranker deadline, and reserves
+one surviving passage per seller before filling remaining `ANSWER_TOP_K` slots.
+Independent post-retrieval and final authorization checks remain in place.
+Context packing divides `MAX_CONTEXT_TOKENS` and `MAX_CONTEXT_CHARS`, counting
+seller headers and separators. Small budgets or thresholds can still omit evidence;
+no limits are increased to force coverage. Organization-wide passages remain in the
+global baseline and do not consume the balanced seller slots.
+
+When only some sellers have included evidence, generation is instructed to answer
+the supported parts and the application explicitly marks other in-scope sellers
+as unavailable in the included sources. This is a completed answer with limited
+coverage; the existing `partial` outcome still means generation truncation.
+An empty context retains the insufficient-information response (personal portfolio
+responses also name each in-scope account lacking included evidence). Evidence presence
+does not prove that every requested fact is supported. Offline mocked regressions
+run with `python -B scripts/run_offline_suite.py security_tests.seller_balanced_retrieval`
+and `security_tests.portfolio_answer_scope`; the wrapper rejects external network
+requests while permitting the loopback HTTP regressions. No comparable
+provider-backed quality or latency benchmark has been run for this path. Compare
+both configurations on the same frozen corpus/index, identities, questions,
+budgets, and provider settings before drawing quality conclusions. Per-seller
+context coverage and end-to-end latency, groundedness, abstention, and leakage
+remain benchmark work.
+
 Only authorized chunks that fit the context budget are included in the final context.
 
 Sources are generated deterministically from those same authorized chunks. The application adds the source list after generation, rather than allowing the model to invent page numbers or citations.
+
+Sparse retrieval uses BM25 with positive Robertson/Sparck Jones IDF, `k1=1.2`, `b=0.75`, and linear query-term frequency. Document vectors carry IDF-weighted BM25 term weights; query vectors carry term frequency only, so the dot product applies IDF once. Tokenization normalizes Unicode hyphens and underscores to ASCII hyphens. Retrieval loads the vocabulary from the resolved immutable revision, validates it against that revision's manifest, and filters indexed points by its sparse fingerprint. Legacy compatibility artifacts are not used for active retrieval.
+
+Context packing uses the configured `MAX_CONTEXT_TOKENS` and counts passage headers and separators. The chosen hosted model has no local tokenizer mapping available here, so the current offline counter uses UTF-8 bytes as a conservative upper bound on tokens; `MAX_CONTEXT_CHARS` remains an additional cap. The model receives stable evidence IDs, but the UI lists available included evidence without claiming a validated claim-to-source relationship. Reranker thresholds remain provisional; no held-out quality or latency benchmark has been run.
+
+New chunks preserve chunk-relative page spans. Citation pages are derived after overlap trimming and excerpting from the exact included ranges. Legacy multi-page excerpts without page offsets omit page numbers because precise attribution cannot be verified; publishing page spans for the existing corpus requires a new immutable build.
 
 ---
 
@@ -362,7 +441,7 @@ The latest complete saved run is:
 | Answer leakage rate | 4.55% |
 | Prompt-injection blocked | 100% |
 
-These numbers are from the saved evaluation run, not a claim of production-grade security. In particular, the non-zero answer leakage rate and the 12 failed cases are visible limitations of the current implementation and evaluation configuration.
+These are historical measurements from the earlier corpus and evaluator. They are not a benchmark of the current implementation. That run measured varying-size final context under the retrieval metric names, and reviewed only selected answers for leakage. The current evaluator reviews every returned answer, including refusals, against independent fact examples and denied subjects. It records fixed-K ranked candidate metrics (short lists count missing precision slots as misses), final context coverage/precision, canonical completion outcome, and finish reason separately. Partial completions retain quality scores but cannot pass. A fresh provider-backed benchmark remains to be run.
 
 The evaluation dashboard reads saved results and does not automatically start a quota-consuming evaluation run from the web UI.
 
@@ -397,13 +476,13 @@ Never commit real API keys.
 ### 1. Create the environment
 
 ```bash
-python -m venv .venv
+py -3.14 -m venv .venv
 ```
 
 Activate the environment and install dependencies:
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.lock
 ```
 
 ### 2. Configure environment variables
@@ -430,7 +509,7 @@ This generates the processed document catalog, chunks, and ingestion reports.
 python indexing/pipeline.py
 ```
 
-This embeds the chunks, builds the sparse representation, creates or validates the Qdrant collection, indexes the points, and runs retrieval sanity checks.
+This embeds the active corpus revision and builds a new immutable Qdrant collection. The job validates exact point IDs and count, ACL metadata against the reviewed permission fixture, embedding and sparse configuration, and a local manifest before atomically changing the `<QDRANT_COLLECTION_NAME>_active` alias. Failed builds leave the prior alias intact. The existing published revision was verified on 2026-10-31; no new index was published for the subsequent issue fixes.
 
 ### 5. Start the answering API
 
@@ -460,7 +539,7 @@ For a one-command local run on Windows, use the included `run.bat`:
 run.bat
 ```
 
-It creates no environment or credentials for you; `.venv` must already exist and `.env` must be configured. The script starts the answering API, waits for `/health` to become ready, and then launches the Streamlit UI.
+It creates no environment or credentials for you; `.venv` must already exist and `.env` must be configured. The script starts the answering API, waits for liveness, and then launches the Streamlit UI.
 
 ---
 
@@ -471,13 +550,25 @@ The answering service exposes:
 | Method | Endpoint | Purpose |
 |---|---|---|
 | GET | `/health` | Service health check |
-| GET | `/users` | Prototype identity directory |
+| GET | `/live` | Process liveness only |
+| GET | `/ready` | Local configuration, Qdrant alias, and active manifest readiness (no model provider calls) |
+| GET | `/users` | Authenticated identity directory |
 | POST | `/query` | Generate a complete answer |
 | POST | `/query/stream` | Stream an answer through SSE |
-| GET | `/evaluation` | Read saved evaluation summary |
-| GET | `/evaluation/matrix` | Read saved evaluation details |
+| GET | `/evaluation` | Minimal saved report summary and run listing |
+| GET | `/evaluation/matrix` | Detailed report; authenticated operator/admin and feature flag required |
+| GET | `/demo/users` | Local demo identity directory (`API_DEMO_MODE=true`) |
+| POST | `/demo/query`, `/demo/query/stream` | Local demo only; selectable personas, loopback only |
 
 Evaluation execution is intentionally kept outside the HTTP request path and is run explicitly from the evaluation CLI.
+
+Protected query routes ignore body-supplied `user_id` and require an OIDC bearer token. Configure HTTPS introspection, issuer, audience, client credentials, and a server-maintained `sub` to user map using the variables in `.env.example`. This checkout has no identity provider configured, so protected calls fail closed and the API must remain loopback-only. Set `API_DEMO_MODE=true` only for a local synthetic-data demonstration; the identity picker is not authentication. `EVALUATION_REPORTS_ENABLED=true` only enables the detailed route after verified operator authorization.
+
+Authorization evaluation expectations are stored in the independently reviewed `access_control/fixtures/expected_access_matrix.json`, rather than generated from the production permission engine. Reports track candidate, post-filter, context, citation, and answer-level exposure separately. Each run records and fingerprints the resolved collection, manifest, revision vocabulary, and emergency revocations, pins that revision for retrieval, and stops if the active state changes. Resume requires an identical input/configuration fingerprint; attempts retain their own configuration and timestamps, and changed parent answers invalidate dependent follow-up results. Detailed traces, including denied candidate IDs, are restricted to authenticated operators.
+
+Buffered and streaming generation use explicit `answer`, `partial`, `refusal`, and `error` outcomes. A stream is complete only after valid provider finish metadata and the terminal marker; output-limit truncation is reported as partial. The UI renders the canonical terminal payload and does not treat provisional deltas as the final answer.
+
+**E035 policy decision:** Seller-identifying commercial and financial facts in ORG-001 are seller-restricted, consistent with ORG-001 page 4 and the user's decision. Ingestion now projects the page-5 seller-commercial section out of shared ORG-001 chunks; seller-scoped account records retain the facts. The published 220-point revision implements this projection. ACL/prefilter decisions are represented in the reviewed access fixture and covered by offline security checks. E035's golden refusal remains unchanged. No fresh model-generated E035 benchmark is claimed.
 
 ---
 
@@ -496,6 +587,24 @@ Evaluation execution is intentionally kept outside the HTTP request path and is 
 | Reranking | Jina Reranker |
 | LLM | `openai/gpt-oss-120b` via Groq-compatible API |
 | Evaluation | Python-based golden dataset and judge pipeline |
+
+---
+
+## Phase 4 Reliability Controls
+
+Ingestion writes a content-fingerprinted immutable corpus revision and advances a local `ingestion/processed/active.json` pointer only when extraction, metadata, source stability, and integrity checks pass. Compatibility JSONL files are still written for existing tools; index builds read the active immutable revision when one exists. Prior revisions are retained. Unknown seller scope, conflicting seller/classification labels, unknown document types, unreadable encrypted PDFs, extraction failures, and configured file/page/text limit violations fail or quarantine the document. Positional header/footer removal requires repeated edge placement; repeated body headings are retained. Chunk records carry page numbers, absolute text offsets, detected section spans, and metadata schema version.
+
+Each Qdrant build uses a unique immutable collection. It records corpus/document/chunk fingerprints, model and vector dimensions, sparse vocabulary fingerprint, schema version, and exact point IDs. The Qdrant active alias is switched only after validation. Deletion, shortening, and ACL restriction therefore require building a new exact point set; old revisions remain stored and are not rollback eligible after the corpus or ACL fingerprint changes. A rollback is allowed only to a complete revision with the same corpus/ACL fingerprint. Urgent document revocation uses the trusted local `indexing/revisions/revoked_documents.json` denylist, which is read on each retrieval and merged into both dense and sparse filters; malformed revocation data fails retrieval closed. Retained inactive revisions need an operator-managed retention and physical-erasure process before sensitive data can be considered erased.
+
+The index uses the alias/manifest lifecycle. The 2026-10-31 review verified `enterprise_knowledge_active` resolving to `enterprise_knowledge__r_9d180aecc5e11fd7ac7e_db6b6fe9`, all 220 point IDs and payload/ACL hashes, and all 315 expected user/document filter decisions. `/ready` returned 200 in that review; it checks configuration and the alias/manifest without model-provider calls. `/health` and `/live` indicate liveness. The user has chosen not to use OIDC in this project; the current application remains a loopback demo, and protected routes continue to fail closed without a configured authentication provider.
+
+The API starts its request deadline before parsing headers, applies absolute header/body budgets and bounded JSON/schema validation, limits concurrent handlers, and charges request/token windows by verified provider subject. Socket shutdown interrupts trickling input and active generation provider I/O at the deadline. Generation checks the deadline on stream frames and before accepting completion; nested stages cannot restart the budget. Safe limits are configurable with `API_*` in `.env.example`. Dense and sparse retrieval may run concurrently against the same pinned revision and server-derived authorization filters. Embedding retries are bounded and limited to network, timeout, rate-limit, and server failures; permanent HTTP errors are not retried. Reranker failure falls back to authorized fusion order and is recorded as degraded mode.
+
+Operator-only evaluation traces include a stable request ID, retrieval/authorization, rerank, context and generation timing, selected evidence references, policy version, index revision, provider finish reason, and available token usage. Denied point IDs remain restricted to authenticated operators. The local authorization audit log contains identities, IDs, decisions and reasons but not query text or passage contents; it rotates at 10 MiB and retains one prior file. On sink I/O failure, the error is logged and authorization still follows the already-computed decision. This local file is not a tamper-proof or centralized audit service.
+
+### Offline regression suite
+
+Supported local runtime: Python 3.14.6 (`.python-version`). Dependencies are pinned in `requirements.lock`. Run `scripts/test_offline.ps1` on Windows for the five phase suites, `security_tests.issue_regressions`, `security_tests.seller_balanced_retrieval`, and `security_tests.portfolio_answer_scope` (155 tests total). CI runs the same eight modules through `scripts/run_offline_suite.py`, which rejects external network requests and permits isolated loopback HTTP tests. The suites use mocked providers and retrieval; E035's projection and the published index are verified as described above. OIDC deployment is outside the project's chosen scope. A fresh comparable provider benchmark, multilingual intent accuracy, held-out reranker calibration, and production load/outage validation remain unverified.
 
 ---
 

@@ -26,6 +26,13 @@ class Chunk:
         extra = {k: v for k, v in raw.items() if k not in known}
         return cls(extra=extra, **init)  # type: ignore[arg-type]
 
+    def to_dict(self) -> dict:
+        """Return the full canonical chunk record, including forward fields."""
+        data = asdict(self)
+        extra = data.pop("extra")
+        data.update(extra)
+        return data
+
     def payload(self) -> dict:
         data: dict = {
             "chunk_id": self.chunk_id,

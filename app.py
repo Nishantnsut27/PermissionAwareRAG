@@ -7,19 +7,24 @@ returns. The UI is not the security boundary.
 from __future__ import annotations
 
 import html
+import hmac
 import json
+import math
 import os
+import re
+from pathlib import Path
 
 import pandas as pd
 import streamlit as st
-import streamlit.components.v1 as components
 
 import api_client
+from ui_theme import brand_mark, css as _css, icon
 
 PAGE_TITLE = "Enterprise Knowledge AI"
-PAGE_ICON = "\N{LOCK}"
+PAGE_ICON = str(Path(__file__).parent / "images" / "knowledge-mark.png")
 MAX_UI_TURNS = 6
 MAX_QUESTION_CHARS = 1000
+DEMO_LOGIN_VERSION = 1
 
 SELLER_LABELS = {
     "S001": "Aurelia Home Decor",
@@ -37,8 +42,47 @@ ORG_PROMPTS = [
     "What does the payment settlement policy say about adjustments?",
     "What are the steps in the payment recovery runbook?",
 ]
+DEPARTMENT_PROMPTS = {
+    "Business": [
+        "What does the payment settlement policy say about adjustments?",
+        "What are the current priorities for my seller accounts?",
+    ],
+    "Support": [
+        "What steps should Support follow when escalating a seller issue?",
+        "Which checks should I complete before closing a support ticket?",
+    ],
+    "Engineering": [
+        "What are the required steps for incident recovery and verification?",
+        "Which engineering changes are awaiting operational validation?",
+    ],
+    "Operations": [
+        "What are the steps in the payment recovery runbook?",
+        "What checks are required before releasing a corrected payout?",
+    ],
+    "IT": [
+        "What is the process for reviewing access and security incidents?",
+        "Which controls are required before restoring a service?",
+    ],
+}
 
-AVATARS = {"user": "\N{ADULT}\u200d\N{BRIEFCASE}", "assistant": "\N{ROBOT FACE}"}
+AVATARS = {
+    "user": '''<svg viewBox="0 0 64 64" role="img" aria-label="You">
+      <rect x="2" y="2" width="60" height="60" rx="18" fill="#EEF0FF"/>
+      <circle cx="32" cy="25" r="11" fill="#6257D9"/>
+      <path d="M13 55c1-11 8-18 19-18s18 7 19 18" fill="#6257D9"/>
+      <path d="M22 38c2 5 6 8 10 8s8-3 10-8" fill="#5147C4"/>
+    </svg>''',
+    "assistant": '''<svg viewBox="0 0 64 64" role="img" aria-label="Assistant">
+      <rect x="2" y="2" width="60" height="60" rx="18" fill="#E6F7F5"/>
+      <path d="M32 11v7" stroke="#138A83" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="32" cy="10" r="3" fill="#20A69D"/>
+      <rect x="13" y="19" width="38" height="31" rx="11" fill="#168F88"/>
+      <rect x="19" y="26" width="26" height="14" rx="6" fill="#F7FFFE"/>
+      <circle cx="26" cy="33" r="2.5" fill="#176C68"/>
+      <circle cx="38" cy="33" r="2.5" fill="#176C68"/>
+      <path d="M26 45h12" stroke="#B9F0E9" stroke-width="3" stroke-linecap="round"/>
+    </svg>''',
+}
 
 
 def _safe(text: str | None) -> str:
@@ -51,12 +95,18 @@ def _copy_button(text: str, key: str) -> None:
     payload = json.dumps(text).replace("</", "<\\/")
     html = f"""
     <style>
+      html, body {{ width:max-content; height:36px; margin:0; padding:0;
+        overflow:hidden; }}
+      body {{ display:flex; align-items:center; }}
+    </style>
+    <style>
       #{key}{{
         display:inline-flex; align-items:center; gap:.35rem;
         font: 600 12px/1 'Segoe UI', sans-serif;
         color:var(--muted-fg, #64748b); background:transparent; cursor:pointer;
         border:1px solid var(--border, #e2e8f0); border-radius:8px;
-        padding:5px 11px; transition:all .12s ease;
+        box-sizing:border-box; height:30px; padding:5px 11px;
+        transition:all .12s ease;
       }}
       #{key}:hover{{ color:var(--primary, #0f172a); border-color:var(--primary, #cbd5e1); }}
       #{key}.done{{ color:#16a34a; border-color:#bbf7d0; background:#f0fdf4; }}
@@ -93,435 +143,7 @@ def _copy_button(text: str, key: str) -> None:
       }}
     </script>
     """
-    components.html(html, height=38, scrolling=False)
-
-
-THEME_VARS = {
-    "light": """
-    --bg: oklch(0.96 0.014 42);
-    --fg: oklch(0.25 0.014 42);
-    --card: oklch(0.98 0.014 42);
-    --primary: oklch(0.55 0.16 42);
-    --primary-fg: oklch(0.98 0.014 42);
-    --secondary: oklch(0.92 0.014 42);
-    --muted-fg: oklch(0.50 0.014 42);
-    --border: oklch(0.90 0.014 42);
-    --destructive: oklch(0.55 0.16 22);
-    --shadow: 0 1px 2px oklch(0.25 0.014 42 / 0.05);
-  """,
-    "dark": """
-    --bg: oklch(0.20 0.014 42);
-    --fg: oklch(0.96 0.014 42);
-    --card: oklch(0.25 0.014 42);
-    --primary: oklch(0.65 0.16 42);
-    --primary-fg: oklch(0.20 0.014 42);
-    --secondary: oklch(0.30 0.014 42);
-    --muted-fg: oklch(0.70 0.014 42);
-    --border: oklch(0.35 0.014 42);
-    --destructive: oklch(0.60 0.16 22);
-    --shadow: 0 1px 2px oklch(0.15 0.014 42 / 0.35);
-  """,
-}
-
-BASE_CSS = """
-  @keyframes rise-in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
-  @keyframes pulse-soft{0%,100%{box-shadow:0 0 0 0 color-mix(in oklch,var(--primary) 0%,transparent)}50%{box-shadow:0 0 0 5px color-mix(in oklch,var(--primary) 12%,transparent)}}
-  .stApp{ background: var(--bg); color: var(--fg); }
-  #MainMenu, footer{ visibility: hidden; }
-  header[data-testid="stHeader"]{
-    background: transparent !important;
-    visibility: visible;
-  }
-  /* Sidebar open/close control: force a high-contrast black arrow.
-     Streamlit has used both collapsedControl and stSidebarCollapsedControl
-     test ids across releases, so cover both variants. */
-  [data-testid="collapsedControl"],
-  [data-testid="stSidebarCollapsedControl"]{
-    visibility: visible !important;
-  }
-  [data-testid="collapsedControl"] button,
-  [data-testid="stSidebarCollapsedControl"] button,
-  [data-testid="collapsedControl"] button *,
-  [data-testid="stSidebarCollapsedControl"] button *{
-    color:#000 !important;
-    fill:#000 !important;
-    stroke:#000 !important;
-  }
-  [data-testid="collapsedControl"] button svg,
-  [data-testid="stSidebarCollapsedControl"] button svg{
-    color:#000 !important;
-    fill:none !important;
-    stroke:#000 !important;
-    stroke-width:2.5 !important;
-  }
-  .block-container{ padding-top: 2.2rem; max-width: 52rem; }
-  .stApp, .stMarkdown, p, li, label, h1, h2, h3{ color: var(--fg); }
-  code{
-    background: var(--secondary) !important; color: var(--fg) !important;
-    padding:.05rem .3rem; border-radius:.25rem; font-size:.85em;
-  }
-  hr{ border-color: var(--border) !important; }
-
-  [data-testid="stSidebar"]{
-    background: var(--card); border-right: 1px solid var(--border);
-  }
-  [data-testid="stSidebar"] .block-container{ padding-top: 1.4rem; }
-  [data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p{
-    color: var(--muted-fg) !important; font-size:.78rem;
-  }
-
-  .stButton > button{
-    background: var(--card); color: var(--fg);
-    border:1px solid var(--border); border-radius: var(--radius);
-    font-weight:600; font-size:.92rem; letter-spacing:.005em;
-    padding:.6rem 1.15rem; min-height:2.85rem; line-height:1.2;
-    transition:transform .16s ease, background .16s ease, border-color .16s ease, box-shadow .16s ease;
-    box-shadow: var(--shadow);
-  }
-  .stButton > button:hover{
-    border-color: var(--primary); color: var(--primary);
-    background: color-mix(in oklch, var(--primary) 7%, var(--card));
-    transform:translateY(-1px); box-shadow:0 5px 14px color-mix(in oklch,var(--fg) 10%,transparent);
-  }
-  .stButton > button:active{ transform:translateY(0) scale(.98); }
-  .stButton > button[kind="primary"]{
-    background: var(--primary); color: var(--primary-fg);
-    border-color: var(--primary);
-    box-shadow:0 4px 12px color-mix(in oklch,var(--primary) 22%,transparent);
-  }
-
-  .stApp .st-key-switch_user button{
-    height:2.5rem !important; min-height:2.5rem !important;
-    max-height:2.5rem !important; width:100% !important;
-    padding:0 .6rem !important; font-size:.85rem !important; line-height:1 !important;
-    font-weight:600; border-radius:999px;
-    display:inline-flex; align-items:center; justify-content:center;
-    white-space:nowrap; overflow:hidden;
-    background: var(--card); color: var(--fg);
-    border:1px solid var(--border);
-  }
-  .stApp .st-key-switch_user button div{ flex:0 0 auto !important; }
-  .stApp .st-key-switch_user button p{ margin:0 !important; }
-
-  /* Light / Dark sliding toggle: bold active label, blue pill track,
-     white knob, crater dots on the empty side of the track.
-     NOTE: st.toggle renders as data-testid="stCheckbox" (not stToggle). */
-  .ld-label{
-    font-weight:800; font-size:.92rem; letter-spacing:-.01em;
-    color:var(--muted-fg); text-align:right; line-height:1.2;
-    white-space:nowrap; margin:0; padding:.2rem 0;
-  }
-  .ld-label.right{ text-align:left; }
-  .ld-label.on{ color:var(--fg); }
-  /* tight toggle row: minimal column gaps */
-  [data-testid="stHorizontalBlock"]:has(.st-key-theme_toggle_sidebar),
-  [data-testid="stHorizontalBlock"]:has(.st-key-theme_toggle_login){
-    gap:.3rem !important;
-  }
-  [data-testid="stCheckbox"]{
-    display:flex !important; justify-content:center !important;
-    margin:0 !important; padding:0 !important;
-  }
-  [data-testid="stCheckbox"] label{
-    margin:0 !important; padding:0 !important;
-    display:flex !important; align-items:center !important;
-  }
-  /* track = the label's direct div (excluding the hidden widget label) */
-  [data-testid="stCheckbox"] label > div:not([data-testid="stWidgetLabel"]){
-    background:#5b9dff !important; border:none !important;
-    width:3rem !important; min-width:3rem !important;
-    height:1.65rem !important; min-height:1.65rem !important;
-    margin:0 !important; padding:3px !important;
-    border-radius:999px !important; position:relative !important;
-    display:flex !important; align-items:center !important;
-    box-shadow:inset 0 1px 3px rgba(15,23,42,.28) !important;
-  }
-  /* knob */
-  [data-testid="stCheckbox"] label > div:not([data-testid="stWidgetLabel"]) > div{
-    background:#fff !important;
-    width:calc(1.65rem - 6px) !important; height:calc(1.65rem - 6px) !important;
-    min-width:calc(1.65rem - 6px) !important;
-    border-radius:999px !important; margin:0 !important; padding:0 !important;
-    transform:translateX(0) !important;
-    transition:transform 150ms ease !important;
-    box-shadow:0 1px 2px rgba(15,23,42,.35) !important;
-  }
-  [data-testid="stCheckbox"] label[data-selected] > div:not([data-testid="stWidgetLabel"]) > div{
-    transform:translateX(calc(3rem - 1.65rem)) !important;
-  }
-  /* crater dots on the empty side of the track */
-  [data-testid="stCheckbox"] label > div:not([data-testid="stWidgetLabel"])::after{
-    content:''; position:absolute; top:0; bottom:0; width:1.5rem;
-    right:.2rem; pointer-events:none;
-    background-image:
-      radial-gradient(circle, rgba(255,255,255,.95) 2.4px, transparent 2.9px),
-      radial-gradient(circle, rgba(255,255,255,.9) 1.4px, transparent 1.9px);
-    background-repeat:no-repeat;
-    background-position:78% 32%, 55% 68%;
-  }
-  [data-testid="stCheckbox"] label[data-selected] > div:not([data-testid="stWidgetLabel"])::after{
-    right:auto; left:.2rem;
-    background-position:22% 32%, 45% 68%;
-  }
-
-  [data-testid^="stChatMessageAvatar"], .stChatMessageAvatar{
-    background: var(--secondary) !important;
-    border:1px solid var(--border) !important;
-    font-size:1.12rem;
-  }
-
-  .idlist{ display:flex; flex-wrap:wrap; gap:.35rem; margin:.1rem 0 .4rem; }
-  .idlist code{
-    background: var(--secondary) !important; color: var(--fg) !important;
-    border:1px solid var(--border); border-radius:.35rem;
-    padding:.14rem .45rem; font-size:.78rem;
-  }
-  .idnone{ color: var(--muted-fg); font-size:.82rem; }
-
-  [data-testid="stExpander"]{
-    background: var(--card); border:1px solid var(--border);
-    border-radius: var(--radius);
-  }
-  [data-testid="stExpander"] summary{ color: var(--fg) !important; font-size:.87rem; }
-  [data-testid="stExpander"] summary p,
-  [data-testid="stExpander"] summary span,
-  [data-testid="stExpander"] summary svg{ color: var(--fg) !important; fill: currentColor; }
-
-  /* Chat input: force every layer (bottom bar, wrapper, textarea,
-     send button) onto theme vars. Streamlit paints the bottom container
-     and inner wrappers white by default, which leaks through in dark mode. */
-  [data-testid="stBottom"],
-  [data-testid="stBottomBlockContainer"],
-  [data-testid="stChatInput"]{
-    background: var(--bg) !important; border-color: transparent !important;
-  }
-  [data-testid="stBottom"] > div,
-  [data-testid="stBottomBlockContainer"] > div{
-    background: var(--bg) !important;
-  }
-  [data-testid="stChatInput"] > div,
-  [data-testid="stChatInput"] form,
-  [data-testid="chatInput"]{
-    background: var(--card) !important; border-color: var(--border) !important;
-  }
-  [data-testid="stChatInput"]{
-    background: var(--card) !important;
-    border:1px solid var(--border) !important;
-    border-radius: var(--radius) !important;
-    box-shadow: var(--shadow);
-  }
-  [data-testid="stChatInput"]:focus-within{
-    border-color: var(--primary) !important;
-    box-shadow:0 0 0 1px var(--primary);
-  }
-  [data-testid="stChatInput"] textarea{
-    background: transparent !important;
-    color: var(--fg) !important; font-size:.95rem;
-    caret-color: var(--primary);
-  }
-  [data-testid="stChatInput"] textarea::placeholder{ color: var(--muted-fg) !important; opacity:1; }
-  /* send (arrow) button inside the chat input: fixed circle, centred icon.
-     The stray inner square in dark mode comes from inner spans/svg
-     inheriting button borders/backgrounds, so strip them explicitly. */
-  [data-testid="stChatInput"] > div{
-    display:flex !important; align-items:center !important; gap:.5rem;
-  }
-  [data-testid="stChatInput"] button{
-    flex:0 0 2rem !important; width:2rem !important; height:2rem !important;
-    min-height:0 !important; min-width:2rem !important;
-    padding:0 !important; margin:0 !important; align-self:center !important;
-    display:inline-flex !important; align-items:center !important;
-    justify-content:center !important;
-    background: var(--secondary) !important; color: var(--muted-fg) !important;
-    border:1px solid var(--border) !important; border-radius:50% !important;
-    box-shadow:none !important; outline:none !important;
-  }
-  [data-testid="stChatInput"] button:hover:not(:disabled){
-    background: var(--primary) !important; color: var(--primary-fg) !important;
-    border-color: var(--primary) !important; transform:none;
-  }
-  [data-testid="stChatInput"] button:disabled{
-    opacity:.55;
-  }
-  [data-testid="stChatInput"] button span,
-  [data-testid="stChatInput"] button div,
-  [data-testid="stChatInput"] button svg,
-  [data-testid="stChatInput"] button svg *{
-    background:transparent !important; border:none !important;
-    box-shadow:none !important; outline:none !important;
-  }
-  [data-testid="stChatInput"] button svg{
-    width:1rem !important; height:1rem !important; display:block !important;
-    flex:0 0 auto !important;
-    fill:none !important; stroke:currentColor !important;
-    stroke-width:2.2 !important; stroke-linecap:round !important;
-    stroke-linejoin:round !important;
-  }
-  /* Chrome autofill / webkit background fix inside chat input */
-  [data-testid="stChatInput"] textarea:-webkit-autofill,
-  [data-testid="stChatInput"] textarea:-webkit-autofill:hover,
-  [data-testid="stChatInput"] textarea:-webkit-autofill:focus{
-    -webkit-text-fill-color: var(--fg) !important;
-    -webkit-box-shadow:0 0 0 100px var(--card) inset !important;
-  }
-
-  .brand{ display:flex; align-items:center; gap:.55rem; margin-bottom:.15rem; }
-  .brand-mark{
-    width:1.75rem; height:1.75rem; border-radius:.5rem;
-    background: var(--primary); color: var(--primary-fg);
-    display:flex; align-items:center; justify-content:center;
-    font-size:.95rem; flex:0 0 auto;
-    animation:pulse-soft 3.2s ease-in-out infinite;
-  }
-  .brand-name{ font-weight:700; font-size:1rem; letter-spacing:-.01em; }
-  .brand-sub{ color:var(--muted-fg); font-size:.78rem; margin:0 0 .2rem 2.3rem; }
-
-  .hero{ text-align:center; padding: 1.8rem 0 1.5rem; }
-  .hero, .kpi, .ucard, .src, [data-testid="stChatMessage"]{ animation:rise-in .35s ease both; }
-  .hero h1{
-    font-size: 2.3rem; font-weight:700; letter-spacing:-.025em;
-    margin:0 0 .5rem; color: var(--fg);
-  }
-  .hero p{ color: var(--muted-fg); font-size:1rem; margin:0 auto; max-width:34rem; }
-  .eyebrow{
-    color:var(--primary); font-size:.7rem; font-weight:700;
-    text-transform:uppercase; letter-spacing:.12em; margin-bottom:.65rem;
-  }
-  .chip, .chip-muted{
-    display:inline-flex; align-items:center; border:1px solid var(--border);
-    border-radius:999px; padding:.25rem .55rem; margin:.15rem .2rem .15rem 0;
-    font-size:.73rem; font-weight:600; background:var(--secondary);
-  }
-  .chip{ color:var(--primary); }
-  .chip-muted{ color:var(--muted-fg); }
-  .stButton > button:focus-visible{
-    outline:2px solid var(--primary); outline-offset:2px;
-  }
-  .kpi{ min-height:7.2rem; }
-  @media (max-width:640px){
-    .block-container{ padding:1.4rem 1rem; }
-    .hero{ padding:1.2rem 0; }
-    .hero h1{ font-size:1.85rem; }
-    .kpi .v{ font-size:1.25rem; }
-  }
-
-  .sec{
-    font-size:.68rem; font-weight:700; letter-spacing:.1em;
-    color:var(--muted-fg); text-transform:uppercase; margin:.1rem 0 .55rem;
-  }
-  .ucard{
-    border:1px solid var(--border); border-radius:var(--radius);
-    background:var(--card); padding:.85rem .95rem; box-shadow: var(--shadow);
-    transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
-  }
-  .ucard:hover{ transform:translateY(-2px); border-color:var(--primary); box-shadow:0 8px 20px color-mix(in oklch,var(--fg) 10%,transparent); }
-  .ucard .nm{ font-weight:650; font-size:1rem; }
-  .ucard .rl{ color:var(--primary); font-size:.83rem; font-weight:600; margin-top:.1rem; }
-  .ucard .dp{ color:var(--muted-fg); font-size:.79rem; margin-top:.05rem; }
-  .ucard .sc{ margin-top:.55rem; }
-
-  .idbox{
-    border:1px solid var(--border); border-radius:var(--radius);
-    background: var(--bg); padding:.7rem .8rem;
-  }
-  .idbox .nm{ font-weight:650; font-size:.94rem; }
-  .idbox .rl{ color:var(--primary); font-size:.8rem; font-weight:600; }
-  .idbox .dp{ color:var(--muted-fg); font-size:.76rem; margin-top:.1rem; }
-
-  [data-testid="stChatMessage"]{
-    background: var(--card); border:1px solid var(--border);
-    border-radius: var(--radius); padding:.9rem 1rem; margin-bottom:.7rem;
-    box-shadow: var(--shadow); transition:transform .18s ease, box-shadow .18s ease;
-  }
-  [data-testid="stChatMessage"]:hover{ transform:translateY(-1px); box-shadow:0 7px 18px color-mix(in oklch,var(--fg) 9%,transparent); }
-  [data-testid="stChatMessage"] p{ line-height:1.62; }
-  [data-testid="stChatMessage"] [data-testid="stMarkdownContainer"] h2,
-  [data-testid="stChatMessage"] [data-testid="stMarkdownContainer"] h3{
-    font-size:1.02rem; margin:.7rem 0 .3rem; font-weight:650;
-  }
-  [data-testid="stChatMessage"] ul{ margin:.3rem 0; padding-left:1.2rem; }
-  [data-testid="stChatMessage"] li{ margin:.15rem 0; }
-  [data-testid="stChatMessage"] table{
-    border-collapse:collapse; width:100%; font-size:.85rem; margin:.5rem 0;
-  }
-  [data-testid="stChatMessage"] th, [data-testid="stChatMessage"] td{
-    border:1px solid var(--border); padding:.3rem .55rem; text-align:left;
-  }
-  [data-testid="stChatMessage"] th{ background: var(--secondary); }
-
-  .refusal{
-    border:1px solid color-mix(in oklch, var(--destructive) 34%, transparent);
-    background: color-mix(in oklch, var(--destructive) 9%, transparent);
-    border-radius: var(--radius); padding:.85rem 1rem;
-  }
-  .refusal b{ color: var(--destructive); display:block; margin-bottom:.2rem; }
-
-  .src{
-    border:1px solid var(--border); border-radius:var(--radius);
-    background:var(--bg); padding:.5rem .7rem; margin-bottom:.4rem;
-  }
-  .src .t{ font-weight:620; font-size:.87rem; }
-  .src .m{ color:var(--muted-fg); font-size:.76rem; margin-top:.1rem; }
-  .stats{ color:var(--muted-fg); font-size:.74rem; margin-top:.55rem; }
-
-  .guard{
-    border:1px solid var(--border); border-left:3px solid var(--primary);
-    border-radius:.4rem; padding:.5rem .7rem; font-size:.76rem;
-    color:var(--muted-fg); background:var(--bg);
-  }
-  .dot-row{
-    display:flex; align-items:center; gap:.4rem;
-    font-size:.78rem; color:var(--muted-fg);
-  }
-  .dot{ width:.5rem; height:.5rem; border-radius:999px; display:inline-block; }
-  .dot-ok{ background:#22c55e; }
-  .dot-bad{ background:#ef4444; }
-
-  .evrow{
-    display:flex; justify-content:space-between; align-items:baseline;
-    font-size:.79rem; padding:.16rem 0; color:var(--muted-fg);
-  }
-  .evrow b{ color:var(--fg); font-weight:620; font-variant-numeric:tabular-nums; }
-  .evhead{
-    font-size:.68rem; font-weight:700; letter-spacing:.08em;
-    text-transform:uppercase; color:var(--muted-fg);
-    margin:.6rem 0 .2rem; padding-top:.45rem;
-    border-top:1px solid var(--border);
-  }
-  .evtally{ display:flex; gap:.4rem; margin:.15rem 0 .5rem; }
-  .evpill{
-    flex:1; text-align:center; border:1px solid var(--border);
-    border-radius:.4rem; padding:.35rem .2rem; background:var(--bg);
-  }
-  .evpill .n{ font-size:1.05rem; font-weight:700; display:block;
-    font-variant-numeric:tabular-nums; }
-  .evpill .l{ font-size:.62rem; text-transform:uppercase;
-    letter-spacing:.06em; color:var(--muted-fg); }
-  .evpill.ok .n{ color:#16a34a; }
-  .evpill.bad .n{ color: var(--destructive); }
-  .evpill.warn .n{ color:#d97706; }
-  .evempty{
-    border:1px dashed var(--border); border-radius:var(--radius);
-    padding:.7rem .8rem; font-size:.78rem; color:var(--muted-fg);
-    background:var(--bg);
-  }
-  .kpi{
-    border:1px solid var(--border); border-radius:var(--radius);
-    background:var(--card); padding:.7rem .85rem; box-shadow:var(--shadow);
-  }
-  .kpi .l{ font-size:.68rem; text-transform:uppercase; letter-spacing:.07em;
-    color:var(--muted-fg); }
-  .kpi .v{ font-size:1.5rem; font-weight:700; letter-spacing:-.02em;
-    font-variant-numeric:tabular-nums; }
-  .kpi .s{ font-size:.72rem; color:var(--muted-fg); }
-
-  [data-testid="stStatusWidget"]{ display:none; }
-"""
-
-
-def _css(theme: str) -> str:
-    return (f"<style>:root{{{THEME_VARS.get(theme, THEME_VARS['light'])}"
-            f"--radius:0.5rem;}}{BASE_CSS}</style>")
+    st.iframe(html, height=40, width="content")
 
 
 def _base_url() -> str:
@@ -535,10 +157,17 @@ def _init_state() -> None:
     st.session_state.setdefault("messages", [])
     st.session_state.setdefault("user", None)
     st.session_state.setdefault("pending", None)
+    st.session_state.setdefault("active_question", None)
+    st.session_state.setdefault("active_history", None)
     st.session_state.setdefault("theme", "light")
     st.session_state.setdefault("seller_choice", 0)
     st.session_state.setdefault("history_turns", MAX_UI_TURNS)
     st.session_state.setdefault("view", "chat")
+    if st.session_state.get("demo_login_version") != DEMO_LOGIN_VERSION:
+        # Require existing demo sessions to pass through the new login screen.
+        st.session_state.user = None
+        st.session_state.messages = []
+        st.session_state.demo_login_version = DEMO_LOGIN_VERSION
 
 
 def _theme_toggle(key: str) -> None:
@@ -571,10 +200,13 @@ def _theme_toggle(key: str) -> None:
 def _reset_conversation() -> None:
     st.session_state.messages = []
     st.session_state.pending = None
+    st.session_state.active_question = None
+    st.session_state.active_history = None
 
 
 def _sign_out() -> None:
     st.session_state.user = None
+    st.session_state.demo_login_version = DEMO_LOGIN_VERSION
     st.session_state.view = "chat"
     st.session_state.seller_choice = 0
     st.session_state.pop("seller_select", None)
@@ -617,15 +249,29 @@ def _seller_filter(options: list[str]) -> list[str] | None:
 
 def _load_users(base_url: str) -> list[dict]:
     try:
-        users = api_client.list_users(base_url)
+        users = api_client.list_demo_users(base_url)
     except api_client.ApiError as exc:
         st.error(str(exc))
         st.caption("Start the service with `python answering/serve.py`")
+        st.caption("For a local synthetic-data demo, set `API_DEMO_MODE=true`. "
+                   "The selector is not authentication.")
         st.stop()
     if not users:
         st.error("No selectable identities were returned.")
         st.stop()
     return users
+
+
+def _demo_password(user: dict) -> str:
+    """Public password pattern for the explicitly loopback-only demo."""
+    first_name = str(user.get("name") or "").strip().split()
+    return f"{first_name[0].casefold()}@login" if first_name else ""
+
+
+def _valid_demo_password(user: dict, password: str) -> bool:
+    expected = _demo_password(user)
+    supplied = str(password or "").strip().casefold()
+    return bool(expected) and hmac.compare_digest(expected, supplied)
 
 
 def _login_sidebar(base_url: str) -> None:
@@ -637,17 +283,17 @@ def _login_sidebar(base_url: str) -> None:
         st.markdown('<div class="sec">How it works</div>',
                     unsafe_allow_html=True)
         st.markdown(
-            '<div class="ucard"><div class="rl">1 &middot; Pick an identity</div>'
-            '<div class="dp">Each one maps to a role, department and seller '
-            'portfolio.</div></div>', unsafe_allow_html=True)
+            '<div class="ucard"><div class="rl">1. Choose your account</div>'
+            '<div class="dp">Select a sample account and enter its demo password.</div></div>',
+            unsafe_allow_html=True)
         st.markdown(
-            '<div class="ucard"><div class="rl">2 &middot; Ask a question</div>'
-            '<div class="dp">Retrieval runs only over documents that identity '
-            'is authorized to read.</div></div>', unsafe_allow_html=True)
+            '<div class="ucard"><div class="rl">2. Ask a question</div>'
+            '<div class="dp">Ask about sellers, policies, incidents, or operations.</div></div>',
+            unsafe_allow_html=True)
         st.markdown(
-            '<div class="ucard"><div class="rl">3 &middot; Get a cited answer</div>'
-            '<div class="dp">Every claim is grounded in verified sources with '
-            'page-level citations.</div></div>', unsafe_allow_html=True)
+            '<div class="ucard"><div class="rl">3. Review the answer</div>'
+            '<div class="dp">Open the cited sources to check supporting pages.</div></div>',
+            unsafe_allow_html=True)
 
         st.write("")
         st.markdown('<div class="sec">Service status</div>',
@@ -663,44 +309,50 @@ def _login_sidebar(base_url: str) -> None:
         st.divider()
         _theme_toggle("theme_toggle_login")
         st.markdown(
-            '<div class="guard">&#128274; In production this identity '
-            'selector would be an authenticated SSO session. The server '
-            'derives permissions from the identity and never trusts a '
-            'client-supplied scope.</div>', unsafe_allow_html=True)
+            '<div class="guard">Local demo accounts use sample identities '
+            'and published passwords.</div>',
+            unsafe_allow_html=True)
 
 
 def _login_screen(base_url: str) -> None:
     st.markdown(
-        '<div class="hero"><div class="eyebrow">Your enterprise knowledge workspace</div>'
-        '<h1>Find answers. Know the source.</h1>'
-        '<p>A permission-aware assistant. Every answer is drawn only from the '
-        'documents your identity is authorized to read.</p></div>',
+        '<div class="hero"><div class="eyebrow">Permission-aware knowledge assistant</div>'
+        '<h1>Knowledge answers, scoped to your access.</h1>'
+        '<p>Choose an account to explore the knowledge workspace.</p></div>',
         unsafe_allow_html=True)
 
-    st.markdown('<div class="sec">Choose an identity to continue</div>',
-                unsafe_allow_html=True)
-
     users = _load_users(base_url)
-    for row_start in range(0, len(users), 2):
-        columns = st.columns(2, gap="medium")
-        for column, user in zip(columns, users[row_start:row_start + 2]):
-            with column:
-                st.markdown(
-                    f'<div class="ucard"><div class="nm">{user["name"]}</div>'
-                    f'<div class="rl">{user["role"]}</div>'
-                    f'<div class="dp">{user["department"]} &middot; '
-                    f'{user["user_id"]}</div>'
-                    f'<div class="sc">{_chips(user.get("seller_scope") or [])}'
-                    f'</div></div>', unsafe_allow_html=True)
-                if st.button(f"Continue as {user['name'].split()[0]}",
-                             key=f"login_{user['user_id']}",
-                             use_container_width=True):
-                    st.session_state.user = user
+    user_by_id = {user["user_id"]: user for user in users}
+    _, center_column, _ = st.columns([1, 1.5, 1], gap="large")
+    with center_column:
+        with st.container(border=True):
+            st.markdown(
+                '<div class="login-kicker">Local demo access</div>'
+                '<div class="login-title">Welcome back</div>'
+                '<div class="login-copy">Select your sample account and enter '
+                'the demo password.</div>', unsafe_allow_html=True)
+            with st.form("demo_login_form", clear_on_submit=False):
+                selected_id = st.selectbox(
+                    "Demo account", list(user_by_id),
+                    format_func=lambda user_id: (
+                        f"{user_by_id[user_id]['name']} · "
+                        f"{user_by_id[user_id]['role']}"))
+                password = st.text_input("Password", type="password",
+                                         placeholder="firstname@login")
+                submitted = st.form_submit_button(
+                    "Continue", type="primary", use_container_width=True)
+            if submitted:
+                selected_user = user_by_id[selected_id]
+                if _valid_demo_password(selected_user, password):
+                    st.session_state.user = selected_user
                     st.session_state.seller_choice = 0
                     st.session_state.pop("seller_select", None)
                     _reset_conversation()
                     st.rerun()
-        st.write("")
+                st.error("That demo password does not match the selected account.")
+            with st.expander("Show demo passwords"):
+                for user in users:
+                    st.text(f"{user['name']}  ·  {_demo_password(user)}")
 
 
 def _sidebar(user: dict, base_url: str) -> None:
@@ -775,19 +427,27 @@ def _render_sources(sources: list[dict]) -> None:
         return
     with st.expander(f"\N{PAGE FACING UP} Sources ({len(sources)})"):
         for source in sources:
-            meta = [f"<code>{source['document_id']}</code>"]
+            if not isinstance(source, dict):
+                continue
+            # These values come from document metadata. Render them as plain
+            # text so hostile IDs, labels, and page strings cannot become HTML
+            # or Markdown links.
+            label = html.escape(str(source.get("label") or "Untitled source"))
+            details = [f"Document ID: {source.get('document_id', 'unknown')}"]
             if source.get("seller_id"):
-                meta.append(f"Seller {source['seller_id']}")
-            if source.get("pages"):
-                pages = ", ".join(str(p) for p in source["pages"])
-                label = "Page" if len(source["pages"]) == 1 else "Pages"
-                meta.append(f"{label} {pages}")
-            if source.get("relevance") is not None:
-                meta.append(f"relevance {source['relevance']:.2f}")
+                details.append(f"Seller: {source['seller_id']}")
+            pages = source.get("pages")
+            if isinstance(pages, (list, tuple)) and pages:
+                page_label = "Page" if len(pages) == 1 else "Pages"
+                details.append(f"{page_label}: {', '.join(map(str, pages))}")
+            relevance = source.get("relevance")
+            if isinstance(relevance, (int, float)) and math.isfinite(relevance):
+                details.append(f"Relevance: {relevance:.2f}")
+            details_text = html.escape(" · ".join(map(str, details)))
             st.markdown(
-                f'<div class="src"><div class="t">&#128196; '
-                f'{html.escape(_safe(source.get("label", "")))}</div>'
-                f'<div class="m">{" &middot; ".join(meta)}</div></div>',
+                f'<div class="source-item"><div class="source-title">'
+                f'<span aria-hidden="true">📄</span> {label}</div>'
+                f'<div class="source-meta">{details_text}</div></div>',
                 unsafe_allow_html=True)
 
 
@@ -1067,17 +727,20 @@ def _evaluation_screen(user: dict, base_url: str) -> None:
             f"cases, {dataset.get('security_cases', 0)} security relevant. "
             "The dataset is ground truth and is never modified by a run.")
 
+    if not payload.get("has_results"):
+        st.info("No evaluation results are available.")
+        return
+    if not payload.get("summary"):
+        st.info(f"Saved report {payload.get('run_id') or '(checkpoint)'} contains "
+                f"{payload.get('total_cases', 0)} recorded cases. Detailed metrics, "
+                "answers and evidence require an authenticated operator account.")
+        return
+
     with st.expander("Testing instructions"):
         st.markdown("Start with the offline checks in **guide.md**. Preview a selection with:")
         st.code(r".\.venv\Scripts\python.exe -m evaluation.runner --plan --only E001,E033,E056", language="powershell")
         st.caption("Live runs are started from your terminal and use provider quota. "
                    "Refreshing this page only reads saved results.")
-
-    if not payload.get("has_results"):
-        st.markdown(
-            '<div class="evempty">No evaluation results available. Run the '
-            'evaluation to generate results.</div>', unsafe_allow_html=True)
-        return
 
     summary = payload.get("summary") or {}
     retrieval = summary.get("retrieval") or {}
@@ -1093,7 +756,7 @@ def _evaluation_screen(user: dict, base_url: str) -> None:
     if selected_cases != total_cases:
         st.warning(f"Limited run: {selected_cases} of {total_cases} golden cases were "
                    "selected. Its metrics are not a full-system score.")
-    if payload.get("schema_version") != 2:
+    if payload.get("schema_version") != 3:
         st.warning("Legacy report: these results predate the evaluation fixes. "
                    "Keep them as a baseline and start a new run when quota is available.")
     elif payload.get("partial") or summary.get("errors"):
@@ -1151,142 +814,115 @@ def _evaluation_screen(user: dict, base_url: str) -> None:
         f"generation {generation.get('scored_cases', 0)}; "
         f"security {security.get('scored_cases', 0)}. "
         "Metrics use only measured cases; N/A means unmeasured or not applicable.")
-    if not payload.get("reports_enabled"):
-        st.info("Case answers span multiple identities. Detailed reports are disabled "
-                "by default; see guide.md for trusted local operator access.")
-        return
-    try:
-        detail = api_client.evaluation_matrix(base_url, report=payload.get("report_id"))
-    except api_client.ApiError as exc:
-        st.error(str(exc))
-        return
-    frame = _matrix_frame(detail.get("matrix", []))
-    if frame.empty:
-        st.info("The run produced no rows.")
-        return
-
-    st.markdown('<div class="sec">Evaluation matrix</div>',
-                unsafe_allow_html=True)
-    filters = st.columns(3)
-    outcome = filters[0].selectbox(
-        "Show", ["All", "Passed", "Failed", "Errors", "Security relevant",
-                 "Retrieval scored", "Generation scored"],
-        key="eval_outcome")
-    category = filters[1].selectbox(
-        "Category", ["All categories"] + sorted(frame["Category"].unique()),
-        key="eval_category")
-    who = filters[2].selectbox(
-        "User", ["All users"] + sorted(frame["User"].unique()),
-        key="eval_user")
-
-    filtered = _filter_matrix(frame, outcome, category, who)
-    st.caption(f"{len(filtered)} of {len(frame)} cases")
-    if filtered.empty:
-        st.info("No cases match these filters. Try a different outcome, category or user.")
-        return
-    st.dataframe(
-        filtered,
-        use_container_width=True,
-        hide_index=True,
-        column_config={
-            "Recall@K": st.column_config.ProgressColumn(format="%.2f", min_value=0, max_value=1),
-            "Precision@K": st.column_config.ProgressColumn(format="%.2f", min_value=0, max_value=1),
-            "MRR": st.column_config.NumberColumn(format="%.2f"),
-            "Groundedness": st.column_config.ProgressColumn(format="%.2f", min_value=0, max_value=1),
-            "Relevancy": st.column_config.NumberColumn(format="%.2f"),
-            "Correctness": st.column_config.NumberColumn(format="%.2f"),
-        },
-    )
-
-    by_category = summary.get("by_category") or {}
-    if by_category:
-        with st.expander("Results by category"):
-            st.dataframe(
-                pd.DataFrame([
-                    {"Category": name, "Total": stats["total"],
-                     "Passed": stats["passed"], "Failed": stats["failed"],
-                     "Errors": stats["errors"]}
-                    for name, stats in sorted(by_category.items())
-                ]), use_container_width=True, hide_index=True)
-
-    st.markdown('<div class="sec">Case detail</div>', unsafe_allow_html=True)
-    options = list(filtered["ID"]) if not filtered.empty else list(frame["ID"])
-    chosen = st.selectbox("Inspect a case", options, key="eval_case")
-    _render_case_detail(detail.get("results", []), chosen)
+    st.info("Detailed evaluation answers and evidence require an authenticated "
+            "operator account. The local demo identity selector does not grant access.")
+    return
 
 
-def _example_prompts(scope: list[str]) -> list[str]:
-    return ([SELLER_PROMPTS[s] for s in scope if s in SELLER_PROMPTS]
-            + ORG_PROMPTS)[:4]
+def _example_prompts(user: dict) -> list[str]:
+    scope = user.get("seller_scope") or []
+    prompts = ([SELLER_PROMPTS[s] for s in scope if s in SELLER_PROMPTS]
+               + DEPARTMENT_PROMPTS.get(user.get("department"), ORG_PROMPTS))
+    return list(dict.fromkeys(prompts))[:4]
 
 
 def _history_payload() -> list[dict]:
     return [{"role": m["role"], "content": m["content"]}
             for m in st.session_state.messages
-            if not m.get("failed")][-st.session_state.history_turns:]
+            if not m.get("failed") and not m.get("partial")
+            and not m.get("refused")][-st.session_state.history_turns:]
 
 
 def _strip_inline_sources(text: str) -> str:
-    marker = "\nSources:\n"
-    index = text.find(marker)
-    while index != -1:
-        after = text[index + len(marker):]
-        if not after.strip() or after.lstrip().startswith("- "):
-            return text[:index].rstrip()
-        index = text.find(marker, index + 1)
-    if text.rstrip().endswith("Sources:"):
-        return text.rstrip()[:-len("Sources:")].rstrip()
+    # Streamlit's Markdown renderer treats raw HTML in table cells as text.
+    # Convert model-produced line breaks to readable inline separators first.
+    text = re.sub(r"<br\s*/?>", " · ", text, flags=re.IGNORECASE)
+    # The model occasionally emits this drafting label despite the prompt.
+    # Source details are already shown in the dedicated Sources control.
+    text = re.sub(r"\s*\[Evidence\]", "", text, flags=re.IGNORECASE)
+    for marker in ("\nSources:\n", "\nEvidence available in context:\n"):
+        index = text.find(marker)
+        while index != -1:
+            after = text[index + len(marker):]
+            if not after.strip() or after.lstrip().startswith("- "):
+                return text[:index].rstrip()
+            index = text.find(marker, index + 1)
+    if text.rstrip().endswith(("Sources:", "Evidence available in context:")):
+        return text.rstrip().rsplit("\n", 1)[0].rstrip()
     return text
 
 
-def _deltas(events, captured: dict):
-    for event in events:
-        kind = event.get("type")
-        if kind == "delta":
-            yield event.get("text", "")
-        elif kind == "meta":
-            captured["meta"] = event
-        elif kind == "done":
-            captured["done"] = event
-        elif kind == "error":
-            captured["error"] = event.get("message", "Generation failed.")
-            return
+NO_EVIDENCE_MESSAGE = (
+    "I couldn't find relevant information in the sources available for this "
+    "account. If you expected an answer, ask your administrator to review "
+    "which sources are available to your role."
+)
+NO_EVIDENCE_PATTERN = re.compile(
+    r"(?is)^\s*(?:the\s+)?(?:provided\s+)?(?:passages|context|sources)\b"
+    r".{0,180}\b(?:do not|don't|does not|doesn't)\b"
+    r".{0,80}\b(?:contain|include|mention|describe)\b"
+)
+
+
+def _completion_label(outcome: str | None) -> str:
+    return {
+        "answer": "Answer completed.",
+        "partial": "Partial answer: generation ended before completion; this answer is not in conversation memory.",
+        "refusal": "Request refused by the authorization policy.",
+        "interrupted": "Answer interrupted: the connection ended before completion.",
+        "error": "Answer failed and is not part of the conversation memory.",
+    }.get(outcome, "Answer failed and is not part of the conversation memory.")
 
 
 def _stream_answer(user: dict, base_url: str, question: str,
                    seller_filter: list[str] | None, history: list[dict]) -> dict:
-    events = api_client.ask_stream(user["user_id"], question,
+    events = api_client.ask_demo_stream(user["user_id"], question,
                                    conversation=history,
                                    seller_filter=seller_filter,
                                    base_url=base_url)
     captured: dict = {}
-    meta = None
     for event in events:
-        if event.get("type") == "meta":
-            meta = event
+        kind = event.get("type")
+        if kind == "meta":
             captured["meta"] = event
+        elif kind == "delta":
+            captured.setdefault("deltas", []).append(event.get("text", ""))
+        elif kind == "done":
+            captured["done"] = event
+        elif kind == "error":
+            captured["error"] = event.get("message", "Generation failed.")
             break
-
-    if meta is not None and not meta.get("answered", True):
-        for _ in events:
-            pass
-        return {"answer": "", "meta": meta, "refused": True}
-
-    answer = st.write_stream(_deltas(events, captured))
-    answer = _strip_inline_sources(_safe(answer))
+        else:
+            captured["error"] = "The service returned an invalid stream event."
+            break
     if captured.get("error"):
         st.error(_safe(captured["error"]))
-        return {"answer": answer, "meta": captured.get("meta", {}),
-                "failed": True}
+        return {"answer": "", "meta": captured.get("meta", {}),
+                "outcome": "error", "failed": True,
+                "message": captured["error"]}
     if not captured.get("done"):
         st.error("The connection ended before the answer completed. Please try again.")
-        return {"answer": answer, "meta": captured.get("meta", {}), "failed": True}
-    if not answer.strip():
-        st.error("The assistant returned an empty answer. Please try again.")
-        return {"answer": "", "meta": captured.get("meta", {}), "failed": True}
-    return {"answer": answer,
-            "meta": {**(captured.get("meta") or {}),
-                     **(captured.get("done") or {})}}
+        return {"answer": "", "meta": captured.get("meta", {}),
+                "outcome": "interrupted", "failed": True,
+                "message": "The connection ended before completion."}
+    done = captured["done"]
+    answer = _strip_inline_sources(_safe(done.get("answer", "")))
+    no_evidence = bool(NO_EVIDENCE_PATTERN.search(answer))
+    if no_evidence:
+        answer = NO_EVIDENCE_MESSAGE
+    outcome = done.get("outcome")
+    if outcome not in ("answer", "partial", "refusal"):
+        return {"answer": "", "meta": done, "outcome": "error",
+                "failed": True, "message": "Invalid terminal outcome."}
+    if outcome in ("answer", "partial") and not answer.strip():
+        return {"answer": "", "meta": done, "outcome": "error",
+                "failed": True, "message": "The service returned an empty answer."}
+    meta = dict(done)
+    if no_evidence:
+        meta["sources"] = []
+    return {"answer": answer, "outcome": outcome,
+            "refused": outcome == "refusal", "partial": outcome == "partial",
+            "meta": meta}
 
 
 def _chat_screen(user: dict, base_url: str) -> None:
@@ -1295,6 +931,23 @@ def _chat_screen(user: dict, base_url: str) -> None:
     scope = user.get("seller_scope") or []
     options = _seller_options(scope)
     seller_filter = _seller_filter(options)
+    typed = st.chat_input("Ask about sellers, tickets, incidents or policies",
+                          max_chars=MAX_QUESTION_CHARS)
+    question = st.session_state.active_question
+    if question:
+        history = st.session_state.active_history or []
+        st.session_state.active_question = None
+        st.session_state.active_history = None
+    else:
+        question = typed or st.session_state.pending
+        st.session_state.pending = None
+        if question:
+            # Commit the user turn and remove the welcome suggestions in a
+            # quick rerun before starting any retrieval/model work.
+            st.session_state.active_history = _history_payload()
+            st.session_state.messages.append({"role": "user", "content": question})
+            st.session_state.active_question = question
+            st.rerun()
 
     if st.session_state.messages:
         for index, message in enumerate(st.session_state.messages):
@@ -1306,46 +959,40 @@ def _chat_screen(user: dict, base_url: str) -> None:
                 elif message.get("failed"):
                     if message.get("content"):
                         st.markdown(message["content"])
-                    st.warning("The previous answer failed to generate and is "
-                               "not part of the conversation memory.")
+                    st.warning(_completion_label(message.get("outcome")))
                 else:
                     st.markdown(message["content"])
+                    if message.get("partial"):
+                        st.warning("This answer was cut off by the output limit and is not in conversation memory.")
+                if message["role"] == "assistant":
+                    st.caption(_completion_label(message.get("outcome")))
                 if message["role"] == "assistant":
                     if (not message.get("failed")
                             and not message.get("refused")
+                            and not message.get("partial")
                             and message.get("content")):
                         _copy_button(message["content"],
                                      key=f"copy-{message['id']}")
                     _render_sources(message.get("sources", []))
                     _render_stats(message.get("stats", {}),
                                   message.get("effective_sellers", []))
-    else:
+    elif not question:
         st.markdown(
-            f'<div class="hero"><div class="eyebrow">Ask &middot; Explore &middot; Verify</div>'
-            f'<h1>Hello, {html.escape(user["name"].split()[0])}</h1>'
-            f'<p>Ask about the sellers, tickets, incidents, runbooks and '
-            f'policies you are authorized to read.</p></div>',
+            f'<div class="hero"><div class="eyebrow">Permission-aware knowledge assistant</div>'
+            f'<h1>How can I help, {html.escape(user["name"].split()[0])}?</h1>'
+            f'<p>Ask about the information you are authorized to access.</p></div>',
             unsafe_allow_html=True)
         st.markdown('<div class="sec">Suggested questions</div>',
                     unsafe_allow_html=True)
         prompt_columns = st.columns(2)
-        for index, prompt in enumerate(_example_prompts(scope)):
+        for index, prompt in enumerate(_example_prompts(user)):
             with prompt_columns[index % 2]:
                 if st.button(prompt, key=f"ex_{index}", use_container_width=True):
                     st.session_state.pending = prompt
                     st.rerun()
 
-    typed = st.chat_input("Ask about sellers, tickets, incidents or policies",
-                          max_chars=MAX_QUESTION_CHARS)
-    question = typed or st.session_state.pending
-    st.session_state.pending = None
     if not question:
         return
-
-    history = _history_payload()
-    st.session_state.messages.append({"role": "user", "content": question})
-    with st.chat_message("user", avatar=AVATARS.get("user")):
-        st.markdown(question)
 
     with st.chat_message("assistant", avatar=AVATARS.get("assistant")):
         stage = st.status("Working on your request...", state="running")
@@ -1354,11 +1001,17 @@ def _chat_screen(user: dict, base_url: str) -> None:
         except api_client.ApiError as exc:
             stage.update(label="Service error", state="error")
             st.error(str(exc))
-            return
+            st.session_state.messages.append({
+                "role": "assistant", "content": "", "failed": True,
+                "outcome": "error"})
+            st.rerun()
         except Exception:
             stage.update(label="Something went wrong", state="error")
             st.error("Something went wrong while answering. Please try again.")
-            return
+            st.session_state.messages.append({
+                "role": "assistant", "content": "", "failed": True,
+                "outcome": "error"})
+            st.rerun()
 
         meta = result.get("meta") or {}
         sources = meta.get("sources", []) or []
@@ -1366,25 +1019,36 @@ def _chat_screen(user: dict, base_url: str) -> None:
         effective = meta.get("effective_sellers", []) or []
 
         if result.get("failed"):
-            stage.update(label="Generation failed", state="error")
+            outcome = result.get("outcome", "error")
+            stage.update(label=_completion_label(outcome), state="error")
             st.session_state.messages.append({
                 "role": "assistant", "content": result.get("answer", ""),
-                "failed": True})
-            return
+                "failed": True, "outcome": outcome})
+            st.rerun()
 
-        if not result.get("refused"):
+        if result.get("partial"):
+            stage.update(label="Partial answer", state="error")
+            st.markdown(result["answer"])
+            st.warning(_completion_label("partial"))
+            _render_sources(sources)
+            _render_stats(stats, effective)
+        elif not result.get("refused"):
             stage.update(label="Answer ready", state="complete")
+            st.markdown(result["answer"])
             _copy_button(result["answer"], key="copy-live")
             _render_sources(sources)
             _render_stats(stats, effective)
         else:
             stage.update(label="Access filtered", state="complete")
             _render_refusal()
+        st.caption(_completion_label(result.get("outcome")))
 
     st.session_state.messages.append({
         "role": "assistant",
         "content": result["answer"],
+        "outcome": result.get("outcome"),
         "refused": bool(result.get("refused")),
+        "partial": bool(result.get("partial")),
         "sources": sources,
         "stats": stats,
         "effective_sellers": effective,

@@ -13,7 +13,6 @@ from __future__ import annotations
 
 import re
 import unicodedata
-from collections import Counter
 
 from . import config
 from .models import CleanedDocument
@@ -26,6 +25,7 @@ _SPACES = re.compile(
     r"[ \t\u00a0\u1680\u2000-\u200a\u202f\u205f\u3000]+")
 _BLANK_RUN = re.compile(r"\n{3,}")
 _LIST_MARKER = re.compile(r"^(?:[-*\u2022]|\d+[.)])\s")
+_NUMBERED_SECTION = re.compile(r"^\s*\d+(?:\.\d+)*[.)]?\s+[A-Z][^.!?]{1,100}$")
 
 # Typographic punctuation -> ASCII so indexed text (and hence the LLM prompt
 # and answer) never carries glyphs that mis-render as boxes/mojibake.
@@ -85,14 +85,28 @@ def clean_page_text(text: str) -> list[str]:
 def strip_repeated_lines(pages: list[list[str]]) -> list[list[str]]:
     if len(pages) < config.CLEAN_REPEATED_LINE_MIN_PAGES:
         return pages
-    counter: Counter[str] = Counter()
-    for lines in pages:
-        for line in set(lines):
-            if line and len(line) <= config.CLEAN_REPEATED_LINE_MAX_LEN:
-                counter[line] += 1
-
     threshold = max(2, int(len(pages) * config.CLEAN_REPEATED_LINE_RATIO))
-    repeated = {line for line, count in counter.items() if count >= threshold}
+    edge_occurrences: dict[str, set[tuple[int, str]]] = {}
+    middle_occurrences: set[str] = set()
+    for page_index, lines in enumerate(pages):
+        last = len(lines) - 1
+        for line_index, line in enumerate(lines):
+            if not line or len(line) > config.CLEAN_REPEATED_LINE_MAX_LEN:
+                continue
+            if line_index <= 2:
+                edge_occurrences.setdefault(line, set()).add((page_index, "top"))
+            elif line_index >= last - 2:
+                edge_occurrences.setdefault(line, set()).add((page_index, "bottom"))
+            else:
+                middle_occurrences.add(line)
+    repeated = set()
+    for line, occurrences in edge_occurrences.items():
+        if line in middle_occurrences:
+            continue
+        top_pages = {page for page, pos in occurrences if pos == "top"}
+        bottom_pages = {page for page, pos in occurrences if pos == "bottom"}
+        if max(len(top_pages), len(bottom_pages)) >= threshold:
+            repeated.add(line)
 
     cleaned: list[list[str]] = []
     for lines in pages:
@@ -153,5 +167,14 @@ def build_document_text(page_texts: list[str]) -> CleanedDocument:
         start = len(full)
         full += page_text
         spans.append((number, start, len(full)))
+    sections: list[tuple[str, int, int]] = []
+    offset = 0
+    for line in full.splitlines(keepends=True):
+        title = line.strip()
+        is_heading = (bool(title) and len(title) <= 100 and
+                      (title.isupper() or _NUMBERED_SECTION.match(title)))
+        if is_heading:
+            sections.append((title, offset, offset + len(line.rstrip("\r\n"))))
+        offset += len(line)
     return CleanedDocument(text=full, page_spans=spans,
-                           page_count=len(page_texts))
+                           page_count=len(page_texts), section_spans=sections)

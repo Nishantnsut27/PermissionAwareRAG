@@ -238,7 +238,11 @@ def pool() -> GroqKeyPool:
     if _pool is None:
         with _pool_lock:
             if _pool is None:
-                _pool = GroqKeyPool()
+                try:
+                    cooldown = float(os.getenv("GROQ_KEY_COOLDOWN_S", DEFAULT_COOLDOWN_S))
+                except (TypeError, ValueError):
+                    cooldown = DEFAULT_COOLDOWN_S
+                _pool = GroqKeyPool(cooldown_s=cooldown)
                 logger.info("Groq key pool initialised with %d key(s)",
                             _pool.size)
     return _pool

@@ -64,6 +64,12 @@ def chunk_document(
         cursor = start + 1
 
         page_numbers = pages_covering(cleaned.page_spans, start, end)
+        section_spans = [
+            {"title": title, "start": max(start, section_start),
+             "end": min(end, section_end)}
+            for title, section_start, section_end in cleaned.section_spans
+            if section_start < end and section_end > start
+        ]
         chunks.append(Chunk(
             chunk_id=f"{base_metadata['document_id']}_chunk_{index:03d}",
             text=piece,
@@ -82,5 +88,15 @@ def chunk_document(
             chunk_index=index,
             token_count=chunker.count_tokens(piece),
             char_count=len(piece),
+            text_start=start,
+            text_end=end,
+            metadata_version=1,
+            section_spans=section_spans,
+            page_spans=[
+                {"page": number, "start": max(start, a) - start,
+                 "end": min(end, b) - start}
+                for number, a, b in cleaned.page_spans
+                if a < end and b > start
+            ],
         ))
     return chunks

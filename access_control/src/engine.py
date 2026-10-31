@@ -31,8 +31,17 @@ class PermissionEngine:
         if not isinstance(document, dict):
             return Decision(False, "malformed_document_metadata")
 
-        if not policy.clearance_sufficient(user.clearance_level,
-                                           document.get("classification")):
+        classification = document.get("classification")
+        document_type = document.get("document_type")
+        department = document.get("department")
+        if (not isinstance(classification, str)
+                or classification not in policy.CLEARANCE_RANK
+                or not isinstance(document_type, str)
+                or (department is not None
+                    and (not isinstance(department, str)
+                         or department not in policy.DEPARTMENTS))):
+            return Decision(False, "malformed_document_metadata")
+        if not policy.clearance_sufficient(user.clearance_level, classification):
             return Decision(False, "insufficient_clearance")
 
         seller_id = document.get("seller_id")
@@ -41,7 +50,7 @@ class PermissionEngine:
         # Anything that is not a known seller and not the organization-wide
         # sentinel is unclassifiable scope, so it is denied rather than
         # defaulting into the organization-wide branch.
-        if seller_id not in policy.SELLER_IDS:
+        if not isinstance(seller_id, str) or seller_id not in policy.SELLER_IDS:
             return Decision(False, "unknown_or_missing_seller_id")
         if (not user.has_organization_wide_scope()
                 and seller_id not in user.seller_scope):
@@ -84,10 +93,10 @@ class PermissionEngine:
     def get_authorized_scope(self, user: User, requested_sellers=None) -> dict:
         """Qdrant pre-filter derived from the identity. Never widens on error.
 
-        Covers the three attributes that are expressible as single-field
-        constraints. The org-wide RESTRICTED department rule compares two
-        payload fields against each other, so it stays in the post-retrieval
-        re-check.
+        Encodes seller-scoped and organization-wide alternatives as explicit
+        boolean branches. The organization-wide RESTRICTED branch requires the
+        caller's department; the independent post-retrieval check remains the
+        final authority if payload metadata is malformed or inconsistent.
         """
         problem = self._identity_problem(user)
         if problem is not None:
@@ -95,22 +104,51 @@ class PermissionEngine:
                 f"Refusing to build a retrieval scope for an invalid "
                 f"identity: {problem}")
         user_rank = policy.CLEARANCE_RANK[user.clearance_level]
+        allowed_levels = [level for level, rank in policy.CLEARANCE_RANK.items()
+                          if rank <= user_rank]
         scope: dict = {
-            "classification": [level for level, rank
-                               in policy.CLEARANCE_RANK.items()
-                               if rank <= user_rank],
-            "document_type": {
-                "any": sorted(policy.ROLE_DOCUMENT_TYPES[user.role])
-            },
+            "must": [
+                {"classification": {"any": allowed_levels}},
+                {"document_type": {"any": sorted(
+                    policy.ROLE_DOCUMENT_TYPES[user.role])}},
+            ],
+            "should": [],
         }
         sellers = self.effective_seller_scope(user, requested_sellers)
         if sellers is None:
             raise ScopeDeniedError(
                 "the requested sellers are outside the authorized scope")
-        narrowed = requested_sellers is not None and sorted(
-            {str(s).strip().upper() for s in requested_sellers if str(s).strip()})
-        if narrowed or not user.has_organization_wide_scope():
-            scope["seller_id"] = {"any": [*sellers, policy.ORGANIZATION_WIDE]}
+        if sellers:
+            scope["should"].append({"must": [
+                {"seller_id": {"any": sellers}},
+            ]})
+
+        organization_branch = {
+            "must": [{"seller_id": {"value": policy.ORGANIZATION_WIDE}}],
+            "should": [],
+        }
+        non_restricted = [level for level in allowed_levels
+                          if level != "RESTRICTED"]
+        if non_restricted:
+            organization_branch["should"].append({
+                "classification": {"any": non_restricted}})
+        if "RESTRICTED" in allowed_levels:
+            restricted_branch = {
+                "must": [{"classification": {"value": "RESTRICTED"}}],
+            }
+            if not user.has_organization_wide_scope():
+                restricted_branch["must"].append(
+                    {"department": {"value": user.department}})
+            else:
+                restricted_branch["should"] = [
+                    {"department": {"any": sorted(policy.DEPARTMENTS)}},
+                    {"department": {"missing": True}},
+                ]
+            organization_branch["should"].append(restricted_branch)
+        if organization_branch["should"]:
+            scope["should"].append(organization_branch)
+        if not scope["should"]:
+            raise ScopeDeniedError("identity has no retrievable document scope")
         return scope
 
     def authorize_chunks(self, user: User, chunks: list,

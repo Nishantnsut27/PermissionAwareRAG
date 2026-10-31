@@ -6,6 +6,7 @@ stops the batch at its checkpoint. Existing results are never replaced implicitl
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import json
 import logging
@@ -22,14 +23,24 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from answering.src import config
 from indexing.src import config as index_config
+from indexing.src import retrieval as index_retrieval
 from . import dataset as ds
 from . import evaluator, metrics
 
 logger = logging.getLogger(__name__)
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 4
 CASE_DELAY_S = float(os.getenv("EVAL_CASE_DELAY_S", "90") or 90)
 RETRY_WAIT_S = float(os.getenv("EVAL_RETRY_WAIT_S", "90") or 90)
 MAX_RETRIES = int(os.getenv("EVAL_MAX_RETRIES", "0") or 0)
+
+
+def resolve_index_snapshot() -> dict:
+    return index_retrieval.revision_snapshot()
+
+
+def verify_index_snapshot(snapshot: dict) -> None:
+    if resolve_index_snapshot() != snapshot:
+        raise ds.DatasetError("Active index revision/artifacts or revocations changed during evaluation")
 
 
 def _now() -> str:
@@ -69,13 +80,13 @@ def select_cases(dataset: ds.GoldenDataset, limit=None, only=None) -> list[ds.Ev
     return selected
 
 
-def fingerprint(dataset: ds.GoldenDataset, catalog: ds.PermissionCatalog) -> str:
-    """Local signature excluding credentials and quota pacing.
-
-    Cannot verify remote index contents: use a versioned collection per corpus.
-    """
+def fingerprint(dataset: ds.GoldenDataset, catalog: ds.PermissionCatalog,
+                run_config: dict | None = None) -> str:
+    """Signature of run controls and the resolved immutable index artifacts."""
+    snapshot = (run_config or {}).get("index_snapshot") or resolve_index_snapshot()
     settings = {
         "schema": SCHEMA_VERSION, "dataset": asdict(dataset),
+        "run_configuration": run_config or {},
         "documents": catalog.documents, "answering": asdict(config.DEFAULT_ANSWERING),
         "retrieval": asdict(index_config.DEFAULT_RETRIEVAL),
         "model": config.GROQ_MODEL, "temperature": config.GROQ_TEMPERATURE,
@@ -84,18 +95,24 @@ def fingerprint(dataset: ds.GoldenDataset, catalog: ds.PermissionCatalog) -> str
         "rerank_model": config.JINA_RERANK_MODEL, "rerank_enabled": config.RERANK_ENABLED,
         "embedding_model": index_config.JINA_EMBEDDING_MODEL,
         "collection": index_config.QDRANT_COLLECTION_NAME,
-        "qdrant_endpoint": index_config.QDRANT_URL,
+        "answering_config": asdict(config.DEFAULT_ANSWERING),
+        "retrieval_config": asdict(index_config.DEFAULT_RETRIEVAL),
         "embedding_endpoint": index_config.JINA_API_URL,
         "rerank_endpoint": config.JINA_RERANK_URL,
         "generation_endpoint": config.GROQ_API_URL,
-        "case_top_k": evaluator.CASE_TOP_K,
         "judge_tokens": evaluator.judge.JUDGE_MAX_TOKENS,
+        "qdrant_endpoint": index_config.QDRANT_URL,
+        "case_top_k": evaluator.CASE_TOP_K,
+        "index_snapshot": snapshot,
     }
     digest = hashlib.sha256(json.dumps(settings, sort_keys=True).encode())
     files = []
     for folder in ("evaluation", "access_control/src", "answering/src", "indexing/src"):
         files.extend((ds.PROJECT_ROOT / folder).glob("*.py"))
     files.extend([index_config.PHASE2_CHUNKS_FILE, index_config.VOCAB_FILE])
+    files.extend([ds.ACCESS_MATRIX_FILE,
+                  ds.PACKAGE_ROOT / "fixtures" / "fact_visibility.json",
+                  ds.PACKAGE_ROOT / "fixtures" / "restricted_facts.json"])
     for path in sorted(files):
         digest.update(str(path.relative_to(ds.PROJECT_ROOT)).encode())
         digest.update(path.read_bytes() if path.is_file() else b"<missing>")
@@ -109,7 +126,8 @@ def _matrix_row(result: dict) -> dict:
     passed = security.get("passed")
     return {
         **{key: result.get(key, "") for key in
-           ("eval_id", "user", "category", "expected_behavior", "actual_behavior", "status")},
+           ("eval_id", "user", "category", "expected_behavior", "actual_behavior", "status",
+            "outcome", "finish_reason")},
         "recall_at_k": retrieval.get("recall_at_k"),
         "precision_at_k": retrieval.get("precision_at_k"), "mrr": retrieval.get("mrr"),
         "groundedness": generation.get("groundedness"),
@@ -155,17 +173,32 @@ def load_results(path: Path | None = None) -> dict | None:
         return None
 
 
-def _execute_case(case, catalog, history, retry_wait_s, max_retries):
-    result = evaluator.run_case(case, catalog, history).to_dict()
-    attempt = 0
-    while (result["status"] == evaluator.ERROR and _is_quota_error(result.get("error"))
-           and attempt < max_retries):
-        attempt += 1
-        print(f"Quota wall: waiting {retry_wait_s:.0f}s; retry {attempt}/{max_retries}",
+def _execute_case(case, catalog, history, retry_wait_s, max_retries,
+                  run_config: dict, prior_attempts: list[dict] | None = None):
+    attempts = list(prior_attempts or [])
+    retry = 0
+    while True:
+        started_at = _now()
+        with index_retrieval.pin_revision(run_config["index_snapshot"]):
+            current = evaluator.run_case(case, catalog, history).to_dict()
+        finished_at = _now()
+        attempts.append({
+            "attempt": len(attempts) + 1,
+            "started_at": started_at,
+            "finished_at": finished_at,
+            "fingerprint": run_config["fingerprint"],
+            "configuration": dict(run_config),
+            "result": copy.deepcopy(current),
+        })
+        if (current["status"] != evaluator.ERROR
+                or not _is_quota_error(current.get("error"))
+                or retry >= max_retries):
+            current["attempts"] = attempts
+            return current
+        retry += 1
+        print(f"Quota wall: waiting {retry_wait_s:.0f}s; retry {retry}/{max_retries}",
               flush=True)
         time.sleep(retry_wait_s)
-        result = evaluator.run_case(case, catalog, history).to_dict()
-    return result
 
 
 def run(dataset=None, catalog=None, limit=None, only=None, delay_s=None,
@@ -184,12 +217,37 @@ def run(dataset=None, catalog=None, limit=None, only=None, delay_s=None,
         raise ds.DatasetError("\n".join(problems))
     cases = select_cases(dataset, limit, only)
     selected_ids = [case.eval_id for case in cases]
-    signature = fingerprint(dataset, catalog)
+    run_configuration = {
+        "delay_s": delay_s,
+        "retry_wait_s": retry_wait_s,
+        "max_retries": max_retries,
+        "case_top_k": evaluator.CASE_TOP_K,
+        "model": config.GROQ_MODEL,
+        "temperature": config.GROQ_TEMPERATURE,
+        "max_tokens": config.GROQ_MAX_TOKENS,
+        "reasoning_effort": config.GROQ_REASONING_EFFORT,
+        "rerank_model": config.JINA_RERANK_MODEL,
+        "rerank_enabled": config.RERANK_ENABLED,
+        "embedding_model": index_config.JINA_EMBEDDING_MODEL,
+        "collection": index_config.QDRANT_COLLECTION_NAME,
+        "embedding_endpoint": index_config.JINA_API_URL,
+        "rerank_endpoint": config.JINA_RERANK_URL,
+        "generation_endpoint": config.GROQ_API_URL,
+        "qdrant_endpoint": index_config.QDRANT_URL,
+        "answering_config": asdict(config.DEFAULT_ANSWERING),
+        "retrieval_config": asdict(index_config.DEFAULT_RETRIEVAL),
+        "judge_tokens": evaluator.judge.JUDGE_MAX_TOKENS,
+        "index_snapshot": resolve_index_snapshot(),
+    }
+    signature = fingerprint(dataset, catalog, run_configuration)
+    run_configuration["fingerprint"] = signature
     output = Path(output or ds.RESULTS_FILE)
     if checkpoint and (output.suffix.lower() != ".json"
                        or output.resolve() == ds.GOLDEN_DATASET_FILE.resolve()):
         raise ds.DatasetError("Choose a .json results path separate from the golden dataset")
     rows: dict[str, dict] = {}
+    previous_rows: dict[str, dict] = {}
+    attempt_history: dict[str, list[dict]] = {}
     previous_duration = 0
     run_id = datetime.now(timezone.utc).strftime("run-%Y%m%d-%H%M%S-%f")
     started_at = _now()
@@ -197,29 +255,44 @@ def run(dataset=None, catalog=None, limit=None, only=None, delay_s=None,
         previous = load_results(output)
         fingerprint_mismatch = (previous is not None
                                 and previous.get("fingerprint") != signature)
-        if (previous is None
-                or (fingerprint_mismatch and not retry_failed)
+        if (previous is None or fingerprint_mismatch
                 or previous.get("selected_ids") != selected_ids):
             raise ds.DatasetError("Cannot resume: missing, legacy or mismatched checkpoint. "
                                   "Use a new --output path with the intended selection.")
         rows = {row["eval_id"]: row for row in previous["results"]}
         if len(rows) != len(previous["results"]) or set(rows) - set(selected_ids):
             raise ds.DatasetError("Checkpoint contains duplicate or unexpected cases")
+        previous_rows = {key: dict(value) for key, value in rows.items()}
+        attempt_history = {key: list(row.get("attempts", []))
+                           for key, row in rows.items()}
         run_id, started_at = previous["run_id"], previous["started_at"]
         previous_duration = previous.get("duration_s", 0)
         if retry_failed:
-            # Give previously scored failures/errors one additional attempt while
-            # preserving all PASS rows in the checkpoint.
+            # Keep PASS rows. Failed rows are rerun under this exact fingerprint;
+            # their previous attempt records remain attached to the new result.
             rows = {key: row for key, row in rows.items()
                     if row.get("status") == evaluator.PASS}
     elif checkpoint and output.exists():
         raise ds.DatasetError("Output already exists. Archive it, choose a new --output "
                               "path, or use --resume for a matching run.")
 
+    dependents: dict[str, list[str]] = {}
+    for case in cases:
+        if case.conversation_from:
+            dependents.setdefault(case.conversation_from, []).append(case.eval_id)
+
+    def invalidate(case_id: str) -> None:
+        row = rows.pop(case_id, None)
+        if row is not None:
+            attempt_history[case_id] = list(row.get("attempts", []))
+        for child_id in dependents.get(case_id, []):
+            invalidate(child_id)
+
     for case in cases:
         parent = rows.get(case.conversation_from)
-        if case.conversation_from and (not parent or parent.get("status") == evaluator.ERROR):
-            rows.pop(case.eval_id, None)
+        if case.conversation_from and (
+                not parent or not parent.get("answered") or not parent.get("answer")):
+            invalidate(case.eval_id)
     started = time.monotonic()
     stop_reason = None
     progress = {"phase": "starting", "case_id": None, "updated_at": _now()}
@@ -235,6 +308,8 @@ def run(dataset=None, catalog=None, limit=None, only=None, delay_s=None,
             "selection_complete": complete, "selected_ids": selected_ids,
             "stop_reason": stop_reason, "dataset": dataset.summary(),
             "progress": dict(progress),
+            "configuration": {key: value for key, value in run_configuration.items()
+                              if key != "fingerprint"},
             "model": config.GROQ_MODEL, "case_delay_s": delay_s,
             "duration_s": round(previous_duration + time.monotonic() - started, 1),
             "summary": summary, "matrix": [_matrix_row(row) for row in results],
@@ -261,6 +336,7 @@ def run(dataset=None, catalog=None, limit=None, only=None, delay_s=None,
                         expected_facts=list(case.expected_facts),
                         conversation_from=case.conversation_from,
                         error=f"Dependency {case.conversation_from} produced no answer")
+                    blocked.attempts = attempt_history.get(case.eval_id, [])
                     rows[case.eval_id] = blocked.to_dict()
                     if checkpoint:
                         save(document(), output)
@@ -274,9 +350,29 @@ def run(dataset=None, catalog=None, limit=None, only=None, delay_s=None,
                     save(document(), output)
                 time.sleep(delay_s)
             progress.update(phase="evaluating", case_id=case.eval_id, updated_at=_now())
+            try:
+                verify_index_snapshot(run_configuration["index_snapshot"])
+            except ds.DatasetError:
+                stop_reason = "index_revision_changed"
+                break
             if checkpoint:
                 save(document(), output)
-            rows[case.eval_id] = _execute_case(case, catalog, history, retry_wait_s, max_retries)
+            old_answer = (previous_rows.get(case.eval_id) or {}).get("answer")
+            rows[case.eval_id] = _execute_case(
+                case, catalog, history, retry_wait_s, max_retries,
+                run_configuration, attempt_history.get(case.eval_id))
+            try:
+                verify_index_snapshot(run_configuration["index_snapshot"])
+            except ds.DatasetError as exc:
+                rows[case.eval_id]["status"] = evaluator.ERROR
+                rows[case.eval_id]["error"] = str(exc)
+                for attempt in rows[case.eval_id].get("attempts", []):
+                    attempt["result"]["status"] = evaluator.ERROR
+                    attempt["result"]["error"] = str(exc)
+                stop_reason = "index_revision_changed"
+            if old_answer is not None and rows[case.eval_id].get("answer") != old_answer:
+                for child_id in dependents.get(case.eval_id, []):
+                    invalidate(child_id)
             executed += 1
             row = rows[case.eval_id]
             if verbose:

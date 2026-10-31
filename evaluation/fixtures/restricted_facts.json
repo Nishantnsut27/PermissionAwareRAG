@@ -1,0 +1,1808 @@
+{
+  "schema_version": 1,
+  "provenance": "Examples from independent golden expected facts and reviewed access matrix, plus the explicit ORG-001 seller-commercial decision. Allowed users are the union across golden source documents so an authorized duplicate is not classified as restricted. These examples supplement semantic review of all denied subjects; they are not exhaustive fact coverage.",
+  "facts": [
+    {
+      "fact": "The shortfall was INR 4,82,000",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0312",
+        "PRJ-S001-003",
+        "TKT-2026-0312-114"
+      ]
+    },
+    {
+      "fact": "The deduplication key omitted the order identifier for reversal entries after the v1.8 to v1.9 migration",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S001-003",
+        "TKT-2026-0312-114"
+      ]
+    },
+    {
+      "fact": "1,914 reversal entries were deducted twice",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S001-003",
+        "TKT-2026-0312-114"
+      ]
+    },
+    {
+      "fact": "The affected settlement batch covered 5 to 9 March 2026",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S001-003",
+        "TKT-2026-0312-114"
+      ]
+    },
+    {
+      "fact": "The batch scheduler used a fixed UTC offset while the stock window is computed in IST",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0519",
+        "TKT-2026-0519-207"
+      ]
+    },
+    {
+      "fact": "A stale SKU mapping table from the catalogue restructure was still in the pipeline",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0519",
+        "TKT-2026-0519-207"
+      ]
+    },
+    {
+      "fact": "Stock levels were up to 26 hours old",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0519",
+        "TKT-2026-0519-207"
+      ]
+    },
+    {
+      "fact": "Release 4.12.0 changed the cart token cache key format but kept signing with the previous key namespace",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0812",
+        "TKT-2026-0812-308"
+      ]
+    },
+    {
+      "fact": "Mixed versions during the rolling deployment caused token validation failures",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0812",
+        "TKT-2026-0812-308"
+      ]
+    },
+    {
+      "fact": "About 7 percent of cart-to-payment transitions failed",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0812",
+        "TKT-2026-0812-308"
+      ]
+    },
+    {
+      "fact": "The release was rolled back to 4.11.7",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0812",
+        "TKT-2026-0812-308"
+      ]
+    },
+    {
+      "fact": "The payout is held immediately, before the correct figure is known",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "OPS-RB-004"
+      ]
+    },
+    {
+      "fact": "Holding is reversible whereas paying an incorrect amount is not",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "OPS-RB-004"
+      ]
+    },
+    {
+      "fact": "1,240 invoices were affected and credit notes were re-issued for all of them",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S001-004",
+        "TKT-2026-0224-091"
+      ]
+    },
+    {
+      "fact": "The reconciliation difference of INR 2,17,600 was absorbed at platform cost",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S001-004",
+        "TKT-2026-0224-091"
+      ]
+    },
+    {
+      "fact": "The invoices were issued at 18 percent instead of 12 percent",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S001-004",
+        "TKT-2026-0224-091"
+      ]
+    },
+    {
+      "fact": "A mandatory tax mapping validation was added to the listing workflow",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S001-004",
+        "TKT-2026-0224-091"
+      ]
+    },
+    {
+      "fact": "An unbounded client retry policy caused a retry storm during the flash sale",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0716",
+        "TKT-2026-0716-268"
+      ]
+    },
+    {
+      "fact": "A missing circuit breaker on the inventory lookup contributed to connection pool exhaustion",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0716",
+        "TKT-2026-0716-268"
+      ]
+    },
+    {
+      "fact": "p99 order latency reached 12.4 seconds",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0716",
+        "TKT-2026-0716-268"
+      ]
+    },
+    {
+      "fact": "About 3,900 order placements failed with HTTP 503",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0716",
+        "POL-BIZ-004",
+        "TKT-2026-0716-268"
+      ]
+    },
+    {
+      "fact": "Stock was up to 26 hours old",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0519",
+        "PRJ-S002-003"
+      ]
+    },
+    {
+      "fact": "The requirement was 6 hours",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0519",
+        "PRJ-S002-003"
+      ]
+    },
+    {
+      "fact": "18,400 SKUs carried stale availability",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0519",
+        "PRJ-S002-003"
+      ]
+    },
+    {
+      "fact": "412 orders oversold",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0519",
+        "PRJ-S002-003"
+      ]
+    },
+    {
+      "fact": "The return rate was 26.4 percent against a 25 percent threshold",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S004-002",
+        "PRJ-S004-003"
+      ]
+    },
+    {
+      "fact": "The settlement chargeback ratio was 1.9 percent against a 1.5 percent threshold",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S004-002",
+        "PRJ-S004-003"
+      ]
+    },
+    {
+      "fact": "Both conditions breached together triggered automatic suspension",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S004-002",
+        "PRJ-S004-003"
+      ]
+    },
+    {
+      "fact": "The suspension was lifted on 10 September 2026 and recorded as platform-caused",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S004-002",
+        "PRJ-S004-003"
+      ]
+    },
+    {
+      "fact": "GreenCart Organics is Silver tier with a conditional Gold upgrade",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S003-003",
+        "S001-ACC-001",
+        "S003-ACC-001"
+      ]
+    },
+    {
+      "fact": "An INR 3,00,000 security deposit was required",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S003-003",
+        "S003-ACC-001"
+      ]
+    },
+    {
+      "fact": "Weekly settlement applies only after milestone two is validated",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S003-003",
+        "S003-ACC-001"
+      ]
+    },
+    {
+      "fact": "The decision was taken on 20 January 2026",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S003-003",
+        "S003-ACC-001"
+      ]
+    },
+    {
+      "fact": "A staging SFTP credential was embedded in a troubleshooting script shared externally",
+      "allowed_user_ids": [
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0421",
+        "TKT-2026-0421-162"
+      ]
+    },
+    {
+      "fact": "No secret scanning ran in the CI pipeline",
+      "allowed_user_ids": [
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0421",
+        "TKT-2026-0421-162"
+      ]
+    },
+    {
+      "fact": "Credentials were rotated immediately",
+      "allowed_user_ids": [
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0421",
+        "TKT-2026-0421-162"
+      ]
+    },
+    {
+      "fact": "IP allowlisting was enabled for the S002 SFTP endpoint",
+      "allowed_user_ids": [
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0421",
+        "TKT-2026-0421-162"
+      ]
+    },
+    {
+      "fact": "The order event consumer group entered a rebalance loop after a partition expansion",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "TKT-2026-0602-217"
+      ]
+    },
+    {
+      "fact": "The maximum poll interval was shorter than the batch processing time",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "TKT-2026-0602-217"
+      ]
+    },
+    {
+      "fact": "Around 6,700 order events were unprocessed",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "TKT-2026-0602-217"
+      ]
+    },
+    {
+      "fact": "The settlement feed was stale for about nine hours",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "TKT-2026-0602-217"
+      ]
+    },
+    {
+      "fact": "The refund webhook consumer had no idempotency key check",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0903",
+        "TKT-2026-0903-336"
+      ]
+    },
+    {
+      "fact": "A broker redelivery after a consumer restart applied the same refund twice",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0903",
+        "TKT-2026-0903-336"
+      ]
+    },
+    {
+      "fact": "640 orders were refunded twice",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0903",
+        "TKT-2026-0903-336"
+      ]
+    },
+    {
+      "fact": "The excess refund was INR 1,18,000",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0903",
+        "TKT-2026-0903-336"
+      ]
+    },
+    {
+      "fact": "1,914 reversal entries were double-deducted",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0312",
+        "PRJ-S001-003",
+        "TKT-2026-0312-114"
+      ]
+    },
+    {
+      "fact": "The shortfall was credited on 14 March 2026",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0312",
+        "PRJ-S001-003",
+        "TKT-2026-0312-114"
+      ]
+    },
+    {
+      "fact": "A settlement reconciliation hardening project followed the incident",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0312",
+        "PRJ-S001-003",
+        "TKT-2026-0312-114"
+      ]
+    },
+    {
+      "fact": "The seller is entitled to acknowledgement, what is known, what is being done and the next update time",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0716",
+        "POL-BIZ-004"
+      ]
+    },
+    {
+      "fact": "Priority is determined by irreversible and accruing harm rather than record count",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0716",
+        "POL-BIZ-004"
+      ]
+    },
+    {
+      "fact": "A seller must not be penalised for the consequences of a platform defect",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-OPS-006",
+        "PRJ-S004-003"
+      ]
+    },
+    {
+      "fact": "Every automated action must be reviewable by a human",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-OPS-006",
+        "PRJ-S004-003"
+      ]
+    },
+    {
+      "fact": "The elevated return rate was caused by the size chart defect",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-OPS-006",
+        "PRJ-S004-003"
+      ]
+    },
+    {
+      "fact": "The event was recorded as platform-caused and the risk rule was recalibrated",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-OPS-006",
+        "PRJ-S004-003"
+      ]
+    },
+    {
+      "fact": "Readiness conditions are attached to commercial entitlements",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-BIZ-003",
+        "PRJ-S003-003"
+      ]
+    },
+    {
+      "fact": "The upgrade was approved as a documented policy exception",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-BIZ-003",
+        "PRJ-S003-003"
+      ]
+    },
+    {
+      "fact": "An INR 3,00,000 security deposit was a compensating control",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-BIZ-003",
+        "PRJ-S003-003"
+      ]
+    },
+    {
+      "fact": "Weekly settlement is deferred until milestone two is validated",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-BIZ-003",
+        "PRJ-S003-003"
+      ]
+    },
+    {
+      "fact": "A stale SKU mapping table from the March catalogue restructure was still in use",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0519",
+        "PRJ-S002-003"
+      ]
+    },
+    {
+      "fact": "It acted together with the scheduler UTC offset fault",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0519",
+        "PRJ-S002-003"
+      ]
+    },
+    {
+      "fact": "The SKU mapping was rebuilt against the current catalogue",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0519",
+        "PRJ-S002-003"
+      ]
+    },
+    {
+      "fact": "A cycle whose correctness is in question must be held before payout executes",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "OPS-RB-004",
+        "POL-FIN-002"
+      ]
+    },
+    {
+      "fact": "The platform is accountable for the accuracy of the settlement it computes",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "OPS-RB-004",
+        "POL-FIN-002"
+      ]
+    },
+    {
+      "fact": "Recovery has two halves: correcting the ledger and settling the difference",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "OPS-RB-004",
+        "POL-FIN-002"
+      ]
+    },
+    {
+      "fact": "An Operations recovery owner must be named",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "OPS-RB-002",
+        "OPS-RB-004",
+        "POL-FIN-002"
+      ]
+    },
+    {
+      "fact": "The UK to EU size conversion was applied twice by the feed importer",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0805",
+        "PRJ-S004-003",
+        "TKT-2026-0805-301"
+      ]
+    },
+    {
+      "fact": "The return rate rose from 9 percent to 27 percent",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0805",
+        "PRJ-S004-003",
+        "TKT-2026-0805-301"
+      ]
+    },
+    {
+      "fact": "The elevated trailing return rate triggered the automated suspension",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0805",
+        "PRJ-S004-003",
+        "TKT-2026-0805-301"
+      ]
+    },
+    {
+      "fact": "The suspension was lifted and recorded as platform-caused",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0805",
+        "PRJ-S004-003",
+        "TKT-2026-0805-301"
+      ]
+    },
+    {
+      "fact": "1,470 checkouts failed platform-wide",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0812",
+        "TKT-2026-0812-308"
+      ]
+    },
+    {
+      "fact": "312 S001 checkouts failed and 244 recovered the same day",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0812",
+        "TKT-2026-0812-308"
+      ]
+    },
+    {
+      "fact": "The incident was detected by a seller through Support, not by monitoring",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0812",
+        "TKT-2026-0812-308"
+      ]
+    },
+    {
+      "fact": "No cart data was lost",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0812",
+        "TKT-2026-0812-308"
+      ]
+    },
+    {
+      "fact": "The S001 failure was a settlement computation fault that underpaid INR 4,82,000",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0312",
+        "INC-2026-0519"
+      ]
+    },
+    {
+      "fact": "The S002 failure was a stock data freshness fault",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0312",
+        "INC-2026-0519"
+      ]
+    },
+    {
+      "fact": "412 orders oversold on S002",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0312",
+        "INC-2026-0519"
+      ]
+    },
+    {
+      "fact": "Both were detected outside platform monitoring",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0312",
+        "INC-2026-0519"
+      ]
+    },
+    {
+      "fact": "Aurelia Home Decor is Gold tier with roughly 9,500 SKUs",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "source_documents": [
+        "S001-ACC-001",
+        "S003-ACC-001"
+      ]
+    },
+    {
+      "fact": "GreenCart handles perishable goods from dark stores",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "source_documents": [
+        "S001-ACC-001",
+        "S003-ACC-001"
+      ]
+    },
+    {
+      "fact": "Aurelia settles fortnightly at T+2",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "source_documents": [
+        "S001-ACC-001",
+        "S003-ACC-001"
+      ]
+    },
+    {
+      "fact": "The S004 defect applied the UK to EU size conversion twice",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0805"
+      ]
+    },
+    {
+      "fact": "The S002 defect involved a stale SKU mapping table and a timezone offset",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0519",
+        "INC-2026-0805"
+      ]
+    },
+    {
+      "fact": "The S004 defect ran in production for 36 days",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0805"
+      ]
+    },
+    {
+      "fact": "The checkout failure came from a cache key format change signed with the old namespace",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0716",
+        "INC-2026-0812"
+      ]
+    },
+    {
+      "fact": "The order API failure came from an unbounded retry policy and a missing circuit breaker",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0716",
+        "INC-2026-0812"
+      ]
+    },
+    {
+      "fact": "The checkout success-rate alert threshold was too low to fire",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0716",
+        "INC-2026-0812"
+      ]
+    },
+    {
+      "fact": "The order service connection pool was exhausted",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0716",
+        "INC-2026-0812"
+      ]
+    },
+    {
+      "fact": "INC-2026-0519 was a nightly stock batch defect on S002",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0312",
+        "INC-2026-0519",
+        "INC-2026-0805"
+      ]
+    },
+    {
+      "fact": "INC-2026-0805 was a dropship feed importer defect on S004",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0312",
+        "INC-2026-0519",
+        "INC-2026-0805"
+      ]
+    },
+    {
+      "fact": "INC-2026-0312 involved reprocessing of a settlement batch",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0312",
+        "INC-2026-0519",
+        "INC-2026-0805"
+      ]
+    },
+    {
+      "fact": "S001 had reversal entries deducted twice, underpaying INR 4,82,000",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "TKT-2026-0312-114",
+        "TKT-2026-0903-336"
+      ]
+    },
+    {
+      "fact": "S003 had 640 orders refunded twice",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "source_documents": [
+        "TKT-2026-0903-336"
+      ]
+    },
+    {
+      "fact": "The S003 excess refund was INR 1,18,000",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "source_documents": [
+        "TKT-2026-0903-336"
+      ]
+    },
+    {
+      "fact": "INR 4,82,000 was credited",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S001-003"
+      ]
+    },
+    {
+      "fact": "The credit was made on 14 March 2026",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S001-003"
+      ]
+    },
+    {
+      "fact": "18,400 SKUs were published with stale stock",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0519"
+      ]
+    },
+    {
+      "fact": "Release 4.12.1 contained the fix",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0812"
+      ]
+    },
+    {
+      "fact": "A version compatibility guard was added",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0812"
+      ]
+    },
+    {
+      "fact": "The immediate mitigation was a rollback to 4.11.7",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0812"
+      ]
+    },
+    {
+      "fact": "A corrective action plan was agreed",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S004-003"
+      ]
+    },
+    {
+      "fact": "The risk rule was recalibrated to account for known platform defects",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S004-003"
+      ]
+    },
+    {
+      "fact": "The commercial consequences were waived",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S004-003"
+      ]
+    },
+    {
+      "fact": "Milestone two must be validated by Operations",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S003-003"
+      ]
+    },
+    {
+      "fact": "Settlement then moves from fortnightly to weekly",
+      "allowed_user_ids": [
+        "U-001",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S003-003"
+      ]
+    },
+    {
+      "fact": "An idempotency store keyed on the refund event ID was added",
+      "allowed_user_ids": [
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0903"
+      ]
+    },
+    {
+      "fact": "Duplicate refunds were reversed",
+      "allowed_user_ids": [
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0903"
+      ]
+    },
+    {
+      "fact": "A refund duplication alert was configured",
+      "allowed_user_ids": [
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0903"
+      ]
+    },
+    {
+      "fact": "The S001 shortfall was INR 4,82,000",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S001-003",
+        "TKT-2026-0312-114"
+      ]
+    },
+    {
+      "fact": "The answer covers only the S001 side of the comparison",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "PRJ-S001-003",
+        "TKT-2026-0312-114"
+      ]
+    },
+    {
+      "fact": "BluePeak had an inventory synchronisation drift on 19 May 2026",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0519",
+        "INC-2026-0716"
+      ]
+    },
+    {
+      "fact": "BluePeak had an order API timeout on 16 July 2026",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0519",
+        "INC-2026-0716"
+      ]
+    },
+    {
+      "fact": "No StrideOne incident information is provided",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0519",
+        "INC-2026-0716"
+      ]
+    },
+    {
+      "fact": "The inventory synchronisation drift incident is covered",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0519",
+        "INC-2026-0716"
+      ]
+    },
+    {
+      "fact": "The order API timeout incident is covered",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0519",
+        "INC-2026-0716"
+      ]
+    },
+    {
+      "fact": "No content from the April security incident is provided",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0519",
+        "INC-2026-0716"
+      ]
+    },
+    {
+      "fact": "The UK to EU size conversion was applied twice",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0805"
+      ]
+    },
+    {
+      "fact": "No GreenCart refund information is provided",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0805"
+      ]
+    },
+    {
+      "fact": "Priority is set by irreversible and accruing harm, not record count",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-BIZ-004"
+      ]
+    },
+    {
+      "fact": "The seller is entitled to acknowledgement, facts, actions and the next update time",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-BIZ-004"
+      ]
+    },
+    {
+      "fact": "No content from the incident escalation procedure is provided",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-BIZ-004"
+      ]
+    },
+    {
+      "fact": "A tax invoice rate mismatch ticket was raised in February 2026",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "TKT-2026-0224-091",
+        "TKT-2026-0312-114",
+        "TKT-2026-0812-308"
+      ]
+    },
+    {
+      "fact": "A settlement shortfall ticket was raised in March 2026",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "TKT-2026-0224-091",
+        "TKT-2026-0312-114",
+        "TKT-2026-0812-308"
+      ]
+    },
+    {
+      "fact": "A checkout failure ticket was raised in August 2026",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "TKT-2026-0224-091",
+        "TKT-2026-0312-114",
+        "TKT-2026-0812-308"
+      ]
+    },
+    {
+      "fact": "No account overview content is provided",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-005"
+      ],
+      "source_documents": [
+        "TKT-2026-0224-091",
+        "TKT-2026-0312-114",
+        "TKT-2026-0812-308"
+      ]
+    },
+    {
+      "fact": "Support tickets have a two year active retention period",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-IT-002"
+      ]
+    },
+    {
+      "fact": "Security incident records are retained for four years",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-IT-002"
+      ]
+    },
+    {
+      "fact": "Where two categories apply the longer retention period wins",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-IT-002"
+      ]
+    },
+    {
+      "fact": "A legal hold suspends disposal",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-IT-002"
+      ]
+    },
+    {
+      "fact": "Credentials are never embedded in scripts, code, tickets or configuration",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-SEC-002"
+      ]
+    },
+    {
+      "fact": "Credentials are resolved at runtime from the credential store",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-SEC-002"
+      ]
+    },
+    {
+      "fact": "No diagnostic artefact containing a credential may be shared externally, regardless of environment",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-SEC-002"
+      ]
+    },
+    {
+      "fact": "Staging and production must have separate credentials",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-SEC-002"
+      ]
+    },
+    {
+      "fact": "A signed and countersigned commercial agreement is required",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-BIZ-003"
+      ]
+    },
+    {
+      "fact": "KYC and entity verification must be complete",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-BIZ-003"
+      ]
+    },
+    {
+      "fact": "Tax category mapping must resolve explicitly for every listing",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-BIZ-003"
+      ]
+    },
+    {
+      "fact": "Label generation failover must be tested live",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-BIZ-003"
+      ]
+    },
+    {
+      "fact": "Support queue readiness must be confirmed",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-BIZ-003"
+      ]
+    },
+    {
+      "fact": "Every security incident is classified at least RESTRICTED at creation",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-SEC-001"
+      ]
+    },
+    {
+      "fact": "Every security incident is SEV-1 by default",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-SEC-001"
+      ]
+    },
+    {
+      "fact": "Downward reclassification requires Platform Administrator approval and a recorded rationale",
+      "allowed_user_ids": [
+        "U-001",
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "POL-SEC-001"
+      ]
+    },
+    {
+      "fact": "The May event is the BluePeak inventory synchronisation drift of 19 May 2026",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0519"
+      ]
+    },
+    {
+      "fact": "The cause was a scheduler timezone offset plus a stale SKU mapping table",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0519"
+      ]
+    },
+    {
+      "fact": "Service recovery begins only after the immediate cause is mitigated",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "OPS-RB-002"
+      ]
+    },
+    {
+      "fact": "The affected data domain and time window must be known",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "OPS-RB-002"
+      ]
+    },
+    {
+      "fact": "The timeout issue is the S002 order API incident of 16 July 2026",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0716"
+      ]
+    },
+    {
+      "fact": "A retry storm and a missing circuit breaker exhausted the connection pool",
+      "allowed_user_ids": [
+        "U-002",
+        "U-003",
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "INC-2026-0716"
+      ]
+    },
+    {
+      "fact": "StrideOne Footwear (S004) has Gold account tier.",
+      "allowed_user_ids": [
+        "U-004",
+        "U-005"
+      ],
+      "source_documents": [
+        "S004-ACC-001"
+      ],
+      "basis": "ORG-001 page 4 seller-commercial restriction; seller scope in independently reviewed access fixture."
+    }
+  ]
+}
