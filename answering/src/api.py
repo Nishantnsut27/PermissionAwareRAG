@@ -46,6 +46,8 @@ DEMO_SESSION_TTL_S = 60 * 60
 MAX_DEMO_SESSIONS = 10000
 _demo_session_lock = threading.Lock()
 _demo_sessions: dict[str, tuple[str, float]] = {}
+_demo_login_budget_lock = threading.Lock()
+_demo_login_budgets: dict[str, deque[float]] = {}
 
 
 def _demo_password(user) -> str:
@@ -53,7 +55,30 @@ def _demo_password(user) -> str:
     return f"{first_name[0].casefold()}@login" if first_name else ""
 
 
-def _issue_demo_session(user_id: str) -> tuple[str, int]:
+def _charge_demo_login(client_ip: str) -> bool:
+    """Limit login attempts per peer without trusting forwarded headers."""
+    now = time.monotonic()
+    with _demo_login_budget_lock:
+        budget = _demo_login_budgets.get(client_ip)
+        if budget is None:
+            if len(_demo_login_budgets) >= MAX_BUDGET_PRINCIPALS:
+                for peer, entries in list(_demo_login_budgets.items()):
+                    while entries and entries[0] <= now - 60:
+                        entries.popleft()
+                    if not entries:
+                        del _demo_login_budgets[peer]
+                if len(_demo_login_budgets) >= MAX_BUDGET_PRINCIPALS:
+                    return False
+            budget = _demo_login_budgets.setdefault(client_ip, deque())
+        while budget and budget[0] <= now - 60:
+            budget.popleft()
+        if len(budget) >= config.API_REQUESTS_PER_MINUTE:
+            return False
+        budget.append(now)
+        return True
+
+
+def _issue_demo_session(user_id: str) -> tuple[str, int] | None:
     now = time.time()
     with _demo_session_lock:
         expired = [token for token, (_, expires) in _demo_sessions.items()
@@ -61,8 +86,7 @@ def _issue_demo_session(user_id: str) -> tuple[str, int]:
         for token in expired:
             del _demo_sessions[token]
         if len(_demo_sessions) >= MAX_DEMO_SESSIONS:
-            oldest = min(_demo_sessions, key=lambda token: _demo_sessions[token][1])
-            del _demo_sessions[oldest]
+            return None
         token = secrets.token_urlsafe(32)
         _demo_sessions[token] = (user_id, now + DEMO_SESSION_TTL_S)
     return token, DEMO_SESSION_TTL_S
@@ -491,11 +515,17 @@ class Handler(BaseHTTPRequestHandler):
         supplied = payload.get("password")
         supplied = supplied.strip().casefold() if isinstance(supplied, str) else ""
         expected = _demo_password(user) if user else ""
-        if not expected or not hmac.compare_digest(supplied, expected):
+        if (not expected or not hmac.compare_digest(
+                supplied.encode("utf-8"), expected.encode("utf-8"))):
             self._send(401, {"error": "invalid_demo_credentials",
                              "message": "The account or demo password is incorrect."})
             return
-        token, expires_in = _issue_demo_session(user.user_id)
+        session = _issue_demo_session(user.user_id)
+        if session is None:
+            self._send(503, {"error": "demo_session_capacity",
+                             "message": "The demo is busy. Please try again later."})
+            return
+        token, expires_in = session
         profile = next((row for row in service.list_users()
                         if row["user_id"] == user.user_id), None)
         self._send(200, {"access_token": token, "token_type": "Bearer",
@@ -505,8 +535,14 @@ class Handler(BaseHTTPRequestHandler):
         route = self.path.rstrip("/")
         demo = route in {"/demo/query", "/demo/query/stream"}
         if route == "/demo/login":
-            if self._demo_request():
-                self._handle_demo_login()
+            if not self._demo_request():
+                return
+            if not _charge_demo_login(str(self.client_address[0])):
+                self._discard_rejected_body()
+                self._send(429, {"error": "rate_limited", "message":
+                                 "Too many demo login attempts. Please try again later."})
+                return
+            self._handle_demo_login()
         elif route in {"/query", "/demo/query"}:
             if demo and not self._demo_request():
                 return
