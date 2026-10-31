@@ -57,10 +57,11 @@ CSS = """
   code { background:var(--secondary)!important; color:var(--fg)!important;
     padding:.1rem .3rem; border-radius:4px; font-size:.85em; }
   .line-icon { display:inline-block; flex-shrink:0; vertical-align:middle; }
-  [data-testid="stSidebar"] { background:var(--sidebar); border-right:1px solid var(--border); }
+  [data-testid="stSidebar"] { background:var(--sidebar); border-right:1px solid var(--border);
+    min-width:310px!important; width:310px!important; transform:none!important; }
   [data-testid="stSidebarUserContent"] { padding:1.7rem 1.25rem; }
-  [data-testid="stSidebarCollapsedControl"] button,
-  [data-testid="stSidebarCollapseButton"] button { color:var(--fg)!important; }
+  [data-testid="stSidebarCollapsedControl"],
+  [data-testid="stSidebarCollapseButton"] { display:none!important; }
   [data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p {
     color:var(--muted-fg)!important; font-size:.78rem; line-height:1.6; }
   .stButton > button, .stFormSubmitButton > button {
@@ -75,6 +76,22 @@ CSS = """
     background:var(--primary); color:var(--primary-fg); border-color:var(--primary); }
   .stButton > button[kind="primary"]:hover, .stFormSubmitButton > button[kind="primary"]:hover {
     filter:brightness(.94); }
+  body.copy-frame {
+    width:max-content; height:36px; margin:0; padding:0; overflow:hidden;
+    display:flex; align-items:center;
+  }
+  body.copy-frame .copy-button {
+    display:inline-flex; align-items:center; gap:.35rem;
+    font:600 12px/1 'Segoe UI',sans-serif; color:var(--muted-fg);
+    background:transparent; cursor:pointer; border:1px solid var(--border);
+    border-radius:8px; box-sizing:border-box; height:30px; padding:5px 11px;
+    transition:all .12s ease;
+  }
+  body.copy-frame .copy-button:hover { color:var(--primary); border-color:var(--primary); }
+  body.copy-frame .copy-button.done {
+    color:#16834b; border-color:#9bd4b1; background:#effaf3; }
+  body.copy-frame .copy-button svg { flex:0 0 auto; }
+  body.copy-frame .copy-buffer { position:fixed; opacity:0; }
   button:focus-visible, [data-baseweb="select"]:focus-within {
     outline:2px solid var(--primary)!important; outline-offset:3px; border-radius:10px; }
   [data-testid="stTextInput"]:focus-within { outline:0!important; }
@@ -242,5 +259,11 @@ CSS = """
 """
 
 
-def css(theme: str) -> str:
-    return f"<style>:root{{{THEMES.get(theme, THEMES['light'])}}}{CSS}</style>"
+def css(theme: str, *, wide: bool = False) -> str:
+    layout = ".block-container{max-width:88rem!important;}" if wide else ""
+    return f"<style>:root{{{THEMES.get(theme, THEMES['light'])}}}{CSS}{layout}</style>"
+
+
+def copy_button_css(theme: str) -> str:
+    """The copy iframe uses the same single stylesheet as the full app."""
+    return css(theme)
