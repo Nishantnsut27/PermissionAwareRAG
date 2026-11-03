@@ -18,26 +18,5 @@ if not exist ".env" (
     exit /b 1
 )
 
-echo [1/2] Starting the answering API on http://127.0.0.1:8000 ...
-start "Nexora API" cmd /k "%PY% answering\serve.py"
-
-echo [2/2] Waiting for the API process to become live...
-set /a tries=0
-:wait_api
-"%PY%" -c "import requests,sys; sys.exit(0 if requests.get('http://127.0.0.1:8000/live', timeout=2).status_code==200 else 1)" >nul 2>&1
-if errorlevel 1 (
-    set /a tries+=1
-    if %tries% geq 30 (
-        echo [!] API did not become healthy in time. Check the API window for errors.
-        pause
-        exit /b 1
-    )
-    timeout /t 1 /nobreak >nul
-    goto wait_api
-)
-echo       API process is live.
-
-echo.
-echo Starting the Streamlit UI on http://localhost:8501 ...
-echo (a browser window will open automatically; close both windows to stop)
-"%PY%" -m streamlit run app.py
+"%PY%" scripts\run_local.py %*
+exit /b %ERRORLEVEL%

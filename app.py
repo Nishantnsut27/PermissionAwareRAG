@@ -17,7 +17,8 @@ import pandas as pd
 import streamlit as st
 
 import api_client
-from ui_theme import brand_mark, css as _css, icon
+from ui_theme import (brand_mark, copy_button_css as _copy_button_css,
+                      css as _css, icon)
 
 PAGE_TITLE = "Enterprise Knowledge AI"
 PAGE_ICON = str(Path(__file__).parent / "images" / "knowledge-mark.png")
@@ -88,68 +89,59 @@ def _safe(text: str | None) -> str:
     return text or ""
 
 
-def _copy_button(text: str, key: str) -> None:
+def _copy_button(text: str) -> None:
     if not text:
         return
     payload = json.dumps(text).replace("</", "<\\/")
+    styles = _copy_button_css(st.session_state.get("theme", "light"))
     html = f"""
-    <style>
-      html, body {{ width:max-content; height:36px; margin:0; padding:0;
-        overflow:hidden; }}
-      body {{ display:flex; align-items:center; }}
-    </style>
-    <style>
-      #{key}{{
-        display:inline-flex; align-items:center; gap:.35rem;
-        font: 600 12px/1 'Segoe UI', sans-serif;
-        color:var(--muted-fg, #64748b); background:transparent; cursor:pointer;
-        border:1px solid var(--border, #e2e8f0); border-radius:8px;
-        box-sizing:border-box; height:30px; padding:5px 11px;
-        transition:all .12s ease;
-      }}
-      #{key}:hover{{ color:var(--primary, #0f172a); border-color:var(--primary, #cbd5e1); }}
-      #{key}.done{{ color:#16a34a; border-color:#bbf7d0; background:#f0fdf4; }}
-      #{key} svg{{ flex:0 0 auto; }}
-    </style>
-    <button id="{key}" onclick="copyText()">
+    {styles}
+    <body class="copy-frame">
+    <button class="copy-button" type="button" onclick="copyText()">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-      <span>Copy</span>
+      <span aria-live="polite">Copy</span>
     </button>
     <script>
       const TXT = {payload};
-      const BTN = document.getElementById('{key}');
-      function done(){{
-        BTN.classList.add('done');
-        BTN.querySelector('span').textContent = 'Copied!';
+      const BTN = document.querySelector('.copy-button');
+      function feedback(ok){{
+        BTN.classList.add(ok ? 'done' : 'error');
+        BTN.querySelector('span').textContent = ok ? 'Copied!' : 'Copy failed';
         setTimeout(() => {{
-          BTN.classList.remove('done');
+          BTN.classList.remove('done', 'error');
           BTN.querySelector('span').textContent = 'Copy';
         }}, 1600);
       }}
       function legacy(){{
         const ta = document.createElement('textarea');
         ta.value = TXT;
-        ta.style.cssText = 'position:fixed;opacity:0';
+        ta.className = 'copy-buffer';
         document.body.appendChild(ta);
         ta.focus(); ta.select();
-        try {{ document.execCommand('copy'); done(); }} catch (e) {{}}
+        try {{ feedback(document.execCommand('copy')); }}
+        catch (e) {{ feedback(false); }}
         document.body.removeChild(ta);
+        BTN.focus({{preventScroll:true}});
       }}
       function copyText(){{
         if (navigator.clipboard && window.isSecureContext) {{
-          navigator.clipboard.writeText(TXT).then(done, legacy);
+          navigator.clipboard.writeText(TXT).then(() => feedback(true), legacy);
         }} else {{ legacy(); }}
       }}
     </script>
+    </body>
     """
     st.iframe(html, height=40, width="content")
 
 
 def _base_url() -> str:
+    # The local launcher selects a free API port, overriding deployment secrets.
+    if base_url := os.getenv("API_BASE_URL"):
+        return base_url
     try:
         return st.secrets.get("API_BASE_URL", api_client.DEFAULT_BASE_URL)
     except Exception:
-        return os.getenv("API_BASE_URL", api_client.DEFAULT_BASE_URL)
+        return api_client.DEFAULT_BASE_URL
 
 
 def _init_state() -> None:
@@ -322,9 +314,8 @@ def _login_screen(base_url: str) -> None:
 
     users = _load_users(base_url)
     user_by_id = {user["user_id"]: user for user in users}
-    _, center_column, _ = st.columns([1, 1.5, 1], gap="large")
-    with center_column:
-        with st.container(border=True):
+    with st.container(horizontal_alignment="center"):
+        with st.container(border=True, key="login_card", width=480):
             st.markdown(
                 '<div class="login-kicker">Demo identity</div>'
                 '<div class="login-title">Explore a sample account</div>'
@@ -391,7 +382,8 @@ def _sidebar(user: dict, base_url: str) -> None:
         options = _seller_options(scope)
         index = min(st.session_state.seller_choice, len(options) - 1)
         st.selectbox("Seller filter", options, index=index,
-                     key="seller_select", label_visibility="collapsed")
+                     key="seller_select", label_visibility="collapsed",
+                     disabled=len(options) == 1)
         st.session_state.seller_choice = options.index(
             st.session_state.seller_select)
 
@@ -981,8 +973,7 @@ def _chat_screen(user: dict, base_url: str) -> None:
                             and not message.get("refused")
                             and not message.get("partial")
                             and message.get("content")):
-                        _copy_button(message["content"],
-                                     key=f"copy-{message['id']}")
+                        _copy_button(message["content"])
                     _render_sources(message.get("sources", []))
                     _render_stats(message.get("stats", {}),
                                   message.get("effective_sellers", []))
@@ -1051,7 +1042,7 @@ def _chat_screen(user: dict, base_url: str) -> None:
         elif not result.get("refused"):
             stage.update(label="Answer ready", state="complete")
             st.markdown(result["answer"])
-            _copy_button(result["answer"], key="copy-live")
+            _copy_button(result["answer"])
             _render_sources(sources)
             _render_stats(stats, effective)
         else:
@@ -1076,14 +1067,13 @@ def main() -> None:
     # The matrix needs room, so the evaluation view runs in the wide layout
     # while the chat stays in the narrow reading column.
     evaluation_view = st.session_state.get("view") == "evaluation"
+    # Streamlit keeps desktop navigation fixed and owns the mobile drawer.
     st.set_page_config(page_title=PAGE_TITLE, page_icon=PAGE_ICON,
                        layout="wide" if evaluation_view else "centered",
-                       initial_sidebar_state="expanded")
+                       initial_sidebar_state="locked")
     _init_state()
-    st.markdown(_css(st.session_state.theme), unsafe_allow_html=True)
-    if evaluation_view:
-        st.markdown("<style>.block-container{ max-width: 88rem; }</style>",
-                    unsafe_allow_html=True)
+    st.markdown(_css(st.session_state.theme, wide=evaluation_view),
+                unsafe_allow_html=True)
     base_url = _base_url()
 
     if st.session_state.user is None:
