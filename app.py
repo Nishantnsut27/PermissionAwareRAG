@@ -13,12 +13,374 @@ import os
 import re
 from pathlib import Path
 
-import pandas as pd
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    import pandas as pd
+
 import streamlit as st
 
 import api_client
-from ui_theme import (brand_mark, copy_button_css as _copy_button_css,
-                      css as _css, icon)
+
+# All presentation code, including themes and icons, lives in this file.
+_PATHS = {
+    "book": '<path d="M12 7c-3-2-6-2-9-1v14c3-1 6-1 9 1 3-2 6-2 9-1V6c-3-1-6-1-9 1Z"/><path d="M12 7v14M6 10h3m-3 4h3m6-4h3m-3 4h3"/>',
+    "shield": '<path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Z"/><path d="m8 12 3 3 5-6"/>',
+    "search": '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>',
+    "arrow": '<path d="M5 12h14m-5-5 5 5-5 5"/>',
+    "sun": '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/>',
+    "moon": '<path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/>',
+    "check": '<path d="m5 12 4 4L19 6"/>',
+}
+
+
+def icon(name: str, size: int = 20) -> str:
+    """Decorative SVG; its adjacent text supplies the accessible label."""
+    return (f'<svg class="line-icon" width="{size}" height="{size}" '
+            'viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+            'stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" '
+            f'aria-hidden="true">{_PATHS[name]}</svg>')
+
+
+def brand_mark(extra_class: str = "") -> str:
+    return f'<span class="brand-mark {html.escape(extra_class)}">{icon("book", 25)}</span>'
+
+
+THEMES = {
+    "light": """
+        --bg:#f7f5f0; --fg:#292c28; --card:#fffefa; --primary:#a64b32;
+        --primary-fg:#ffffff; --secondary:#eeeae2; --muted-fg:#6f736a;
+        --border:#dedfd6; --destructive:#a83b3b; --success:#42755b;
+        --success-soft:#eaf4ed; --warning:#875418; --warning-soft:#fff3da;
+        --error-soft:#fbecee; --info:#315f87; --info-soft:#ebf2f8;
+        --disabled-bg:#eeeae2; --disabled-fg:#74786e; --sidebar-icon:#111111;
+        --accent-soft:#f3e5d9; --sidebar:#efeee7; --shadow:0 3px 14px #393a2810;
+        color-scheme:light;
+    """,
+    "dark": """
+        --bg:#1c211f; --fg:#edece4; --card:#252c28; --primary:#edb498;
+        --primary-fg:#26201c; --secondary:#303a33; --muted-fg:#b0b9ae;
+        --border:#404a42; --destructive:#f0a2a2; --success:#9ccaad;
+        --success-soft:#263c2e; --warning:#edc184; --warning-soft:#3b3325;
+        --error-soft:#402c2d; --info:#a3c7e5; --info-soft:#283740;
+        --disabled-bg:#303a33; --disabled-fg:#a2aa9f; --sidebar-icon:#edece4;
+        --accent-soft:#39352b; --sidebar:#202722; --shadow:0 3px 14px #00000018;
+        color-scheme:dark;
+    """,
+}
+
+CSS = """
+  @keyframes rise-in { from { opacity:0; transform:translateY(6px) } to { opacity:1; transform:none } }
+  .stApp { background:var(--bg); color:var(--fg); }
+  #MainMenu, footer { visibility:hidden; }
+  header[data-testid="stHeader"] { background:transparent; }
+  .block-container { max-width:55rem; padding-top:2.3rem; padding-bottom:3rem; }
+  .stApp, .stMarkdown, p, li, label, h1, h2, h3 { color:var(--fg); }
+  .stApp { font-family:"Segoe UI",sans-serif; }
+  h1, h2, h3 { text-wrap:balance; }
+  hr { border-color:var(--border)!important; margin:1rem 0!important; }
+  code { background:var(--secondary)!important; color:var(--fg)!important;
+    padding:.1rem .3rem; border-radius:4px; font-size:.85em; }
+  .line-icon { display:inline-block; flex-shrink:0; vertical-align:middle; }
+  [data-testid="stSidebar"] { background:var(--sidebar); color:var(--fg); color-scheme:inherit;
+    border-right:1px solid var(--border);
+    transition:transform 200ms ease,min-width 200ms ease,max-width 200ms ease; }
+  [data-testid="stSidebar"][aria-expanded="true"] {
+    width:310px!important; min-width:min(310px,100vw)!important;
+    max-width:min(310px,100vw)!important; }
+  [data-testid="stSidebarContent"] { scrollbar-color:var(--border) var(--sidebar); }
+  [data-testid="stSidebarUserContent"] { padding:1.7rem 1.25rem; }
+  [data-testid="stExpandSidebarButton"],
+  [data-testid="stSidebarCollapseButton"] button {
+    color:var(--sidebar-icon)!important; background:transparent;
+    min-width:44px; min-height:44px; border-radius:9px;
+    display:inline-flex; align-items:center; justify-content:center; }
+  [data-testid="stExpandSidebarButton"] [data-testid="stIconMaterial"],
+  [data-testid="stSidebarCollapseButton"] [data-testid="stIconMaterial"],
+  [data-testid="stExpandSidebarButton"] svg,
+  [data-testid="stSidebarCollapseButton"] svg {
+    color:var(--sidebar-icon)!important; -webkit-text-fill-color:var(--sidebar-icon); }
+  [data-testid="stExpandSidebarButton"]:hover,
+  [data-testid="stSidebarCollapseButton"] button:hover { background:var(--accent-soft); }
+  [data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p {
+    color:var(--muted-fg)!important; font-size:.78rem; line-height:1.6; }
+  [data-testid="stCaptionContainer"] { opacity:1!important; }
+  [data-testid="InputInstructions"] { color:var(--muted-fg)!important; }
+  .stButton > button, .stFormSubmitButton > button {
+    background:var(--card); color:var(--fg); border:1px solid var(--border);
+    border-radius:10px; min-height:2.8rem; padding:.6rem 1rem;
+    font-size:.88rem; font-weight:600; box-shadow:none;
+    transition:background .16s,border-color .16s,box-shadow .16s; }
+  .stButton > button *, .stFormSubmitButton > button * { color:inherit!important; }
+  .stButton > button:hover, .stFormSubmitButton > button:hover {
+    background:var(--accent-soft); color:var(--primary); border-color:var(--primary); }
+  .stButton > button[kind="primary"], .stFormSubmitButton > button[kind="primaryFormSubmit"] {
+    background:var(--primary); color:var(--primary-fg); border-color:var(--primary); }
+  .stButton > button[kind="primary"]:hover, .stFormSubmitButton > button[kind="primaryFormSubmit"]:hover {
+    filter:brightness(.94); }
+  .stButton > button:disabled, .stFormSubmitButton > button:disabled,
+  .stButton > button:disabled:hover, .stFormSubmitButton > button:disabled:hover {
+    background:var(--disabled-bg); color:var(--disabled-fg); border-color:var(--border);
+    cursor:not-allowed; filter:none; }
+  html:has(body.copy-frame) { width:max-content; background:var(--bg); }
+  body.copy-frame {
+    width:max-content; height:40px; margin:0; padding:0 4px; overflow:hidden;
+    display:flex; align-items:center; background:var(--bg);
+  }
+  body.copy-frame .copy-button {
+    display:inline-flex; align-items:center; gap:.35rem;
+    font:600 12px/1 'Segoe UI',sans-serif; color:var(--muted-fg);
+    background:transparent; cursor:pointer; border:1px solid var(--border);
+    border-radius:8px; box-sizing:border-box; height:30px; padding:5px 11px;
+    transition:all .12s ease;
+  }
+  body.copy-frame .copy-button:hover { color:var(--primary); border-color:var(--primary); }
+  body.copy-frame .copy-button.done {
+    color:var(--success); border-color:var(--success); background:var(--success-soft); }
+  body.copy-frame .copy-button.error {
+    color:var(--destructive); border-color:var(--destructive); background:var(--error-soft); }
+  body.copy-frame .copy-button:focus-visible { outline-offset:2px; }
+  body.copy-frame .copy-button svg { flex:0 0 auto; }
+  body.copy-frame .copy-buffer { position:fixed; opacity:0; }
+  button:focus-visible, [data-testid="stSelectbox"] [role="group"]:focus-within {
+    outline:2px solid var(--primary)!important; outline-offset:3px; border-radius:10px; }
+  [data-testid="stSelectbox"] [role="group"],
+  [data-testid="stTextInputRootElement"], [data-testid="stTextAreaRootElement"] {
+    background:var(--card)!important; color:var(--fg)!important;
+    border-color:var(--border)!important; border-radius:9px; min-height:3rem; }
+  [data-testid="stSelectbox"] input,
+  [data-testid="stTextInput"] input, [data-testid="stTextArea"] textarea {
+    color:var(--fg)!important; -webkit-text-fill-color:var(--fg)!important;
+    background:transparent!important; caret-color:var(--primary); }
+  [data-testid="stSelectbox"] input::placeholder,
+  [data-testid="stTextInput"] input::placeholder,
+  [data-testid="stTextArea"] textarea::placeholder {
+    color:var(--muted-fg)!important; -webkit-text-fill-color:var(--muted-fg)!important; opacity:1; }
+  [data-testid="stSelectbox"] [role="group"]:focus-within,
+  [data-testid="stTextInputRootElement"]:focus-within,
+  [data-testid="stTextAreaRootElement"]:focus-within {
+    border-color:var(--primary)!important; box-shadow:0 0 0 2px var(--accent-soft); }
+  [data-testid="stSelectbox"] button, [data-testid="stSelectbox"] svg,
+  [data-testid="stTextInput"] button {
+    color:var(--muted-fg)!important; -webkit-text-fill-color:var(--muted-fg)!important;
+    background:transparent!important; }
+  [data-testid="stSelectbox"] [role="group"][data-disabled="true"],
+  [data-testid="stTextInputRootElement"]:has(input:disabled),
+  [data-testid="stTextAreaRootElement"]:has(textarea:disabled) {
+    background:var(--disabled-bg)!important; border-color:var(--border)!important; }
+  [data-testid="stSelectbox"] [role="group"][data-disabled="true"] *,
+  [data-testid="stTextInput"] input:disabled, [data-testid="stTextInput"] button:disabled,
+  [data-testid="stTextArea"] textarea:disabled, [data-testid="stWidgetLabel"][disabled] * {
+    color:var(--disabled-fg)!important; -webkit-text-fill-color:var(--disabled-fg)!important; }
+  [data-testid="stSelectboxVirtualDropdown"] {
+    background:var(--card)!important; color:var(--fg)!important;
+    border-color:var(--border)!important; box-shadow:var(--shadow); }
+  [role="listbox"], [role="option"] {
+    background:var(--card)!important; color:var(--fg)!important; }
+  [role="listbox"] *, [role="option"] * {
+    color:var(--fg)!important; -webkit-text-fill-color:var(--fg)!important; }
+  [role="option"]:hover, [role="option"]:focus,
+  [role="option"][data-hovered="true"], [role="option"][data-focused="true"] {
+    background:var(--secondary)!important; }
+  [role="option"][aria-selected="true"],
+  [role="option"][aria-selected="true"]:hover { background:var(--accent-soft)!important; }
+  [role="option"][aria-disabled="true"], [role="option"][aria-disabled="true"] * {
+    color:var(--disabled-fg)!important; -webkit-text-fill-color:var(--disabled-fg)!important; }
+  [data-testid="stSlider"] { color:var(--fg); }
+  [data-testid="stSliderTickBar"] { color:var(--muted-fg)!important; }
+  [data-testid="stAlertContainer"]:has([data-testid="stAlertContentSuccess"]) {
+    background:var(--success-soft); color:var(--success); }
+  [data-testid="stAlertContainer"]:has([data-testid="stAlertContentWarning"]) {
+    background:var(--warning-soft); color:var(--warning); }
+  [data-testid="stAlertContainer"]:has([data-testid="stAlertContentError"]) {
+    background:var(--error-soft); color:var(--destructive); }
+  [data-testid="stAlertContainer"]:has([data-testid="stAlertContentInfo"]) {
+    background:var(--info-soft); color:var(--info); }
+  [data-testid="stAlertContainer"] { border:1px solid currentColor; }
+  [data-testid="stAlertContainer"] * { color:inherit!important; }
+  [data-testid="stTable"], [data-testid="stTable"] table {
+    background:var(--card)!important; color:var(--fg)!important; border-color:var(--border)!important; }
+  [data-testid="stTable"] th { background:var(--secondary)!important; }
+  [data-testid="stTable"] th, [data-testid="stTable"] td,
+  [data-testid="stMarkdownContainer"] th, [data-testid="stMarkdownContainer"] td {
+    color:var(--fg)!important; border-color:var(--border)!important; }
+  [data-testid="stCode"], [data-testid="stCode"] pre {
+    background:var(--secondary)!important; color:var(--fg)!important; }
+  .brand { display:flex; gap:.7rem; align-items:center; }
+  .brand-mark { width:42px; height:42px; display:inline-flex; align-items:center;
+    justify-content:center; flex-shrink:0; border-radius:13px; color:#fff9ef;
+    background:#a64b32; box-shadow:inset 0 0 0 1px #ffffff18; }
+  .brand-name { font-size:.92rem; font-weight:700; letter-spacing:-.03em; }
+  .brand-sub { font-size:.72rem; color:var(--muted-fg); margin-top:.1rem; }
+  .brand-mark.hero-mark { width:64px; height:64px; border-radius:20px; margin-bottom:1.5rem;
+    transform:rotate(-6deg); box-shadow:0 8px 0 -3px var(--accent-soft); }
+  .hero-mark .line-icon { width:34px; height:34px; transform:rotate(6deg); }
+  .sec, .eyebrow, .login-kicker { color:var(--muted-fg); font-size:.65rem;
+    font-weight:700; text-transform:uppercase; letter-spacing:.14em; }
+  .sec { margin:.35rem 0 .5rem; }
+  .eyebrow { color:var(--primary); margin-bottom:.8rem; }
+  .hero { text-align:center; padding:2.8rem 0 2.3rem; animation:rise-in .35s ease both; }
+  .hero h1 { font-size:2.65rem; font-weight:600; letter-spacing:-.06em; line-height:1.16;
+    color:var(--fg); margin:0 0 1rem; padding:0; }
+  .hero h1 em { font-family:Georgia,serif; color:var(--primary); font-weight:400; }
+  .hero p { font-size:.95rem; line-height:1.75; color:var(--muted-fg); max-width:33rem; margin:0 auto; }
+  .login-hero { text-align:left; padding:2rem 1.5rem 1rem 0; }
+  .login-hero h1 { font-size:clamp(2.4rem,3.8vw,3.6rem); }
+  .login-hero p { margin:0; max-width:26rem; }
+  .feature-list { display:grid; gap:.85rem; margin-top:2rem; }
+  .feature { display:flex; align-items:center; gap:.7rem; font-size:.83rem; color:var(--muted-fg); }
+  .feature .line-icon { color:var(--primary); }
+  .workspace-bar { display:flex; justify-content:space-between; align-items:center;
+    gap:1rem; padding:.25rem 0 1rem; border-bottom:1px solid var(--border);
+    font-size:.79rem; color:var(--muted-fg); }
+  .workspace-label { display:flex; align-items:center; gap:.5rem; }
+  .demo-badge { display:inline-flex; align-items:center; gap:.4rem; white-space:nowrap;
+    font-size:.65rem; font-weight:600; border:1px solid var(--border); border-radius:6px;
+    padding:.3rem .5rem; color:var(--muted-fg); background:var(--card); }
+  .demo-badge::before { content:""; width:5px; height:5px; background:var(--primary); border-radius:50%; }
+  .st-key-login_card { background:var(--card); border:1px solid var(--border)!important;
+    max-width:100%;
+    border-radius:18px; padding:1.8rem!important; box-shadow:var(--shadow); margin-top:1.7rem; }
+  [data-testid="stForm"] { border-color:var(--border); }
+  .st-key-login_card [data-testid="stForm"] { border:0; padding:0; background:transparent; }
+  .login-kicker { color:var(--primary); margin-bottom:.7rem; }
+  .login-title { font-size:1.65rem; font-weight:600; letter-spacing:-.04em; margin-bottom:.35rem; }
+  .login-copy { font-size:.86rem; line-height:1.65; color:var(--muted-fg); margin-bottom:.7rem; }
+  .login-footnote { display:flex; gap:.55rem; font-size:.75rem; line-height:1.65;
+    padding-top:.8rem; color:var(--muted-fg); border-top:1px solid var(--border); }
+  .login-footnote .line-icon { margin-top:.15rem; color:var(--primary); }
+  .ucard { display:grid; grid-template-columns:minmax(0,1fr); gap:.12rem;
+    margin:.35rem 0 .9rem; padding-left:.7rem; border-left:2px solid var(--border); }
+  .step-icon { display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    width:30px; height:30px; color:var(--primary); border:1px solid var(--border); border-radius:9px; }
+  .ucard .rl { font-weight:650; font-size:.8rem; line-height:1.45; margin:0; }
+  .ucard .dp { color:var(--muted-fg); font-size:.75rem; line-height:1.5;
+    overflow-wrap:anywhere; }
+  .idbox { display:flex; flex-direction:column; gap:.2rem; align-items:flex-start; border:1px solid var(--border);
+    border-radius:12px; background:var(--card); padding:.9rem .75rem; }
+  .identity-avatar { display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    width:36px; height:36px; border-radius:50%; background:var(--accent-soft);
+    color:var(--primary); font-size:.76rem; font-weight:700; }
+  .idbox .nm { font-weight:600; font-size:.89rem; }
+  .idbox .rl { color:var(--primary); font-size:.75rem; }
+  .idbox .dp { color:var(--muted-fg); font-size:.69rem; margin-top:.2rem; }
+  .chip, .chip-muted { display:inline-flex; gap:.3rem; align-items:center; padding:.25rem .5rem;
+    margin:.1rem .2rem .1rem 0; border:1px solid var(--border); border-radius:6px;
+    font-size:.71rem; color:var(--primary); background:var(--card); }
+  .chip-muted { color:var(--muted-fg); }
+  .ld-label { display:flex; align-items:center; justify-content:flex-end; gap:.35rem;
+    color:var(--muted-fg); font-size:.75rem; }
+  .ld-label.right { justify-content:flex-start; }
+  .ld-label.on { color:var(--fg); font-weight:600; }
+  [class*="st-key-theme_toggle"] [data-testid="stCheckbox"] { display:flex; justify-content:center; }
+  [class*="st-key-theme_toggle"] [data-testid="stCheckbox"] label > div:not([data-testid]) {
+    background:var(--border)!important; }
+  [class*="st-key-theme_toggle"] [data-testid="stCheckbox"][data-selected="true"] label > div:not([data-testid]) {
+    background:var(--primary)!important; }
+  [class*="st-key-theme_toggle"] [data-testid="stCheckbox"] label > div:not([data-testid]) > div {
+    background:var(--primary-fg)!important; }
+  [class*="st-key-theme_toggle"] [data-testid="stCheckbox"]:has(input:focus-visible) {
+    outline:2px solid var(--primary); outline-offset:3px; border-radius:6px; }
+  .guard { display:flex; gap:.5rem; color:var(--muted-fg); font-size:.72rem; line-height:1.65; padding:.75rem 0; }
+  .guard .line-icon { color:var(--primary); margin-top:.15rem; }
+  .dot-row { display:flex; align-items:center; gap:.4rem; font-size:.73rem; color:var(--muted-fg); }
+  .dot { width:6px; height:6px; border-radius:50%; display:inline-block; }
+  .dot-ok { background:var(--success); } .dot-bad { background:var(--destructive); }
+  .dot-warn { background:var(--warning); }
+  [class*="st-key-ex_"] button { min-height:6.2rem; text-align:left; justify-content:flex-start;
+    padding:1.15rem; border-radius:12px; background:var(--card); }
+  [class*="st-key-ex_"] button p { font-size:.85rem; line-height:1.55; font-weight:400; }
+  [class*="st-key-ex_"] button [data-testid="stIconMaterial"] { color:var(--primary); margin-right:.5rem; }
+  .suggestion-footer { display:flex; align-items:center; justify-content:center; gap:.4rem;
+    font-size:.72rem; color:var(--muted-fg); margin:1.25rem 0; }
+  [data-testid="stChatMessage"] { background:transparent; border:0;
+    border-radius:0; padding:.8rem .4rem; margin-bottom:.55rem; animation:rise-in .25s ease both; }
+  [data-testid^="stChatMessageAvatar"] { color:var(--primary)!important; background:transparent!important; }
+  [data-testid="stChatMessage"] p { line-height:1.75; }
+  [data-testid="stChatMessage"] h2, [data-testid="stChatMessage"] h3 { font-size:1.05rem; }
+  [data-testid="stChatMessage"] th { background:var(--secondary); }
+  [data-testid="stChatMessage"] th, [data-testid="stChatMessage"] td { border-color:var(--border); }
+  [data-testid="stBottom"], [data-testid="stBottom"] > div,
+  [data-testid="stBottomBlockContainer"] { background:var(--bg)!important; }
+  [data-testid="stChatInput"] { background:var(--card)!important; border:1px solid var(--border)!important;
+    border-radius:16px!important; box-shadow:0 6px 25px #252a2010; padding:.3rem; }
+  [data-testid="stBottomBlockContainer"] { max-width:52rem; }
+  [data-testid="stChatInput"]:focus-within { border-color:var(--primary)!important; box-shadow:0 0 0 2px var(--accent-soft); }
+  [data-testid="stChatInput"] > div { background:transparent!important;
+    border:0!important; outline:0!important; box-shadow:none!important; }
+  [data-testid="stChatInput"] textarea { color:var(--fg)!important;
+    -webkit-text-fill-color:var(--fg); background:transparent!important; caret-color:var(--primary); }
+  [data-testid="stChatInput"] textarea::placeholder {
+    color:var(--muted-fg)!important; -webkit-text-fill-color:var(--muted-fg); opacity:1; }
+  [data-testid="stChatInputSubmitButton"] { background:var(--primary)!important; color:var(--primary-fg)!important; border-radius:10px; }
+  [data-testid="stChatInputSubmitButton"]:disabled {
+    background:var(--disabled-bg)!important; color:var(--disabled-fg)!important; opacity:1; }
+  [data-testid="stChatInputSubmitButton"] svg { fill:currentColor; }
+  [data-testid="stExpander"] { border:1px solid var(--border); border-radius:10px; background:var(--card); }
+  [data-testid="stExpander"] summary,
+  [data-testid="stExpander"] summary *,
+  [data-testid="stExpander"] [data-testid="stText"],
+  [data-testid="stExpander"] [data-testid="stText"] * {
+    color:var(--fg)!important; -webkit-text-fill-color:var(--fg)!important; }
+  [data-testid="stExpander"] summary { background:var(--card)!important; border-radius:9px; }
+  [data-testid="stExpander"] summary p { font-size:.83rem; }
+  [data-testid="stExpander"] summary:hover { background:var(--secondary)!important; }
+  [data-testid="stExpander"] summary:focus-visible {
+    outline:2px solid var(--primary); outline-offset:2px; border-radius:9px; }
+  [data-testid="stExpander"] [data-testid="stText"] { white-space:pre-wrap; overflow-wrap:anywhere; }
+  [data-testid="stExpander"] [data-testid="stText"] pre { font-family:inherit; color:var(--fg); font-size:.8rem; white-space:pre-wrap; }
+  .source-item { padding:.5rem .2rem; border-bottom:1px solid var(--border); }
+  .source-item:last-child { border-bottom:0; padding-bottom:.15rem; }
+  .source-title { font-size:.84rem; font-weight:600; line-height:1.4; }
+  .source-title span { font-size:.78rem; margin-right:.2rem; }
+  .source-meta { color:var(--muted-fg); font-size:.7rem; line-height:1.45;
+    margin:.16rem 0 0 1.35rem; overflow-wrap:anywhere; }
+  .refusal { background:var(--accent-soft); border:1px solid var(--border); border-radius:10px; padding:1rem; font-size:.86rem; }
+  .refusal b { display:flex; align-items:center; gap:.5rem; color:var(--primary); margin-bottom:.4rem; }
+  .stats { font-size:.7rem; color:var(--muted-fg); margin-top:.65rem; }
+  .evrow { display:flex; justify-content:space-between; font-size:.78rem; padding:.2rem 0; color:var(--muted-fg); }
+  .evrow b { color:var(--fg); font-variant-numeric:tabular-nums; }
+  .evhead { font-size:.65rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted-fg); margin:.6rem 0 .3rem; }
+  .evtally { display:flex; gap:.4rem; }
+  .evpill { flex:1; text-align:center; padding:.4rem; border:1px solid var(--border); border-radius:8px; }
+  .evpill .n { display:block; font-size:1.1rem; font-weight:600; }
+  .evpill .l { font-size:.6rem; color:var(--muted-fg); text-transform:uppercase; }
+  .evpill.ok .n { color:var(--success); } .evpill.bad .n { color:var(--destructive); }
+  .evpill.warn .n { color:var(--warning); }
+  .evempty { font-size:.76rem; color:var(--muted-fg); line-height:1.6; padding:.6rem 0; }
+  .kpi { border:1px solid var(--border); border-radius:12px; background:var(--card); padding:1.1rem; min-height:8rem; }
+  .kpi .l { font-size:.65rem; text-transform:uppercase; letter-spacing:.1em; color:var(--muted-fg); }
+  .kpi .v { font-size:1.8rem; font-weight:600; font-variant-numeric:tabular-nums; }
+  .kpi .s { font-size:.73rem; color:var(--muted-fg); }
+  .idlist { display:flex; flex-wrap:wrap; gap:.3rem; } .idnone { color:var(--muted-fg); font-size:.8rem; }
+  @media(min-width:768px) {
+    [data-testid="stSidebarResizeHandle"] { display:none; }
+  }
+  @media(max-width:767.98px) {
+    [data-testid="stSidebarCollapseButton"] { opacity:1; }
+    [data-testid="stSidebarResizeHandle"] { display:none; }
+    .block-container { padding:3.75rem 1rem 2rem; }
+    [data-testid="stBottomBlockContainer"] { padding-inline:1rem; }
+    .hero { padding:1.8rem 0; } .hero h1 { font-size:2.2rem; }
+    .login-hero { padding:1rem 0; } .login-hero h1 { font-size:2.7rem; }
+    .st-key-login_card { margin-top:0; padding:1.25rem!important; }
+    .feature-list { gap:.6rem; margin-top:1.25rem; }
+    [class*="st-key-ex_"] button { min-height:5rem; }
+  }
+  @media(prefers-reduced-motion:reduce) {
+    *, *::before, *::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; }
+  }
+"""
+
+
+def _css(theme: str, *, wide: bool = False) -> str:
+    layout = ".block-container{max-width:88rem!important;}" if wide else ""
+    return f"<style>:root{{{THEMES.get(theme, THEMES['light'])}}}{CSS}{layout}</style>"
+
+
+def _copy_button_css(theme: str) -> str:
+    """Give the isolated copy iframe the shared palette and component styles."""
+    return _css(theme)
 
 PAGE_TITLE = "Enterprise Knowledge AI"
 PAGE_ICON = str(Path(__file__).parent / "images" / "knowledge-mark.png")
@@ -241,20 +603,51 @@ def _seller_filter(options: list[str]) -> list[str] | None:
     return [options[index].split(" - ")[0]]
 
 
-def _load_users(base_url: str) -> list[dict]:
+@st.cache_data(ttl=300, max_entries=8, show_spinner=False)
+def _demo_users(base_url: str) -> list[dict]:
+    """Cache only the public directory, never credentials or login sessions."""
+    users = api_client.list_demo_users(base_url)
+    if not users:
+        raise api_client.ApiError("No selectable identities were returned.")
+    return users
+
+
+def _load_users(base_url: str) -> list[dict] | None:
     try:
-        users = api_client.list_demo_users(base_url)
+        with st.spinner("Connecting to the demo service..."):
+            return _demo_users(base_url)
     except api_client.ApiError as exc:
         st.error(str(exc))
-        st.caption("Start the service with `python answering/serve.py`")
-        st.caption("For a deployed synthetic-data demo, enable "
-                   "`API_DEMO_MODE=true` on the API (public demo follows this setting unless disabled). "
-                   "The selector is not authentication.")
-        st.stop()
-    if not users:
-        st.error("No selectable identities were returned.")
-        st.stop()
-    return users
+        st.caption("The service may be waking up. Try connecting again in a moment.")
+        if st.button("Retry connection", key="retry_demo_users"):
+            st.rerun()
+        return None
+
+
+@st.fragment
+def _service_status(base_url: str) -> None:
+    """Run the index diagnostic only on request, independently of chat reruns."""
+    st.markdown('<div class="sec">Service status</div>', unsafe_allow_html=True)
+    if st.button("Check service", key="check_service"):
+        with st.spinner("Checking service..."):
+            status = api_client.readiness(base_url, timeout=5)
+        st.session_state.service_check = (base_url, status)
+    previous = st.session_state.get("service_check")
+    if not previous or previous[0] != base_url:
+        st.caption("Check the connection and knowledge index when needed.")
+        return
+    status = previous[1]
+    if status["ready"]:
+        tone, label = "ok", "Backend and knowledge index ready"
+    elif status["reachable"]:
+        tone, label = "warn", "Backend online; knowledge index not ready"
+    else:
+        tone, label = "bad", "Service unreachable; it may be waking up"
+    st.markdown(f'<div class="dot-row"><span class="dot dot-{tone}"></span>'
+                f'{label}</div>', unsafe_allow_html=True)
+    st.caption("Last requested check. Check again to refresh.")
+    for problem in status.get("problems", []):
+        st.text(str(problem))
 
 
 def _login_sidebar(base_url: str) -> None:
@@ -279,23 +672,7 @@ def _login_sidebar(base_url: str) -> None:
             unsafe_allow_html=True)
 
         st.write("")
-        st.markdown('<div class="sec">Service status</div>',
-                    unsafe_allow_html=True)
-        status = api_client.readiness(base_url)
-        if status["ready"]:
-            st.markdown('<div class="dot-row"><span class="dot dot-ok"></span>'
-                        'Backend and knowledge index ready</div>',
-                        unsafe_allow_html=True)
-        elif status["reachable"]:
-            st.markdown('<div class="dot-row"><span class="dot dot-warn"></span>'
-                        'Backend online; knowledge index not ready</div>',
-                        unsafe_allow_html=True)
-            if status["problems"]:
-                st.caption(" · ".join(map(str, status["problems"])))
-        else:
-            st.markdown('<div class="dot-row"><span class="dot dot-bad"></span>'
-                        'API unreachable</div>', unsafe_allow_html=True)
-            st.caption("Start it with `python answering/serve.py`")
+        _service_status(base_url)
 
         st.divider()
         _theme_toggle("theme_toggle_login")
@@ -312,8 +689,6 @@ def _login_screen(base_url: str) -> None:
         '<p>Choose an account to explore the knowledge workspace.</p></div>',
         unsafe_allow_html=True)
 
-    users = _load_users(base_url)
-    user_by_id = {user["user_id"]: user for user in users}
     with st.container(horizontal_alignment="center"):
         with st.container(border=True, key="login_card", width=480):
             st.markdown(
@@ -322,6 +697,10 @@ def _login_screen(base_url: str) -> None:
                 '<div class="login-copy">Select a sample identity. The backend '
                 'will apply its permissions to your questions.</div>',
                 unsafe_allow_html=True)
+            users = _load_users(base_url)
+            if users is None:
+                return
+            user_by_id = {user["user_id"]: user for user in users}
             with st.form("demo_login_form", clear_on_submit=False):
                 selected_id = st.selectbox(
                     "Demo account", list(user_by_id),
@@ -410,12 +789,7 @@ def _sidebar(user: dict, base_url: str) -> None:
         _evaluation_sidebar(base_url)
 
         st.divider()
-        if api_client.health(base_url):
-            st.markdown('<div class="dot-row"><span class="dot dot-ok"></span>'
-                        'Service online</div>', unsafe_allow_html=True)
-        else:
-            st.markdown('<div class="dot-row"><span class="dot dot-bad"></span>'
-                        'Service unreachable</div>', unsafe_allow_html=True)
+        _service_status(base_url)
 
         st.markdown(
             '<div class="guard">&#128274; Authorization is enforced '
@@ -485,76 +859,22 @@ def _metric_rows(pairs: list[tuple[str, str]]) -> str:
                    f'</div>' for label, value in pairs)
 
 
+@st.cache_data(ttl=60, max_entries=32, show_spinner=False)
+def _fetch_eval_summary(base_url: str, report: str | None = None) -> dict:
+    return api_client.evaluation_summary(base_url, report=report)
+
+
 def _eval_summary(base_url: str, report: str | None = None) -> dict | None:
     """Read the latest saved evaluation. Never triggers a run."""
     try:
-        return api_client.evaluation_summary(base_url, report=report)
+        return _fetch_eval_summary(base_url, report)
     except api_client.ApiError:
         return None
 
 
 def _evaluation_sidebar(base_url: str) -> None:
     st.markdown('<div class="sec">Evaluation</div>', unsafe_allow_html=True)
-    payload = _eval_summary(base_url)
-    if payload is None:
-        st.markdown('<div class="evempty">Evaluation data is unavailable '
-                    'while the service is unreachable.</div>',
-                    unsafe_allow_html=True)
-        return
-
-    if not payload.get("has_results"):
-        st.markdown(
-            '<div class="evempty">No evaluation results available. Run the '
-            'evaluation to generate results.</div>', unsafe_allow_html=True)
-    else:
-        summary = payload.get("summary") or {}
-        total = summary.get("total_cases", 0)
-        errors = summary.get("errors", 0)
-        dataset_total = (payload.get("dataset") or {}).get("total_cases", 0)
-        selected = payload.get("selected_cases") or total
-        st.markdown(
-            f'<div class="evtally">'
-            f'<div class="evpill"><span class="n">{total}</span>'
-            f'<span class="l">Cases</span></div>'
-            f'<div class="evpill ok"><span class="n">'
-            f'{summary.get("passed", 0)}</span><span class="l">Passed</span>'
-            f'</div>'
-            f'<div class="evpill bad"><span class="n">'
-            f'{summary.get("failed", 0)}</span><span class="l">Failed</span>'
-            f'</div>'
-            + (f'<div class="evpill warn"><span class="n">{errors}</span>'
-               f'<span class="l">Errors</span></div>' if errors else "")
-            + '</div>', unsafe_allow_html=True)
-
-        retrieval = summary.get("retrieval") or {}
-        generation = summary.get("generation") or {}
-        security = summary.get("security") or {}
-        st.markdown(
-            '<div class="evhead">Retrieval</div>'
-            + _metric_rows([
-                ("Recall@K", _pct(retrieval.get("recall_at_k"))),
-                ("Precision@K", _pct(retrieval.get("precision_at_k"))),
-                ("MRR", _num(retrieval.get("mrr"))),
-            ])
-            + '<div class="evhead">Generation</div>'
-            + _metric_rows([
-                ("Groundedness", _pct(generation.get("groundedness"))),
-                ("Relevancy", _pct(generation.get("answer_relevancy"))),
-                ("Correctness", _pct(generation.get("answer_correctness"))),
-            ])
-            + '<div class="evhead">Security</div>'
-            + _metric_rows([
-                ("Authorization", _pct(security.get("authorization_accuracy"))),
-                ("Leakage", _pct(security.get("answer_leakage_rate"))),
-                ("Injection blocked",
-                 _pct(security.get("prompt_injection_blocked"))),
-            ]), unsafe_allow_html=True)
-        st.caption(f"Last evaluation: {payload.get('generated_at') or 'n/a'}")
-        if dataset_total:
-            st.caption(f"Coverage: {total} results recorded from {selected} selected "
-                       f"of {dataset_total} golden cases.")
-        if payload.get("partial") or errors:
-            st.caption("Incomplete evidence: review coverage and errors before interpreting scores.")
+    st.caption("Open saved evaluation results when needed.")
 
     label = ("Back to chat" if st.session_state.view == "evaluation"
              else "View evaluation matrix")
@@ -566,6 +886,8 @@ def _evaluation_sidebar(base_url: str) -> None:
 
 
 def _matrix_frame(matrix: list[dict]) -> pd.DataFrame:
+    import pandas as pd
+
     frame = pd.DataFrame(matrix)
     if frame.empty:
         return frame
@@ -719,6 +1041,7 @@ def _evaluation_screen(user: dict, base_url: str) -> None:
     controls, spacer = st.columns([1, 2])
     with controls:
         if st.button("Refresh saved results", use_container_width=True, type="primary"):
+            _fetch_eval_summary.clear(base_url, selected_report)
             st.rerun()
     with spacer:
         dataset = payload.get("dataset") or {}

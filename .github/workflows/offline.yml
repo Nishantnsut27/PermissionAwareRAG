@@ -18,6 +18,7 @@ jobs:
       - run: python -B scripts/run_offline_suite.py security_tests.phase3_answer_quality
       - run: python -B scripts/run_offline_suite.py security_tests.phase4_reliability
       - run: python -B scripts/run_offline_suite.py security_tests.phase5_source_inspection
+      - run: python -B scripts/run_offline_suite.py security_tests.ui_startup
       - run: python -B scripts/run_offline_suite.py security_tests.issue_regressions
       - run: python -B scripts/run_offline_suite.py security_tests.seller_balanced_retrieval
       - run: python -B scripts/run_offline_suite.py security_tests.portfolio_answer_scope

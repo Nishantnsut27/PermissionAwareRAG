@@ -11,6 +11,7 @@ to a short-lived server session.
 `GET  /evaluation`        stored evaluation summary
 `GET  /evaluation/matrix` stored evaluation matrix and per-case results
 `GET /demo/users`     demo persona directory
+`GET /ping`           plain-text liveness response for uptime checks
 `POST /demo/login`    demo password validation and session issuance
 `/demo/query/*`       session-bound demo requests
 
@@ -261,6 +262,28 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("X-Accel-Buffering", "no")
         self.end_headers()
 
+    def _ping(self, *, head: bool = False) -> None:
+        """A two-byte liveness probe; never touches retrieval or providers."""
+        self.send_response(200)
+        self.send_header("Content-Type", "text/plain; charset=utf-8")
+        self.send_header("Content-Length", "2")
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("Connection", "close")
+        self.end_headers()
+        if not head:
+            self.wfile.write(b"ok")
+        self.close_connection = True
+
+    def do_HEAD(self) -> None:
+        if urlsplit(self.path).path.rstrip("/") == "/ping":
+            self._ping(head=True)
+        else:
+            self.send_response(404)
+            self.send_header("Content-Length", "0")
+            self.send_header("Connection", "close")
+            self.end_headers()
+            self.close_connection = True
+
     def _emit(self, event: dict) -> None:
         frame = f"data: {json.dumps(event, ensure_ascii=False)}\n\n"
         self.wfile.write(frame.encode("utf-8"))
@@ -274,7 +297,9 @@ class Handler(BaseHTTPRequestHandler):
         parsed = urlsplit(self.path)
         route = parsed.path.rstrip("/")
         report = parse_qs(parsed.query).get("report", [None])[0]
-        if route == "/health":
+        if route == "/ping":
+            self._ping()
+        elif route == "/health":
             self._send(200, {"status": "ok"})
         elif route == "/live":
             self._send(200, {"status": "live"})

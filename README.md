@@ -531,6 +531,14 @@ In another terminal:
 streamlit run app.py
 ```
 
+The UI layout, themes, icons, and rendering live together in `app.py`.
+The public demo directory is cached for five minutes per API URL. Login sessions
+are never cached. The login shell renders before the directory request and offers
+a retry if the backend is waking up. Chat reruns make no automatic health or
+evaluation requests: **Check service** runs the readiness diagnostic on demand,
+and saved evaluations load only when opened (cached for one minute, with an
+explicit refresh). `api_client.py` remains the HTTP transport for the backend.
+
 ### Windows quick start
 
 For a one-command local run on Windows, use the included `run.bat`:
@@ -551,6 +559,7 @@ The answering service exposes:
 
 | Method | Endpoint | Purpose |
 |---|---|---|
+| GET, HEAD | `/ping` | Tiny uptime probe: HTTP 200, plain-text `ok` (2 bytes for GET); no database/model calls |
 | GET | `/health` | Service health check |
 | GET | `/live` | Process liveness only |
 | GET | `/ready` | Local configuration, Qdrant alias, and active manifest readiness (no model provider calls) |
@@ -564,6 +573,16 @@ The answering service exposes:
 | POST | `/demo/query`, `/demo/query/stream` | Demo persona query; requires the session from `/demo/login` |
 
 Evaluation execution is intentionally kept outside the HTTP request path and is run explicitly from the evaluation CLI.
+
+For the Render uptime cron job, deploy the backend change, then use
+`https://permissionawarerag-t80d.onrender.com/ping` with method **GET** every
+**14 minutes** and expect HTTP **200** with body **ok**. No authorization header
+or request body is required. This is a liveness probe, not an index-readiness
+check. A sleeping Render service can serve its own wake-up page before Python
+is running; this endpoint cannot shrink that platform-generated response or
+guarantee uninterrupted uptime. If that occurs, wake the service once, verify
+`/ping` returns `ok`, then retest the cron job. Pinging Render does not wake or
+keep the separate Streamlit Cloud frontend running.
 
 Query routes require a backend-issued demo session; request-body `user_id` values cannot select or change the persona. For local use, set `API_DEMO_MODE=true` and keep `API_HOST=127.0.0.1`; set `API_PUBLIC_DEMO_MODE=false` to explicitly keep demo routes local. For a deployed synthetic-data demo, set `API_DEMO_MODE=true` and `API_HOST=0.0.0.0` on the API service, then set Streamlit's `API_BASE_URL` to the API's HTTPS public URL. Public demo mode follows the demo setting by default. Passwords follow `firstname@login` (for example, `aditya@login`) and the backend returns a one-hour session. This demo login is only for synthetic data. Public demo requests share a global per-process budget. `EVALUATION_REPORTS_ENABLED=true` only enables the detailed route after operator authorization.
 
