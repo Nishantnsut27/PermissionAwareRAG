@@ -14,6 +14,18 @@ import app
 from answering.src import api
 
 
+class ApiBaseUrlTests(unittest.TestCase):
+    def test_launcher_url_overrides_deployment_secrets(self):
+        with patch.dict(app.os.environ, {"API_BASE_URL": "http://127.0.0.1:8142"}), \
+             patch.object(app.st, "secrets", {"API_BASE_URL": "https://deployment.example"}):
+            self.assertEqual(app._base_url(), "http://127.0.0.1:8142")
+
+    def test_secrets_remain_available_without_an_environment_override(self):
+        with patch.dict(app.os.environ, {"API_BASE_URL": ""}), \
+             patch.object(app.st, "secrets", {"API_BASE_URL": "https://deployment.example"}):
+            self.assertEqual(app._base_url(), "https://deployment.example")
+
+
 class SourceRenderingTests(unittest.TestCase):
     def test_hostile_source_metadata_is_rendered_only_as_plain_text(self):
         expander = MagicMock()

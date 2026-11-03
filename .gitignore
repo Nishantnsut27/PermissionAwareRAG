@@ -43,4 +43,5 @@ sofar.md
 
 # Logs
 *.log
+.cache/
 .streamlit/

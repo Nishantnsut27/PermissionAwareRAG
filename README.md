@@ -539,7 +539,9 @@ For a one-command local run on Windows, use the included `run.bat`:
 run.bat
 ```
 
-It creates no environment or credentials for you; `.venv` must already exist and `.env` must be configured. The script starts the answering API, waits for liveness, and then launches the Streamlit UI.
+It creates no environment or credentials for you; `.venv` must already exist and `.env` must be configured. The script starts a fresh API/UI pair on loopback, choosing available ports near 8000 and 8501 and leaving existing services running. It waits for both services, sets the UI's `API_BASE_URL` to the selected API, and opens the application in your browser. An explicit `API_BASE_URL` environment variable takes precedence over Streamlit secrets.
+
+Both services run in the background. Their URLs, process IDs, and log paths are saved in `.cache/launcher.json`; the console also prints the application URL. Use `run.bat --no-browser` to start without opening a tab, or `run.bat --api-port 8141 --ui-port 8511` to choose different preferred ports. Startup failures print the relevant log path and clean up only processes started by that invocation. Startup checks do not run model queries or rebuild the index.
 
 ---
 
