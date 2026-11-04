@@ -32,6 +32,28 @@ async function signIn() {
   return interaction;
 }
 describe('workspace behavior', () => {
+  it('blocks questions until delayed session verification and ignores late verification after logout', async () => {
+    let finish: ((profile: typeof user) => void) | undefined;
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ session: session(), messages: [], theme: 'light', memory: 6 }));
+    vi.mocked(api.me).mockImplementation(() => new Promise(resolve => { finish = resolve; }));
+    ui('/chat');
+    expect(screen.getByLabelText('Ask a question')).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: 'New User' }));
+    await act(async () => { finish?.(user); });
+    expect(screen.getByRole('heading', { name: 'Explore a sample account' })).toBeVisible();
+    expect(api.ask).not.toHaveBeenCalled();
+  });
+  it('displays valid partial answers but excludes their content from conversation memory', async () => {
+    vi.mocked(api.ask).mockResolvedValueOnce({ ...final, answer: 'Partial content', outcome: 'partial', completed: false });
+    ui(); const interaction = await signIn();
+    await interaction.type(screen.getByLabelText('Ask a question'), 'first');
+    await interaction.click(screen.getByRole('button', { name: 'Send question' }));
+    await screen.findByText('Partial content');
+    await interaction.type(screen.getByLabelText('Ask a question'), 'second');
+    await interaction.click(screen.getByRole('button', { name: 'Send question' }));
+    await screen.findByText('Canonical answer');
+    expect(vi.mocked(api.ask).mock.calls[1][2].some(row => row.content === 'Partial content')).toBe(false);
+  });
   it('renders a login shell immediately while the directory is unavailable', async () => {
     vi.mocked(api.listUsers).mockImplementation(() => new Promise(() => {})); ui();
     expect(screen.getByRole('heading', { name: 'Explore a sample account' })).toBeVisible();

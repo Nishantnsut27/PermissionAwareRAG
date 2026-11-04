@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from dotenv import load_dotenv
+from answering.src import jina_keys
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -30,13 +31,15 @@ INDEXING_REPORT_FILE = REPORTS_DIR / "indexing_report.json"
 SANITY_REPORT_FILE = REPORTS_DIR / "sanity_checks.json"
 VOCAB_FILE = REPORTS_DIR / "sparse_vocab.json"
 
-REQUIRED_ENV_VARS = ("JINA_API_KEY", "QDRANT_URL", "QDRANT_API_KEY")
+REQUIRED_ENV_VARS = ("QDRANT_URL", "QDRANT_API_KEY")
 
 INDEX_MANIFEST_SCHEMA = 1
 
 
 def validate_env() -> None:
     missing = [name for name in REQUIRED_ENV_VARS if not os.getenv(name)]
+    if not jina_keys.load_keys():
+        missing.append("JINA_API_KEY_1 (or JINA_API_KEY)")
     if missing:
         raise RuntimeError(
             "Missing required environment variables: "

@@ -135,6 +135,7 @@ class ApiBoundaryTests(unittest.TestCase):
                     "summary": {"total_cases": 7},
                     "results": [{"answer": "private answer", "evidence": ["secret"]}]}
         reports = type("Reports", (), {
+            "public_payload": staticmethod(lambda _: {"has_results": True, "run_id": "run-1", "total_cases": 7}),
             "load": staticmethod(lambda _: document),
             "list_reports": staticmethod(lambda: [
                 {"report_id": "runs/run-1.json", "generated_at": "2026-10-31",

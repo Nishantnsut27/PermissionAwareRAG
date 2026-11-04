@@ -9,7 +9,7 @@ from urllib.parse import urlsplit
 
 from dotenv import load_dotenv
 
-from . import groq_keys
+from . import groq_keys, jina_keys
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 load_dotenv(PROJECT_ROOT / ".env")
@@ -148,11 +148,13 @@ REFUSAL_ANSWER = (
     "I couldn't find sufficient authorized information to answer this request."
 )
 
-REQUIRED_ENV_VARS = ("JINA_API_KEY", "QDRANT_URL", "QDRANT_API_KEY")
+REQUIRED_ENV_VARS = ("QDRANT_URL", "QDRANT_API_KEY")
 
 
 def validate_env() -> None:
     missing = [name for name in REQUIRED_ENV_VARS if not os.getenv(name)]
+    if not jina_keys.load_keys():
+        missing.append("JINA_API_KEY_1 (or JINA_API_KEY)")
     if not groq_keys.pool().size:
         missing.append("GROQ_API_KEY_1")
     if missing:

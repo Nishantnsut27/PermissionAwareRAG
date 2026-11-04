@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { ask, streamEvents } from '../src/api';
+import { ask, streamEvents, validateEvent } from '../src/api';
 
 const done = { type: 'done', answer: 'Canonical answer', outcome: 'answer', completed: true, sources: [], stats: {}, effective_sellers: ['S001'] };
 function bytes(chunks: string[]) {
@@ -9,6 +9,25 @@ function bytes(chunks: string[]) {
 }
 async function events(chunks: string[]) { const result = []; for await (const event of streamEvents(bytes(chunks))) result.push(event); return result; }
 describe('POST SSE transport', () => {
+  it.each([
+    { stats: [] }, { stats: { candidates: {} } }, { stats: { selected: -1 } },
+    { stats: { latency_ms: Infinity } }, { stats: { model: [] } }, { stats: { reranked: 'true' } },
+    { sources: [null] }, { sources: [{ pages: [{}] }] }, { sources: [{ label: {} }] },
+    { sources: [{ document_id: [] }] }, { sources: [{ relevance: NaN }] },
+    { effective_sellers: [{}] }, { request_id: {} },
+  ])('rejects malformed metadata before accepting an answer: %j', async invalid => {
+    expect(() => validateEvent({ ...done, ...invalid })).toThrow('invalid final answer');
+  });
+  it('accepts valid partial answers and nullable source relevance', () => {
+    expect(validateEvent({ ...done, outcome: 'partial', completed: false, sources: [{ relevance: null }] }).type).toBe('done');
+  });
+  it('does not retry generation on invalid metadata', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(bytes([
+      `data: ${JSON.stringify({ ...done, stats: { selected: {} } })}\n\n`,
+    ]), { headers: { 'Content-Type': 'text/event-stream' } }));
+    await expect(ask('s', 'q', [], '', new AbortController().signal, vi.fn())).rejects.toThrow('invalid final answer');
+    expect(fetcher).toHaveBeenCalledTimes(1); fetcher.mockRestore();
+  });
   it('parses fragmented frames, CRLF and multibyte characters', async () => {
     const body = new TextEncoder().encode(`:heartbeat\r\n\r\ndata: {"type":"delta","text":"café"}\r\n\r\ndata: ${JSON.stringify(done)}\r\n\r\n`);
     const stream = new ReadableStream<Uint8Array>({ start(controller) {

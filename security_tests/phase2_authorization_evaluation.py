@@ -213,7 +213,7 @@ def _fake_case_result(case, answer, status="PASS"):
         "eval_id": case.eval_id, "user_id": case.user_id, "user": case.user_name,
         "question": case.question, "category": case.category,
         "expected_behavior": case.expected_behavior, "status": status,
-        "answered": True, "answer": answer, "retrieved_sources": [],
+        "answered": True, "answer": answer, "outcome": "answer", "retrieved_sources": [],
         "candidate_sources": [], "expected_sources": [], "relevant_sources": [],
         "security": None, "retrieval": None, "generation": None,
     })

@@ -1,4 +1,5 @@
-import { isUser, type Answer, type StreamEvent, type UserProfile } from './types';
+import { isAnswer, isRecord, isUser, type Answer, type StreamEvent, type UserProfile } from './types';
+import { parseEvaluation, type EvaluationSummary } from './evaluationData';
 
 export const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000').replace(/\/+$/, '');
 export class ApiError extends Error {
@@ -19,8 +20,8 @@ async function payload(response: Response): Promise<Record<string, unknown>> {
   let body: Record<string, unknown>;
   try { body = await response.json(); }
   catch { throw new ApiError('The service is starting or unavailable. Please try again shortly.', response.status); }
-  if (!response.ok) throw new ApiError(typeof body.message === 'string' ? body.message : 'The request failed.', response.status);
   if (!body || typeof body !== 'object' || Array.isArray(body)) throw new ApiError('The service returned an invalid response.');
+  if (!response.ok) throw new ApiError(typeof body.message === 'string' ? body.message : 'The request failed.', response.status);
   return body;
 }
 export async function listUsers(signal?: AbortSignal): Promise<UserProfile[]> {
@@ -46,27 +47,16 @@ export async function ready(signal?: AbortSignal) {
   const body = await response.json();
   return { ready: response.ok && body.status === 'ready', problems: Array.isArray(body.problems) ? body.problems : [] };
 }
-export interface EvaluationSummary {
-  has_results: boolean; total_cases?: number; run_id?: string; generated_at?: string; report_id?: string;
-  available_reports?: { report_id: string; generated_at?: string }[];
-}
 export async function evaluation(report?: string, signal?: AbortSignal): Promise<EvaluationSummary> {
-  return await payload(await request(`/evaluation${report ? `?report=${encodeURIComponent(report)}` : ''}`, { signal })) as unknown as EvaluationSummary;
+  return parseEvaluation(await payload(await request(`/evaluation${report ? `?report=${encodeURIComponent(report)}` : ''}`, { signal })));
 }
 export function validateEvent(value: unknown): StreamEvent {
-  if (!value || typeof value !== 'object') throw new ApiError('The answer stream contained an invalid event.');
+  if (!isRecord(value)) throw new ApiError('The answer stream contained an invalid event.');
   const event = value as StreamEvent;
   if (!['meta', 'delta', 'done', 'error'].includes(event.type)) throw new ApiError('The answer stream contained an invalid event.');
   if (event.type === 'delta' && typeof event.text !== 'string') throw new ApiError('The answer stream contained an invalid delta.');
-  if (event.type === 'done') {
-    if (!['answer', 'partial', 'refusal'].includes(event.outcome)
-        || typeof event.answer !== 'string' || (event.outcome !== 'refusal' && !event.answer.trim())
-        || typeof event.completed !== 'boolean' || event.completed !== (event.outcome !== 'partial')
-        || !Array.isArray(event.sources) || !event.stats || typeof event.stats !== 'object'
-        || !Array.isArray(event.effective_sellers) || !event.effective_sellers.every(id => typeof id === 'string')) {
-      throw new ApiError('The service returned an invalid final answer.');
-    }
-  }
+  if (event.type === 'done' && !isAnswer(value)) throw new ApiError('The service returned an invalid final answer.');
+  if (event.type === 'error' && event.message !== undefined && typeof event.message !== 'string') throw new ApiError('The answer stream contained an invalid error.');
   return event;
 }
 // SSE is a framing protocol: a network chunk may split a JSON value or UTF-8 character.

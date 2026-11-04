@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import evaluationSummary from '../fixtures/evaluation-summary.json' with { type: 'json' };
 const user = { user_id: 'U-001', name: 'Aditya Verma', role: 'Account Manager', department: 'Business', seller_scope: ['S001', 'S003'] };
 test.beforeEach(async ({ page }) => {
   await page.route('http://127.0.0.1:8000/**', async route => {
@@ -9,7 +10,7 @@ test.beforeEach(async ({ page }) => {
       : path === '/demo/login' ? { access_token: 'session', expires_in: 3600, user }
       : path === '/demo/me' ? { user }
       : path === '/ready' ? { status: 'ready' }
-      : { has_results: true, total_cases: 4, run_id: 'saved-report', available_reports: [{ report_id: 'results.json' }] };
+      : { ...evaluationSummary, run_id: 'saved-report' };
     if (path === '/demo/query/stream') {
       const question = route.request().postDataJSON().query;
       const denied = question.includes('restricted');
@@ -36,6 +37,7 @@ async function toggleTheme(page: import('@playwright/test').Page) {
   await closeMenu(page);
 }
 test('login, scoped chat, source inspection, refresh restoration, theme and evaluation', async ({ page }, testInfo) => {
+  test.setTimeout(60000); // Multiple full-page light/dark captures on desktop and mobile.
   await page.goto('/login');
   await expect(page.getByRole('heading', { name: 'Explore a sample account' })).toBeVisible();
   await page.screenshot({ path: testInfo.outputPath('login-light.png'), fullPage: true });
@@ -78,6 +80,21 @@ test('unavailable backend does not block rendering the login shell', async ({ pa
   await page.unrouteAll(); await page.route('http://127.0.0.1:8000/**', route => route.abort());
   await page.goto('/chat'); await expect(page.getByRole('heading', { name: 'Explore a sample account' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Continue' })).toBeDisabled();
+});
+
+test('a missing lazy asset after redeployment offers reload without replaying a question', async ({ page }) => {
+  let generations = 0;
+  page.on('request', request => { if (request.url().includes('/demo/query/stream')) generations++; });
+  await page.goto('/login');
+  await page.getByLabel('Demo password').fill('aditya@login');
+  await page.getByRole('button', { name: 'Continue' }).click();
+  await expect(page.getByLabel('Ask a question')).toBeEnabled();
+  await page.route('**/assets/Evaluation-*.js', route => route.abort());
+  await openMenu(page);
+  await page.getByRole('button', { name: 'Evaluation overview' }).click();
+  await expect(page.getByRole('button', { name: 'Reload app' }).first()).toBeVisible();
+  expect(generations).toBe(0);
+  expect(await page.evaluate(() => JSON.parse(sessionStorage.getItem('knowledge-workspace.v1')!).session.user.user_id)).toBe('U-001');
 });
 
 test('long answers and citations stay above the growing composer', async ({ page }, testInfo) => {

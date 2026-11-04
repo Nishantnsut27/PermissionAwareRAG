@@ -2,11 +2,13 @@
 from __future__ import annotations
 
 import numbers
+import math
 import time
 
 import requests
 
 from . import config
+from answering.src import jina_keys
 from answering.src.deadline import record_retry, remaining_timeout
 from answering.src.http_deadline import provider_deadline, session
 
@@ -23,50 +25,38 @@ class EmbeddingHTTPError(EmbeddingError):
         self.retryable = status_code == 429 or status_code == 408 or status_code >= 500
 
 
-def _headers() -> dict[str, str]:
-    if not config.JINA_API_KEY:
-        raise EmbeddingError(
-            "JINA_API_KEY is not set; refusing to call the embedding API.")
-    return {
-        "Authorization": f"Bearer {config.JINA_API_KEY}",
-        "Content-Type": "application/json",
-    }
-
-
 def _post_batch(texts: list[str], task: str, timeout_s: int) -> list[list[float]]:
     with provider_deadline(timeout_s):
         return _post_batch_body(texts, task, timeout_s)
 
 
 def _post_batch_body(texts: list[str], task: str, timeout_s: int) -> list[list[float]]:
-    response = HTTP.post(
-        config.JINA_API_URL,
-        headers=_headers(),
-        json={
-            "model": config.JINA_EMBEDDING_MODEL,
-            "task": task,
-            "input": texts,
-        },
-        timeout=remaining_timeout(timeout_s),
-    )
-    try:
-        if response.status_code != 200:
-            raise EmbeddingHTTPError(response.status_code,
-                f"Jina API error {response.status_code}: {response.text[:300]}")
-        body = response.json()
-    finally:
-        close = getattr(response, "close", None)
-        if close:
-            close()
-    items = body.get("data") if isinstance(body, dict) else None
-    if not items:
-        raise EmbeddingError(f"Jina response missing 'data': {str(body)[:300]}")
-    ordered = sorted(items, key=lambda d: d.get("index", 0))
-    vectors = [d.get("embedding") for d in ordered]
-    if len(vectors) != len(texts):
-        raise EmbeddingError(
-            f"Jina returned {len(vectors)} embeddings for {len(texts)} inputs")
-    return vectors
+    with jina_keys.request('embedding') as call:
+        response = HTTP.post(
+            config.JINA_API_URL, headers=call.headers,
+            json={"model": config.JINA_EMBEDDING_MODEL, "task": task, "input": texts},
+            timeout=remaining_timeout(timeout_s))
+        call.response(response.status_code)
+        try:
+            if response.status_code != 200:
+                raise EmbeddingHTTPError(response.status_code,
+                    f"Jina API error {response.status_code}: {response.text[:300]}")
+            body = response.json()
+        finally:
+            close = getattr(response, "close", None)
+            if close:
+                close()
+        items = body.get("data") if isinstance(body, dict) else None
+        if not isinstance(items, list) or len(items) != len(texts):
+            raise EmbeddingError('Jina returned an invalid embedding data list')
+        if any(not isinstance(item, dict) or type(item.get('index')) is not int for item in items):
+            raise EmbeddingError('Jina returned an invalid embedding index')
+        ordered = sorted(items, key=lambda d: d['index'])
+        if [item['index'] for item in ordered] != list(range(len(texts))):
+            raise EmbeddingError('Jina returned duplicate or missing embedding indices')
+        vectors = [d.get('embedding') for d in ordered]
+        validate_embeddings(vectors)
+        return vectors
 
 
 def validate_embeddings(vectors: list[list[float]]) -> int:
@@ -76,8 +66,9 @@ def validate_embeddings(vectors: list[list[float]]) -> int:
     for i, vec in enumerate(vectors):
         if not isinstance(vec, list) or not vec:
             raise EmbeddingError(f"Embedding {i} is missing or empty")
-        if not all(isinstance(v, numbers.Real) for v in vec):
-            raise EmbeddingError(f"Embedding {i} contains non-numeric values")
+        if not all(isinstance(v, numbers.Real) and not isinstance(v, bool)
+                   and math.isfinite(v) for v in vec):
+            raise EmbeddingError(f"Embedding {i} contains invalid numeric values")
         if dim is None:
             dim = len(vec)
         elif len(vec) != dim:
@@ -121,7 +112,9 @@ def embed_texts(
                     vectors[start + offset] = vec
                 last_error = None
                 break
-            except (EmbeddingError, requests.RequestException) as exc:
+            except (EmbeddingError, requests.RequestException, jina_keys.JinaRequestError) as exc:
+                if jina_keys.strict_evaluation():
+                    raise
                 last_error = exc
                 if attempt < max_retries and (
                         isinstance(exc, requests.RequestException)

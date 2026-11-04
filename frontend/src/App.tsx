@@ -117,7 +117,7 @@ export default function App() {
   useEffect(() => {
     if (!token || state.verified) return;
     const controller = new AbortController(); setRestoreError('');
-    api.me(token, controller.signal).then(user => dispatch({ type: 'verified', user })).catch(error => {
+    api.me(token, controller.signal).then(user => { if (!controller.signal.aborted) dispatch({ type: 'verified', user }); }).catch(error => {
       if (controller.signal.aborted) return;
       if (error instanceof api.ApiError && error.status === 401) {
         dispatch({ type: 'logout' }); setQuestion(''); setBanner('Your demo session has ended. Please sign in again.');

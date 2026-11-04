@@ -1,4 +1,4 @@
-import { isUser, type Message, type Session, type UserProfile } from './types';
+import { isMessage, isUser, type Message, type Session, type UserProfile } from './types';
 
 export const STORAGE_KEY = 'knowledge-workspace.v1';
 export interface State {
@@ -42,9 +42,7 @@ export function loadState(): State {
         || !Number.isFinite(saved.session.expiresAt) || saved.session.expiresAt <= Date.now() || !isUser(saved.session.user)) {
       return { ...initialState, theme, memory };
     }
-    const messages = Array.isArray(saved.messages) ? saved.messages.filter(row => row && typeof row.id === 'string'
-      && ['user', 'assistant'].includes(row.role) && typeof row.content === 'string'
-      && (!row.outcome || ['answer', 'partial', 'refusal', 'error', 'interrupted', 'pending'].includes(row.outcome))) : [];
+    const messages = Array.isArray(saved.messages) ? saved.messages.filter(isMessage) : [];
     return { session: saved.session, verified: false, theme, memory,
       seller: saved.session.user.seller_scope.includes(saved.seller) ? saved.seller : '',
       messages: messages.map(row => row.outcome === 'pending' ? { ...row, outcome: 'interrupted', content: 'The page refreshed before this answer completed. Please ask again.' } : row) };

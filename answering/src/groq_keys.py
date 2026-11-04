@@ -21,11 +21,14 @@ logged or raised.
 from __future__ import annotations
 
 import logging
+import math
 import os
 import re
 import threading
 import time
 from dataclasses import dataclass, field
+from datetime import timezone
+from email.utils import parsedate_to_datetime
 
 logger = logging.getLogger(__name__)
 
@@ -89,6 +92,46 @@ def classify_status(status: int, body: str = "") -> str:
     if any(marker in lowered for marker in _RATE_LIMIT_MARKERS):
         return RATE_LIMIT
     return APPLICATION
+
+
+def _duration_seconds(value: str) -> float | None:
+    """Read numeric seconds or provider durations such as 1h2m3.5s."""
+    value = re.sub(r"\s+", "", value.lower())
+    try:
+        result = float(value)
+    except ValueError:
+        parts = re.findall(r"(\d+(?:\.\d+)?)(ms|[dhms])", value)
+        if not parts or "".join(number + unit for number, unit in parts) != value:
+            return None
+        units = {"d": 86400, "h": 3600, "m": 60, "s": 1, "ms": .001}
+        result = sum(float(number) * units[unit] for number, unit in parts)
+    return result if math.isfinite(result) and result >= 0 else None
+
+
+def cooldown_seconds(headers, body: str = "") -> float | None:
+    """Honor provider retry hints without logging headers or credentials."""
+    values = {str(key).lower(): str(value) for key, value in (headers or {}).items()}
+    retry_after = values.get("retry-after", "")
+    if retry_after:
+        delay = _duration_seconds(retry_after)
+        if delay is not None:
+            return delay
+        try:
+            when = parsedate_to_datetime(retry_after)
+            when = when if when.tzinfo else when.replace(tzinfo=timezone.utc)
+            return max(0, when.timestamp() - time.time())
+        except (TypeError, ValueError, OverflowError):
+            pass
+    message = (body or "").lower()
+    hint = re.search(r"try again in\s+((?:\d+(?:\.\d+)?\s*(?:ms|[dhms])\s*)+)", message)
+    if hint:
+        delay = _duration_seconds(hint.group(1))
+        if delay is not None:
+            return delay
+    resources = [name for name in ("tokens", "requests") if name in message]
+    delays = [_duration_seconds(values.get(f"x-ratelimit-reset-{name}", ""))
+              for name in resources or ("tokens", "requests")]
+    return max((delay for delay in delays if delay is not None), default=None)
 
 
 @dataclass
@@ -159,10 +202,13 @@ class GroqKeyPool:
                     continue
                 if state.cooldown_until > now:
                     continue
-                self._cursor = index
+                self._cursor = (index + 1) % count
                 return state.label, state.value
+            waits = [state.cooldown_until - now for state in self._states
+                     if not state.disabled and state.cooldown_until > now]
+            wait = f" Earliest retry in {math.ceil(min(waits))}s." if waits else ""
             raise NoAvailableKeyError(
-                f"All {count} Groq API keys are rate-limited or unavailable.")
+                f"All {count} Groq API keys are rate-limited or unavailable.{wait}")
 
     def report_success(self, label: str) -> None:
         with self._lock:
@@ -171,10 +217,10 @@ class GroqKeyPool:
                 return
             state.successes += 1
             state.failures = 0
-            state.cooldown_until = 0.0
-            self._cursor = self._states.index(state)
+            # An overlapping successful request must not cancel a newer 429.
 
-    def report_failure(self, label: str, kind: str) -> None:
+    def report_failure(self, label: str, kind: str,
+                       retry_after_s: float | None = None) -> None:
         """Apply the rotation policy for a key-specific failure."""
         with self._lock:
             state = self._find(label)
@@ -186,13 +232,15 @@ class GroqKeyPool:
                 logger.warning("Groq %s rejected as invalid; disabled for "
                                "this process", state.label)
             elif kind == RATE_LIMIT:
-                state.cooldown_until = time.monotonic() + self._cooldown_s
+                delay = self._cooldown_s
+                if retry_after_s is not None and math.isfinite(retry_after_s):
+                    delay = max(delay, retry_after_s)
+                state.cooldown_until = max(state.cooldown_until, time.monotonic() + delay)
                 logger.warning("Groq %s rate-limited; cooling down %.0fs",
-                               state.label, self._cooldown_s)
+                               state.label, delay)
             else:
                 return
             self._rotations += 1
-            self._cursor = (self._states.index(state) + 1) % len(self._states)
 
     def status(self) -> PoolStatus:
         """Pool health for diagnostics. Contains no key material."""

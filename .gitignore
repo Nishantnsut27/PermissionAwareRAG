@@ -19,7 +19,6 @@ htmlcov/
 .tox/
 
 
-README.md
 
 
 .env
@@ -32,6 +31,9 @@ Thumbs.db
 
 # Pipeline artifacts
 ingestion/processed/revisions/
+ingestion/processed/active.json
+ingestion/reports/
+indexing/reports/indexing_report.json
 indexing/revisions/
 
 evaluation/tests/
@@ -44,7 +46,9 @@ sofar.md
 # Logs
 *.log
 .cache/
+.project_overview/
 .streamlit/
+access_control/reports/*.jsonl*
 node_modules/
 frontend/dist/
 frontend/*.tsbuildinfo

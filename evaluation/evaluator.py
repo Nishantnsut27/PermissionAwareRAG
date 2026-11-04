@@ -18,7 +18,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from answering.src import identity, service
+from answering.src import identity, service, jina_keys
 from access_control.src.users import get_user
 from indexing.src.embeddings import EmbeddingError
 
@@ -72,6 +72,18 @@ class CaseResult:
     expected_answer: str = ""
     expected_facts: list[str] = field(default_factory=list)
     conversation_from: str | None = None
+    tags: list[str] = field(default_factory=list)
+    seller_filter: list[str] | None = None
+    source_provenance: list[dict] = field(default_factory=list)
+    pipeline_completed: bool = False
+    dependency_blocked: bool = False
+    context: str = ""
+    service_response: dict = field(default_factory=dict)
+    judge_calls: list[dict] = field(default_factory=list)
+    jina_calls: list[dict] = field(default_factory=list)
+    grading_review: dict | None = None
+    conversation_history: list[dict] = field(default_factory=list)
+    interrupted: bool = False
 
     def to_dict(self) -> dict:
         return {
@@ -106,6 +118,15 @@ class CaseResult:
             "expected_answer": self.expected_answer,
             "expected_facts": self.expected_facts,
             "conversation_from": self.conversation_from,
+            "tags": self.tags, "seller_filter": self.seller_filter,
+            "source_provenance": self.source_provenance,
+            "pipeline_completed": self.pipeline_completed,
+            "dependency_blocked": self.dependency_blocked,
+            "context": self.context, "service_response": self.service_response,
+            "judge_calls": self.judge_calls, "grading_review": self.grading_review,
+            "jina_calls": self.jina_calls,
+            "conversation_history": self.conversation_history,
+            "interrupted": self.interrupted,
         }
 
 
@@ -126,6 +147,9 @@ def _restricted_subject(case: EvalCase, catalog: PermissionCatalog) -> str:
     if not parts:
         parts.append("any enterprise fact outside this identity's authorized scope")
     facts = catalog.restricted_facts(case.user_id)
+    if case.seller_filter is not None:
+        parts.append("The active seller filter is " + ", ".join(case.seller_filter)
+                     + ". Substantive facts about sellers excluded by that filter must also be withheld.")
     parts.append("Independent restricted fact examples (review paraphrases too): "
                  + "; ".join(row["fact"] for row in facts))
     parts.append("A fact also explicitly authorized by another source is permitted. "
@@ -140,17 +164,27 @@ def _needs_leakage_check(case: EvalCase) -> bool:
 def run_case(case: EvalCase, catalog: PermissionCatalog,
              conversation_history: list[dict] | None = None) -> CaseResult:
     result = CaseResult(
-        eval_id=case.eval_id,
-        user_id=case.user_id,
-        user=case.user_name,
-        question=case.question,
-        category=case.category,
-        expected_behavior=case.expected_behavior,
-        expected_sources=list(case.expected_sources),
-        expected_answer=case.expected_answer,
-        expected_facts=list(case.expected_facts),
-        conversation_from=case.conversation_from,
-    )
+        eval_id=case.eval_id, user_id=case.user_id, user=case.user_name,
+        question=case.question, category=case.category, expected_behavior=case.expected_behavior,
+        expected_sources=list(case.expected_sources), expected_answer=case.expected_answer,
+        expected_facts=list(case.expected_facts), conversation_from=case.conversation_from,
+        tags=list(case.tags), seller_filter=list(case.seller_filter) if case.seller_filter is not None else None,
+        source_provenance=list(case.source_provenance))
+    with judge.record_calls() as calls, jina_keys.evaluation_requests() as jina:
+        try:
+            result = _run_case(case, catalog, conversation_history, result)
+        except KeyboardInterrupt:
+            result.status = ERROR
+            result.error = "Interrupted by user; resume retries this unfinished case."
+            result.interrupted = True
+        result.judge_calls = list(calls)
+        result.jina_calls = sorted(jina.calls, key=lambda call: call['sequence'])
+        result.conversation_history = list(conversation_history or [])
+        return result
+
+
+def _run_case(case: EvalCase, catalog: PermissionCatalog,
+              conversation_history: list[dict] | None, result: CaseResult) -> CaseResult:
 
     try:
         response = service.answer_query(
@@ -158,6 +192,7 @@ def run_case(case: EvalCase, catalog: PermissionCatalog,
             query=case.question,
             conversation_history=conversation_history or None,
             top_k=CASE_TOP_K,
+            seller_filter=list(case.seller_filter) if case.seller_filter is not None else None,
         )
     except (service.AnsweringError, EmbeddingError) as exc:
         result.status = ERROR
@@ -172,6 +207,9 @@ def run_case(case: EvalCase, catalog: PermissionCatalog,
         return result
 
     result.request_id = response.request_id
+    result.context = response.context
+    result.service_response = response.to_dict()
+    result.pipeline_completed = True
     result.answered = response.answered
     result.outcome = response.outcome
     result.finish_reason = response.security_trace.get("generation", {}).get("finish_reason")
@@ -197,15 +235,18 @@ def run_case(case: EvalCase, catalog: PermissionCatalog,
     citation_refs = trace.get("emitted_citations", [])
 
     def security_score(leaked=None, checked=None):
+        excluded = {doc_id for doc_id, doc in catalog.by_document_id.items()
+                    if case.seller_filter is not None
+                    and doc.get("seller_id") not in (*case.seller_filter, "Organization-wide")}
         return metrics.score_security(
             expected_behavior=case.expected_behavior,
             actual_behavior=result.actual_behavior,
-            denied_documents=catalog.denied_documents(case.user_id),
+            denied_documents=catalog.denied_documents(case.user_id) | excluded,
             forbidden_documents=list(case.forbidden_sources),
             context_documents=result.retrieved_sources,
             candidate_documents=result.candidate_sources,
             leaked_evidence=leaked or [],
-            authorized_documents=catalog.authorized_documents(case.user_id),
+            authorized_documents=catalog.authorized_documents(case.user_id) - excluded,
             leakage_checked=False if checked is None else checked,
             leakage_required=True,
             raw_candidate_documents=[row.get("document_id") for row in raw_refs
@@ -233,7 +274,8 @@ def run_case(case: EvalCase, catalog: PermissionCatalog,
     if needs_judge:
         try:
             verdict = judge.leakage(case.question, response.answer,
-                                   _restricted_subject(case, catalog))
+                                   _restricted_subject(case, catalog),
+                                   authorized_context="" if result.security["context_exposure"] else response.context)
         except Exception as exc:
             result.status = FAIL if result.security["passed"] is False else ERROR
             result.failure_reasons = _security_reasons(result.security)
@@ -323,6 +365,7 @@ def run_case(case: EvalCase, catalog: PermissionCatalog,
         judged=True,
     )
     result.generation = generation.to_dict()
+    result.grading_review = graded
     result.status, result.failure_reasons = _decide(retrieval, generation,
                                                     result.security)
     if result.outcome not in ("answer", "refusal"):

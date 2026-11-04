@@ -3,6 +3,15 @@ import { history, initialState, loadState, reducer, saveState, STORAGE_KEY, type
 const user = { user_id: 'U-001', name: 'Aditya Verma', role: 'Account Manager', department: 'Business', seller_scope: ['S001', 'S003'] };
 function signed(): State { return reducer(initialState, { type: 'login', session: { token: 's', user, expiresAt: Date.now() + 3600000 } }); }
 describe('tab session and conversation', () => {
+  it('drops restored answers with malformed metadata before rendering or using memory', () => {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ ...signed(), messages: [
+      { id: '1', role: 'assistant', outcome: 'answer', content: 'bad answer', stats: { selected: {} } },
+      { id: '2', role: 'assistant', outcome: 'answer', content: 'bad source', sources: [{ pages: [{}] }] },
+      { id: '3', role: 'assistant', outcome: 'answer', content: 'valid', stats: { selected: 2 } },
+    ] }));
+    expect(loadState().messages.map(m => m.content)).toEqual(['valid']);
+    expect(history(loadState()).map(m => m.content)).toEqual(['valid']);
+  });
   it('restores completed messages but requires backend verification and never replays pending work', () => {
     let state = reducer(signed(), { type: 'start', id: '1', question: 'question' });
     state = reducer(state, { type: 'finish', message: { id: '1', role: 'assistant', content: 'Canonical', outcome: 'answer' } });

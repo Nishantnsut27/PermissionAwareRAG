@@ -18,7 +18,34 @@ jobs:
       - run: python -B scripts/run_offline_suite.py security_tests.phase3_answer_quality
       - run: python -B scripts/run_offline_suite.py security_tests.phase4_reliability
       - run: python -B scripts/run_offline_suite.py security_tests.phase5_source_inspection
-      - run: python -B scripts/run_offline_suite.py security_tests.ui_startup
+      - run: python -B scripts/run_offline_suite.py security_tests.api_liveness
       - run: python -B scripts/run_offline_suite.py security_tests.issue_regressions
       - run: python -B scripts/run_offline_suite.py security_tests.seller_balanced_retrieval
       - run: python -B scripts/run_offline_suite.py security_tests.portfolio_answer_scope
+      - run: python -B scripts/run_offline_suite.py security_tests.react_api_contracts
+      - run: python -B scripts/run_offline_suite.py security_tests.evaluation_v11
+      - run: python -B scripts/run_offline_suite.py security_tests.jina_rotation
+      - run: python -B scripts/run_offline_suite.py security_tests.groq_rotation
+      - run: python -m evaluation.runner --validate-only
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-failures
+          path: frontend/test-results
