@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import socket
+import shutil
 import subprocess
 import sys
 import time
@@ -32,11 +33,12 @@ def free_port(preferred: int, *, exclude: set[int] | None = None) -> int:
     raise RuntimeError(f"No available loopback port near {preferred}.")
 
 
-def start_service(arguments: list[str], env: dict[str, str], log: Path) -> subprocess.Popen:
+def start_service(arguments: list[str], env: dict[str, str], log: Path, *,
+                  executable: str = sys.executable, cwd: Path = ROOT) -> subprocess.Popen:
     flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
     with log.open("w", encoding="utf-8") as output:
         return subprocess.Popen(
-            [sys.executable, *arguments], cwd=ROOT, env=env,
+            [executable, *arguments], cwd=cwd, env=env,
             stdin=subprocess.DEVNULL, stdout=output, stderr=subprocess.STDOUT,
             creationflags=flags,
         )
@@ -89,13 +91,18 @@ def main() -> int:
     try:
         if not (ROOT / ".env").is_file():
             raise RuntimeError("Copy .env.example to .env and configure it before starting.")
+        node = shutil.which("node")
+        vite = ROOT / "frontend" / "node_modules" / "vite" / "bin" / "vite.js"
+        if not node or not vite.is_file():
+            raise RuntimeError("Install Node.js 24+ and run npm ci in frontend before starting.")
         CACHE.mkdir(exist_ok=True)
         api_port = free_port(args.api_port)
         ui_port = free_port(args.ui_port, exclude={api_port})
         api_url = f"http://127.0.0.1:{api_port}"
         ui_url = f"http://127.0.0.1:{ui_port}"
         env = {**os.environ, "API_HOST": "127.0.0.1", "API_PORT": str(api_port),
-               "API_BASE_URL": api_url, "PYTHONUNBUFFERED": "1"}
+               "API_ALLOWED_ORIGINS": f"{ui_url},http://localhost:{ui_port}", "API_DEMO_MODE": "true", "API_PUBLIC_DEMO_MODE": "false",
+               "VITE_API_BASE_URL": api_url, "PYTHONUNBUFFERED": "1"}
         api_log = CACHE / f"local-api-{api_port}.log"
         ui_log = CACHE / f"local-ui-{ui_port}.log"
         print(f"[1/2] Starting API at {api_url}", flush=True)
@@ -107,13 +114,11 @@ def main() -> int:
         wait_for_service(api_process, api_url + "/live", api_log)
         print(f"[2/2] Starting UI at {ui_url}", flush=True)
         ui_process = start_service(
-            ["-m", "streamlit", "run", str(ROOT / "app.py"), "--server.address", "127.0.0.1",
-             "--server.port", str(ui_port), "--server.headless", "true",
-             "--browser.gatherUsageStats", "false"],
-            env, ui_log,
+            [str(vite), "--host", "127.0.0.1", "--port", str(ui_port), "--strictPort"],
+            env, ui_log, executable=node, cwd=ROOT / "frontend",
         )
         processes.append(ui_process)
-        wait_for_service(ui_process, ui_url + "/_stcore/health", ui_log)
+        wait_for_service(ui_process, ui_url, ui_log)
         state = {"project": str(ROOT), "api_port": api_port, "ui_port": ui_port,
                  "api_url": api_url, "ui_url": ui_url,
                  "api_pid": api_process.pid, "ui_pid": ui_process.pid,

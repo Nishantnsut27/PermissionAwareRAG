@@ -5,6 +5,7 @@ import os
 import math
 from dataclasses import dataclass
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from dotenv import load_dotenv
 
@@ -49,6 +50,8 @@ RERANK_TIMEOUT_S = _int("RERANK_TIMEOUT_S", 30)
 RERANK_ENABLED = os.getenv("RERANK_ENABLED", "true").strip().lower() != "false"
 
 API_HOST = os.getenv("API_HOST", "127.0.0.1")
+API_ALLOWED_ORIGINS = tuple(value.strip() for value in
+                            os.getenv("API_ALLOWED_ORIGINS", "").split(",") if value.strip())
 API_PORT = _int("API_PORT", 8000)
 API_DEMO_MODE = os.getenv("API_DEMO_MODE", "false").strip().lower() == "true"
 # Public persona switching follows the already explicit demo switch unless an
@@ -87,6 +90,12 @@ DEFAULT_ANSWERING = AnsweringConfig()
 
 def validate_settings() -> None:
     """Reject malformed or unsafe resource limits at process startup."""
+    for origin in API_ALLOWED_ORIGINS:
+        parsed = urlsplit(origin)
+        if (parsed.scheme not in {"http", "https"} or not parsed.hostname
+                or parsed.username or parsed.password or parsed.path
+                or parsed.query or parsed.fragment or "*" in origin):
+            raise RuntimeError("API_ALLOWED_ORIGINS must contain exact HTTP(S) origins without paths")
     numeric = {
         "API_MAX_CONCURRENT_REQUESTS": (API_MAX_CONCURRENT_REQUESTS, 1, 256),
         "API_PORT": (API_PORT, 1, 65535),

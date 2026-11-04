@@ -237,7 +237,17 @@ class Handler(BaseHTTPRequestHandler):
             return False
         check_deadline()
         self.connection.settimeout(remaining_timeout(config.API_REQUEST_TIMEOUT_S))
+        if parsed and self.headers.get("Origin") and self.headers["Origin"] not in config.API_ALLOWED_ORIGINS:
+            self._send(403, {"error": "origin_not_allowed", "message": "This website cannot access the demo API."})
+            return False
         return parsed
+
+    def end_headers(self):
+        origin = self.headers.get("Origin") if hasattr(self, "headers") else None
+        if origin and origin in config.API_ALLOWED_ORIGINS:
+            self.send_header("Access-Control-Allow-Origin", origin)
+            self.send_header("Vary", "Origin")
+        super().end_headers()
 
     def log_message(self, fmt, *args):
         logger.debug("%s - %s", self.address_string(), fmt % args)
@@ -247,6 +257,7 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "no-store")
         self.send_header("Connection", "close")
         self.end_headers()
         self.wfile.write(body)
@@ -290,8 +301,22 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.flush()
 
     def do_OPTIONS(self) -> None:
-        self._send(405, {"error": "method_not_allowed",
-                         "message": "Cross-origin API access is not enabled."})
+        origin = self.headers.get("Origin")
+        method = self.headers.get("Access-Control-Request-Method", "")
+        headers = {value.strip().lower() for value in
+                   self.headers.get("Access-Control-Request-Headers", "").split(",") if value.strip()}
+        if (origin not in config.API_ALLOWED_ORIGINS or method not in {"GET", "POST", "HEAD"}
+                or not headers <= {"authorization", "content-type", "accept"}):
+            self._send(403, {"error": "preflight_not_allowed"})
+            return
+        self.send_response(204)
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept")
+        self.send_header("Access-Control-Max-Age", "600")
+        self.send_header("Content-Length", "0")
+        self.send_header("Connection", "close")
+        self.end_headers()
+        self.close_connection = True
 
     def do_GET(self) -> None:
         parsed = urlsplit(self.path)
@@ -308,6 +333,12 @@ class Handler(BaseHTTPRequestHandler):
         elif route == "/demo/users":
             if self._demo_request():
                 self._send(200, {"users": service.list_users()})
+        elif route == "/demo/me":
+            principal = self._authenticate()
+            if principal is not None:
+                profile = next(row for row in service.list_users()
+                               if row["user_id"] == principal.user.user_id)
+                self._send(200, {"user": profile})
         elif route == "/users":
             principal = self._authenticate()
             if principal is not None:

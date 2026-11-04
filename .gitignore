@@ -45,3 +45,11 @@ sofar.md
 *.log
 .cache/
 .streamlit/
+node_modules/
+frontend/dist/
+frontend/*.tsbuildinfo
+frontend/.env.local
+frontend/playwright-report/
+frontend/test-results/
+!frontend/tests/
+!frontend/tests/**
