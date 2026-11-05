@@ -235,7 +235,7 @@ class EvaluationReviewTests(unittest.TestCase):
 
     def test_ordinary_authorized_answer_reviews_cross_seller_fact(self):
         text = "authorized answer. StrideOne Footwear has Gold tier."
-        def review(question, answer, subject):
+        def review(question, answer, subject, authorized_context=""):
             self.assertIn("StrideOne Footwear (S004) has Gold account tier", subject)
             self.assertIn("S004-ACC-001", subject)
             return dict(leaked=True, refused=False,

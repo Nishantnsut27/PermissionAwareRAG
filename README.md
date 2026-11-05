@@ -4,9 +4,9 @@ A permission-aware enterprise knowledge assistant that combines retrieval-augmen
 
 > Relevance determines what is useful; authorization determines what is allowed.
 
-## Live Demo
+## React Workspace
 
-[Streamlit application](https://permissionawarerag.streamlit.app/)
+The React workspace includes demo sign-in, scoped chat, source inspection, and saved evaluation results. Follow the [local setup](#local-setup) to run the frontend and Python API.
 
 The demo selector authenticates sample personas through backend-validated passwords and short-lived bearer sessions. The backend serves identities and applies each persona's permissions. `API_PUBLIC_DEMO_MODE` follows `API_DEMO_MODE` unless explicitly overridden: a demo deployment is public by default when demo mode is enabled, while a local demo remains loopback-only if `API_PUBLIC_DEMO_MODE=false`. Public demo requests share a rate-limit bucket. Sample passwords are intentionally predictable for this demo and must never protect private or production data.
 
@@ -361,7 +361,7 @@ The answering service also supports streaming responses through the `/query/stre
 
 ```mermaid
 flowchart LR
-    U["Streamlit UI"] --> API["Answering HTTP API"]
+    U["React UI"] --> API["Answering HTTP API"]
 
     API --> ID["Identity Resolution"]
     ID --> PE["Permission Engine"]
@@ -390,7 +390,7 @@ flowchart LR
 
 ## Real Application UI
 
-The deployed application exposes the permission-aware workflow through a Streamlit interface:
+The React workspace exposes the permission-aware workflow:
 
 1. Select a prototype identity.
 2. View the identity's effective seller scope.
@@ -400,7 +400,6 @@ The deployed application exposes the permission-aware workflow through a Streaml
 6. Inspect the cited sources.
 7. Review saved evaluation results.
 
-![Permission-aware RAG UI](images/permission_aware_rag_ui.png)
 
 ---
 
@@ -454,7 +453,9 @@ Copy `.env.example` to `.env` and provide the required service credentials.
 Core variables include:
 
 ```env
-JINA_API_KEY=
+JINA_API_KEY_1=
+JINA_API_KEY_2=
+# Legacy JINA_API_KEY is also supported when no numbered keys are configured.
 QDRANT_URL=
 QDRANT_API_KEY=
 
@@ -523,21 +524,21 @@ The local API listens on:
 http://127.0.0.1:8000
 ```
 
-### 6. Start the Streamlit UI
+### 6. Start the React UI
 
-In another terminal:
+Install Node.js 24 or newer, then run in another terminal:
 
 ```bash
-streamlit run app.py
+cd frontend
+npm ci
+npm run dev
 ```
 
-The UI layout, themes, icons, and rendering live together in `app.py`.
-The public demo directory is cached for five minutes per API URL. Login sessions
-are never cached. The login shell renders before the directory request and offers
-a retry if the backend is waking up. Chat reruns make no automatic health or
-evaluation requests: **Check service** runs the readiness diagnostic on demand,
-and saved evaluations load only when opened (cached for one minute, with an
-explicit refresh). `api_client.py` remains the HTTP transport for the backend.
+The UI opens at `http://127.0.0.1:8501`. Its components, styles, and HTTP transport live in `frontend/src/`. The public demo directory is cached for five minutes per API URL. Restored tab sessions are verified by the backend before chat is enabled. **Check service** runs diagnostics on demand. Saved evaluations load when opened; the latest report refreshes every 30 seconds while visible, and historical selections stay fixed.
+
+For an API at another address, copy `frontend/.env.example` to `frontend/.env.local` and set `VITE_API_BASE_URL`. Configure `API_ALLOWED_ORIGINS` on the backend with the frontend's exact origin.
+
+For deployment, use `frontend` as the project root, `npm run build` as the build command, and `dist` as the output directory. `frontend/vercel.json` provides the SPA route fallback. Set `VITE_API_BASE_URL` to the deployed API's HTTPS URL before building.
 
 ### Windows quick start
 
@@ -547,7 +548,7 @@ For a one-command local run on Windows, use the included `run.bat`:
 run.bat
 ```
 
-It creates no environment or credentials for you; `.venv` must already exist and `.env` must be configured. The script starts a fresh API/UI pair on loopback, choosing available ports near 8000 and 8501 and leaving existing services running. It waits for both services, sets the UI's `API_BASE_URL` to the selected API, and opens the application in your browser. An explicit `API_BASE_URL` environment variable takes precedence over Streamlit secrets.
+Install the Python dependencies and run `npm ci` in `frontend` first; `.venv` must exist and `.env` must be configured. The script starts a fresh API/UI pair on loopback, choosing available ports near 8000 and 8501 and leaving existing services running. It waits for both services, sets the UI's `VITE_API_BASE_URL` and the backend's allowed origin to the selected ports, and opens the application in your browser.
 
 Both services run in the background. Their URLs, process IDs, and log paths are saved in `.cache/launcher.json`; the console also prints the application URL. Use `run.bat --no-browser` to start without opening a tab, or `run.bat --api-port 8141 --ui-port 8511` to choose different preferred ports. Startup failures print the relevant log path and clean up only processes started by that invocation. Startup checks do not run model queries or rebuild the index.
 
@@ -581,10 +582,9 @@ or request body is required. This is a liveness probe, not an index-readiness
 check. A sleeping Render service can serve its own wake-up page before Python
 is running; this endpoint cannot shrink that platform-generated response or
 guarantee uninterrupted uptime. If that occurs, wake the service once, verify
-`/ping` returns `ok`, then retest the cron job. Pinging Render does not wake or
-keep the separate Streamlit Cloud frontend running.
+`/ping` returns `ok`, then retest the cron job. The static React frontend is hosted separately from the Python API.
 
-Query routes require a backend-issued demo session; request-body `user_id` values cannot select or change the persona. For local use, set `API_DEMO_MODE=true` and keep `API_HOST=127.0.0.1`; set `API_PUBLIC_DEMO_MODE=false` to explicitly keep demo routes local. For a deployed synthetic-data demo, set `API_DEMO_MODE=true` and `API_HOST=0.0.0.0` on the API service, then set Streamlit's `API_BASE_URL` to the API's HTTPS public URL. Public demo mode follows the demo setting by default. Passwords follow `firstname@login` (for example, `aditya@login`) and the backend returns a one-hour session. This demo login is only for synthetic data. Public demo requests share a global per-process budget. `EVALUATION_REPORTS_ENABLED=true` only enables the detailed route after operator authorization.
+Query routes require a backend-issued demo session; request-body `user_id` values cannot select or change the persona. For local use, set `API_DEMO_MODE=true` and keep `API_HOST=127.0.0.1`; set `API_PUBLIC_DEMO_MODE=false` to explicitly keep demo routes local. For a deployed synthetic-data demo, set `API_DEMO_MODE=true` and `API_HOST=0.0.0.0` on the API service, then set the frontend's `VITE_API_BASE_URL` to the API's HTTPS public URL and allow the frontend origin through `API_ALLOWED_ORIGINS`. Public demo mode follows the demo setting by default. Passwords follow `firstname@login` (for example, `aditya@login`) and the backend returns a one-hour session. This demo login is only for synthetic data. Public demo requests share a global per-process budget. `EVALUATION_REPORTS_ENABLED=true` only enables the detailed route after operator authorization.
 
 The answering service also needs the immutable revision bundle matching the Qdrant active alias. The deployed bundle is stored under `indexing/revisions/` and includes its `manifest.json` and `sparse_vocab.json`; keep both files in the deployment checkout whenever the alias points to that collection. They are runtime inputs for revision validation and sparse retrieval, not disposable build output. If a new Qdrant revision is published, deploy its matching manifest and vocabulary with the service. Without them the API fails closed with `Active Qdrant alias has no valid local manifest`.
 
@@ -600,7 +600,7 @@ Buffered and streaming generation use explicit `answer`, `partial`, `refusal`, a
 
 | Layer | Technology |
 |---|---|
-| UI | Streamlit |
+| UI | React 19, TypeScript, Vite |
 | API | Python HTTP server |
 | Ingestion | Python, pypdf |
 | Chunking | LangChain text splitters, tiktoken |
@@ -628,7 +628,9 @@ Operator-only evaluation traces include a stable request ID, retrieval/authoriza
 
 ### Offline regression suite
 
-Supported local runtime: Python 3.14.6 (`.python-version`). Dependencies are pinned in `requirements.lock`. Run `scripts/test_offline.ps1` on Windows for the five phase suites, `security_tests.issue_regressions`, `security_tests.seller_balanced_retrieval`, and `security_tests.portfolio_answer_scope`. CI runs the same eight modules through `scripts/run_offline_suite.py`, which rejects external network requests and permits isolated loopback HTTP tests. The suites use mocked providers and retrieval; E035's projection and the published index are verified as described above. A fresh comparable provider benchmark, multilingual intent accuracy, held-out reranker calibration, and production load/outage validation remain unverified.
+Supported local runtime: Python 3.14.6 (`.python-version`). Backend dependencies are pinned in `requirements.lock`. Run `scripts/test_offline.ps1` on Windows for the backend authorization, answer quality, reliability, evaluation, API contract, and liveness suites. CI runs the same modules through `scripts/run_offline_suite.py`, which rejects external network requests and permits isolated loopback HTTP tests. In `frontend`, run `npm test`, `npm run build`, and `npm run test:e2e` for the React unit tests, production checks, and desktop/mobile browser coverage. Install the browser once with `npx playwright install chromium`.
+
+Runtime audit logs, generated ingestion/indexing reports, local revision pointers, and temporary inspection artifacts are ignored by Git. The checked-in corpus, permission fixtures, evaluation reports, and published index manifest/vocabulary remain inputs to the backend and its regression suite.
 
 ---
 

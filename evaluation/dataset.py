@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -54,6 +55,9 @@ class EvalCase:
     forbidden_sources: tuple[str, ...] = ()
     conversation_from: str | None = None
     notes: str = ""
+    seller_filter: tuple[str, ...] | None = None
+    tags: tuple[str, ...] = ()
+    source_provenance: tuple[dict, ...] = ()
 
     @property
     def user(self) -> User:
@@ -102,6 +106,9 @@ class GoldenDataset:
                                   "mixed_access", "cross_seller")),
             "refusal_cases": sum(1 for c in self.cases
                                  if c.expected_behavior == "refuse"),
+            "capabilities": {tag: sum(tag in c.tags for c in self.cases)
+                             for tag in sorted({t for c in self.cases for t in c.tags})},
+            "expected_source_documents": len({s for c in self.cases for s in c.expected_sources}),
         }
 
 
@@ -218,9 +225,9 @@ def _require(raw: dict, key: str, eval_id: str) -> object:
 
 def _tuple(raw: dict, key: str) -> tuple[str, ...]:
     value = raw.get(key) or []
-    if not isinstance(value, list):
+    if not isinstance(value, list) or not all(isinstance(item, str) for item in value):
         raise DatasetError(f"{raw.get('eval_id')}: '{key}' must be a list")
-    return tuple(str(item) for item in value)
+    return tuple(value)
 
 
 def load(path: Path | None = None) -> GoldenDataset:
@@ -247,6 +254,9 @@ def load(path: Path | None = None) -> GoldenDataset:
             forbidden_sources=_tuple(entry, "forbidden_sources"),
             conversation_from=entry.get("conversation_from"),
             notes=str(entry.get("notes", "")),
+            seller_filter=_tuple(entry, "seller_filter") if "seller_filter" in entry else None,
+            tags=_tuple(entry, "tags"),
+            source_provenance=tuple(entry.get("source_provenance", [])),
         ))
     return GoldenDataset(
         dataset_id=str(raw.get("dataset_id", "golden")),
@@ -262,6 +272,7 @@ def validate(dataset: GoldenDataset,
     catalog = catalog or PermissionCatalog()
     problems: list[str] = []
     seen: set[str] = set()
+    chunks = None
 
     for case in dataset.cases:
         prefix = f"{case.eval_id}"
@@ -283,6 +294,32 @@ def validate(dataset: GoldenDataset,
 
         authorized = catalog.authorized_documents(case.user_id)
         denied = catalog.denied_documents(case.user_id)
+        if case.seller_filter is not None:
+            if not case.seller_filter or any(s not in {"S001", "S002", "S003", "S004"} for s in case.seller_filter):
+                problems.append(f"{prefix}: invalid seller_filter")
+            excluded = [d for d in case.expected_sources if d in catalog.by_document_id
+                        and catalog.by_document_id[d]["seller_id"] not in (*case.seller_filter, "Organization-wide")]
+            if excluded:
+                problems.append(f"{prefix}: expected sources excluded by seller_filter: {excluded}")
+        if case.eval_id in {f"E{i:03}" for i in range(61, 91)}:
+            if not case.tags or not case.source_provenance:
+                problems.append(f"{prefix}: new cases require tags and source provenance")
+            if chunks is None:
+                chunks = {r["chunk_id"]: r for r in (json.loads(line) for line in
+                    (PROJECT_ROOT / "ingestion/processed/chunks/chunks.jsonl").read_text(encoding="utf-8").splitlines())}
+            covered = set()
+            for proof in case.source_provenance:
+                if not isinstance(proof, dict):
+                    problems.append(f"{prefix}: malformed provenance")
+                    continue
+                chunk = chunks.get(proof.get("chunk_id"), {})
+                if (not proof.get("quote") or proof.get("quote") not in chunk.get("text", "")
+                        or proof.get("document_id") != chunk.get("document_id")
+                        or proof.get("text_sha256") != hashlib.sha256(chunk.get("text", "").encode()).hexdigest()):
+                    problems.append(f"{prefix}: source evidence no longer matches the corpus")
+                covered.add(proof.get("document_id"))
+            if set(case.expected_sources) - covered:
+                problems.append(f"{prefix}: missing expected-source provenance")
 
         unknown = [d for d in case.expected_sources + case.forbidden_sources
                    if d not in catalog.by_document_id]

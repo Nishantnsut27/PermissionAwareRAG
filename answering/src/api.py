@@ -175,16 +175,21 @@ class BoundedHTTPServer(ThreadingHTTPServer):
 
     def __init__(self, address, handler):
         self._admission = threading.BoundedSemaphore(config.API_MAX_CONCURRENT_REQUESTS)
+        self._rejections = threading.BoundedSemaphore(2)
         super().__init__(address, handler)
 
     def process_request(self, request, client_address):
         if not self._admission.acquire(blocking=False):
+            if not self._rejections.acquire(blocking=False):
+                self.shutdown_request(request)
+                return
             try:
-                request.sendall(b"HTTP/1.1 503 Service Unavailable\r\n"
-                                b"Connection: close\r\nContent-Length: 0\r\n\r\n")
-            except OSError:
-                pass
-            self.shutdown_request(request)
+                threading.Thread(target=self.reject_request,
+                                 args=(request,), daemon=True).start()
+            except Exception:
+                self._rejections.release()
+                self.shutdown_request(request)
+                raise
             return
         try:
             super().process_request(request, client_address)
@@ -197,6 +202,50 @@ class BoundedHTTPServer(ThreadingHTTPServer):
             super().process_request_thread(request, client_address)
         finally:
             self._admission.release()
+
+    def reject_request(self, request):
+        """Read only bounded headers to attach CORS to overload responses.
+
+        Dedicated slots keep slow peers out of both the accept loop and the
+        main worker pool. No handler, authentication, body or provider runs.
+        """
+        deadline = time.monotonic() + 1.0
+        try:
+            header = bytearray()
+            while b"\r\n\r\n" not in header and len(header) < 64 * 1024:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    return
+                request.settimeout(remaining)
+                # Peek first so bytes after the header are never consumed.
+                pending = request.recv(min(4096, 64 * 1024 - len(header)), socket.MSG_PEEK)
+                if not pending:
+                    return
+                end = (header + pending).find(b"\r\n\r\n")
+                size = len(pending) if end < 0 else end + 4 - len(header)
+                header.extend(request.recv(size))
+            if not header.endswith(b"\r\n\r\n"):
+                return
+            origins = [line.split(b":", 1)[1].strip().decode("latin-1")
+                       for line in header.split(b"\r\n")[1:]
+                       if line.lower().startswith(b"origin:")]
+            origin = origins[0] if len(origins) == 1 else None
+            body = b'{"error":"overloaded","message":"The service is busy. Try again shortly."}'
+            headers = ["HTTP/1.1 503 Service Unavailable", "Connection: close",
+                       "Content-Type: application/json; charset=utf-8", "Cache-Control: no-store",
+                       "Retry-After: 1", "Vary: Origin", f"Content-Length: {len(body)}"]
+            if origin and origin in config.API_ALLOWED_ORIGINS:
+                headers += [f"Access-Control-Allow-Origin: {origin}",
+                            "Access-Control-Expose-Headers: Retry-After"]
+            remaining = deadline - time.monotonic()
+            if remaining > 0:
+                request.settimeout(remaining)
+                request.sendall(("\r\n".join(headers) + "\r\n\r\n").encode("latin-1") + body)
+        except OSError:
+            pass
+        finally:
+            self.shutdown_request(request)
+            self._rejections.release()
 
 
 def _evaluation():
@@ -237,7 +286,17 @@ class Handler(BaseHTTPRequestHandler):
             return False
         check_deadline()
         self.connection.settimeout(remaining_timeout(config.API_REQUEST_TIMEOUT_S))
+        if parsed and self.headers.get("Origin") and self.headers["Origin"] not in config.API_ALLOWED_ORIGINS:
+            self._send(403, {"error": "origin_not_allowed", "message": "This website cannot access the demo API."})
+            return False
         return parsed
+
+    def end_headers(self):
+        origin = self.headers.get("Origin") if hasattr(self, "headers") else None
+        if origin and origin in config.API_ALLOWED_ORIGINS:
+            self.send_header("Access-Control-Allow-Origin", origin)
+            self.send_header("Vary", "Origin")
+        super().end_headers()
 
     def log_message(self, fmt, *args):
         logger.debug("%s - %s", self.address_string(), fmt % args)
@@ -247,6 +306,7 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "no-store")
         self.send_header("Connection", "close")
         self.end_headers()
         self.wfile.write(body)
@@ -290,8 +350,22 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.flush()
 
     def do_OPTIONS(self) -> None:
-        self._send(405, {"error": "method_not_allowed",
-                         "message": "Cross-origin API access is not enabled."})
+        origin = self.headers.get("Origin")
+        method = self.headers.get("Access-Control-Request-Method", "")
+        headers = {value.strip().lower() for value in
+                   self.headers.get("Access-Control-Request-Headers", "").split(",") if value.strip()}
+        if (origin not in config.API_ALLOWED_ORIGINS or method not in {"GET", "POST", "HEAD"}
+                or not headers <= {"authorization", "content-type", "accept"}):
+            self._send(403, {"error": "preflight_not_allowed"})
+            return
+        self.send_response(204)
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept")
+        self.send_header("Access-Control-Max-Age", "600")
+        self.send_header("Content-Length", "0")
+        self.send_header("Connection", "close")
+        self.end_headers()
+        self.close_connection = True
 
     def do_GET(self) -> None:
         parsed = urlsplit(self.path)
@@ -308,6 +382,12 @@ class Handler(BaseHTTPRequestHandler):
         elif route == "/demo/users":
             if self._demo_request():
                 self._send(200, {"users": service.list_users()})
+        elif route == "/demo/me":
+            principal = self._authenticate()
+            if principal is not None:
+                profile = next(row for row in service.list_users()
+                               if row["user_id"] == principal.user.user_id)
+                self._send(200, {"user": profile})
         elif route == "/users":
             principal = self._authenticate()
             if principal is not None:
@@ -322,21 +402,8 @@ class Handler(BaseHTTPRequestHandler):
     def _evaluation_summary(self, report: str | None = None) -> None:
         try:
             _, reports = _evaluation()
-            document = reports.load(report)
-            payload = {
-                "has_results": document is not None,
-                "reports_enabled": config.EVALUATION_REPORTS_ENABLED,
-                "available_reports": [
-                    {"report_id": row["report_id"],
-                     "generated_at": row.get("generated_at")}
-                    for row in reports.list_reports()],
-            }
-            if document:
-                summary = document.get("summary") or {}
-                payload.update({"report_id": report or "results.json",
-                                "run_id": document.get("run_id"),
-                                "generated_at": document.get("generated_at"),
-                                "total_cases": summary.get("total_cases", 0)})
+            payload = {**reports.public_payload(report),
+                       "reports_enabled": config.EVALUATION_REPORTS_ENABLED}
         except ValueError as exc:
             self._send(404, {"error": "report_not_found", "message": str(exc)})
             return

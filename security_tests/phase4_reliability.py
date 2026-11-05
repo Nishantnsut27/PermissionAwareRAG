@@ -187,10 +187,13 @@ class RequestAndProviderTests(unittest.TestCase):
     def test_admission_overload_returns_503_without_spawning_worker(self):
         semaphore = threading.BoundedSemaphore(1)
         semaphore.acquire()
-        server = SimpleNamespace(_admission=semaphore, shutdown_request=MagicMock())
+        rejections = threading.BoundedSemaphore(2)
+        rejections.acquire()
+        rejections.acquire()
+        server = SimpleNamespace(_admission=semaphore, _rejections=rejections, shutdown_request=MagicMock())
         request = SimpleNamespace(sendall=MagicMock())
         api.BoundedHTTPServer.process_request(server, request, ("127.0.0.1", 1))
-        self.assertIn(b"503 Service Unavailable", request.sendall.call_args.args[0])
+        request.sendall.assert_not_called()
         server.shutdown_request.assert_called_once_with(request)
 
     def test_client_disconnect_closes_stream_generator(self):
@@ -284,7 +287,7 @@ class RequestAndProviderTests(unittest.TestCase):
 
     def test_permanent_provider_auth_error_is_not_retried(self):
         response = SimpleNamespace(status_code=401, text="unauthorized")
-        with patch.object(index_config, "JINA_API_KEY", "fake"), \
+        with patch.object(embeddings.jina_keys, "pool", return_value=embeddings.jina_keys.JinaKeyPool([('JINA_API_KEY', 'fake')])), \
              patch.object(embeddings.HTTP, "post", return_value=response) as post:
             result, failed = embeddings.embed_texts(["offline fixture"], max_retries=4)
         self.assertEqual(result, [None])
@@ -293,7 +296,7 @@ class RequestAndProviderTests(unittest.TestCase):
 
     def test_transient_provider_429_uses_bounded_retries(self):
         response = SimpleNamespace(status_code=429, text="rate limited")
-        with patch.object(index_config, "JINA_API_KEY", "fake"), \
+        with patch.object(embeddings.jina_keys, "pool", return_value=embeddings.jina_keys.JinaKeyPool([('JINA_API_KEY', 'fake')])), \
              patch.object(embeddings.HTTP, "post", return_value=response) as post, \
              patch("indexing.src.embeddings.time.sleep") as sleep:
             _, failed = embeddings.embed_texts(["offline fixture"], max_retries=2)
@@ -303,13 +306,13 @@ class RequestAndProviderTests(unittest.TestCase):
 
     def test_transient_5xx_and_timeout_retries_are_bounded(self):
         response = SimpleNamespace(status_code=503, text="unavailable")
-        with patch.object(index_config, "JINA_API_KEY", "fake"), \
+        with patch.object(embeddings.jina_keys, "pool", return_value=embeddings.jina_keys.JinaKeyPool([('JINA_API_KEY', 'fake')])), \
              patch.object(embeddings.HTTP, "post", return_value=response) as post, \
              patch("indexing.src.embeddings.time.sleep"):
             _, failed = embeddings.embed_texts(["offline fixture"], max_retries=2)
         self.assertEqual(failed, [0])
         self.assertEqual(post.call_count, 3)
-        with patch.object(index_config, "JINA_API_KEY", "fake"), \
+        with patch.object(embeddings.jina_keys, "pool", return_value=embeddings.jina_keys.JinaKeyPool([('JINA_API_KEY', 'fake')])), \
              patch.object(embeddings.HTTP, "post",
                           side_effect=embeddings.requests.Timeout("offline")) as post, \
              patch("indexing.src.embeddings.time.sleep"):

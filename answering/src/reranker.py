@@ -13,7 +13,7 @@ from dataclasses import dataclass
 
 import requests
 
-from . import config
+from . import config, jina_keys
 from .deadline import remaining_timeout
 from .http_deadline import provider_deadline, session
 
@@ -29,13 +29,6 @@ class RerankOutcome:
     items: list[tuple[object, float | None]]
     applied: bool
     error: str | None = None
-
-
-def _headers() -> dict[str, str]:
-    return {
-        "Authorization": f"Bearer {config.JINA_API_KEY}",
-        "Content-Type": "application/json",
-    }
 
 
 def evidence_windows(text: str, max_chars: int = MAX_DOC_CHARS,
@@ -66,7 +59,7 @@ def rerank(query: str, chunks: list, threshold: float | None = None) -> RerankOu
                  or isinstance(threshold, bool) or not math.isfinite(threshold)
                  or not 0.0 <= threshold <= 1.0)):
         raise ValueError("rerank threshold must be finite and in [0, 1]")
-    if not config.RERANK_ENABLED or not config.JINA_API_KEY:
+    if not config.RERANK_ENABLED or not jina_keys.pool().size:
         return RerankOutcome([(c, None) for c in chunks], False, "disabled")
 
     documents: list[str] = []
@@ -78,10 +71,10 @@ def rerank(query: str, chunks: list, threshold: float | None = None) -> RerankOu
     if not documents:
         return RerankOutcome([(c, None) for c in chunks], False, "empty passages")
     try:
-        with provider_deadline(config.RERANK_TIMEOUT_S):
+        with provider_deadline(config.RERANK_TIMEOUT_S), jina_keys.request('reranking') as call:
             response = HTTP.post(
                 config.JINA_RERANK_URL,
-                headers=_headers(),
+                headers=call.headers,
                 json={
                     "model": config.JINA_RERANK_MODEL,
                     "query": query,
@@ -90,6 +83,7 @@ def rerank(query: str, chunks: list, threshold: float | None = None) -> RerankOu
                 },
                 timeout=remaining_timeout(config.RERANK_TIMEOUT_S),
             )
+            call.response(response.status_code)
             try:
                 if response.status_code != 200:
                     raise RuntimeError(
@@ -100,34 +94,38 @@ def rerank(query: str, chunks: list, threshold: float | None = None) -> RerankOu
                 close = getattr(response, "close", None)
                 if close:
                     close()
-        if not isinstance(body, dict) or not isinstance(body.get("results"), list):
-            raise RuntimeError("Jina rerank response must contain a results list")
-        results = body["results"]
-        if not results:
-            raise RuntimeError("Jina rerank returned no results")
+            return _rank_response(chunks, body, window_to_chunk, documents, threshold)
     except (requests.RequestException, RuntimeError, ValueError) as exc:
+        if jina_keys.strict_evaluation():
+            raise
+        detail = jina_keys.pool().redact(exc)
         logger.warning("Reranking unavailable, falling back to fusion order: %s",
-                       exc)
-        return RerankOutcome([(c, None) for c in chunks], False, str(exc)[:200])
+                       detail)
+        return RerankOutcome([(c, None) for c in chunks], False, detail[:200])
 
+
+def _rank_response(chunks, body, window_to_chunk, documents, threshold):
+    if not isinstance(body, dict) or not isinstance(body.get("results"), list):
+        raise RuntimeError("Jina rerank response must contain a results list")
+    results = body["results"]
+    if not results:
+        raise RuntimeError("Jina rerank returned no results")
     scores_by_chunk: dict[int, float] = {}
     for item in results:
         if not isinstance(item, dict):
-            return RerankOutcome([(c, None) for c in chunks], False,
-                                 "invalid rerank item")
+            raise RuntimeError("invalid rerank item")
         index = item.get("index")
         score = item.get("relevance_score")
         if (not isinstance(index, int) or isinstance(index, bool)
                 or not 0 <= index < len(documents)
                 or not isinstance(score, (int, float)) or isinstance(score, bool)
                 or not math.isfinite(score) or not 0.0 <= score <= 1.0):
-            return RerankOutcome([(c, None) for c in chunks], False,
-                                 "invalid rerank index or score")
+            raise RuntimeError("invalid rerank index or score")
         chunk_index = window_to_chunk[index]
         scores_by_chunk[chunk_index] = max(scores_by_chunk.get(chunk_index, 0.0),
                                            float(score))
     if not scores_by_chunk:
-        return RerankOutcome([(c, None) for c in chunks], False, "no usable scores")
+        raise RuntimeError("no usable scores")
 
     scored = [(chunks[index], score) for index, score in scores_by_chunk.items()]
     scored.sort(key=lambda pair: pair[1], reverse=True)

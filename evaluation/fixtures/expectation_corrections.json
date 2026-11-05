@@ -1,0 +1,26 @@
+[
+  {
+    "eval_id": "E049",
+    "field": "expected_answer",
+    "old": "Support tickets are retained for two years of active period with a further year of archive. Security incident records are retained for four years for security and legal reasons. Where two categories apply to a record the longer period applies, and a record under legal hold is retained until the hold is lifted.",
+    "new": "Support tickets are retained for two active years plus one archive year. Security incident records are retained for three active years plus four archive years, seven years total. Where two categories apply the longer period applies, and legal hold suspends disposal.",
+    "source": "POL-IT-002 page 2, Retention Schedule: Security incident records | 3 years | 4 years | 7 years."
+  },
+  {
+    "eval_id": "E049",
+    "field": "expected_facts",
+    "old": [
+      "Support tickets have a two year active retention period",
+      "Security incident records are retained for four years",
+      "Where two categories apply the longer retention period wins",
+      "A legal hold suspends disposal"
+    ],
+    "new": [
+      "Support tickets have a two year active retention period",
+      "Security incident records are retained for three active years plus four archive years, seven total",
+      "Where two categories apply the longer retention period wins",
+      "A legal hold suspends disposal"
+    ],
+    "source": "POL-IT-002 page 2, Retention Schedule and R-1/R-2."
+  }
+]

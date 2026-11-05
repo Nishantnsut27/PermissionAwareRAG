@@ -9,7 +9,12 @@ $suites = @(
     'security_tests.phase5_source_inspection',
     'security_tests.issue_regressions',
     'security_tests.seller_balanced_retrieval',
-    'security_tests.portfolio_answer_scope'
+    'security_tests.portfolio_answer_scope',
+    'security_tests.api_liveness',
+    'security_tests.react_api_contracts',
+    'security_tests.evaluation_v11',
+    'security_tests.jina_rotation',
+    'security_tests.groq_rotation'
 )
 foreach ($suite in $suites) {
     & $python -B scripts/run_offline_suite.py $suite

@@ -144,7 +144,7 @@ class RerankerEvidenceTests(unittest.TestCase):
             {"index": 1, "relevance_score": 0.8},
         ]}
         with patch.object(answer_config, "RERANK_ENABLED", True), \
-             patch.object(answer_config, "JINA_API_KEY", "offline"), \
+             patch.object(reranker.jina_keys, "pool", return_value=reranker.jina_keys.JinaKeyPool([('JINA_API_KEY', 'offline')])), \
              patch.object(reranker.HTTP, "post", return_value=response):
             result = reranker.rerank("tail fact", [passage])
         self.assertTrue(result.applied)
@@ -157,7 +157,7 @@ class RerankerEvidenceTests(unittest.TestCase):
                 {"index": 0, "relevance_score": score}]}
             with self.subTest(score=score), \
                  patch.object(answer_config, "RERANK_ENABLED", True), \
-                 patch.object(answer_config, "JINA_API_KEY", "offline"), \
+                 patch.object(reranker.jina_keys, "pool", return_value=reranker.jina_keys.JinaKeyPool([('JINA_API_KEY', 'offline')])), \
                  patch.object(reranker.HTTP, "post", return_value=response):
                 result = reranker.rerank("q", [chunk()])
             self.assertFalse(result.applied)
@@ -366,21 +366,6 @@ class CompletionContractTests(unittest.TestCase):
         self.assertEqual(partial.outcome, "partial")
         self.assertFalse(partial.to_dict()["completed"])
 
-    def test_streamlit_uses_canonical_done_not_unverified_deltas(self):
-        from app import _stream_answer
-        done_answer = "Canonical final answer.\n\nEvidence available in context:\n- [EV-000000000001]"
-        events = iter([
-            {"type": "meta", "outcome": "pending"},
-            {"type": "delta", "text": "provisional and different"},
-            {"type": "done", "outcome": "answer", "completed": True,
-             "answer": done_answer, "sources": [], "stats": {}},
-        ])
-        with patch("api_client.ask_demo_stream", return_value=events):
-            result = _stream_answer({"user_id": "U-001"}, "http://local",
-                                    "q", None, [])
-        self.assertEqual(result["answer"], "Canonical final answer.")
-        self.assertEqual(result["outcome"], "answer")
-
     def test_stream_provider_failure_has_explicit_error_outcome(self):
         user = get_user("U-001")
         prepared = service._Prepared("r", user, "q", [], [], [], {}, False,
@@ -391,18 +376,6 @@ class CompletionContractTests(unittest.TestCase):
         self.assertEqual(events[-1]["type"], "error")
         self.assertEqual(events[-1]["outcome"], "error")
         self.assertFalse(events[-1]["completed"])
-
-    def test_http_sse_client_rejects_malformed_or_missing_terminal_event(self):
-        from api_client import ApiError, _stream_events
-        for lines in ([], ["data: {broken}"]):
-            response = MagicMock()
-            response.iter_lines.return_value = iter(lines)
-            with self.subTest(lines=lines), self.assertRaises(ApiError):
-                list(_stream_events(response))
-        response = MagicMock()
-        response.iter_lines.return_value = iter(['data: {"type":"done"}'])
-        self.assertEqual(list(_stream_events(response)), [{"type": "done"}])
-
 
 if __name__ == "__main__":
     unittest.main()

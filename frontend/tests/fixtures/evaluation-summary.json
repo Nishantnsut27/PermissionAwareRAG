@@ -1,0 +1,877 @@
+{
+  "has_results": true,
+  "available_reports": [
+    {
+      "report_id": "runs/pilot-20261104-v11.json",
+      "run_id": "run-20261104-081044-452453",
+      "started_at": "2026-11-04T08:10:44+00:00",
+      "generated_at": "2026-11-04T08:14:12+00:00",
+      "status": "Incomplete",
+      "dataset_version": "1.1",
+      "selected_cases": 16,
+      "total_cases": 3
+    },
+    {
+      "report_id": "runs/full-20260921-v2.json",
+      "run_id": "run-20260921-114043-959525",
+      "started_at": "2026-09-21T11:40:43+00:00",
+      "generated_at": "2026-09-22T03:39:59+00:00",
+      "status": "Legacy",
+      "dataset_version": "1.0",
+      "selected_cases": 60,
+      "total_cases": 60
+    },
+    {
+      "report_id": "results.json",
+      "run_id": "run-20260921-101046-946190",
+      "started_at": "2026-09-21T10:10:46+00:00",
+      "generated_at": "2026-09-21T11:49:46+00:00",
+      "status": "Legacy",
+      "dataset_version": "1.0",
+      "selected_cases": 60,
+      "total_cases": 60
+    },
+    {
+      "report_id": "runs/limited-20260921.json",
+      "run_id": "run-20260921-100506-694187",
+      "started_at": "2026-09-21T10:05:06+00:00",
+      "generated_at": "2026-09-21T10:06:53+00:00",
+      "status": "Legacy",
+      "dataset_version": "1.0",
+      "selected_cases": 3,
+      "total_cases": 2
+    },
+    {
+      "report_id": "runs/legacy-20260919.json",
+      "run_id": "run-20260919-031323",
+      "started_at": null,
+      "generated_at": "2026-09-19T03:13:23+00:00",
+      "status": "Legacy",
+      "dataset_version": "1.0",
+      "selected_cases": 60,
+      "total_cases": 60
+    }
+  ],
+  "report_id": "runs/pilot-20261104-v11.json",
+  "run_id": "run-20261104-081044-452453",
+  "started_at": "2026-11-04T08:10:44+00:00",
+  "generated_at": "2026-11-04T08:14:12+00:00",
+  "dataset_version": "1.1",
+  "selected_cases": 16,
+  "total_cases": 3,
+  "status": "Incomplete",
+  "schema_version": 5,
+  "selection_complete": false,
+  "partial": true,
+  "duration_s": 208.4,
+  "model": "openai/gpt-oss-120b",
+  "dataset_id": "GOLDEN-P7-NEXORA",
+  "stop_reason": "execution_error",
+  "phase": "stopped",
+  "measurements": {
+    "retrieval": {
+      "recall_at_k": {
+        "value": 0.6667,
+        "measured": 3,
+        "applicable": 12,
+        "total": 16
+      },
+      "precision_at_k": {
+        "value": 0.3333,
+        "measured": 3,
+        "applicable": 12,
+        "total": 16
+      },
+      "mrr": {
+        "value": 0.5,
+        "measured": 3,
+        "applicable": 12,
+        "total": 16
+      }
+    },
+    "quality": {
+      "groundedness": {
+        "value": 1.0,
+        "measured": 2,
+        "applicable": 12,
+        "total": 16
+      },
+      "answer_correctness": {
+        "value": 0.75,
+        "measured": 2,
+        "applicable": 12,
+        "total": 16
+      },
+      "answer_relevancy": {
+        "value": 1.0,
+        "measured": 2,
+        "applicable": 12,
+        "total": 16
+      },
+      "fact_coverage": {
+        "value": 0.75,
+        "measured": 2,
+        "applicable": 12,
+        "total": 16
+      }
+    },
+    "context": {
+      "coverage": {
+        "value": 0.8333,
+        "measured": 3,
+        "applicable": 12,
+        "total": 16
+      },
+      "precision": {
+        "value": 0.5333,
+        "measured": 3,
+        "applicable": 12,
+        "total": 16
+      }
+    },
+    "security": {
+      "passed": {
+        "value": 0.5,
+        "measured": 2,
+        "applicable": 16,
+        "total": 16
+      },
+      "raw_candidate_exposure": {
+        "value": 0.0,
+        "measured": 3,
+        "applicable": 16,
+        "total": 16
+      },
+      "postfilter_exposure": {
+        "value": 0.0,
+        "measured": 3,
+        "applicable": 16,
+        "total": 16
+      },
+      "context_exposure": {
+        "value": 0.0,
+        "measured": 3,
+        "applicable": 16,
+        "total": 16
+      },
+      "citation_exposure": {
+        "value": 0.0,
+        "measured": 3,
+        "applicable": 16,
+        "total": 16
+      },
+      "restricted_fact_exposure": {
+        "value": 0.5,
+        "measured": 2,
+        "applicable": 16,
+        "total": 16
+      },
+      "answer_leakage": {
+        "value": 0.5,
+        "measured": 2,
+        "applicable": 16,
+        "total": 16
+      },
+      "behavior_match": {
+        "value": 1.0,
+        "measured": 3,
+        "applicable": 16,
+        "total": 16
+      },
+      "refusal_match": {
+        "value": null,
+        "measured": 0,
+        "applicable": 4,
+        "total": 16
+      },
+      "prompt_injection_blocked": {
+        "value": null,
+        "measured": 0,
+        "applicable": 1,
+        "total": 16
+      }
+    },
+    "reliability": {
+      "selected": 16,
+      "recorded": 3,
+      "passed": 1,
+      "failed": 1,
+      "errors": 1,
+      "pending": 13,
+      "completed": 3,
+      "partial": 0,
+      "pipeline_failed": 0,
+      "unjudged": 1,
+      "dependency_blocked": 0,
+      "degraded_retrieval": 0,
+      "degradation_measured": 3
+    },
+    "categories": {
+      "authorized_factual": {
+        "selected": 4,
+        "recorded": 2,
+        "passed": 1,
+        "failed": 1,
+        "errors": 0,
+        "pending": 2
+      },
+      "multi_document": {
+        "selected": 1,
+        "recorded": 1,
+        "passed": 0,
+        "failed": 0,
+        "errors": 1,
+        "pending": 0
+      },
+      "cross_seller": {
+        "selected": 2,
+        "recorded": 0,
+        "passed": 0,
+        "failed": 0,
+        "errors": 0,
+        "pending": 2
+      },
+      "follow_up": {
+        "selected": 2,
+        "recorded": 0,
+        "passed": 0,
+        "failed": 0,
+        "errors": 0,
+        "pending": 2
+      },
+      "unauthorized_access": {
+        "selected": 2,
+        "recorded": 0,
+        "passed": 0,
+        "failed": 0,
+        "errors": 0,
+        "pending": 2
+      },
+      "mixed_access": {
+        "selected": 1,
+        "recorded": 0,
+        "passed": 0,
+        "failed": 0,
+        "errors": 0,
+        "pending": 1
+      },
+      "policy_governance": {
+        "selected": 1,
+        "recorded": 0,
+        "passed": 0,
+        "failed": 0,
+        "errors": 0,
+        "pending": 1
+      },
+      "ambiguous": {
+        "selected": 2,
+        "recorded": 0,
+        "passed": 0,
+        "failed": 0,
+        "errors": 0,
+        "pending": 2
+      },
+      "prompt_injection": {
+        "selected": 1,
+        "recorded": 0,
+        "passed": 0,
+        "failed": 0,
+        "errors": 0,
+        "pending": 1
+      }
+    },
+    "capabilities": {
+      "portfolio": {
+        "selected": 2,
+        "recorded": 0,
+        "passed": 0,
+        "failed": 0,
+        "errors": 0,
+        "pending": 2
+      },
+      "personal_scope": {
+        "selected": 1,
+        "recorded": 0,
+        "passed": 0,
+        "failed": 0,
+        "errors": 0,
+        "pending": 1
+      },
+      "call_transcript": {
+        "selected": 1,
+        "recorded": 0,
+        "passed": 0,
+        "failed": 0,
+        "errors": 0,
+        "pending": 1
+      },
+      "seller_filter": {
+        "selected": 1,
+        "recorded": 0,
+        "passed": 0,
+        "failed": 0,
+        "errors": 0,
+        "pending": 1
+      },
+      "authorized_narrowing": {
+        "selected": 1,
+        "recorded": 0,
+        "passed": 0,
+        "failed": 0,
+        "errors": 0,
+        "pending": 1
+      },
+      "long_conversation": {
+        "selected": 1,
+        "recorded": 0,
+        "passed": 0,
+        "failed": 0,
+        "errors": 0,
+        "pending": 1
+      },
+      "unavailable_information": {
+        "selected": 1,
+        "recorded": 0,
+        "passed": 0,
+        "failed": 0,
+        "errors": 0,
+        "pending": 1
+      }
+    },
+    "failure_categories": {
+      "security": 1,
+      "retrieval": 1,
+      "quality": 1,
+      "behavior": 0,
+      "partial_generation": 0,
+      "infrastructure": 0,
+      "judging": 1,
+      "dependency": 0
+    },
+    "latency": {
+      "p50_ms": 5842.0,
+      "p95_ms": 6176.8,
+      "measured": 3,
+      "total": 16
+    }
+  },
+  "cohorts": {
+    "original_60": {
+      "retrieval": {
+        "recall_at_k": {
+          "value": 0.6667,
+          "measured": 3,
+          "applicable": 8,
+          "total": 11
+        },
+        "precision_at_k": {
+          "value": 0.3333,
+          "measured": 3,
+          "applicable": 8,
+          "total": 11
+        },
+        "mrr": {
+          "value": 0.5,
+          "measured": 3,
+          "applicable": 8,
+          "total": 11
+        }
+      },
+      "quality": {
+        "groundedness": {
+          "value": 1.0,
+          "measured": 2,
+          "applicable": 8,
+          "total": 11
+        },
+        "answer_correctness": {
+          "value": 0.75,
+          "measured": 2,
+          "applicable": 8,
+          "total": 11
+        },
+        "answer_relevancy": {
+          "value": 1.0,
+          "measured": 2,
+          "applicable": 8,
+          "total": 11
+        },
+        "fact_coverage": {
+          "value": 0.75,
+          "measured": 2,
+          "applicable": 8,
+          "total": 11
+        }
+      },
+      "context": {
+        "coverage": {
+          "value": 0.8333,
+          "measured": 3,
+          "applicable": 8,
+          "total": 11
+        },
+        "precision": {
+          "value": 0.5333,
+          "measured": 3,
+          "applicable": 8,
+          "total": 11
+        }
+      },
+      "security": {
+        "passed": {
+          "value": 0.5,
+          "measured": 2,
+          "applicable": 11,
+          "total": 11
+        },
+        "raw_candidate_exposure": {
+          "value": 0.0,
+          "measured": 3,
+          "applicable": 11,
+          "total": 11
+        },
+        "postfilter_exposure": {
+          "value": 0.0,
+          "measured": 3,
+          "applicable": 11,
+          "total": 11
+        },
+        "context_exposure": {
+          "value": 0.0,
+          "measured": 3,
+          "applicable": 11,
+          "total": 11
+        },
+        "citation_exposure": {
+          "value": 0.0,
+          "measured": 3,
+          "applicable": 11,
+          "total": 11
+        },
+        "restricted_fact_exposure": {
+          "value": 0.5,
+          "measured": 2,
+          "applicable": 11,
+          "total": 11
+        },
+        "answer_leakage": {
+          "value": 0.5,
+          "measured": 2,
+          "applicable": 11,
+          "total": 11
+        },
+        "behavior_match": {
+          "value": 1.0,
+          "measured": 3,
+          "applicable": 11,
+          "total": 11
+        },
+        "refusal_match": {
+          "value": null,
+          "measured": 0,
+          "applicable": 3,
+          "total": 11
+        },
+        "prompt_injection_blocked": {
+          "value": null,
+          "measured": 0,
+          "applicable": 1,
+          "total": 11
+        }
+      },
+      "reliability": {
+        "selected": 11,
+        "recorded": 3,
+        "passed": 1,
+        "failed": 1,
+        "errors": 1,
+        "pending": 8,
+        "completed": 3,
+        "partial": 0,
+        "pipeline_failed": 0,
+        "unjudged": 1,
+        "dependency_blocked": 0,
+        "degraded_retrieval": 0,
+        "degradation_measured": 3
+      },
+      "categories": {
+        "authorized_factual": {
+          "selected": 2,
+          "recorded": 2,
+          "passed": 1,
+          "failed": 1,
+          "errors": 0,
+          "pending": 0
+        },
+        "multi_document": {
+          "selected": 1,
+          "recorded": 1,
+          "passed": 0,
+          "failed": 0,
+          "errors": 1,
+          "pending": 0
+        },
+        "cross_seller": {
+          "selected": 1,
+          "recorded": 0,
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "pending": 1
+        },
+        "follow_up": {
+          "selected": 1,
+          "recorded": 0,
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "pending": 1
+        },
+        "unauthorized_access": {
+          "selected": 2,
+          "recorded": 0,
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "pending": 2
+        },
+        "mixed_access": {
+          "selected": 1,
+          "recorded": 0,
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "pending": 1
+        },
+        "policy_governance": {
+          "selected": 1,
+          "recorded": 0,
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "pending": 1
+        },
+        "ambiguous": {
+          "selected": 1,
+          "recorded": 0,
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "pending": 1
+        },
+        "prompt_injection": {
+          "selected": 1,
+          "recorded": 0,
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "pending": 1
+        }
+      },
+      "capabilities": {},
+      "failure_categories": {
+        "security": 1,
+        "retrieval": 1,
+        "quality": 1,
+        "behavior": 0,
+        "partial_generation": 0,
+        "infrastructure": 0,
+        "judging": 1,
+        "dependency": 0
+      },
+      "latency": {
+        "p50_ms": 5842.0,
+        "p95_ms": 6176.8,
+        "measured": 3,
+        "total": 11
+      }
+    },
+    "expanded": {
+      "retrieval": {
+        "recall_at_k": {
+          "value": 0.6667,
+          "measured": 3,
+          "applicable": 12,
+          "total": 16
+        },
+        "precision_at_k": {
+          "value": 0.3333,
+          "measured": 3,
+          "applicable": 12,
+          "total": 16
+        },
+        "mrr": {
+          "value": 0.5,
+          "measured": 3,
+          "applicable": 12,
+          "total": 16
+        }
+      },
+      "quality": {
+        "groundedness": {
+          "value": 1.0,
+          "measured": 2,
+          "applicable": 12,
+          "total": 16
+        },
+        "answer_correctness": {
+          "value": 0.75,
+          "measured": 2,
+          "applicable": 12,
+          "total": 16
+        },
+        "answer_relevancy": {
+          "value": 1.0,
+          "measured": 2,
+          "applicable": 12,
+          "total": 16
+        },
+        "fact_coverage": {
+          "value": 0.75,
+          "measured": 2,
+          "applicable": 12,
+          "total": 16
+        }
+      },
+      "context": {
+        "coverage": {
+          "value": 0.8333,
+          "measured": 3,
+          "applicable": 12,
+          "total": 16
+        },
+        "precision": {
+          "value": 0.5333,
+          "measured": 3,
+          "applicable": 12,
+          "total": 16
+        }
+      },
+      "security": {
+        "passed": {
+          "value": 0.5,
+          "measured": 2,
+          "applicable": 16,
+          "total": 16
+        },
+        "raw_candidate_exposure": {
+          "value": 0.0,
+          "measured": 3,
+          "applicable": 16,
+          "total": 16
+        },
+        "postfilter_exposure": {
+          "value": 0.0,
+          "measured": 3,
+          "applicable": 16,
+          "total": 16
+        },
+        "context_exposure": {
+          "value": 0.0,
+          "measured": 3,
+          "applicable": 16,
+          "total": 16
+        },
+        "citation_exposure": {
+          "value": 0.0,
+          "measured": 3,
+          "applicable": 16,
+          "total": 16
+        },
+        "restricted_fact_exposure": {
+          "value": 0.5,
+          "measured": 2,
+          "applicable": 16,
+          "total": 16
+        },
+        "answer_leakage": {
+          "value": 0.5,
+          "measured": 2,
+          "applicable": 16,
+          "total": 16
+        },
+        "behavior_match": {
+          "value": 1.0,
+          "measured": 3,
+          "applicable": 16,
+          "total": 16
+        },
+        "refusal_match": {
+          "value": null,
+          "measured": 0,
+          "applicable": 4,
+          "total": 16
+        },
+        "prompt_injection_blocked": {
+          "value": null,
+          "measured": 0,
+          "applicable": 1,
+          "total": 16
+        }
+      },
+      "reliability": {
+        "selected": 16,
+        "recorded": 3,
+        "passed": 1,
+        "failed": 1,
+        "errors": 1,
+        "pending": 13,
+        "completed": 3,
+        "partial": 0,
+        "pipeline_failed": 0,
+        "unjudged": 1,
+        "dependency_blocked": 0,
+        "degraded_retrieval": 0,
+        "degradation_measured": 3
+      },
+      "categories": {
+        "authorized_factual": {
+          "selected": 4,
+          "recorded": 2,
+          "passed": 1,
+          "failed": 1,
+          "errors": 0,
+          "pending": 2
+        },
+        "multi_document": {
+          "selected": 1,
+          "recorded": 1,
+          "passed": 0,
+          "failed": 0,
+          "errors": 1,
+          "pending": 0
+        },
+        "cross_seller": {
+          "selected": 2,
+          "recorded": 0,
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "pending": 2
+        },
+        "follow_up": {
+          "selected": 2,
+          "recorded": 0,
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "pending": 2
+        },
+        "unauthorized_access": {
+          "selected": 2,
+          "recorded": 0,
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "pending": 2
+        },
+        "mixed_access": {
+          "selected": 1,
+          "recorded": 0,
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "pending": 1
+        },
+        "policy_governance": {
+          "selected": 1,
+          "recorded": 0,
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "pending": 1
+        },
+        "ambiguous": {
+          "selected": 2,
+          "recorded": 0,
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "pending": 2
+        },
+        "prompt_injection": {
+          "selected": 1,
+          "recorded": 0,
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "pending": 1
+        }
+      },
+      "capabilities": {
+        "portfolio": {
+          "selected": 2,
+          "recorded": 0,
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "pending": 2
+        },
+        "personal_scope": {
+          "selected": 1,
+          "recorded": 0,
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "pending": 1
+        },
+        "call_transcript": {
+          "selected": 1,
+          "recorded": 0,
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "pending": 1
+        },
+        "seller_filter": {
+          "selected": 1,
+          "recorded": 0,
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "pending": 1
+        },
+        "authorized_narrowing": {
+          "selected": 1,
+          "recorded": 0,
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "pending": 1
+        },
+        "long_conversation": {
+          "selected": 1,
+          "recorded": 0,
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "pending": 1
+        },
+        "unavailable_information": {
+          "selected": 1,
+          "recorded": 0,
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "pending": 1
+        }
+      },
+      "failure_categories": {
+        "security": 1,
+        "retrieval": 1,
+        "quality": 1,
+        "behavior": 0,
+        "partial_generation": 0,
+        "infrastructure": 0,
+        "judging": 1,
+        "dependency": 0
+      },
+      "latency": {
+        "p50_ms": 5842.0,
+        "p95_ms": 6176.8,
+        "measured": 3,
+        "total": 16
+      }
+    }
+  }
+}

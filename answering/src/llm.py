@@ -63,12 +63,16 @@ def _post(payload: dict, stream: bool):
     exhausted: set[str] = set()
     transient_retries = 0
     max_key_attempts = max(1, keys.size)
+    credentials = None
+    last_failure = ""
 
     for _ in range(max_key_attempts + config.GROQ_MAX_RETRIES + 1):
-        try:
-            label, key = keys.acquire(exclude=exhausted)
-        except groq_keys.NoAvailableKeyError as exc:
-            raise LLMError(str(exc)) from exc
+        if credentials is None:
+            try:
+                credentials = keys.acquire(exclude=exhausted)
+            except groq_keys.NoAvailableKeyError as exc:
+                raise _fail(f"{exc} {last_failure}".strip()) from exc
+        label, key = credentials
 
         try:
             response = HTTP.post(
@@ -96,26 +100,32 @@ def _post(payload: dict, stream: bool):
             keys.report_success(label)
             return response, label
 
-        body = response.text[:300]
+        body = keys.redact(response.text[:2000])
         kind = groq_keys.classify_status(response.status_code, body)
+        cooldown = groq_keys.cooldown_seconds(getattr(response, "headers", {}), body) if kind == groq_keys.RATE_LIMIT else None
         response.close()
 
         if kind in (groq_keys.RATE_LIMIT, groq_keys.INVALID_KEY):
-            keys.report_failure(label, kind)
+            keys.report_failure(label, kind, retry_after_s=cooldown)
             exhausted.add(label)
+            credentials = None
+            quota_hint = (" Daily token quota can be shared by keys in the same Groq organization. "
+                          "Wait for the provider's reset; rotation cannot increase a shared quota."
+                          if "tokens per day" in body.lower() or "(tpd)" in body.lower() else "")
+            last_failure = f"Groq API error {response.status_code}: {body[:300]}{quota_hint}"
             if len(exhausted) < keys.size:
                 record_retry("generation")
                 continue
             raise _fail(
-                f"Groq API error {response.status_code} on every key: {body}")
+                f"Groq API error {response.status_code} on every key: {body[:300]}{quota_hint}")
         if kind == groq_keys.TRANSIENT:
             if transient_retries < config.GROQ_MAX_RETRIES:
                 record_retry("generation")
                 time.sleep(remaining_timeout(2 ** transient_retries))
                 transient_retries += 1
                 continue
-            raise _fail(f"Groq API error {response.status_code}: {body}")
-        raise _fail(f"Groq API error {response.status_code}: {body}")
+            raise _fail(f"Groq API error {response.status_code}: {body[:300]}")
+        raise _fail(f"Groq API error {response.status_code}: {body[:300]}")
 
     raise LLMError("Groq request exceeded the attempt budget.")
 

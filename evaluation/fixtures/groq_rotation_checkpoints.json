@@ -1,0 +1,21 @@
+{
+  "description": "Reviewed Groq transport update and one final fifth attempt for the four cases exhausted in this existing full report. Other cases retain four attempts.",
+  "checkpoints": [
+    {
+      "from_fingerprint": "7564a1e7e4e1bf2b4bb58d01ddbc0ad2578a626639a48dc1940cdd9059415249",
+      "to_fingerprint": "79e017a16f4f113582a6c9dc94c5dcc696eb1b0f29aec9ec5e58034d1a83f8c1"
+    },
+    {
+      "from_fingerprint": "00f37ac01f946378c6183044d204b8778f8ba8d450426bbb74dde7f18c7fe2f6",
+      "to_fingerprint": "0feb64ea1f5a2c81219ddc1eeed5bde9e9429de073b26d77d33c226d1509fdcb"
+    }
+  ],
+  "attempt_extensions": {
+    "run-20261104-101037-414954": {
+      "E001": 5,
+      "E010": 5,
+      "E012": 5,
+      "E025": 5
+    }
+  }
+}
