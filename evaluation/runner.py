@@ -39,6 +39,7 @@ PRE_RETRY_RUNNER_SHA256 = "a19971eb83cc69d764a977b534acd0473f58eddcc40d689cc33f8
 PRE_JINA_ROTATION_SHA256 = "04595f66f26de09d0c733db99902cee093e29c78a27349b5defc5e29a6faca85"
 JINA_REQUEST_POLICY = "round_robin_stop_on_error_v1"
 GROQ_REQUEST_POLICY = "round_robin_provider_cooldown_v1"
+PRE_TARGETED_RETRIES_SHA256 = "245f0f480edf5f620ab8415d2b80ddc42213ba55cccd826c1eb73034e3dd0aca"
 
 
 def conversation_history(case, dataset, rows):
@@ -97,7 +98,28 @@ def attempt_limits(previous: dict | None) -> dict[str, int]:
 
 
 def attempt_limit(case_id: str, limits: dict | None = None) -> int:
-    return 5 if (limits or {}).get(case_id) == 5 else MAX_CASE_ATTEMPTS
+    value = (limits or {}).get(case_id, MAX_CASE_ATTEMPTS)
+    return value if type(value) is int and value > 0 else MAX_CASE_ATTEMPTS
+
+
+def targeted_retry_plan(previous: dict) -> dict:
+    """Freeze one extra attempt for errors and FAIL rows with <=2 attempts.
+
+    Repeating the command consumes only the remaining frozen allowances. It
+    never grants another extension after an interruption or provider failure.
+    """
+    if previous.get("targeted_retry") is not None:
+        return copy.deepcopy(previous["targeted_retry"])
+    rows = previous["results"]
+    errors = [r for r in rows if r.get("status") == evaluator.ERROR or r.get("error")]
+    failures = [r for r in rows if r.get("status") == evaluator.FAIL
+                and not r.get("error") and attempt_count(r) <= 2]
+    wanted = {r["eval_id"] for r in errors + failures}
+    return {"policy": "errors_and_failures_at_most_two_attempts_v1", "created_at": _now(),
+            "error_ids": [r["eval_id"] for r in errors],
+            "failure_ids": [r["eval_id"] for r in failures],
+            "attempt_caps": {r["eval_id"]: attempt_count(r) + 1
+                             for r in rows if r["eval_id"] in wanted}}
 
 
 def retry_candidate(row: dict) -> bool:
@@ -288,6 +310,21 @@ def compatible_groq_checkpoint(previous, current_config):
             "to_fingerprint": current_config.get("fingerprint")} in allowed.get("checkpoints", [])
 
 
+def compatible_targeted_checkpoint(previous, dataset, catalog, current_config):
+    """Verify the archived scheduler while keeping every scoring input exact."""
+    controls = {k: v for k, v in current_config.items() if k != "fingerprint"}
+    if previous.get("configuration") != controls:
+        return False
+    try:
+        source = (ds.PACKAGE_ROOT / "fixtures/runner_before_targeted_retries.py.txt").read_bytes()
+    except OSError:
+        return False
+    if hashlib.sha256(source).hexdigest() != PRE_TARGETED_RETRIES_SHA256:
+        return False
+    return previous.get("fingerprint") == fingerprint(
+        dataset, catalog, controls, _source_overrides={"evaluation/runner.py": source})
+
+
 def _matrix_row(result: dict) -> dict:
     retrieval = result.get("retrieval") or {}
     generation = result.get("generation") or {}
@@ -366,9 +403,9 @@ def save_checkpoint(document: dict, path: Path) -> None:
             temporary.unlink()
 def _execute_case(case, catalog, history, retry_wait_s, max_retries,
                   run_config: dict, prior_attempts: list[dict] | None = None,
-                  started_at: str | None = None):
+                  started_at: str | None = None, attempt_cap: int | None = None):
     attempts = list(prior_attempts or [])
-    limit = attempt_limit(case.eval_id, run_config.get("case_attempt_limits"))
+    limit = attempt_cap if attempt_cap is not None else attempt_limit(case.eval_id, run_config.get("case_attempt_limits"))
     if len(attempts) >= limit:
         raise ds.DatasetError(f"{case.eval_id}: maximum {limit} attempts reached")
     started_at = started_at or _now()
@@ -377,6 +414,8 @@ def _execute_case(case, catalog, history, retry_wait_s, max_retries,
     attempts.append({"attempt": len(attempts) + 1, "started_at": started_at,
                      "finished_at": _now(), "fingerprint": run_config["fingerprint"],
                      "configuration": dict(run_config), "result": copy.deepcopy(current)})
+    if attempt_cap is not None:
+        attempts[-1]["targeted_attempt_cap"] = attempt_cap
     current["attempts"] = attempts
     return current
 
@@ -384,7 +423,9 @@ def _execute_case(case, catalog, history, retry_wait_s, max_retries,
 def run(dataset=None, catalog=None, limit=None, only=None, delay_s=None,
         retry_wait_s=None, max_retries=None, resume=False, checkpoint=True,
         verbose=True, output: Path | None = None, retry_failed: bool = False,
-        initialize_only: bool = False) -> dict:
+        initialize_only: bool = False, targeted_retry: bool = False) -> dict:
+    if targeted_retry and not resume:
+        raise ds.DatasetError("Targeted retries require an existing report and resume=True")
     dataset = ds.load() if dataset is None else dataset
     catalog = catalog or ds.PermissionCatalog()
     delay_s = CASE_DELAY_S if delay_s is None else delay_s
@@ -449,6 +490,12 @@ def run(dataset=None, catalog=None, limit=None, only=None, delay_s=None,
         fingerprint_mismatch = (previous is not None
                                 and previous.get("fingerprint") != signature)
         if (fingerprint_mismatch and previous.get("selected_ids") == selected_ids
+                and compatible_targeted_checkpoint(previous, dataset, catalog, run_configuration)):
+            fingerprint_mismatch = False
+            policy_migrations = [{"from_fingerprint": previous["fingerprint"],
+                "to_fingerprint": signature, "at": _now(),
+                "reason": "Targeted retry scheduler; all scoring inputs and previous attempts preserved"}]
+        if (fingerprint_mismatch and previous.get("selected_ids") == selected_ids
                 and compatible_groq_checkpoint(previous, run_configuration)):
             fingerprint_mismatch = False
             policy_migrations = [{"from_fingerprint": previous["fingerprint"],
@@ -487,6 +534,10 @@ def run(dataset=None, catalog=None, limit=None, only=None, delay_s=None,
         raise ds.DatasetError("Output already exists. Archive it, choose a new --output "
                               "path, or use --resume for a matching run.")
 
+    retry_batch = targeted_retry_plan(previous) if targeted_retry else (previous or {}).get("targeted_retry")
+    if targeted_retry:
+        limits = {**limits, **retry_batch["attempt_caps"]}
+
     dependents: dict[str, list[str]] = {}
     case_map = {c.eval_id: c for c in cases}
     for case in cases:
@@ -515,6 +566,9 @@ def run(dataset=None, catalog=None, limit=None, only=None, delay_s=None,
     retry_ids = {c.eval_id for c in cases if retry_candidate(rows.get(c.eval_id, {}))
                  and attempt_count(rows[c.eval_id]) < attempt_limit(c.eval_id, limits)}
     queue = execution_order(cases, rows, limits)
+    if targeted_retry:
+        retry_ids &= retry_batch["attempt_caps"].keys()
+        queue = [c for c in queue if c.eval_id in retry_batch["attempt_caps"]]
     started = time.monotonic()
     stop_reason = None
     stop_detail = None
@@ -537,9 +591,11 @@ def run(dataset=None, catalog=None, limit=None, only=None, delay_s=None,
             "response_log": f".cache/evaluation-responses/{run_id}.jsonl",
             "scheduler_migrations": scheduler_migrations,
             "policy_migrations": policy_migrations,
+            "targeted_retry": retry_batch,
             "execution_order": [c.eval_id for c in queue],
             "retry_queue": [c.eval_id for c in execution_order(cases, rows, limits)
                             if retry_candidate(rows.get(c.eval_id, {}))
+                            and (not targeted_retry or c.eval_id in retry_batch["attempt_caps"])
                             and 0 < attempt_count(rows[c.eval_id]) < attempt_limit(c.eval_id, limits)],
             "exhausted_cases": [c.eval_id for c in cases if retry_candidate(rows.get(c.eval_id, {}))
                                 and attempt_count(rows[c.eval_id]) >= attempt_limit(c.eval_id, limits)],
@@ -633,12 +689,15 @@ def run(dataset=None, catalog=None, limit=None, only=None, delay_s=None,
                 "started_at": attempt_started, "finished_at": None,
                 "fingerprint": signature, "configuration": dict(run_configuration),
                 "result": copy.deepcopy(reserved)}]
+            if targeted_retry:
+                reserved["attempts"][-1]["targeted_attempt_cap"] = limits[case.eval_id]
             rows[case.eval_id] = reserved
             if checkpoint:
                 save_checkpoint(document(), output)
             rows[case.eval_id] = _execute_case(
                 case, catalog, history, retry_wait_s, max_retries,
-                run_configuration, prior_attempts, started_at=attempt_started)
+                run_configuration, prior_attempts, started_at=attempt_started,
+                attempt_cap=limits[case.eval_id] if targeted_retry else None)
             if old_answer is not None and (rows[case.eval_id].get("answer") != old_answer
                     or not rows[case.eval_id].get("answered")
                     or rows[case.eval_id].get("outcome") != "answer"):

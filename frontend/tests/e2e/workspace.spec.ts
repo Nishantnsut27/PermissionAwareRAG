@@ -1,13 +1,14 @@
 import { test, expect } from '@playwright/test';
 import evaluationSummary from '../fixtures/evaluation-summary.json' with { type: 'json' };
 const user = { user_id: 'U-001', name: 'Aditya Verma', role: 'Account Manager', department: 'Business', seller_scope: ['S001', 'S003'] };
+const vikram = { ...user, user_id: 'U-003', name: 'Vikram Singh', role: 'Engineer', department: 'Engineering' };
 test.beforeEach(async ({ page }) => {
   await page.route('http://127.0.0.1:8000/**', async route => {
     const path = new URL(route.request().url()).pathname;
     if (route.request().method() === 'OPTIONS') { await route.fulfill({ status: 204, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS' } }); return; }
     const headers = { 'Access-Control-Allow-Origin': '*' };
-    const body = path === '/demo/users' ? { users: [user] }
-      : path === '/demo/login' ? { access_token: 'session', expires_in: 3600, user }
+    const body = path === '/demo/users' ? { users: [user, vikram] }
+      : path === '/demo/login' ? { access_token: 'session', expires_in: 3600, user: route.request().postDataJSON().user_id === vikram.user_id ? vikram : user }
       : path === '/demo/me' ? { user }
       : path === '/ready' ? { status: 'ready' }
       : { ...evaluationSummary, run_id: 'saved-report' };
@@ -40,11 +41,12 @@ test('login, scoped chat, source inspection, refresh restoration, theme and eval
   test.setTimeout(60000); // Multiple full-page light/dark captures on desktop and mobile.
   await page.goto('/login');
   await expect(page.getByRole('heading', { name: 'Explore a sample account' })).toBeVisible();
+  await expect(page.getByLabel('Demo password')).toHaveValue('aditya@login');
   await page.screenshot({ path: testInfo.outputPath('login-light.png'), fullPage: true });
   await toggleTheme(page);
   await page.screenshot({ path: testInfo.outputPath('login-dark.png'), fullPage: true });
   await toggleTheme(page);
-  await page.getByLabel('Demo password').fill('aditya@login'); await page.getByRole('button', { name: 'Continue' }).click();
+  await page.getByRole('button', { name: 'Continue' }).click();
   await expect(page.getByRole('heading', { name: 'How can I help, Aditya?' })).toBeVisible();
   await page.screenshot({ path: testInfo.outputPath('chat-light.png'), fullPage: true });
   await toggleTheme(page);
@@ -62,10 +64,35 @@ test('login, scoped chat, source inspection, refresh restoration, theme and eval
   await page.screenshot({ path: testInfo.outputPath('answer-dark.png'), fullPage: true });
   await openMenu(page); await page.getByRole('button', { name: 'Evaluation overview' }).click();
   await expect(page.getByText('saved-report')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Evaluation complete with errors' })).toBeVisible();
+  const scorecards = await page.locator('.eval-scorecards').boundingBox();
+  const completion = await page.getByRole('region', { name: 'Evaluation results summary' }).boundingBox();
+  expect(completion!.y).toBeGreaterThanOrEqual(scorecards!.y + scorecards!.height);
+  await expect(page.getByRole('region', { name: 'Evaluation results summary' })).toContainText('90 of 90 cases recorded');
+  await expect(page.getByRole('row', { name: 'All selected cases 90 / 90 76.7% 69 19 2 0' })).toBeVisible();
   await page.screenshot({ path: testInfo.outputPath('evaluation-dark.png'), fullPage: true });
   await toggleTheme(page);
   await page.screenshot({ path: testInfo.outputPath('evaluation-light.png'), fullPage: true });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+});
+test('demo passwords autofill when switching accounts and can be shown or hidden', async ({ page }, testInfo) => {
+  await page.goto('/login');
+  const password = page.getByLabel('Demo password');
+  await expect(password).toHaveValue('aditya@login');
+  await expect(password).toHaveAttribute('type', 'password');
+  await page.getByRole('button', { name: 'Show password' }).click();
+  await expect(password).toHaveAttribute('type', 'text');
+  await expect(page.getByRole('heading', { name: 'Explore a sample account' })).toBeVisible();
+  await page.getByRole('button', { name: 'Hide password' }).click();
+  await expect(password).toHaveAttribute('type', 'password');
+  await page.getByLabel('Demo account').selectOption(vikram.user_id);
+  await expect(password).toHaveValue('vikram@login');
+  await page.getByRole('button', { name: 'Show password' }).click();
+  await page.screenshot({ path: testInfo.outputPath('login-password-visible.png'), fullPage: true });
+  const request = page.waitForRequest(request => request.method() === 'POST' && new URL(request.url()).pathname === '/demo/login');
+  await page.getByRole('button', { name: 'Continue' }).click();
+  expect((await request).postDataJSON()).toEqual({ user_id: vikram.user_id, password: 'vikram@login' });
+  await expect(page.getByRole('heading', { name: 'How can I help, Vikram?' })).toBeVisible();
 });
 test('refusal and user switching clear the previous transcript', async ({ page }, testInfo) => {
   await page.goto('/login'); await page.getByLabel('Demo password').fill('aditya@login'); await page.getByRole('button', { name: 'Continue' }).click();

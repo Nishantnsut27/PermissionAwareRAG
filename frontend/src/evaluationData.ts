@@ -16,6 +16,20 @@ export interface EvaluationSummary extends Partial<ReportOption> {
   duration_s?: number; selection_complete?: boolean; partial?: boolean; phase?: string; stop_reason?: string;
   measurements?: Measurements; cohorts?: { original_60: Measurements; expanded: Measurements };
 }
+export function evaluationState(data: EvaluationSummary) {
+  const r = data.measurements?.reliability;
+  const selected = data.selected_cases ?? r?.selected ?? 0;
+  const recorded = data.total_cases ?? r?.recorded ?? 0;
+  const active = ['starting', 'waiting', 'evaluating'].includes(data.phase || '');
+  const finished = !active && !data.stop_reason && (data.selection_complete === true || data.status === 'Complete'
+    || (data.phase === 'finished' && selected > 0 && recorded === selected && (!r || r.pending === 0)));
+  if (finished) return { finished, label: r?.errors ? 'Complete with errors' : 'Complete',
+    heading: r?.errors ? 'Evaluation complete with errors' : 'Evaluation complete', tone: r?.errors ? 'complete-with-errors' : 'complete' };
+  if (active) return { finished, label: 'Running', heading: 'Evaluation results', tone: 'running' };
+  if (data.phase === 'stopped' || data.stop_reason) return { finished, label: 'Paused', heading: 'Evaluation results', tone: 'incomplete' };
+  if (!data.status || data.status === 'Legacy') return { finished, label: 'Legacy', heading: 'Saved evaluation results', tone: 'legacy' };
+  return { finished, label: 'Incomplete', heading: 'Evaluation results', tone: 'incomplete' };
+}
 const invalid = (): never => { throw new Error('The saved evaluation summary is invalid. Refresh to try again.'); };
 const record = (x: unknown): Record<string, unknown> => isRecord(x) ? x : invalid();
 const count = (x: unknown, fallback = 0): number => x === undefined ? fallback : typeof x === 'number' && Number.isSafeInteger(x) && x >= 0 ? x : invalid();

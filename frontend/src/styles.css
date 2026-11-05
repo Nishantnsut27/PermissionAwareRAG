@@ -144,3 +144,11 @@
   .composer-hint { font-size: 9px; padding: 7px 6px 0; }
   .composer-scope { font-size: 11px; }
 }
+
+.login-password { margin-top: 18px; }
+.password-field { position: relative; margin-top: 8px; }
+.password-field input { padding-right: 56px; min-height: 50px; }
+.password-toggle { position: absolute; top: 50%; right: 3px; transform: translateY(-50%); display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; background: transparent; color: var(--muted); border-radius: 8px; }
+.password-toggle:hover:not(:disabled) { background: var(--accent); color: var(--fg); }
+.password-toggle svg { width: 21px; height: 21px; }
+.password-field input::-ms-reveal { display: none; }

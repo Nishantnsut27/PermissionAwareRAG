@@ -13,6 +13,7 @@ $suites = @(
     'security_tests.api_liveness',
     'security_tests.react_api_contracts',
     'security_tests.evaluation_v11',
+    'security_tests.targeted_evaluation_retry',
     'security_tests.jina_rotation',
     'security_tests.groq_rotation'
 )

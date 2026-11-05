@@ -29,10 +29,14 @@ function Hero({ login = false, name = '' }: { login?: boolean; name?: string }) 
 function Login({ onLogin }: { onLogin: (session: Session) => void }) {
   const directory = useQuery({ queryKey: ['demo-users', api.API_BASE_URL], queryFn: ({ signal }) => api.listUsers(signal), staleTime: 300000, retry: 2 });
   const [selected, setSelected] = useState('');
-  const [password, setPassword] = useState('');
+  const [passwordEdit, setPasswordEdit] = useState<{ userId: string; value: string } | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
-  const selectedId = selected || directory.data?.[0]?.user_id || '';
+  const selectedUser = directory.data?.find(user => user.user_id === selected) || directory.data?.[0];
+  const selectedId = selectedUser?.user_id || '';
+  const firstName = selectedUser?.name.trim().split(/\s+/)[0].toLowerCase();
+  const password = passwordEdit?.userId === selectedId ? passwordEdit.value : firstName ? `${firstName}@login` : '';
   async function submit(event: React.FormEvent) {
     event.preventDefault();
     if (!selectedId || busy) return;
@@ -48,14 +52,22 @@ function Login({ onLogin }: { onLogin: (session: Session) => void }) {
     {directory.error && <div className="notice error" role="alert">{directory.error.message}</div>}
     {directory.error && <button onClick={() => void directory.refetch()}>Retry connection</button>}
     <form onSubmit={submit}>
-      <label>Demo account<select value={selectedId} onChange={event => setSelected(event.target.value)} disabled={!directory.data || busy}>
+      <label>Demo account<select value={selectedId} onChange={event => {
+        setSelected(event.target.value); setPasswordEdit(null); setShowPassword(false); setError('');
+      }} disabled={!directory.data?.length || busy}>
         {!directory.data && <option value="">Loading accounts…</option>}
         {directory.data?.map(user => <option key={user.user_id} value={user.user_id}>{user.name} · {user.role}</option>)}
       </select></label>
-      <label>Demo password<input type="password" autoComplete="current-password" value={password} onChange={event => setPassword(event.target.value)} placeholder="firstname@login" required disabled={busy} /></label>
-      <p className="caption">Password example: aditya@login. Use the selected account's first name.</p>
+      <div className="login-password"><label htmlFor="demo-password">Demo password</label><div className="password-field">
+        <input id="demo-password" type={showPassword ? 'text' : 'password'} autoComplete="current-password" value={password}
+          onChange={event => setPasswordEdit({ userId: selectedId, value: event.target.value })} placeholder="firstname@login" required disabled={!selectedId || busy} />
+        <button type="button" className="password-toggle" aria-label={showPassword ? 'Hide password' : 'Show password'}
+          title={showPassword ? 'Hide password' : 'Show password'} aria-controls="demo-password" disabled={!selectedId || busy}
+          onClick={() => setShowPassword(value => !value)}><Icon name={showPassword ? 'eye-off' : 'eye'} /></button>
+      </div></div>
+      <p className="caption">The demo password fills automatically for the selected account.</p>
       {error && <div className="notice error" role="alert">{error}</div>}
-      <button className="primary full" disabled={!directory.data || busy}>{busy ? 'Signing in…' : 'Continue'}</button>
+      <button className="primary full" disabled={!selectedId || busy}>{busy ? 'Signing in…' : 'Continue'}</button>
     </form>
     <details><summary>Demo IDs and password examples</summary>{directory.data?.map(user => <p className="caption" key={user.user_id}>{user.user_id} · {user.name} · {user.name.split(' ')[0].toLowerCase()}@login</p>)}</details>
   </section></>;

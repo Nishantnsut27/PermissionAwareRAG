@@ -2,6 +2,26 @@
   "has_results": true,
   "available_reports": [
     {
+      "report_id": "runs/baseline-v11-20261104-full.json",
+      "run_id": "run-20261104-101037-414954",
+      "started_at": "2026-11-04T10:10:37+00:00",
+      "generated_at": "2026-11-05T05:12:24+00:00",
+      "status": "Incomplete",
+      "dataset_version": "1.1",
+      "selected_cases": 90,
+      "total_cases": 90
+    },
+    {
+      "report_id": "runs/baseline-v11-20261104-pilot.json",
+      "run_id": "run-20261104-091136-566729",
+      "started_at": "2026-11-04T09:11:36+00:00",
+      "generated_at": "2026-11-04T19:00:14+00:00",
+      "status": "Complete",
+      "dataset_version": "1.1",
+      "selected_cases": 16,
+      "total_cases": 16
+    },
+    {
       "report_id": "runs/pilot-20261104-v11.json",
       "run_id": "run-20261104-081044-452453",
       "started_at": "2026-11-04T08:10:44+00:00",
@@ -52,825 +72,1033 @@
       "total_cases": 60
     }
   ],
-  "report_id": "runs/pilot-20261104-v11.json",
-  "run_id": "run-20261104-081044-452453",
-  "started_at": "2026-11-04T08:10:44+00:00",
-  "generated_at": "2026-11-04T08:14:12+00:00",
+  "report_id": "runs/baseline-v11-20261104-full.json",
+  "run_id": "run-20261104-101037-414954",
+  "started_at": "2026-11-04T10:10:37+00:00",
+  "generated_at": "2026-11-05T05:12:24+00:00",
   "dataset_version": "1.1",
-  "selected_cases": 16,
-  "total_cases": 3,
+  "selected_cases": 90,
+  "total_cases": 90,
   "status": "Incomplete",
   "schema_version": 5,
   "selection_complete": false,
   "partial": true,
-  "duration_s": 208.4,
+  "duration_s": 16590.8,
   "model": "openai/gpt-oss-120b",
   "dataset_id": "GOLDEN-P7-NEXORA",
-  "stop_reason": "execution_error",
-  "phase": "stopped",
+  "stop_reason": null,
+  "phase": "finished",
   "measurements": {
     "retrieval": {
       "recall_at_k": {
-        "value": 0.6667,
-        "measured": 3,
-        "applicable": 12,
-        "total": 16
+        "value": 0.8944,
+        "measured": 71,
+        "applicable": 72,
+        "total": 90
       },
       "precision_at_k": {
-        "value": 0.3333,
-        "measured": 3,
-        "applicable": 12,
-        "total": 16
+        "value": 0.2761,
+        "measured": 71,
+        "applicable": 72,
+        "total": 90
       },
       "mrr": {
-        "value": 0.5,
-        "measured": 3,
-        "applicable": 12,
-        "total": 16
+        "value": 0.8568,
+        "measured": 71,
+        "applicable": 72,
+        "total": 90
       }
     },
     "quality": {
       "groundedness": {
-        "value": 1.0,
-        "measured": 2,
-        "applicable": 12,
-        "total": 16
+        "value": 0.9544,
+        "measured": 68,
+        "applicable": 72,
+        "total": 90
       },
       "answer_correctness": {
-        "value": 0.75,
-        "measured": 2,
-        "applicable": 12,
-        "total": 16
+        "value": 0.8345,
+        "measured": 68,
+        "applicable": 72,
+        "total": 90
       },
       "answer_relevancy": {
-        "value": 1.0,
-        "measured": 2,
-        "applicable": 12,
-        "total": 16
+        "value": 0.9731,
+        "measured": 68,
+        "applicable": 72,
+        "total": 90
       },
       "fact_coverage": {
-        "value": 0.75,
-        "measured": 2,
-        "applicable": 12,
-        "total": 16
+        "value": 0.7843,
+        "measured": 68,
+        "applicable": 72,
+        "total": 90
       }
     },
     "context": {
       "coverage": {
-        "value": 0.8333,
-        "measured": 3,
-        "applicable": 12,
-        "total": 16
+        "value": 0.8298,
+        "measured": 71,
+        "applicable": 72,
+        "total": 90
       },
       "precision": {
-        "value": 0.5333,
-        "measured": 3,
-        "applicable": 12,
-        "total": 16
+        "value": 0.4636,
+        "measured": 70,
+        "applicable": 72,
+        "total": 90
       }
     },
     "security": {
       "passed": {
-        "value": 0.5,
-        "measured": 2,
-        "applicable": 16,
-        "total": 16
+        "value": 0.9773,
+        "measured": 88,
+        "applicable": 90,
+        "total": 90
       },
       "raw_candidate_exposure": {
         "value": 0.0,
-        "measured": 3,
-        "applicable": 16,
-        "total": 16
+        "measured": 89,
+        "applicable": 90,
+        "total": 90
       },
       "postfilter_exposure": {
         "value": 0.0,
-        "measured": 3,
-        "applicable": 16,
-        "total": 16
+        "measured": 89,
+        "applicable": 90,
+        "total": 90
       },
       "context_exposure": {
         "value": 0.0,
-        "measured": 3,
-        "applicable": 16,
-        "total": 16
+        "measured": 89,
+        "applicable": 90,
+        "total": 90
       },
       "citation_exposure": {
         "value": 0.0,
-        "measured": 3,
-        "applicable": 16,
-        "total": 16
+        "measured": 89,
+        "applicable": 90,
+        "total": 90
       },
       "restricted_fact_exposure": {
-        "value": 0.5,
-        "measured": 2,
-        "applicable": 16,
-        "total": 16
+        "value": 0.0227,
+        "measured": 88,
+        "applicable": 90,
+        "total": 90
       },
       "answer_leakage": {
-        "value": 0.5,
-        "measured": 2,
-        "applicable": 16,
-        "total": 16
+        "value": 0.0227,
+        "measured": 88,
+        "applicable": 90,
+        "total": 90
       },
       "behavior_match": {
-        "value": 1.0,
-        "measured": 3,
-        "applicable": 16,
-        "total": 16
+        "value": 0.9551,
+        "measured": 89,
+        "applicable": 90,
+        "total": 90
       },
       "refusal_match": {
-        "value": null,
-        "measured": 0,
-        "applicable": 4,
-        "total": 16
+        "value": 0.8889,
+        "measured": 18,
+        "applicable": 18,
+        "total": 90
       },
       "prompt_injection_blocked": {
-        "value": null,
-        "measured": 0,
-        "applicable": 1,
-        "total": 16
+        "value": 1.0,
+        "measured": 5,
+        "applicable": 5,
+        "total": 90
       }
     },
     "reliability": {
-      "selected": 16,
-      "recorded": 3,
-      "passed": 1,
-      "failed": 1,
-      "errors": 1,
-      "pending": 13,
-      "completed": 3,
+      "selected": 90,
+      "recorded": 90,
+      "passed": 69,
+      "failed": 19,
+      "errors": 2,
+      "pending": 0,
+      "completed": 89,
       "partial": 0,
-      "pipeline_failed": 0,
-      "unjudged": 1,
+      "pipeline_failed": 1,
+      "unjudged": 4,
       "dependency_blocked": 0,
       "degraded_retrieval": 0,
-      "degradation_measured": 3
+      "degradation_measured": 89
     },
     "categories": {
       "authorized_factual": {
-        "selected": 4,
-        "recorded": 2,
-        "passed": 1,
-        "failed": 1,
-        "errors": 0,
-        "pending": 2
-      },
-      "multi_document": {
-        "selected": 1,
-        "recorded": 1,
-        "passed": 0,
-        "failed": 0,
+        "selected": 25,
+        "recorded": 25,
+        "passed": 20,
+        "failed": 4,
         "errors": 1,
         "pending": 0
       },
-      "cross_seller": {
-        "selected": 2,
-        "recorded": 0,
-        "passed": 0,
+      "multi_document": {
+        "selected": 8,
+        "recorded": 8,
+        "passed": 8,
         "failed": 0,
         "errors": 0,
-        "pending": 2
+        "pending": 0
+      },
+      "cross_seller": {
+        "selected": 13,
+        "recorded": 13,
+        "passed": 8,
+        "failed": 4,
+        "errors": 1,
+        "pending": 0
       },
       "follow_up": {
-        "selected": 2,
-        "recorded": 0,
-        "passed": 0,
-        "failed": 0,
+        "selected": 10,
+        "recorded": 10,
+        "passed": 6,
+        "failed": 4,
         "errors": 0,
-        "pending": 2
+        "pending": 0
       },
       "unauthorized_access": {
-        "selected": 2,
-        "recorded": 0,
-        "passed": 0,
-        "failed": 0,
+        "selected": 11,
+        "recorded": 11,
+        "passed": 9,
+        "failed": 2,
         "errors": 0,
-        "pending": 2
+        "pending": 0
       },
       "mixed_access": {
-        "selected": 1,
-        "recorded": 0,
-        "passed": 0,
-        "failed": 0,
+        "selected": 7,
+        "recorded": 7,
+        "passed": 6,
+        "failed": 1,
         "errors": 0,
-        "pending": 1
+        "pending": 0
       },
       "policy_governance": {
-        "selected": 1,
-        "recorded": 0,
-        "passed": 0,
-        "failed": 0,
+        "selected": 6,
+        "recorded": 6,
+        "passed": 4,
+        "failed": 2,
         "errors": 0,
-        "pending": 1
+        "pending": 0
       },
       "ambiguous": {
-        "selected": 2,
-        "recorded": 0,
-        "passed": 0,
-        "failed": 0,
+        "selected": 5,
+        "recorded": 5,
+        "passed": 3,
+        "failed": 2,
         "errors": 0,
-        "pending": 2
+        "pending": 0
       },
       "prompt_injection": {
-        "selected": 1,
-        "recorded": 0,
-        "passed": 0,
+        "selected": 5,
+        "recorded": 5,
+        "passed": 5,
         "failed": 0,
         "errors": 0,
-        "pending": 1
+        "pending": 0
       }
     },
     "capabilities": {
       "portfolio": {
-        "selected": 2,
-        "recorded": 0,
-        "passed": 0,
-        "failed": 0,
-        "errors": 0,
-        "pending": 2
+        "selected": 9,
+        "recorded": 9,
+        "passed": 5,
+        "failed": 3,
+        "errors": 1,
+        "pending": 0
       },
       "personal_scope": {
+        "selected": 6,
+        "recorded": 6,
+        "passed": 4,
+        "failed": 1,
+        "errors": 1,
+        "pending": 0
+      },
+      "broad_summary": {
         "selected": 1,
-        "recorded": 0,
+        "recorded": 1,
         "passed": 0,
-        "failed": 0,
+        "failed": 1,
         "errors": 0,
-        "pending": 1
+        "pending": 0
       },
       "call_transcript": {
-        "selected": 1,
-        "recorded": 0,
-        "passed": 0,
+        "selected": 4,
+        "recorded": 4,
+        "passed": 2,
+        "failed": 2,
+        "errors": 0,
+        "pending": 0
+      },
+      "project_document": {
+        "selected": 5,
+        "recorded": 5,
+        "passed": 5,
         "failed": 0,
         "errors": 0,
-        "pending": 1
+        "pending": 0
+      },
+      "implementation_plan": {
+        "selected": 1,
+        "recorded": 1,
+        "passed": 1,
+        "failed": 0,
+        "errors": 0,
+        "pending": 0
+      },
+      "requirements": {
+        "selected": 1,
+        "recorded": 1,
+        "passed": 1,
+        "failed": 0,
+        "errors": 0,
+        "pending": 0
+      },
+      "technical_notes": {
+        "selected": 1,
+        "recorded": 1,
+        "passed": 1,
+        "failed": 0,
+        "errors": 0,
+        "pending": 0
+      },
+      "operational_checklist": {
+        "selected": 1,
+        "recorded": 1,
+        "passed": 1,
+        "failed": 0,
+        "errors": 0,
+        "pending": 0
       },
       "seller_filter": {
-        "selected": 1,
-        "recorded": 0,
-        "passed": 0,
-        "failed": 0,
+        "selected": 4,
+        "recorded": 4,
+        "passed": 3,
+        "failed": 1,
         "errors": 0,
-        "pending": 1
+        "pending": 0
       },
       "authorized_narrowing": {
         "selected": 1,
-        "recorded": 0,
-        "passed": 0,
+        "recorded": 1,
+        "passed": 1,
         "failed": 0,
         "errors": 0,
-        "pending": 1
+        "pending": 0
+      },
+      "excluded_seller": {
+        "selected": 1,
+        "recorded": 1,
+        "passed": 1,
+        "failed": 0,
+        "errors": 0,
+        "pending": 0
+      },
+      "mixed_scope": {
+        "selected": 1,
+        "recorded": 1,
+        "passed": 1,
+        "failed": 0,
+        "errors": 0,
+        "pending": 0
       },
       "long_conversation": {
-        "selected": 1,
-        "recorded": 0,
-        "passed": 0,
-        "failed": 0,
+        "selected": 4,
+        "recorded": 4,
+        "passed": 2,
+        "failed": 2,
         "errors": 0,
-        "pending": 1
+        "pending": 0
+      },
+      "seller_change": {
+        "selected": 1,
+        "recorded": 1,
+        "passed": 0,
+        "failed": 1,
+        "errors": 0,
+        "pending": 0
+      },
+      "organization_scope": {
+        "selected": 2,
+        "recorded": 2,
+        "passed": 0,
+        "failed": 2,
+        "errors": 0,
+        "pending": 0
+      },
+      "scope_switch": {
+        "selected": 1,
+        "recorded": 1,
+        "passed": 0,
+        "failed": 1,
+        "errors": 0,
+        "pending": 0
       },
       "unavailable_information": {
-        "selected": 1,
-        "recorded": 0,
-        "passed": 0,
+        "selected": 2,
+        "recorded": 2,
+        "passed": 2,
         "failed": 0,
         "errors": 0,
-        "pending": 1
+        "pending": 0
+      },
+      "paraphrase": {
+        "selected": 1,
+        "recorded": 1,
+        "passed": 1,
+        "failed": 0,
+        "errors": 0,
+        "pending": 0
+      },
+      "hindi": {
+        "selected": 1,
+        "recorded": 1,
+        "passed": 0,
+        "failed": 1,
+        "errors": 0,
+        "pending": 0
       }
     },
     "failure_categories": {
-      "security": 1,
-      "retrieval": 1,
-      "quality": 1,
-      "behavior": 0,
+      "security": 2,
+      "retrieval": 6,
+      "quality": 12,
+      "behavior": 4,
       "partial_generation": 0,
-      "infrastructure": 0,
+      "infrastructure": 1,
       "judging": 1,
       "dependency": 0
     },
     "latency": {
-      "p50_ms": 5842.0,
-      "p95_ms": 6176.8,
-      "measured": 3,
-      "total": 16
+      "p50_ms": 6744.0,
+      "p95_ms": 14757.4,
+      "measured": 89,
+      "total": 90
     }
   },
   "cohorts": {
     "original_60": {
       "retrieval": {
         "recall_at_k": {
-          "value": 0.6667,
-          "measured": 3,
-          "applicable": 8,
-          "total": 11
+          "value": 0.9111,
+          "measured": 45,
+          "applicable": 45,
+          "total": 60
         },
         "precision_at_k": {
-          "value": 0.3333,
-          "measured": 3,
-          "applicable": 8,
-          "total": 11
+          "value": 0.3067,
+          "measured": 45,
+          "applicable": 45,
+          "total": 60
         },
         "mrr": {
-          "value": 0.5,
-          "measured": 3,
-          "applicable": 8,
-          "total": 11
+          "value": 0.8519,
+          "measured": 45,
+          "applicable": 45,
+          "total": 60
         }
       },
       "quality": {
         "groundedness": {
-          "value": 1.0,
-          "measured": 2,
-          "applicable": 8,
-          "total": 11
+          "value": 0.9593,
+          "measured": 44,
+          "applicable": 45,
+          "total": 60
         },
         "answer_correctness": {
-          "value": 0.75,
-          "measured": 2,
-          "applicable": 8,
-          "total": 11
+          "value": 0.8026,
+          "measured": 44,
+          "applicable": 45,
+          "total": 60
         },
         "answer_relevancy": {
-          "value": 1.0,
-          "measured": 2,
-          "applicable": 8,
-          "total": 11
+          "value": 0.9739,
+          "measured": 44,
+          "applicable": 45,
+          "total": 60
         },
         "fact_coverage": {
           "value": 0.75,
-          "measured": 2,
-          "applicable": 8,
-          "total": 11
+          "measured": 44,
+          "applicable": 45,
+          "total": 60
         }
       },
       "context": {
         "coverage": {
-          "value": 0.8333,
-          "measured": 3,
-          "applicable": 8,
-          "total": 11
+          "value": 0.8259,
+          "measured": 45,
+          "applicable": 45,
+          "total": 60
         },
         "precision": {
-          "value": 0.5333,
-          "measured": 3,
-          "applicable": 8,
-          "total": 11
+          "value": 0.4807,
+          "measured": 45,
+          "applicable": 45,
+          "total": 60
         }
       },
       "security": {
         "passed": {
-          "value": 0.5,
-          "measured": 2,
-          "applicable": 11,
-          "total": 11
+          "value": 0.9831,
+          "measured": 59,
+          "applicable": 60,
+          "total": 60
         },
         "raw_candidate_exposure": {
           "value": 0.0,
-          "measured": 3,
-          "applicable": 11,
-          "total": 11
+          "measured": 60,
+          "applicable": 60,
+          "total": 60
         },
         "postfilter_exposure": {
           "value": 0.0,
-          "measured": 3,
-          "applicable": 11,
-          "total": 11
+          "measured": 60,
+          "applicable": 60,
+          "total": 60
         },
         "context_exposure": {
           "value": 0.0,
-          "measured": 3,
-          "applicable": 11,
-          "total": 11
+          "measured": 60,
+          "applicable": 60,
+          "total": 60
         },
         "citation_exposure": {
           "value": 0.0,
-          "measured": 3,
-          "applicable": 11,
-          "total": 11
+          "measured": 60,
+          "applicable": 60,
+          "total": 60
         },
         "restricted_fact_exposure": {
-          "value": 0.5,
-          "measured": 2,
-          "applicable": 11,
-          "total": 11
+          "value": 0.0169,
+          "measured": 59,
+          "applicable": 60,
+          "total": 60
         },
         "answer_leakage": {
-          "value": 0.5,
-          "measured": 2,
-          "applicable": 11,
-          "total": 11
+          "value": 0.0169,
+          "measured": 59,
+          "applicable": 60,
+          "total": 60
         },
         "behavior_match": {
-          "value": 1.0,
-          "measured": 3,
-          "applicable": 11,
-          "total": 11
+          "value": 0.9667,
+          "measured": 60,
+          "applicable": 60,
+          "total": 60
         },
         "refusal_match": {
-          "value": null,
-          "measured": 0,
-          "applicable": 3,
-          "total": 11
+          "value": 0.8667,
+          "measured": 15,
+          "applicable": 15,
+          "total": 60
         },
         "prompt_injection_blocked": {
-          "value": null,
-          "measured": 0,
-          "applicable": 1,
-          "total": 11
+          "value": 1.0,
+          "measured": 5,
+          "applicable": 5,
+          "total": 60
         }
       },
       "reliability": {
-        "selected": 11,
-        "recorded": 3,
-        "passed": 1,
-        "failed": 1,
+        "selected": 60,
+        "recorded": 60,
+        "passed": 47,
+        "failed": 12,
         "errors": 1,
-        "pending": 8,
-        "completed": 3,
+        "pending": 0,
+        "completed": 60,
         "partial": 0,
         "pipeline_failed": 0,
         "unjudged": 1,
         "dependency_blocked": 0,
         "degraded_retrieval": 0,
-        "degradation_measured": 3
+        "degradation_measured": 60
       },
       "categories": {
         "authorized_factual": {
-          "selected": 2,
-          "recorded": 2,
-          "passed": 1,
+          "selected": 12,
+          "recorded": 12,
+          "passed": 9,
+          "failed": 2,
+          "errors": 1,
+          "pending": 0
+        },
+        "multi_document": {
+          "selected": 8,
+          "recorded": 8,
+          "passed": 8,
+          "failed": 0,
+          "errors": 0,
+          "pending": 0
+        },
+        "cross_seller": {
+          "selected": 6,
+          "recorded": 6,
+          "passed": 4,
+          "failed": 2,
+          "errors": 0,
+          "pending": 0
+        },
+        "follow_up": {
+          "selected": 6,
+          "recorded": 6,
+          "passed": 4,
+          "failed": 2,
+          "errors": 0,
+          "pending": 0
+        },
+        "unauthorized_access": {
+          "selected": 10,
+          "recorded": 10,
+          "passed": 8,
+          "failed": 2,
+          "errors": 0,
+          "pending": 0
+        },
+        "mixed_access": {
+          "selected": 6,
+          "recorded": 6,
+          "passed": 5,
           "failed": 1,
           "errors": 0,
           "pending": 0
         },
-        "multi_document": {
-          "selected": 1,
-          "recorded": 1,
-          "passed": 0,
-          "failed": 0,
-          "errors": 1,
+        "policy_governance": {
+          "selected": 4,
+          "recorded": 4,
+          "passed": 3,
+          "failed": 1,
+          "errors": 0,
           "pending": 0
         },
-        "cross_seller": {
-          "selected": 1,
-          "recorded": 0,
-          "passed": 0,
-          "failed": 0,
-          "errors": 0,
-          "pending": 1
-        },
-        "follow_up": {
-          "selected": 1,
-          "recorded": 0,
-          "passed": 0,
-          "failed": 0,
-          "errors": 0,
-          "pending": 1
-        },
-        "unauthorized_access": {
-          "selected": 2,
-          "recorded": 0,
-          "passed": 0,
-          "failed": 0,
-          "errors": 0,
-          "pending": 2
-        },
-        "mixed_access": {
-          "selected": 1,
-          "recorded": 0,
-          "passed": 0,
-          "failed": 0,
-          "errors": 0,
-          "pending": 1
-        },
-        "policy_governance": {
-          "selected": 1,
-          "recorded": 0,
-          "passed": 0,
-          "failed": 0,
-          "errors": 0,
-          "pending": 1
-        },
         "ambiguous": {
-          "selected": 1,
-          "recorded": 0,
-          "passed": 0,
-          "failed": 0,
+          "selected": 3,
+          "recorded": 3,
+          "passed": 1,
+          "failed": 2,
           "errors": 0,
-          "pending": 1
+          "pending": 0
         },
         "prompt_injection": {
-          "selected": 1,
-          "recorded": 0,
-          "passed": 0,
+          "selected": 5,
+          "recorded": 5,
+          "passed": 5,
           "failed": 0,
           "errors": 0,
-          "pending": 1
+          "pending": 0
         }
       },
       "capabilities": {},
       "failure_categories": {
         "security": 1,
-        "retrieval": 1,
-        "quality": 1,
-        "behavior": 0,
+        "retrieval": 3,
+        "quality": 8,
+        "behavior": 2,
         "partial_generation": 0,
         "infrastructure": 0,
         "judging": 1,
         "dependency": 0
       },
       "latency": {
-        "p50_ms": 5842.0,
-        "p95_ms": 6176.8,
-        "measured": 3,
-        "total": 11
+        "p50_ms": 6671.5,
+        "p95_ms": 12208.8,
+        "measured": 60,
+        "total": 60
       }
     },
     "expanded": {
       "retrieval": {
         "recall_at_k": {
-          "value": 0.6667,
-          "measured": 3,
-          "applicable": 12,
-          "total": 16
+          "value": 0.8944,
+          "measured": 71,
+          "applicable": 72,
+          "total": 90
         },
         "precision_at_k": {
-          "value": 0.3333,
-          "measured": 3,
-          "applicable": 12,
-          "total": 16
+          "value": 0.2761,
+          "measured": 71,
+          "applicable": 72,
+          "total": 90
         },
         "mrr": {
-          "value": 0.5,
-          "measured": 3,
-          "applicable": 12,
-          "total": 16
+          "value": 0.8568,
+          "measured": 71,
+          "applicable": 72,
+          "total": 90
         }
       },
       "quality": {
         "groundedness": {
-          "value": 1.0,
-          "measured": 2,
-          "applicable": 12,
-          "total": 16
+          "value": 0.9544,
+          "measured": 68,
+          "applicable": 72,
+          "total": 90
         },
         "answer_correctness": {
-          "value": 0.75,
-          "measured": 2,
-          "applicable": 12,
-          "total": 16
+          "value": 0.8345,
+          "measured": 68,
+          "applicable": 72,
+          "total": 90
         },
         "answer_relevancy": {
-          "value": 1.0,
-          "measured": 2,
-          "applicable": 12,
-          "total": 16
+          "value": 0.9731,
+          "measured": 68,
+          "applicable": 72,
+          "total": 90
         },
         "fact_coverage": {
-          "value": 0.75,
-          "measured": 2,
-          "applicable": 12,
-          "total": 16
+          "value": 0.7843,
+          "measured": 68,
+          "applicable": 72,
+          "total": 90
         }
       },
       "context": {
         "coverage": {
-          "value": 0.8333,
-          "measured": 3,
-          "applicable": 12,
-          "total": 16
+          "value": 0.8298,
+          "measured": 71,
+          "applicable": 72,
+          "total": 90
         },
         "precision": {
-          "value": 0.5333,
-          "measured": 3,
-          "applicable": 12,
-          "total": 16
+          "value": 0.4636,
+          "measured": 70,
+          "applicable": 72,
+          "total": 90
         }
       },
       "security": {
         "passed": {
-          "value": 0.5,
-          "measured": 2,
-          "applicable": 16,
-          "total": 16
+          "value": 0.9773,
+          "measured": 88,
+          "applicable": 90,
+          "total": 90
         },
         "raw_candidate_exposure": {
           "value": 0.0,
-          "measured": 3,
-          "applicable": 16,
-          "total": 16
+          "measured": 89,
+          "applicable": 90,
+          "total": 90
         },
         "postfilter_exposure": {
           "value": 0.0,
-          "measured": 3,
-          "applicable": 16,
-          "total": 16
+          "measured": 89,
+          "applicable": 90,
+          "total": 90
         },
         "context_exposure": {
           "value": 0.0,
-          "measured": 3,
-          "applicable": 16,
-          "total": 16
+          "measured": 89,
+          "applicable": 90,
+          "total": 90
         },
         "citation_exposure": {
           "value": 0.0,
-          "measured": 3,
-          "applicable": 16,
-          "total": 16
+          "measured": 89,
+          "applicable": 90,
+          "total": 90
         },
         "restricted_fact_exposure": {
-          "value": 0.5,
-          "measured": 2,
-          "applicable": 16,
-          "total": 16
+          "value": 0.0227,
+          "measured": 88,
+          "applicable": 90,
+          "total": 90
         },
         "answer_leakage": {
-          "value": 0.5,
-          "measured": 2,
-          "applicable": 16,
-          "total": 16
+          "value": 0.0227,
+          "measured": 88,
+          "applicable": 90,
+          "total": 90
         },
         "behavior_match": {
-          "value": 1.0,
-          "measured": 3,
-          "applicable": 16,
-          "total": 16
+          "value": 0.9551,
+          "measured": 89,
+          "applicable": 90,
+          "total": 90
         },
         "refusal_match": {
-          "value": null,
-          "measured": 0,
-          "applicable": 4,
-          "total": 16
+          "value": 0.8889,
+          "measured": 18,
+          "applicable": 18,
+          "total": 90
         },
         "prompt_injection_blocked": {
-          "value": null,
-          "measured": 0,
-          "applicable": 1,
-          "total": 16
+          "value": 1.0,
+          "measured": 5,
+          "applicable": 5,
+          "total": 90
         }
       },
       "reliability": {
-        "selected": 16,
-        "recorded": 3,
-        "passed": 1,
-        "failed": 1,
-        "errors": 1,
-        "pending": 13,
-        "completed": 3,
+        "selected": 90,
+        "recorded": 90,
+        "passed": 69,
+        "failed": 19,
+        "errors": 2,
+        "pending": 0,
+        "completed": 89,
         "partial": 0,
-        "pipeline_failed": 0,
-        "unjudged": 1,
+        "pipeline_failed": 1,
+        "unjudged": 4,
         "dependency_blocked": 0,
         "degraded_retrieval": 0,
-        "degradation_measured": 3
+        "degradation_measured": 89
       },
       "categories": {
         "authorized_factual": {
-          "selected": 4,
-          "recorded": 2,
-          "passed": 1,
-          "failed": 1,
-          "errors": 0,
-          "pending": 2
-        },
-        "multi_document": {
-          "selected": 1,
-          "recorded": 1,
-          "passed": 0,
-          "failed": 0,
+          "selected": 25,
+          "recorded": 25,
+          "passed": 20,
+          "failed": 4,
           "errors": 1,
           "pending": 0
         },
-        "cross_seller": {
-          "selected": 2,
-          "recorded": 0,
-          "passed": 0,
+        "multi_document": {
+          "selected": 8,
+          "recorded": 8,
+          "passed": 8,
           "failed": 0,
           "errors": 0,
-          "pending": 2
+          "pending": 0
+        },
+        "cross_seller": {
+          "selected": 13,
+          "recorded": 13,
+          "passed": 8,
+          "failed": 4,
+          "errors": 1,
+          "pending": 0
         },
         "follow_up": {
-          "selected": 2,
-          "recorded": 0,
-          "passed": 0,
-          "failed": 0,
+          "selected": 10,
+          "recorded": 10,
+          "passed": 6,
+          "failed": 4,
           "errors": 0,
-          "pending": 2
+          "pending": 0
         },
         "unauthorized_access": {
-          "selected": 2,
-          "recorded": 0,
-          "passed": 0,
-          "failed": 0,
+          "selected": 11,
+          "recorded": 11,
+          "passed": 9,
+          "failed": 2,
           "errors": 0,
-          "pending": 2
+          "pending": 0
         },
         "mixed_access": {
-          "selected": 1,
-          "recorded": 0,
-          "passed": 0,
-          "failed": 0,
+          "selected": 7,
+          "recorded": 7,
+          "passed": 6,
+          "failed": 1,
           "errors": 0,
-          "pending": 1
+          "pending": 0
         },
         "policy_governance": {
-          "selected": 1,
-          "recorded": 0,
-          "passed": 0,
-          "failed": 0,
+          "selected": 6,
+          "recorded": 6,
+          "passed": 4,
+          "failed": 2,
           "errors": 0,
-          "pending": 1
+          "pending": 0
         },
         "ambiguous": {
-          "selected": 2,
-          "recorded": 0,
-          "passed": 0,
-          "failed": 0,
+          "selected": 5,
+          "recorded": 5,
+          "passed": 3,
+          "failed": 2,
           "errors": 0,
-          "pending": 2
+          "pending": 0
         },
         "prompt_injection": {
-          "selected": 1,
-          "recorded": 0,
-          "passed": 0,
+          "selected": 5,
+          "recorded": 5,
+          "passed": 5,
           "failed": 0,
           "errors": 0,
-          "pending": 1
+          "pending": 0
         }
       },
       "capabilities": {
         "portfolio": {
-          "selected": 2,
-          "recorded": 0,
-          "passed": 0,
-          "failed": 0,
-          "errors": 0,
-          "pending": 2
+          "selected": 9,
+          "recorded": 9,
+          "passed": 5,
+          "failed": 3,
+          "errors": 1,
+          "pending": 0
         },
         "personal_scope": {
+          "selected": 6,
+          "recorded": 6,
+          "passed": 4,
+          "failed": 1,
+          "errors": 1,
+          "pending": 0
+        },
+        "broad_summary": {
           "selected": 1,
-          "recorded": 0,
+          "recorded": 1,
           "passed": 0,
-          "failed": 0,
+          "failed": 1,
           "errors": 0,
-          "pending": 1
+          "pending": 0
         },
         "call_transcript": {
-          "selected": 1,
-          "recorded": 0,
-          "passed": 0,
+          "selected": 4,
+          "recorded": 4,
+          "passed": 2,
+          "failed": 2,
+          "errors": 0,
+          "pending": 0
+        },
+        "project_document": {
+          "selected": 5,
+          "recorded": 5,
+          "passed": 5,
           "failed": 0,
           "errors": 0,
-          "pending": 1
+          "pending": 0
+        },
+        "implementation_plan": {
+          "selected": 1,
+          "recorded": 1,
+          "passed": 1,
+          "failed": 0,
+          "errors": 0,
+          "pending": 0
+        },
+        "requirements": {
+          "selected": 1,
+          "recorded": 1,
+          "passed": 1,
+          "failed": 0,
+          "errors": 0,
+          "pending": 0
+        },
+        "technical_notes": {
+          "selected": 1,
+          "recorded": 1,
+          "passed": 1,
+          "failed": 0,
+          "errors": 0,
+          "pending": 0
+        },
+        "operational_checklist": {
+          "selected": 1,
+          "recorded": 1,
+          "passed": 1,
+          "failed": 0,
+          "errors": 0,
+          "pending": 0
         },
         "seller_filter": {
-          "selected": 1,
-          "recorded": 0,
-          "passed": 0,
-          "failed": 0,
+          "selected": 4,
+          "recorded": 4,
+          "passed": 3,
+          "failed": 1,
           "errors": 0,
-          "pending": 1
+          "pending": 0
         },
         "authorized_narrowing": {
           "selected": 1,
-          "recorded": 0,
-          "passed": 0,
+          "recorded": 1,
+          "passed": 1,
           "failed": 0,
           "errors": 0,
-          "pending": 1
+          "pending": 0
+        },
+        "excluded_seller": {
+          "selected": 1,
+          "recorded": 1,
+          "passed": 1,
+          "failed": 0,
+          "errors": 0,
+          "pending": 0
+        },
+        "mixed_scope": {
+          "selected": 1,
+          "recorded": 1,
+          "passed": 1,
+          "failed": 0,
+          "errors": 0,
+          "pending": 0
         },
         "long_conversation": {
-          "selected": 1,
-          "recorded": 0,
-          "passed": 0,
-          "failed": 0,
+          "selected": 4,
+          "recorded": 4,
+          "passed": 2,
+          "failed": 2,
           "errors": 0,
-          "pending": 1
+          "pending": 0
+        },
+        "seller_change": {
+          "selected": 1,
+          "recorded": 1,
+          "passed": 0,
+          "failed": 1,
+          "errors": 0,
+          "pending": 0
+        },
+        "organization_scope": {
+          "selected": 2,
+          "recorded": 2,
+          "passed": 0,
+          "failed": 2,
+          "errors": 0,
+          "pending": 0
+        },
+        "scope_switch": {
+          "selected": 1,
+          "recorded": 1,
+          "passed": 0,
+          "failed": 1,
+          "errors": 0,
+          "pending": 0
         },
         "unavailable_information": {
-          "selected": 1,
-          "recorded": 0,
-          "passed": 0,
+          "selected": 2,
+          "recorded": 2,
+          "passed": 2,
           "failed": 0,
           "errors": 0,
-          "pending": 1
+          "pending": 0
+        },
+        "paraphrase": {
+          "selected": 1,
+          "recorded": 1,
+          "passed": 1,
+          "failed": 0,
+          "errors": 0,
+          "pending": 0
+        },
+        "hindi": {
+          "selected": 1,
+          "recorded": 1,
+          "passed": 0,
+          "failed": 1,
+          "errors": 0,
+          "pending": 0
         }
       },
       "failure_categories": {
-        "security": 1,
-        "retrieval": 1,
-        "quality": 1,
-        "behavior": 0,
+        "security": 2,
+        "retrieval": 6,
+        "quality": 12,
+        "behavior": 4,
         "partial_generation": 0,
-        "infrastructure": 0,
+        "infrastructure": 1,
         "judging": 1,
         "dependency": 0
       },
       "latency": {
-        "p50_ms": 5842.0,
-        "p95_ms": 6176.8,
-        "measured": 3,
-        "total": 16
+        "p50_ms": 6744.0,
+        "p95_ms": 14757.4,
+        "measured": 89,
+        "total": 90
       }
     }
   }

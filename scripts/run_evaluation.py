@@ -52,7 +52,9 @@ def run_lock(path):
                 fcntl.flock(handle, fcntl.LOCK_UN)
 
 
-def execute(name: str, *, plan: bool = False, phase: str = 'all') -> int:
+def execute(name: str, *, plan: bool = False, phase: str = 'all', targeted_retry: bool = False) -> int:
+    if targeted_retry and phase != 'full':
+        raise ds.DatasetError('--retry-errors-and-low-attempt-failures requires --phase full')
     dataset = ds.load()
     catalog = ds.PermissionCatalog()
     problems = ds.validate(dataset, catalog)
@@ -65,6 +67,8 @@ def execute(name: str, *, plan: bool = False, phase: str = 'all') -> int:
         for phase, path, only in paths:
             cases = runner.select_cases(dataset, only=only)
             previous = runner.load_results(path) if path.exists() else None
+            if targeted_retry and not previous:
+                raise ds.DatasetError('Targeted retries require an existing full report')
             if previous:
                 if previous.get('selected_ids') != [case.eval_id for case in cases]:
                     raise ds.DatasetError('The saved report has a different case selection.')
@@ -72,32 +76,52 @@ def execute(name: str, *, plan: bool = False, phase: str = 'all') -> int:
                 controls = {**previous['configuration'], 'groq_request_policy': runner.GROQ_REQUEST_POLICY,
                             'case_attempt_limits': limits}
                 signature = runner.fingerprint(dataset, catalog, controls)
-                if previous['fingerprint'] != signature and not runner.compatible_groq_checkpoint(previous, {**controls, 'fingerprint': signature}):
+                if (previous['fingerprint'] != signature
+                        and not runner.compatible_groq_checkpoint(previous, {**controls, 'fingerprint': signature})
+                        and not runner.compatible_targeted_checkpoint(previous, dataset, catalog, controls)):
                     raise ds.DatasetError('The saved report does not match the current evaluation inputs.')
                 rows = {row['eval_id']: row for row in previous['results']}
+                batch = runner.targeted_retry_plan(previous) if targeted_retry else None
+                if batch:
+                    limits = {**limits, **batch['attempt_caps']}
                 pending = [case.eval_id for case in runner.execution_order(cases, rows, limits)
-                           if runner.attempt_count(rows.get(case.eval_id, {})) < runner.attempt_limit(case.eval_id, limits)
+                           if (not batch or case.eval_id in batch['attempt_caps'])
+                           and runner.attempt_count(rows.get(case.eval_id, {})) < runner.attempt_limit(case.eval_id, limits)
                            and (not runner.case_finished(rows.get(case.eval_id, {}))
                                 or runner.retry_candidate(rows.get(case.eval_id, {})))]
                 print(f'{phase}: keep all {len(cases)} cases in {path}')
                 print(f'Retry once this invocation ({len(pending)}): {", ".join(pending) or "none"}')
                 print(f'Preserve {sum(row.get("status") == "PASS" for row in rows.values())} passed cases.')
-                if limits:
+                if batch:
+                    print('Error cases: ' + (', '.join(batch['error_ids']) or 'none'))
+                    print('FAIL cases with <=2 attempts: ' + (', '.join(batch['failure_ids']) or 'none'))
+                    print('One additional attempt per selected case, including exhausted errors; '
+                          'repeating this command resumes the same frozen batch.')
+                elif limits:
                     print('One final fifth attempt only for: ' + ', '.join(limits) + '. All other cases stay capped at four.')
                 print(f'Existing response log: {previous["response_log"]}')
             else:
                 print(f'{phase}: {len(cases)} cases; {max(0, len(cases)-1)*1.5:.1f} minutes pacing; {path}')
-        print(f'Each restart: one attempt per queued case; default cap {runner.MAX_CASE_ATTEMPTS}, with only the listed report-specific exceptions.')
+        if not targeted_retry:
+            print(f'Each restart: one attempt per queued case; default cap {runner.MAX_CASE_ATTEMPTS}, with only the listed report-specific exceptions.')
         print('Offline validation passed. No provider or index calls made.')
         return 0
     config.validate_env()
     with run_lock(ROOT / '.cache' / 'evaluation.lock'):
         for phase, path, only in paths:
             exists = path.exists()
+            if targeted_retry and not exists:
+                raise ds.DatasetError('Targeted retries require an existing full report')
             print(f'{"Resuming" if exists else "Starting"} {phase}: {path}', flush=True)
-            print('Ctrl+C once to pause. Repeat this command to resume: fresh cases first, '
-                  f'previous failures at the end; default maximum {runner.MAX_CASE_ATTEMPTS} total attempts per case.', flush=True)
-            if exists:
+            if targeted_retry:
+                batch = runner.targeted_retry_plan(runner.load_results(path))
+                print('Targeted cases: ' + (', '.join(batch['attempt_caps']) or 'none'), flush=True)
+                print('One additional attempt per selected case. Ctrl+C pauses; repeat this command '
+                      'to continue the remaining cases in this batch. All history stays in the full report.', flush=True)
+            else:
+                print('Ctrl+C once to pause. Repeat this command to resume: fresh cases first, '
+                      f'previous failures at the end; default maximum {runner.MAX_CASE_ATTEMPTS} total attempts per case.', flush=True)
+            if exists and not targeted_retry:
                 limits = runner.attempt_limits(runner.load_results(path))
                 if limits:
                     print('One final fifth attempt is permitted only for: ' + ', '.join(limits) + '.', flush=True)
@@ -106,7 +130,8 @@ def execute(name: str, *, plan: bool = False, phase: str = 'all') -> int:
             print(f'Groq requests rotate across {config.groq_keys.pool().size} unique configured keys; '
                   'rate-limited keys wait for provider cooldowns. Keys in the same organization may share daily quota.', flush=True)
             result = runner.run(dataset, catalog, only=only, delay_s=90,
-                                retry_wait_s=90, max_retries=0, resume=exists, output=path)
+                                retry_wait_s=90, max_retries=0, resume=exists, output=path,
+                                targeted_retry=targeted_retry)
             print(f'Report: {path}\nResponse log: {result["response_log"]}', flush=True)
             print(f'Queued for next restart: {len(result["retry_queue"])}; '
                   f'attempt limit reached: {len(result["exhausted_cases"])}.', flush=True)
@@ -132,12 +157,15 @@ def main():
     parser.add_argument('--plan', action='store_true', help='offline validation and preview only')
     parser.add_argument('--phase', choices=('all', 'pilot', 'full'), default='all',
                         help='Use full to resume the existing 90-case report directly, without visiting the pilot')
+    parser.add_argument('--retry-errors-and-low-attempt-failures', action='store_true',
+                        help='With --phase full: one frozen extra attempt for every error and FAIL with <=2 total attempts; keep the full report and logs')
     args = parser.parse_args()
     if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,90}', args.name):
         parser.error('--name must be a simple filename, without a path')
     logging.basicConfig(level=logging.ERROR)
     try:
-        return execute(args.name, plan=args.plan, phase=args.phase)
+        return execute(args.name, plan=args.plan, phase=args.phase,
+                       targeted_retry=args.retry_errors_and_low_attempt_failures)
     except KeyboardInterrupt:
         print('Paused. Run the same command to resume.', file=sys.stderr)
         return 130

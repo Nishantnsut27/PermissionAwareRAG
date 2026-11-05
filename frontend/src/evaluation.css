@@ -33,6 +33,28 @@
 .run-status { display: inline-flex; align-items: center; gap: 7px; padding: 5px 10px; border: 1px solid color-mix(in srgb, currentColor 20%, transparent); border-radius: 7px; color: var(--muted); background: var(--card); font-size: 11px; font-weight: 600; }
 .run-status > span { width: 6px; height: 6px; background: currentColor; border-radius: 50%; }
 .run-status.complete { color: var(--success); background: color-mix(in srgb, var(--success) 8%, var(--card)); }
+.run-status.complete-with-errors { color: var(--eval-amber); background: color-mix(in srgb, var(--eval-amber) 8%, var(--card)); }
+.run-status.running { color: var(--eval-blue); background: color-mix(in srgb, var(--eval-blue) 8%, var(--card)); }
+.eval-outcome-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
+.eval-outcome-heading h2 { margin: 14px 0 8px; font-size: clamp(20px, 2.4vw, 28px); }
+.eval-outcome-heading p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+.eval-outcome-heading > .caption { text-align: right; font-size: 11px; }
+.eval-outcome-heading time { display: block; margin-top: 6px; color: var(--fg); }
+.eval-outcome-counts { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; margin: 24px 0 20px; }
+.eval-outcome-counts dt { color: var(--muted); font-size: 12px; }
+.eval-outcome-counts dd { margin: 7px 0 0; font-size: clamp(23px, 3vw, 34px); font-weight: 650; letter-spacing: -.8px; }
+.eval-outcome-counts .passed dd { color: var(--success); }
+.eval-outcome-counts .failed dd { color: var(--error); }
+.eval-outcome-counts .errors dd { color: var(--eval-amber); }
+.eval-outcome-counts .pending dd { color: var(--muted); }
+.eval-outcome-bar { display: flex; height: 10px; gap: 3px; border-radius: 6px; overflow: hidden; background: var(--eval-soft); }
+.eval-outcome-bar > span { min-width: 0; }
+.eval-outcome-bar .passed { background: var(--success); }
+.eval-outcome-bar .failed { background: var(--error); }
+.eval-outcome-bar .errors { background: var(--eval-amber); }
+.eval-outcome-bar .pending { background: var(--border); }
+.eval-outcomes > .caption { margin: 14px 0 0; line-height: 1.6; }
+.eval-table tfoot > tr > * { border-top: 1px solid var(--border); background: var(--eval-soft); font-weight: 650; }
 .run-status.incomplete { color: var(--eval-amber); background: color-mix(in srgb, var(--eval-amber) 8%, var(--card)); }
 .eval-version { margin-left: auto; color: var(--muted); font-size: 11px; white-space: nowrap; }
 .eval-run-meta { display: grid; grid-template-columns: .7fr 1fr 1.25fr; gap: 24px; padding-top: 18px; margin: 18px 0 0; border-top: 1px solid var(--border); }
@@ -40,9 +62,7 @@
 .eval-run-meta dt { color: var(--muted); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .9px; }
 .eval-run-meta dd { margin: 7px 0 0; font-size: 13px; font-weight: 600; line-height: 1.6; overflow-wrap: anywhere; }
 .eval-run-meta dd span { color: var(--muted); font-weight: 400; }
-.eval-run-phase { margin: 14px 0 0; }
 .eval-run .notice { margin: 16px 0 0; padding: 10px 14px; font-size: 12px; }
-.eval-run .notice.warning { color: var(--eval-amber); background: color-mix(in srgb, var(--eval-amber) 7%, var(--card)); border-color: color-mix(in srgb, var(--eval-amber) 20%, var(--border)); }
 .eval-scorecards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
 .evaluation .eval-scorecard { --score-accent: var(--primary); display: flex; flex-direction: column; padding: 20px; background: linear-gradient(160deg, color-mix(in srgb, var(--score-accent) 4%, var(--card)), var(--card) 70%); }
 .evaluation .eval-scorecard.quality { --score-accent: var(--eval-blue); }
@@ -134,6 +154,11 @@
   .failure-counts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 760px) {
+  .eval-outcome-heading { flex-direction: column; gap: 12px; }
+  .eval-outcome-heading > .caption { text-align: left; }
+  .eval-outcome-heading time { display: inline; margin-left: 8px; }
+  .eval-outcome-counts { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px 10px; }
+  .eval-outcome-counts > div:first-child { grid-column: 1 / -1; }
   .evaluation .panel { padding: 18px; border-radius: 15px; }
   .eval-header { gap: 18px; margin-bottom: 22px; }
   .eval-header .eyebrow { line-height: 1.6; font-size: 9px; }

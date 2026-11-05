@@ -26,12 +26,41 @@ beforeEach(() => {
 afterEach(() => vi.restoreAllMocks());
 async function signIn() {
   const interaction = userEvent.setup(); await screen.findByRole('option', { name: /Aditya Verma/ });
-  await interaction.type(screen.getByLabelText('Demo password'), 'aditya@login');
+  expect(screen.getByLabelText('Demo password')).toHaveValue('aditya@login');
   await interaction.click(screen.getByRole('button', { name: 'Continue' }));
   await screen.findByRole('heading', { name: 'How can I help, Aditya?' });
   return interaction;
 }
 describe('workspace behavior', () => {
+  it('autofills the selected demo password, toggles visibility, and submits the matching credentials', async () => {
+    const vikram = { ...user, user_id: 'U-003', name: 'Vikram Singh', department: 'Engineering' };
+    vi.mocked(api.listUsers).mockResolvedValue([user, vikram]);
+    vi.mocked(api.login).mockResolvedValue({ ...session(), user: vikram });
+    ui(); const interaction = userEvent.setup();
+    await screen.findByRole('option', { name: /Aditya Verma/ });
+    const password = screen.getByLabelText('Demo password');
+    expect(password).toHaveValue('aditya@login');
+    expect(password).toHaveAttribute('type', 'password');
+    await interaction.click(screen.getByRole('button', { name: 'Show password' }));
+    expect(password).toHaveAttribute('type', 'text');
+    await interaction.click(screen.getByRole('button', { name: 'Hide password' }));
+    expect(password).toHaveAttribute('type', 'password');
+    expect(password).toHaveValue('aditya@login');
+    expect(api.login).not.toHaveBeenCalled();
+    await interaction.clear(password); await interaction.type(password, 'edited-password');
+    await interaction.click(screen.getByRole('switch', { name: 'Dark theme' }));
+    expect(password).toHaveValue('edited-password');
+    await interaction.selectOptions(screen.getByLabelText('Demo account'), vikram.user_id);
+    expect(password).toHaveValue('vikram@login');
+    expect(password).toHaveAttribute('type', 'password');
+    await interaction.selectOptions(screen.getByLabelText('Demo account'), user.user_id);
+    expect(password).toHaveValue('aditya@login');
+    await interaction.selectOptions(screen.getByLabelText('Demo account'), vikram.user_id);
+    await interaction.click(screen.getByRole('button', { name: 'Continue' }));
+    await screen.findByRole('heading', { name: 'How can I help, Vikram?' });
+    expect(api.login).toHaveBeenCalledExactlyOnceWith('U-003', 'vikram@login');
+    expect(sessionStorage.getItem(STORAGE_KEY)).not.toContain('@login');
+  });
   it('blocks questions until delayed session verification and ignores late verification after logout', async () => {
     let finish: ((profile: typeof user) => void) | undefined;
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ session: session(), messages: [], theme: 'light', memory: 6 }));
@@ -86,6 +115,7 @@ describe('workspace behavior', () => {
   it('shows login errors without retrying credentials', async () => {
     vi.mocked(api.login).mockRejectedValue(new api.ApiError('Incorrect password', 401)); ui();
     const interaction = userEvent.setup(); await screen.findByRole('option', { name: /Aditya/ });
+    await interaction.clear(screen.getByLabelText('Demo password'));
     await interaction.type(screen.getByLabelText('Demo password'), 'wrong'); await interaction.click(screen.getByRole('button', { name: 'Continue' }));
     await screen.findByText('Incorrect password'); expect(api.login).toHaveBeenCalledTimes(1);
   });

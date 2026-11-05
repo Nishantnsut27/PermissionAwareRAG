@@ -1,5 +1,29 @@
 # Run and resume the evaluation
 
+To retry **ERROR cases (generation, judging, retrieval, or other errors)** and
+**FAIL cases with two or fewer total attempts** in the existing full report:
+
+```powershell
+.\.venv\Scripts\python.exe scripts/run_evaluation.py --name baseline-v11-20261104 --phase full --retry-errors-and-low-attempt-failures
+```
+
+Append `--plan` for an offline preview. The first execution freezes the selected
+IDs and grants each one additional attempt, including error cases at their old
+cap. Repeating this command continues the remaining frozen batch; it does not
+grant more attempts to cases already attempted in this batch. Provider errors
+still pause execution. An interrupted in-flight attempt counts as an attempt.
+Passing cases and FAIL cases above two attempts are not executed. A changed
+parent answer still invalidates dependent scores so stale conversation results
+are never presented as current; only selected cases can execute.
+
+All 90 cases, original scores, prior and new attempt details, and the retry policy
+remain together in `evaluation/runs/baseline-v11-20261104-full.json`. The original
+response log is rebuilt with **all** attempts at
+`.cache/evaluation-responses/run-20261104-101037-414954.jsonl`. This is an
+evaluation rerun; it does not train or change model weights. The scheduler-only
+checkpoint migration verifies the archived runner and all other evaluation
+inputs; previous attempt fingerprints are preserved.
+
 To retry the queued cases in the existing **E001–E090 full report** once, without revisiting the pilot:
 
 ```powershell

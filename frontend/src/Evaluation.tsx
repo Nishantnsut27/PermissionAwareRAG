@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { evaluation } from './api';
 import type { Counts, EvaluationSummary, Measure, Measurements } from './evaluationData';
+import { evaluationState } from './evaluationData';
 import Icon from './Icons';
 import './evaluation.css';
 
@@ -27,7 +28,7 @@ function MetricList({ values }: { values: Record<string, Measure> }) {
 function Meter({ value }: { value: number | null }) {
   return <span className={`eval-meter ${value === null ? 'unmeasured' : ''}`} aria-hidden="true"><span style={{ width: `${Math.min(100, Math.max(0, (value ?? 0) * 100))}%` }} /></span>;
 }
-function Table({ name, rows }: { name: string; rows: Record<string, Counts> }) {
+function Table({ name, rows, total }: { name: string; rows: Record<string, Counts>; total?: Counts }) {
   const entries = Object.entries(rows);
   return <section className="panel eval-table">
     <div className="eval-table-heading"><div className="eval-heading-group"><span className="eval-section-icon"><Icon name="grid" /></span><div><h2>{name}</h2>
@@ -38,7 +39,10 @@ function Table({ name, rows }: { name: string; rows: Record<string, Counts> }) {
           <td className="matrix-recorded"><strong>{row.recorded}</strong><span> / {row.selected}</span></td>
           <td><div className="matrix-rate"><strong>{row.recorded ? `${(row.passed / row.recorded * 100).toFixed(1)}%` : 'Not measured'}</strong><Meter value={row.recorded ? row.passed / row.recorded : null} /></div></td>
           {(['passed', 'failed', 'errors', 'pending'] as const).map(outcome => <td className="matrix-outcome" key={outcome}><span className={`matrix-count ${row[outcome] ? outcome : 'zero'}`}>{row[outcome]}</span></td>)}</tr>)}
-      </tbody></table></div><div className="eval-table-foot"><span><i className="matrix-legend" aria-hidden="true" />Pass rate is based on recorded cases.</span><span>{name === 'Capabilities' ? 'A case can belong to multiple capabilities.' : 'Pending cases have no recorded outcome yet.'}</span></div></>
+      </tbody>{total && <tfoot><tr><th scope="row">All selected cases</th><td>{total.recorded} / {total.selected}</td>
+        <td>{total.recorded ? `${(total.passed / total.recorded * 100).toFixed(1)}%` : 'Not measured'}</td>
+        {(['passed', 'failed', 'errors', 'pending'] as const).map(key => <td className="matrix-outcome" key={key}>{total[key]}</td>)}
+      </tr></tfoot>}</table></div><div className="eval-table-foot"><span><i className="matrix-legend" aria-hidden="true" />Pass rate is based on recorded cases.</span><span>{name === 'Capabilities' ? 'A case can belong to multiple capabilities.' : 'Pending cases have no recorded outcome yet.'}</span></div></>
       : <p className="eval-empty caption">Not measured in this report.</p>}
   </section>;
 }
@@ -67,7 +71,7 @@ function Results({ m }: { m: Measurements }) {
   const r = m.reliability;
   return <>
     <div className="eval-section-label"><span className="eyebrow">Results by group</span><h2>Evaluation matrix</h2><p className="caption">See where the system performs well and which groups need attention.</p></div>
-    <Table name="Behavioral categories" rows={m.categories} /><Table name="Capabilities" rows={m.capabilities} />
+    <Table name="Behavioral categories" rows={m.categories} total={r} /><Table name="Capabilities" rows={m.capabilities} />
     <div className="eval-section-label"><span className="eyebrow">A closer look</span><h2>Quality and reliability</h2><p className="caption">Detailed measurements from retrieval through the final response.</p></div>
     <div className="eval-columns"><section className="panel"><h2>Retrieval and context</h2><MetricList values={{ ...m.retrieval, ...m.context }} /></section>
       <section className="panel"><h2>Answer quality</h2><MetricList values={m.quality} /><p className="caption">Per-case thresholds: recall ≥50%, groundedness ≥70%, correctness ≥60%, relevancy ≥60%. Security failures always fail.</p></section></div>
@@ -84,8 +88,25 @@ function Results({ m }: { m: Measurements }) {
       <p className="caption">Counts may overlap. A completed baseline can contain quality or security failures.</p></section>
   </>;
 }
+function OutcomeSummary({ data }: { data: EvaluationSummary & { measurements: Measurements } }) {
+  const r = data.measurements.reliability, state = evaluationState(data);
+  const outcomes = [['passed', 'Passed'], ['failed', 'Failed'], ['errors', 'Errors'], ['pending', 'Pending']] as const;
+  return <section className={`panel eval-outcomes ${state.tone}`} aria-label="Evaluation results summary">
+    <div className="eval-outcome-heading"><div><span className={`run-status ${state.tone}`}><span aria-hidden="true" />{state.label}</span>
+      <h2>{state.heading}</h2><p>{r.recorded} of {r.selected} cases recorded.</p></div>
+      {data.generated_at && <p className="caption">{state.finished ? 'Completed' : 'Last saved'}<time dateTime={data.generated_at}>{savedTime(data.generated_at)}</time></p>}
+    </div>
+    <dl className="eval-outcome-counts"><div><dt>Pass rate</dt><dd>{r.recorded ? `${(r.passed / r.recorded * 100).toFixed(1)}%` : 'Not measured'}</dd></div>
+      {outcomes.map(([key, label]) => <div className={key} key={key}><dt>{label}</dt><dd>{r[key]}</dd></div>)}
+    </dl>
+    <div className="eval-outcome-bar" role="img" aria-label={outcomes.map(([key, label]) => `${r[key]} ${label.toLowerCase()}`).join(', ')}>
+      {outcomes.map(([key]) => <span className={key} key={key} style={{ width: `${r.selected ? r[key] / r.selected * 100 : 0}%` }} />)}
+    </div>
+    <p className="caption">{state.finished && r.errors > 0 ? `${r.errors} cases ended with errors; unavailable scores remain unmeasured. ` : ''}Pass rate includes failed and error cases. Quality metrics use only measured cases.</p>
+  </section>;
+}
 function download(data: EvaluationSummary) {
-  const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
+  const url = URL.createObjectURL(new Blob([JSON.stringify({ ...data, execution_status: evaluationState(data).label }, null, 2)], { type: 'application/json' }));
   const link = document.createElement('a'); link.href = url; link.download = `${data.run_id || 'evaluation'}-summary.json`; link.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
@@ -95,23 +116,22 @@ export default function Evaluation() {
   const query = useQuery({ queryKey: ['evaluation', report], queryFn: ({ signal }) => evaluation(report || undefined, signal),
     staleTime: 0, retry: 2, refetchInterval: !report ? 30000 : false, refetchIntervalInBackground: false });
   const data = query.data;
+  const state = data ? evaluationState(data) : undefined;
   return <section className="evaluation" aria-labelledby="evaluation-title">
     <header className="eval-header"><div><div className="eyebrow">Saved evaluation results</div><h1 id="evaluation-title">Evaluation overview</h1>
       <p>Coverage, answer quality and permissions, measured through the same pipeline as your chat.</p></div><span className="eval-header-icon" aria-hidden="true"><Icon name="chart" /></span></header>
-    {data?.has_results && data.measurements && <Scorecards m={data.measurements} />}
+    {data?.has_results && data.measurements && <><Scorecards m={data.measurements} /><OutcomeSummary data={{ ...data, measurements: data.measurements }} /></>}
     <div className="panel eval-controls"><div className="eval-toolbar"><label>Saved evaluation run<select value={report} onChange={event => setParams(previous => { const next = new URLSearchParams(previous); event.target.value ? next.set('report', event.target.value) : next.delete('report'); return next; })}>
       <option value="">Latest evaluation</option>{report && !data?.available_reports?.some(r => r.report_id === report) && <option value={report}>{report}</option>}
-      {data?.available_reports?.map(row => <option key={row.report_id} value={row.report_id}>{savedTime(row.started_at || row.generated_at || row.report_id)} · {row.status || 'Legacy'} · v{row.dataset_version || '?'} · {row.selected_cases ?? row.total_cases ?? '?'} cases</option>)}
+      {data?.available_reports?.map(row => <option key={row.report_id} value={row.report_id}>{savedTime(row.started_at || row.generated_at || row.report_id)} · {row.report_id === data.report_id ? state?.label : row.status || 'Legacy'} · v{row.dataset_version || '?'} · {row.selected_cases ?? row.total_cases ?? '?'} cases</option>)}
     </select></label><div className="eval-buttons"><button className="primary" onClick={() => void query.refetch()} disabled={query.isFetching}><Icon name="refresh" />Refresh saved results</button>
       {data?.has_results && <button onClick={() => download(data)}><Icon name="download" />Download summary JSON</button>}</div></div>
       <p className="caption eval-refresh-note"><span className="dot" aria-hidden="true" />{report ? 'Historical selection stays fixed until you choose Latest evaluation.' : 'Latest evaluation refreshes every 30 seconds while this page is visible.'}</p></div>
     {query.isPending && <p className="panel eval-empty" role="status">Loading saved results…</p>}
     {query.error && <div className="notice error" role="alert">{query.error.message}{data && ' Showing previously loaded data.'}</div>}
     {data?.has_results ? <>
-      <section className="eval-run" aria-label="Selected evaluation run"><div className="eval-run-title"><span className={`run-status ${(data.status || 'Legacy').toLowerCase()}`}><span aria-hidden="true" />{data.status || 'Legacy'}</span><strong>{data.run_id || data.report_id || '(checkpoint)'}</strong><span className="eval-version">Dataset {data.dataset_version || 'not recorded'}</span></div>
+      <section className="eval-run" aria-label="Selected evaluation run"><div className="eval-run-title"><span className={`run-status ${state?.tone}`}><span aria-hidden="true" />{state?.label}</span><strong>{data.run_id || data.report_id || '(checkpoint)'}</strong><span className="eval-version">Dataset {data.dataset_version || 'not recorded'}</span></div>
         <dl className="eval-run-meta"><div><dt>Cases recorded</dt><dd>{data.total_cases ?? 0} <span>/ {data.selected_cases ?? data.total_cases ?? '?'}</span></dd></div><div><dt>Model</dt><dd>{data.model || 'Not recorded'}</dd></div><div><dt>Started</dt><dd>{savedTime(data.started_at || data.generated_at || 'Not recorded')}</dd></div></dl>
-        {(data.phase || data.stop_reason) && <p className="caption eval-run-phase">{[data.phase, data.stop_reason].filter(Boolean).map(value => title(value!)).join(' · ')}</p>}
-        {data.status === 'Incomplete' && <p className="notice warning">This run is incomplete. Metrics reflect only the saved measurements so far.</p>}
         {(!data.status || data.status === 'Legacy') && <p className="notice">Legacy report: some measurements or completion metadata may be unavailable.</p>}
       </section>
       {data.measurements ? <Results m={data.measurements} /> : <div className="panel"><p>Detailed aggregate metrics: Not measured in this legacy summary.</p></div>}

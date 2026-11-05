@@ -1,9 +1,10 @@
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { QueryClient, QueryClientProvider, focusManager } from '@tanstack/react-query';
 import { MemoryRouter, useLocation } from 'react-router-dom';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import Evaluation, { metricText } from '../src/Evaluation';
-import { parseEvaluation } from '../src/evaluationData';
+import { evaluationState, parseEvaluation } from '../src/evaluationData';
+import completedReport from './fixtures/evaluation-summary.json';
 import * as api from '../src/api';
 
 const stored = { has_results: true, run_id: 'run-new', report_id: 'runs/new.json', status: 'Incomplete' as const,
@@ -18,6 +19,34 @@ function ui(route = '/evaluation') {
 }
 afterEach(() => { focusManager.setFocused(undefined); vi.useRealTimers(); vi.restoreAllMocks(); });
 describe('saved evaluation dashboard', () => {
+  it('shows the finished full run, remaining errors, latest metrics and matrix totals', async () => {
+    const data = parseEvaluation(completedReport);
+    vi.spyOn(api, 'evaluation').mockResolvedValue(data);
+    ui();
+    await screen.findByRole('heading', { name: 'Evaluation complete with errors' });
+    const summary = screen.getByRole('region', { name: 'Evaluation results summary' });
+    expect(summary).toHaveTextContent('90 of 90 cases recorded');
+    expect(summary).toHaveTextContent('76.7%');
+    expect(within(summary).getByRole('img')).toHaveAccessibleName('69 passed, 19 failed, 2 errors, 0 pending');
+    expect(summary).toHaveTextContent('2 cases ended with errors');
+    expect(screen.queryByText(/This run is incomplete/)).not.toBeInTheDocument();
+    const matrix = screen.getByRole('region', { name: 'Behavioral categories' });
+    const total = within(matrix).getByRole('row', { name: 'All selected cases 90 / 90 76.7% 69 19 2 0' });
+    expect(total).toBeVisible();
+    expect(screen.getAllByText('95.4%').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('83.5%').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('89.4%').length).toBeGreaterThan(0);
+    expect(screen.getByLabelText('Saved evaluation run')).toHaveTextContent('Complete with errors');
+  }, 15000);
+  it('keeps paused, active and unrecorded runs distinct from finished runs with errors', () => {
+    const data = parseEvaluation(completedReport);
+    expect(evaluationState(data).finished).toBe(true);
+    expect(evaluationState({ ...data, phase: 'stopped', stop_reason: 'execution_error' }).label).toBe('Paused');
+    expect(evaluationState({ ...data, phase: 'evaluating' }).label).toBe('Running');
+    expect(evaluationState({ ...data, total_cases: 89 }).finished).toBe(false);
+    expect(evaluationState({ ...data, phase: undefined }).finished).toBe(false);
+    expect(evaluationState({ ...data, measurements: { ...data.measurements!, reliability: { ...data.measurements!.reliability, errors: 0 } } }).label).toBe('Complete');
+  });
   it('keeps historical route selection until Latest evaluation is selected', async () => {
     const read = vi.spyOn(api, 'evaluation').mockImplementation(async report => ({ ...stored, run_id: report === 'runs/old.json' ? 'run-old' : 'run-new' }));
     ui('/evaluation?report=runs%2Fold.json');

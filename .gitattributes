@@ -1,3 +1,4 @@
 # This archive is checksum-pinned for migration of an existing local checkpoint.
 evaluation/fixtures/runner_before_deferred_retries.py.txt -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+evaluation/fixtures/runner_before_targeted_retries.py.txt -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 evaluation/fixtures/before_jina_rotation.json -text

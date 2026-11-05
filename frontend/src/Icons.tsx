@@ -1,6 +1,6 @@
 import type { SVGProps } from 'react';
 
-type IconName = 'assistant' | 'user' | 'send' | 'stop' | 'menu' | 'close' | 'shield' | 'chart' | 'grid' | 'refresh' | 'download';
+type IconName = 'assistant' | 'user' | 'send' | 'stop' | 'menu' | 'close' | 'shield' | 'chart' | 'grid' | 'refresh' | 'download' | 'eye' | 'eye-off';
 export default function Icon({ name, ...props }: SVGProps<SVGSVGElement> & { name: IconName }) {
   return <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false" {...props}>
     {name === 'assistant' && <><path d="M12 8.5C9.2 6.8 6.2 6.4 3 7.2v12c3.2-.8 6.2-.4 9 1.3 2.8-1.7 5.8-2.1 9-1.3v-7.7M12 8.5v12M6.5 11l2 .5m-2 3 2 .5" /><path d="m18 2 1.1 3.4L22.5 6.5l-3.4 1.1L18 11l-1.1-3.4-3.4-1.1 3.4-1.1L18 2Z" /></>}
@@ -14,5 +14,7 @@ export default function Icon({ name, ...props }: SVGProps<SVGSVGElement> & { nam
     {name === 'grid' && <><rect x="3" y="3" width="18" height="18" rx="3" /><path d="M3 9h18M9 9v12M15 9v12M3 15h18" /></>}
     {name === 'refresh' && <><path d="M21 12A9 9 0 0 0 5.3 5.7L3 8M3 3v5h5M3 12a9 9 0 0 0 15.7 6.3L21 16m-5 0h5v5" /></>}
     {name === 'download' && <><path d="M12 3v12m-4-4 4 4 4-4M4 16v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4" /></>}
+    {name === 'eye' && <><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" /><circle cx="12" cy="12" r="3" /></>}
+    {name === 'eye-off' && <><path d="m3 3 18 18M10.6 5.1 12 5c6.5 0 10 7 10 7a18 18 0 0 1-3.1 4M6.2 6.2A20 20 0 0 0 2 12s3.5 7 10 7a12 12 0 0 0 5.8-1.5M9.9 9.9a3 3 0 0 0 4.2 4.2" /></>}
   </svg>;
 }
